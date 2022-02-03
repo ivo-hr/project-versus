@@ -112,7 +112,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)box2d\include\box2d;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include\box2d;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
