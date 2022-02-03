@@ -16,6 +16,7 @@ int main(int ac, char **av) {
 
 	b2Body* groundBody = world.CreateBody(&groundBodyDef);
 
+
 	std::cout << "Hello World!\n";
 	try {
 		sdlutils_basic_demo();
