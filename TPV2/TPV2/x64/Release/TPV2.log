@@ -1,0 +1,14 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(477,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  main.cpp
+  Generating code
+  Finished generating code
+LINK : warning LNK4020: a type record in 'c:\users\samir\tpv2\tpv2\tpv2\x64\release\vc142.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LINK : warning LNK4020: a type record in 'c:\users\samir\tpv2\tpv2\tpv2\x64\release\vc142.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LINK : warning LNK4020: a type record in 'c:\users\samir\tpv2\tpv2\tpv2\x64\release\vc142.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LINK : warning LNK4020: a type record in 'c:\users\samir\tpv2\tpv2\tpv2\x64\release\vc142.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LINK : warning LNK4020: a type record in 'c:\users\samir\tpv2\tpv2\tpv2\x64\release\vc142.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LINK : warning LNK4020: a type record in 'c:\users\samir\tpv2\tpv2\tpv2\x64\release\vc142.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+  0 of 870 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  TPV2.vcxproj -> C:\Users\samir\TPV2\TPV2\bin\TPV2Release.exe
