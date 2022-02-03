@@ -1,0 +1,10 @@
+^C:\USERS\USUARIO\DESKTOP\TPV2\BOX2D\EXTERN\SAJSON\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Usuario/Desktop/TPV2/box2d -BC:/Users/Usuario/Desktop/TPV2/box2d/build --check-stamp-file C:/Users/Usuario/Desktop/TPV2/box2d/build/extern/sajson/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
