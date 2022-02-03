@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\context.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\init.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\input.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\monitor.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\vulkan.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\window.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\win32_init.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\win32_joystick.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\win32_monitor.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\win32_time.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\win32_thread.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\win32_window.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\wgl_context.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\egl_context.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\osmesa_context.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\internal.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\mappings.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\include\GLFW\glfw3.h">
+      <Filter>include\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\include\GLFW\glfw3native.h">
+      <Filter>include\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\win32_platform.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\win32_joystick.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\wgl_context.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\egl_context.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\src\osmesa_context.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Usuario\Desktop\TPV2\box2d\extern\glfw\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{D391B849-D0BC-3B19-BE4C-CEEDCF495312}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\GLFW">
+      <UniqueIdentifier>{BC899F90-619C-3244-A0B7-8CD26E9B5650}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{9930716F-D63A-3DB0-B33C-22705AD068E1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

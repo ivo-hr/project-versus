@@ -1,0 +1,30 @@
+{
+
+  "fonts" : [
+    { "id" : "ARIAL16", "file" : "resources/fonts/ARIAL.ttf", "size": 16 },
+    { "id" : "ARIAL24", "file" : "resources/fonts/ARIAL.ttf", "size": 24 },
+    { "id" : "ARIAL48", "file" : "resources/fonts/ARIAL.ttf", "size": 48 }
+  ],
+  
+  "images" : [
+    { "id" : "sdl_logo", "file" : "resources/images/SDL_logo.png" },
+    { "id" : "tennis_ball", "file" : "resources/images/tennis_ball.png" },
+    { "id" : "star", "file" : "resources/images/star.png"}
+  ],
+  
+  "messages" : [
+    { "id" : "PressAnyKey", "text" : "Press Any Key", "font" : "ARIAL24", "color" : "0x112233ff", "bg" : "0xffffffff" },
+    { "id" : "HelloSDL", "text" : "Hello SDL!", "font" : "ARIAL48", "color" : "0x0000ffff" }
+  ],
+  
+  "sounds" : [
+    { "id" : "gunshot", "file" : "resources/sound/gunshot.wav" },
+    { "id" : "explosion", "file" : "resources/sound/explosion.wav" }
+  ],
+
+  "musics" : [
+    { "id" : "beat", "file" : "resources/sound/beat.wav" },
+    { "id" : "imperial_march", "file" : "resources/sound/imperial_march.wav" }
+  ]
+
+}
