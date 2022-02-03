@@ -1,0 +1,10 @@
+^C:\USERS\USUARIO\DESKTOP\TPV2\BOX2D\BUILD\CMAKEFILES\C93184B7DC689733C7E7A9F745D0264A\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Usuario/Desktop/TPV2/box2d -BC:/Users/Usuario/Desktop/TPV2/box2d/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/Usuario/Desktop/TPV2/box2d/build/box2d.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
