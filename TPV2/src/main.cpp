@@ -20,7 +20,7 @@ int main(int ac, char **av) {
 
 	//Definimos un objeto (dinámico)
 	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(20.0f, 0.0f);
+	groundBodyDef.position.Set(200.0f, 0.0f);
 	groundBodyDef.type = b2_dynamicBody;
 
 	//Añadimos un objeto con la definicion anterior
@@ -33,11 +33,13 @@ int main(int ac, char **av) {
 	//Creamos una "cuerpo" 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 10.0f;
-	fixtureDef.friction = 0.f;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.0005f;
 
 	//añadimos el cuerpo al objeto fisico
 	groundBody->CreateFixture(&fixtureDef);
+
+	groundBody->SetFixedRotation(true);
 
 	//--------------------------
 
@@ -57,12 +59,12 @@ int main(int ac, char **av) {
 	b2FixtureDef fixt;
 	fixt.shape = &floor;
 	fixt.density = 10.0f;
-	fixt.friction = 0.f;
+	fixt.friction = 0.2f;
 
 	ground->CreateFixture(&fixt);
 
 	//---------------------------------------------------------
-	// 
+	
 	// Initialise the SDLGame singleton
 	SDLUtils::init("SDLGame Demo!", 800, 600,
 		"resources/config/resources.json");
@@ -78,7 +80,7 @@ int main(int ac, char **av) {
 	// some coordinates
 	auto winWidth = sdl.width();
 	auto winHeight = sdl.height();
-	int32 x2 = 20;
+	int32 x2 = 200;
 	int32 y2 = 0;
 
 	// reference to the input handler (we could use a pointer, I just . rather than ->).
@@ -93,7 +95,7 @@ int main(int ac, char **av) {
 	//Creo las cajas que representaran a los objetos
 	SDL_Rect scene = { 0, 200, 500, 200 };
 
-	SDL_Rect box = { 10, -10, 20, 20 };
+	SDL_Rect box = { 100, -10, 20, 20 };
 
 
 	//Bucle que estaba en la demo pero modificado xd
@@ -104,27 +106,26 @@ int main(int ac, char **av) {
 		ih.refresh();
 
 		// exit when any key is down
-		if (ih.keyDownEvent())
+		if (ih.isKeyDown(SDLK_d))
 		{
-			if (ih.isKeyDown(SDLK_d))
-			{
-				groundBody->SetLinearVelocity(b2Vec2(0, 0));
-				groundBody->SetLinearVelocity(b2Vec2(10, 0));
-			}
-			else if (ih.isKeyDown(SDLK_a))
-			{
-				groundBody->SetLinearVelocity(b2Vec2(0, 0));
-				groundBody->SetLinearVelocity(b2Vec2(-10, 0));
-			}
-			else if (ih.isKeyDown(SDLK_ESCAPE))
-				exit_ = true;
+			groundBody->ApplyForceToCenter(b2Vec2(10, 0), true);
 		}
+		else if (ih.isKeyDown(SDLK_a))
+		{
+			groundBody->ApplyForceToCenter(b2Vec2(-10, 0), true);
+		}
+		else if (ih.isKeyDown(SDLK_w))
+		{
+			groundBody->ApplyForceToCenter(b2Vec2(0, -1000), true);
+		}
+		else if (ih.isKeyDown(SDLK_ESCAPE))
+			exit_ = true;
 
 		//Esto llama al mundo para que simule lo que pasa en el tiempo que se le pase (en este caso 1000.f/30.f (un frame a 30 fps))
-		world.Step(1000.f/30.f, 1, 1);
+		world.Step(1000.f/30.f, 10, 16);
 
 		// clear screen
-		sdl.clearRenderer();
+		sdl.clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
 
 		//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
 		x2 = groundBody->GetPosition().x;
