@@ -65,7 +65,7 @@ int main(int ac, char **av) {
 	//---------------------------------------------------------
 	
 	// Initialise the SDLGame singleton
-	SDLUtils::init("SDLGame Demo!", 800, 600,
+	SDLUtils::init("Project Vs21", 800, 600,
 		"resources/config/resources.json");
 
 	auto& sdl = *SDLUtils::instance();
