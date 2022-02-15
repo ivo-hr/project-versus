@@ -13,7 +13,7 @@
 int main(int ac, char **av) {
 
 	//Creamos el espacio fisico
-	b2Vec2 gravity = b2Vec2(0.0f, 10.0f);
+	b2Vec2 gravity = b2Vec2(0.0f, 1.0f);
 
 	b2World world = b2World(gravity);
 
@@ -32,8 +32,8 @@ int main(int ac, char **av) {
 	//Creamos una "cuerpo" 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.0005f;
+	fixtureDef.density = .000000000001f;
+	fixtureDef.friction = 0.f;
 
 	//añadimos el cuerpo al objeto fisico
 	groundBody->CreateFixture(&fixtureDef);
@@ -58,7 +58,7 @@ int main(int ac, char **av) {
 	b2FixtureDef fixt;
 	fixt.shape = &floor;
 	fixt.density = 10.0f;
-	fixt.friction = 0.2f;
+	fixt.friction = 0.1f;
 
 	ground->CreateFixture(&fixt);
 
