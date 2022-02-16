@@ -13,7 +13,7 @@
 int main(int ac, char **av) {
 
 	//Creamos el espacio fisico
-	b2Vec2 gravity = b2Vec2(0.0f, 1.0f);
+	b2Vec2 gravity = b2Vec2(0.0f, 10.0f);
 
 	b2World world = b2World(gravity);
 
@@ -32,7 +32,7 @@ int main(int ac, char **av) {
 	//Creamos una "cuerpo" 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = .000000000001f;
+	fixtureDef.density = 0.01f;
 	fixtureDef.friction = 0.f;
 
 	//añadimos el cuerpo al objeto fisico
@@ -101,27 +101,33 @@ int main(int ac, char **av) {
 	while (!exit_) {
 		Uint32 startTime = sdl.currRealTime();
 
+		//groundBody->SetLinearVelocity(b2Vec2(10, 0));
+
+		double step = 1.f / 60.f;
+		world.Step(step, 1, 1);
+
 		// update the event handler
 		ih.refresh();
 
 		// exit when any key is down
 		if (ih.isKeyDown(SDLK_d))
 		{
-			groundBody->ApplyForceToCenter(b2Vec2(10, 0), true);
+			groundBody->SetLinearVelocity(b2Vec2(10, 0));
 		}
 		else if (ih.isKeyDown(SDLK_a))
 		{
-			groundBody->ApplyForceToCenter(b2Vec2(-10, 0), true);
+			groundBody->SetLinearVelocity(b2Vec2(-10, 0));
 		}
 		else if (ih.isKeyDown(SDLK_w))
 		{
-			groundBody->ApplyForceToCenter(b2Vec2(0, -1000), true);
+			groundBody->ApplyLinearImpulseToCenter(b2Vec2(0, -100), true);
 		}
 		else if (ih.isKeyDown(SDLK_ESCAPE))
 			exit_ = true;
 
 		//Esto llama al mundo para que simule lo que pasa en el tiempo que se le pase (en este caso 1000.f/30.f (un frame a 30 fps))
-		world.Step(1000.f/30.f, 10, 16);
+
+		//groundBody->SetLinearVelocity(b2Vec2(1000, 0));
 
 		// clear screen
 		sdl.clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
@@ -140,12 +146,15 @@ int main(int ac, char **av) {
 		// present new frame
 		sdl.presentRenderer();
 
-		Uint32 frameTime = sdl.currRealTime() - startTime;
+		double frameTime = sdl.currRealTime() - startTime;
 
-		if (frameTime < 1000.f / 30.f)
+		if (frameTime < step)
 		{
-			SDL_Delay(1000.f / 30.f - frameTime);
+			SDL_Delay(step - frameTime);
+			//SDL_Delay(16);
 		}
+
+		std::cout << groundBody->GetLinearVelocity().x << "\n";
 	}
 
 	std::cout << ground->GetPosition().y;

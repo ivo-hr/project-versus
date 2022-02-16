@@ -509,7 +509,7 @@ inline void b2Body::SetLinearVelocity(const b2Vec2& v)
 	{
 		SetAwake(true);
 	}
-
+	//std::cout << "me estan poniend!" << std::endl;
 	m_linearVelocity = v;
 }
 
