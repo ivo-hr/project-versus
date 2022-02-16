@@ -13,7 +13,7 @@
 int main(int ac, char **av) {
 
 	//Creamos el espacio fisico
-	b2Vec2 gravity = b2Vec2(0.0f, 10.0f);
+	b2Vec2 gravity = b2Vec2(0.0f, 20.0f);
 
 	b2World world = b2World(gravity);
 
@@ -32,8 +32,8 @@ int main(int ac, char **av) {
 	//Creamos una "cuerpo" 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 0.01f;
-	fixtureDef.friction = 0.f;
+	fixtureDef.density = 1.f;
+	fixtureDef.friction = 0.9f;
 
 	//añadimos el cuerpo al objeto fisico
 	groundBody->CreateFixture(&fixtureDef);
@@ -58,7 +58,7 @@ int main(int ac, char **av) {
 	b2FixtureDef fixt;
 	fixt.shape = &floor;
 	fixt.density = 10.0f;
-	fixt.friction = 0.1f;
+	fixt.friction = 0.9f;
 
 	ground->CreateFixture(&fixt);
 
@@ -103,31 +103,29 @@ int main(int ac, char **av) {
 
 		//groundBody->SetLinearVelocity(b2Vec2(10, 0));
 
-		double step = 1.f / 60.f;
-		world.Step(step, 1, 1);
-
 		// update the event handler
 		ih.refresh();
 
 		// exit when any key is down
 		if (ih.isKeyDown(SDLK_d))
 		{
-			groundBody->SetLinearVelocity(b2Vec2(10, 0));
+			groundBody->SetLinearVelocity(b2Vec2(20, groundBody->GetLinearVelocity().y));
 		}
 		else if (ih.isKeyDown(SDLK_a))
 		{
-			groundBody->SetLinearVelocity(b2Vec2(-10, 0));
+			groundBody->SetLinearVelocity(b2Vec2(-20, groundBody->GetLinearVelocity().y));
 		}
 		else if (ih.isKeyDown(SDLK_w))
 		{
-			groundBody->ApplyLinearImpulseToCenter(b2Vec2(0, -100), true);
+			groundBody->ApplyLinearImpulseToCenter(b2Vec2(groundBody->GetLinearVelocity().x, -1000*world.GetGravity().y), true);
 		}
 		else if (ih.isKeyDown(SDLK_ESCAPE))
 			exit_ = true;
 
 		//Esto llama al mundo para que simule lo que pasa en el tiempo que se le pase (en este caso 1000.f/30.f (un frame a 30 fps))
 
-		//groundBody->SetLinearVelocity(b2Vec2(1000, 0));
+		double step = 1.f / 60.f;
+		world.Step(step, 1, 1);
 
 		// clear screen
 		sdl.clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
@@ -151,7 +149,6 @@ int main(int ac, char **av) {
 		if (frameTime < step)
 		{
 			SDL_Delay(step - frameTime);
-			//SDL_Delay(16);
 		}
 
 		std::cout << groundBody->GetLinearVelocity().x << "\n";
