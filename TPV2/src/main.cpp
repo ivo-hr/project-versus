@@ -70,12 +70,12 @@ int main(int ac, char **av) {
 	//---------------------------------------------------------
 	
 	// Initialise the SDLGame singleton
-	SDLUtils::init("Project Vs21", 1920, 1080,
+	SDLUtils::init("Project Vs21", 900, 800,
 		"resources/config/resources.json");
 
 	auto& sdl = *SDLUtils::instance();
 
-	sdl.toggleFullScreen();
+	//sdl.toggleFullScreen();
 
 	//show the cursor
 	sdl.showCursor();
