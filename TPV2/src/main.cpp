@@ -12,6 +12,47 @@
 
 int main(int ac, char **av) {
 
+	// Initialise the SDLGame singleton
+	SDLUtils::init("Project Vs21", 1024, 576,
+		"resources/config/resources.json");
+
+	auto& sdl = *SDLUtils::instance();
+
+	/*
+	int wWidth;
+	int wHeight;
+
+	SDL_GetRendererOutputSize(sdl.renderer(), &wWidth, &wHeight);
+
+	std::cout << wWidth << std::endl;
+	*/
+
+	SDL_DisplayMode DM;
+
+	SDL_GetDesktopDisplayMode(0, &DM);
+
+	//std::cout << DM.w << std::endl;
+
+	sdl.toggleFullScreen();
+
+	float scaleX = (float)DM.w / sdl.width();
+	float scaleY = (float)DM.h / sdl.height();
+
+	SDL_RenderSetScale(sdl.renderer(), scaleX, scaleY);
+
+	SDL_RenderSetLogicalSize(sdl.renderer(), DM.w, DM.h);
+
+	std::cout << sdl.width() << std::endl;
+
+	//show the cursor
+	sdl.showCursor();
+
+	// reference to the input handler (we could use a pointer, I just . rather than ->).
+	// you can also use the inline method ih() that is defined in InputHandler.h
+	auto& ih = *InputHandler::instance();
+
+	//-----------------------------------------------------------------------------------------
+
 	//Creamos el espacio fisico
 	b2Vec2 gravity = b2Vec2(0.0f, 20.0f);
 
@@ -22,7 +63,7 @@ int main(int ac, char **av) {
 
 	//Definimos un objeto (dinámico)
 	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(50.0f, 70.0f);
+	groundBodyDef.position.Set(80.0f, 45.0f);
 	groundBodyDef.type = b2_dynamicBody;
 
 	//Añadimos un objeto con la definicion anterior
@@ -68,43 +109,20 @@ int main(int ac, char **av) {
 	ground->CreateFixture(&fixt);
 
 	//---------------------------------------------------------
-	
-	// Initialise the SDLGame singleton
-	SDLUtils::init("Project Vs21", 900, 800,
-		"resources/config/resources.json");
-
-	auto& sdl = *SDLUtils::instance();
-
-	//sdl.toggleFullScreen();
-
-	//show the cursor
-	sdl.showCursor();
-
-	// store the 'renderer' in a local variable, just for convenience
-	SDL_Renderer* renderer = sdl.renderer();
-
-	// some coordinates
-	auto winWidth = sdl.width();
-	auto winHeight = sdl.height();
-	int32 x2 = 200;
-	int32 y2 = 0;
-
-	// reference to the input handler (we could use a pointer, I just . rather than ->).
-	// you can also use the inline method ih() that is defined in InputHandler.h
-	auto& ih = *InputHandler::instance();
-
-	// a boolean to exit the loop
-	bool exit_ = false;
-
-	//-----------------------------------------------------
 
 	//Creo las cajas que representaran a los objetos
 	SDL_Rect scene = { 960.0f - 750.0f, 900.0f - 50.f, 1500, 10 };
 
 	SDL_Rect box = { (groundBody->GetPosition().x * 10 - width * 10 / 2), (groundBody->GetPosition().y * 10 - height * 10 / 2), width * 10, height * 10 };
 
-
 	int32 speed = 0;
+
+	// a boolean to exit the loop
+	bool exit_ = false;
+	
+
+	int32 x2;
+	int32 y2;
 
 	//Bucle que estaba en la demo pero modificado xd
 	while (!exit_) {
@@ -150,9 +168,9 @@ int main(int ac, char **av) {
 		box.y = y2 - height * 10 / 2;
 
 		//Dibujamos las cajas
-		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-		SDL_RenderDrawRect(renderer, &scene);
-		SDL_RenderDrawRect(renderer, &box);
+		SDL_SetRenderDrawColor(sdl.renderer(), 255, 0, 0, 255);
+		SDL_RenderDrawRect(sdl.renderer(), &scene);
+		SDL_RenderDrawRect(sdl.renderer(), &box);
 
 		// present new frame
 		sdl.presentRenderer();
@@ -163,11 +181,7 @@ int main(int ac, char **av) {
 		{
 			SDL_Delay(step - frameTime);
 		}
-
-		std::cout << groundBody->GetLinearVelocity().x << "\n";
 	}
-
-	std::cout << ground->GetPosition().y;
 
 	//std::cout << "Hello World!\n";
 	//try {
