@@ -10,6 +10,24 @@
 #include "sdlutils/sdlutils_demo.h"
 #include "sdlutils/SDLUtils.h"
 
+bool onGround;
+
+class myListener : public b2ContactListener
+{
+	void BeginContact(b2Contact* contact);
+	void EndContact(b2Contact* contact);
+};
+void myListener::BeginContact(b2Contact* contact)
+{
+	onGround = true;
+	std::cout << "contacto" << std::endl;
+}
+void myListener::EndContact(b2Contact* contact)
+{
+	onGround = false;
+	std::cout << "fin contacto" << std::endl;
+}
+
 int main(int ac, char **av) {
 
 	// Initialise the SDLGame singleton
@@ -51,6 +69,10 @@ int main(int ac, char **av) {
 	b2Vec2 gravity = b2Vec2(0.0f, 20.0f);
 
 	b2World world = b2World(gravity);
+
+	//creamos el detector de colisiones
+	myListener listener;
+	world.SetContactListener(&listener);
 
 	//Definimos un objeto (dinámico)
 	float width = 5.f;
@@ -103,7 +125,6 @@ int main(int ac, char **av) {
 	ground->CreateFixture(&fixt);
 
 	//---------------------------------------------------------
-
 	//Creo las cajas que representaran a los objetos
 	SDL_Rect scene = { 960.0f - 750.0f, 900.0f - 50.f, 1500, 10 };
 
@@ -113,37 +134,65 @@ int main(int ac, char **av) {
 
 	// a boolean to exit the loop
 	bool exit_ = false;
-	
-
 	int32 x2;
 	int32 y2;
 
+	onGround = true;
+
+	int iniJumps = 1;
+	int eJumps = iniJumps;
+	int moveBuffer=0;
+	bool moveing = false;
 	//Bucle que estaba en la demo pero modificado xd
 	while (!exit_) {
 		Uint32 startTime = sdl.currRealTime();
 
 		//groundBody->SetLinearVelocity(b2Vec2(10, 0));
-
+		
+		//number of extra jumps
 		// update the event handler
 		ih.refresh();
-
 		// exit when any key is down
 		if (ih.isKeyDown(SDLK_d))
 		{
 			speed = 40;
+			moveing = true;
+
 		}
 		if (ih.isKeyDown(SDLK_a))
 		{
 			speed = -40;
+			moveing = true;
 		}
-		if (ih.isKeyDown(SDLK_w))
+		if (ih.isKeyUp(SDLK_a) && ih.isKeyUp(SDLK_d))
 		{
+			// para que no haya movimiento infinito (experimental)
+			moveing = false;
+		}
+		if (ih.isKeyDown(SDLK_w)&& eJumps>0)
+		{
+			if (!onGround)
+			{
+				eJumps--;
+			}
+			
 			groundBody->ApplyLinearImpulseToCenter(b2Vec2(0, -1000 * world.GetGravity().y), true);
 		}
 		else if (ih.isKeyDown(SDLK_ESCAPE))
-			exit_ = true;
+				exit_ = true;
+		//boolean to check collision with the ground
+		if (onGround)
+		{
+			eJumps = iniJumps;
+		}
 
-
+		if (!moveing)
+		{
+			if(speed > 0)
+				speed--;
+			if (speed < 0)
+				speed++;
+		}
 
 		groundBody->SetLinearVelocity(b2Vec2(speed, groundBody->GetLinearVelocity().y));
 
@@ -193,4 +242,3 @@ int main(int ac, char **av) {
 
 	return 0;
 }
-
