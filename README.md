@@ -202,6 +202,12 @@ _Párrafos e ilustraciones donde se describe los controles que se pueden usar en
 El juego tendrá un fondo de escenario, música de batalla y de menú, sonidos de golpes dados y recibidos, así como de selección de botones, sprites y animaciones únicos de cada personaje y otras imágenes como fondo del menú y de la pestaña de ajustes.
 
 ###  <a name = "Historia"> 4.1 Historia</a>
+  
+_"6 junio de 2021, 14:00. Día tormentoso en San Francisco, California. Sobre la ciudad se cierne un gran nubarrón negro cual cuervo que extiende sus alas anunciando a los cuatro vientos un cambio, resonando con truenos que hacen temblar los cristales y brillando con rayos que parten árboles y funden tendidos eléctricos enteros. Uno de estos poderosos disparos de la naturaleza alcanza una sede de oficinas y servidores conocida por todos los alumnos de informática: la sede de Github Inc._
+
+_6 de junio de 2021, 23:00. A una hora de la media noche en España. Nueve grupos de alumnos de Desarrollo de Videojuegos de la UCM se encuentran realizando los últimos commits de sus juegos de Proyectos 1. Por caprichos del destino todos pulsan el botón de Push a la vez, justo a la vez que el rayo impacta en los servidores de la compañía. Un resplandor blanco sale de las pantallas de los estudiantes, y cuando sus ojos se recuperan ante tal fogonazo de luz, a todos les sale el mismo error de Merge con 9000 cambios pero que está completamente en blanco. Cuando todos, asustados, se ponen a ejecutar sus juegos, se dan cuenta de que sus protagonistas no aparecen en pantalla…"_
+
+El Ganso de la ComJamOn, la GameJam de la Universidad Complutense de Madrid, ha secuestrado a los personajes de los juegos de Proyectos 1 porque le pareció horrible que tan buenos juegos se desaprovecharan al no haber categoría a “Mejor juego del año de Proyectos 1”. Por ello, ha creado escenarios de combate en un juego aparte y ha traído a este a los personajes de los proyectos, para que peleen entre ellos y se decida por fin cuál es el mejor juego de Proyectos 1 de 2020/21.
 
 ###  <a name = "Personajes"> 4.2 Personajes</a>
 
