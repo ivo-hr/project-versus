@@ -56,7 +56,7 @@ int main(int ac, char **av) {
 	SDL_SetWindowSize(sdl.window(), DM.w, DM.h);
 
 	//Ponemos en pantalla completa
-	sdl.toggleFullScreen();
+	//sdl.toggleFullScreen();
 
 	//show the cursor
 	sdl.showCursor();
@@ -76,36 +76,10 @@ int main(int ac, char **av) {
 	myListener listener;
 	world.SetContactListener(&listener);
 
-
-	//Definimos un objeto (dinámico)
-	float width = 5.f;
-	float height = 5.f;
-
-	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(80.0f, 45.0f);
-	groundBodyDef.type = b2_dynamicBody;
-
-	//Definimos un caja
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(width / 2, height / 2);
-
-	//Creamos una "cuerpo" 
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 10.f;
-	fixtureDef.friction = 0.9f;
-
-	b2Body* character1 = world.CreateBody(&groundBodyDef);
-	//añadimos el cuerpo al objeto fisico
-	character1->CreateFixture(&fixtureDef);
-
-	character1->SetFixedRotation(true);
-
-	character1->SetGravityScale(10.f);
-
-
-	//---------------------------------------------------------
-
+	Character* character1 = new Character(&world, &sdl, true);
+	Character* boxingBag = new Character(&world, &sdl, false);
+	character1->SetOponent(boxingBag);
+	boxingBag->SetOponent(character1);
 
 	//Definimos un objeto (estatico)
 	b2BodyDef groundDef;
@@ -123,7 +97,7 @@ int main(int ac, char **av) {
 	b2FixtureDef fixt;
 	fixt.shape = &floor;
 	fixt.density = 10.0f;
-	fixt.friction = 0.7f;
+	fixt.friction = 0.9f;
 
 	ground->CreateFixture(&fixt);
 
@@ -131,8 +105,6 @@ int main(int ac, char **av) {
 	
 	//Creo las cajas que representaran a los objetos
 	SDL_Rect scene = { 960.0f - 750.0f, 900.0f - 50.f, 1500, 10 };
-
-	SDL_Rect box = { (character1->GetPosition().x * 10 - width * 10 / 2), (character1->GetPosition().y * 10 - height * 10 / 2), width * 10, height * 10 };
 
 	int32 speed = 0;
 
@@ -151,57 +123,11 @@ int main(int ac, char **av) {
 	while (!exit_) {
 		Uint32 startTime = sdl.currRealTime();
 
-		//groundBody->SetLinearVelocity(b2Vec2(10, 0));
-		
-		//number of extra jumps
-		// update the event handler
-		ih.refresh();
-		// exit when any key is down
-		if (ih.isKeyDown(SDLK_d))
-		{
-			speed = 40;
-			moveing = true;
 
-		}
-		if (ih.isKeyDown(SDLK_a))
-		{
-			speed = -40;
-			moveing = true;
-		}
-		if (ih.isKeyUp(SDLK_a) && ih.isKeyUp(SDLK_d))
-		{
-			// para que no haya movimiento infinito (experimental)
-			moveing = false;
-		}
-		if (ih.isKeyDown(SDLK_w)&& eJumps>0)
-		{
-			if (!onGround)
-			{
-				eJumps--;
-			}
-			
-			character1->ApplyLinearImpulseToCenter(b2Vec2(0, -1000 * world.GetGravity().y), true);
-		}
-		else if (ih.isKeyDown(SDLK_ESCAPE))
-				exit_ = true;
-		//boolean to check collision with the ground
-		if (onGround)
-		{
-			eJumps = iniJumps;
-		}
+		if (ih.isKeyDown(SDLK_ESCAPE))
+			exit_ = true;
 
-		if (!moveing)
-		{
-			if(speed > 0)
-				speed--;
-			if (speed < 0)
-				speed++;
-		}
-
-		character1->SetLinearVelocity(b2Vec2(speed, character1->GetLinearVelocity().y));
-
-		//Esto llama al mundo para que simule lo que pasa en el tiempo que se le pase (en este caso 1000.f/30.f (un frame a 30 fps))
-
+		//Esto llama al mundo para que simule lo que pasa en el tiempo que se le pase (en este caso 1000.f/60.f (un frame a 60 fps))
 		double step = 1.f / 60.f;
 		world.Step(step, 1, 1);
 
@@ -209,15 +135,15 @@ int main(int ac, char **av) {
 		sdl.clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
 
 		//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
-		x2 = character1->GetPosition().x * 10;
-		y2 = character1->GetPosition().y * 10;
-		box.x = x2 - width * 10 / 2;
-		box.y = y2 - height * 10 / 2;
 
 		//Dibujamos las cajas
 		SDL_SetRenderDrawColor(sdl.renderer(), 255, 0, 0, 255);
 		SDL_RenderDrawRect(sdl.renderer(), &scene);
-		SDL_RenderDrawRect(sdl.renderer(), &box);
+
+		character1->update();
+		boxingBag->update();
+		character1->draw();
+		boxingBag->draw();
 
 		// present new frame
 		sdl.presentRenderer();
