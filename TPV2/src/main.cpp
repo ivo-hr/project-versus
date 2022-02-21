@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include <iostream>
 #include <box2d.h>
-
+#include "game/Character.h"
 #include "sdlutils/InputHandler.h"
 #include "sdlutils/macros.h"
 
@@ -20,6 +20,8 @@ class myListener : public b2ContactListener
 void myListener::BeginContact(b2Contact* contact)
 {
 	onGround = true;
+	b2Body* one = contact->GetFixtureA()->GetBody();
+	b2Body* two = contact->GetFixtureB()->GetBody();
 	std::cout << "contacto" << std::endl;
 }
 void myListener::EndContact(b2Contact* contact)
@@ -74,6 +76,7 @@ int main(int ac, char **av) {
 	myListener listener;
 	world.SetContactListener(&listener);
 
+
 	//Definimos un objeto (dinámico)
 	float width = 5.f;
 	float height = 5.f;
@@ -81,9 +84,6 @@ int main(int ac, char **av) {
 	b2BodyDef groundBodyDef;
 	groundBodyDef.position.Set(80.0f, 45.0f);
 	groundBodyDef.type = b2_dynamicBody;
-
-	//Añadimos un objeto con la definicion anterior
-	b2Body* groundBody = world.CreateBody(&groundBodyDef);
 
 	//Definimos un caja
 	b2PolygonShape dynamicBox;
@@ -95,14 +95,17 @@ int main(int ac, char **av) {
 	fixtureDef.density = 10.f;
 	fixtureDef.friction = 0.9f;
 
+	b2Body* character1 = world.CreateBody(&groundBodyDef);
 	//añadimos el cuerpo al objeto fisico
-	groundBody->CreateFixture(&fixtureDef);
+	character1->CreateFixture(&fixtureDef);
 
-	groundBody->SetFixedRotation(true);
+	character1->SetFixedRotation(true);
 
-	groundBody->SetGravityScale(10.f);
+	character1->SetGravityScale(10.f);
 
-	//--------------------------
+
+	//---------------------------------------------------------
+
 
 	//Definimos un objeto (estatico)
 	b2BodyDef groundDef;
@@ -124,11 +127,12 @@ int main(int ac, char **av) {
 
 	ground->CreateFixture(&fixt);
 
-	//---------------------------------------------------------
+	//--------------------------
+	
 	//Creo las cajas que representaran a los objetos
 	SDL_Rect scene = { 960.0f - 750.0f, 900.0f - 50.f, 1500, 10 };
 
-	SDL_Rect box = { (groundBody->GetPosition().x * 10 - width * 10 / 2), (groundBody->GetPosition().y * 10 - height * 10 / 2), width * 10, height * 10 };
+	SDL_Rect box = { (character1->GetPosition().x * 10 - width * 10 / 2), (character1->GetPosition().y * 10 - height * 10 / 2), width * 10, height * 10 };
 
 	int32 speed = 0;
 
@@ -176,7 +180,7 @@ int main(int ac, char **av) {
 				eJumps--;
 			}
 			
-			groundBody->ApplyLinearImpulseToCenter(b2Vec2(0, -1000 * world.GetGravity().y), true);
+			character1->ApplyLinearImpulseToCenter(b2Vec2(0, -1000 * world.GetGravity().y), true);
 		}
 		else if (ih.isKeyDown(SDLK_ESCAPE))
 				exit_ = true;
@@ -194,7 +198,7 @@ int main(int ac, char **av) {
 				speed++;
 		}
 
-		groundBody->SetLinearVelocity(b2Vec2(speed, groundBody->GetLinearVelocity().y));
+		character1->SetLinearVelocity(b2Vec2(speed, character1->GetLinearVelocity().y));
 
 		//Esto llama al mundo para que simule lo que pasa en el tiempo que se le pase (en este caso 1000.f/30.f (un frame a 30 fps))
 
@@ -205,8 +209,8 @@ int main(int ac, char **av) {
 		sdl.clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
 
 		//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
-		x2 = groundBody->GetPosition().x * 10;
-		y2 = groundBody->GetPosition().y * 10;
+		x2 = character1->GetPosition().x * 10;
+		y2 = character1->GetPosition().y * 10;
 		box.x = x2 - width * 10 / 2;
 		box.y = y2 - height * 10 / 2;
 
