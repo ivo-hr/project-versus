@@ -21,9 +21,6 @@ Character::Character(b2World* world, SDLUtils* sdl, bool movable) : Entity(world
 	oponent = nullptr;
 	onGround = true;
 
-	//Tamaño de la hurtbox del personaje
-	hurtbox = { (int)(body->GetPosition().x - width), (int)(body->GetPosition().y - height), (int)width * 10, (int)height * 10 };
-
 	//creamos el detector de colisiones
 	world->SetContactListener(&listener);
 }
@@ -141,10 +138,10 @@ void Character::atackStrong(int frameNumber)
 
 		//Al frame 90, crea un rect y si el oponente colisiona con ello...
 		SDL_Rect hitbox = { 
-			(int)(body->GetPosition().x * 10 - width * 2.5f + dir * 50),
-			(int)(body->GetPosition().y * 10 - height * 2.5f), 
-			(int)width * 5, 
-			(int)height * 5 };
+			(int)(body->GetPosition().x * 20 - width * 5 + dir * 50),
+			(int)(body->GetPosition().y * 20 - height * 5), 
+			(int)width * 10, 
+			(int)height * 10 };
 
 		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 		SDL_RenderDrawRect(sdl->renderer(), &hitbox);
@@ -181,10 +178,10 @@ void Character::atackWeak(int frameNumber)
 	case 12:
 	{
 		SDL_Rect hitbox = {
-			(int)(body->GetPosition().x * 10 - width * 5 + dir * 30),
-			(int)(body->GetPosition().y * 10 - height * 5),
-			(int)width * 10,
-			(int)height * 10 };
+			(int)(body->GetPosition().x * 20.f - width * 10 + dir * 30),
+			(int)(body->GetPosition().y * 20.f - height * 10),
+			(int)width * 20,
+			(int)height * 20 };
 
 		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 		SDL_RenderDrawRect(sdl->renderer(), &hitbox);

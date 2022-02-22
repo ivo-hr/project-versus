@@ -62,8 +62,8 @@ protected:
 	b2Body* body;
 
 	SDL_Rect hurtbox;
-	float width = 5.f;
-	float height = 5.f;
+	float width = 2.5f;
+	float height = 2.5f;
 
 	bool onGround;
 

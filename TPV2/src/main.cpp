@@ -15,10 +15,12 @@
 int main(int ac, char **av) {
 
 	// Initialise the SDLGame singleton
-	SDLUtils::init("Project Vs21", 1024, 576,
+	SDLUtils::init("Project Vs21", 512, 288,
 		"resources/config/resources.json");
 
 	auto& sdl = *SDLUtils::instance();
+
+	float sdlb2Mult = 20;
 
 	//Obtenemos el tama�o de la pantalla
 	SDL_DisplayMode DM;
@@ -35,10 +37,10 @@ int main(int ac, char **av) {
 	SDL_RenderSetLogicalSize(sdl.renderer(), DM.w, DM.h);
 
 	//Cambiamos el tama�o de la ventana
-	//SDL_SetWindowSize(sdl.window(), DM.w, DM.h);
+	SDL_SetWindowSize(sdl.window(), DM.w, DM.h);
 
 	//Ponemos en pantalla completa
-	//sdl.toggleFullScreen();
+	sdl.toggleFullScreen();
 
 	//show the cursor
 	sdl.showCursor();
@@ -61,14 +63,15 @@ int main(int ac, char **av) {
 
 	//Definimos un objeto (estatico)
 	b2BodyDef groundDef;
-	groundDef.position.Set(96.0f, 90.0f);
+	groundDef.position.Set(48.0f, 45.0f);
 	groundDef.type = b2_staticBody;
 
 	//A�adimos al mundo
 	b2Body* ground = world.CreateBody(&groundDef);;
 	//Le damos forma...
 	b2PolygonShape floor;
-	floor.SetAsBox(75.0f, 5.0f);
+	int floorW = 37, floorH = 2;
+	floor.SetAsBox(floorW, floorH);
 
 	//..cuerpo
 	b2FixtureDef fixt;
@@ -81,7 +84,10 @@ int main(int ac, char **av) {
 	//--------------------------
 	
 	//Creo las cajas que representaran a los objetos
-	SDL_Rect scene = { 960.0f - 750.0f, 900.0f - 50.f, 1500, 10 };
+	SDL_Rect scene = { ground->GetPosition().x * sdlb2Mult - floorW * sdlb2Mult, 
+		ground->GetPosition().y* sdlb2Mult - floorH * sdlb2Mult,
+		floorW* sdlb2Mult * 2,
+		floorH* sdlb2Mult * 2 };
 
 	int32 speed = 0;
 

@@ -7,7 +7,7 @@ Entity::Entity(b2World* world, SDLUtils* sdl)
 	//Definimos un objeto (dinámico)
 
 	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(80.0f, 45.0f);
+	groundBodyDef.position.Set(40.0f, 42.0f);
 	groundBodyDef.type = b2_dynamicBody;
 
 	//Definimos un caja
@@ -32,8 +32,12 @@ Entity::Entity(b2World* world, SDLUtils* sdl)
 
 	onGround = true;
 
+
+
 	//Tamaño de la hurtbox del personaje
-	hurtbox = { (int)(body->GetPosition().x - width), (int)(body->GetPosition().y - height), (int)width * 10, (int)height * 10 };
+	hurtbox = { 0, 
+		0, 
+		(int)(width * 20.f), (int)(height * 20.f) };
 
 	//creamos el detector de colisiones
 	world->SetContactListener(&listener);
@@ -47,8 +51,8 @@ Entity::~Entity()
 void Entity::update()
 {
 	//Actualizamos la posicion del rect
-	hurtbox.x = body->GetPosition().x * 10 - width * 10 / 2;
-	hurtbox.y = body->GetPosition().y * 10 - height * 10 / 2;
+	hurtbox.x = body->GetPosition().x * 20 - width * 20 / 2;
+	hurtbox.y = body->GetPosition().y * 20 - height * 20 / 2;
 }
 
 void Entity::SetGround(bool ground)
