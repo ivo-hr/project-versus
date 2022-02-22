@@ -9,41 +9,42 @@
 class myListener : public b2ContactListener
 {
 private:
-
+	bool ground;
 public:
 	//Character character;
 	void BeginContact(b2Contact* contact)
 	{
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
-		std::cout << "contacto" << std::endl;
-		if (one->GetType() != two->GetType())
+		if (two->GetType() == b2_staticBody)
 		{
-			//character.SetGround(true);
+			ground = true;
+			std::cout << ground << std::endl;
 		}
 	}
 	void EndContact(b2Contact* contact)
 	{
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
-		std::cout << "fin contacto" << std::endl;
-		if (one->GetType() != two->GetType())
+		if (two->GetType() == b2_staticBody)
 		{
-			//character.SetGround(false);
+			ground = false;
+			std::cout << ground << std::endl;
+
 		}
 	}
 	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 	{
-		b2Body* one = contact->GetFixtureA()->GetBody();
-		b2Body* two = contact->GetFixtureB()->GetBody();
-		//one->ApplyLinearImpulse(b2Vec2(0, -40), one->GetWorldCenter(), true);
-		//two->ApplyLinearImpulse(b2Vec2(0, -40), two->GetWorldCenter(), true);
+
 	}
 	void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
 	{
 
 	}
-
+	bool CheckGround()
+	{
+		return ground;
+	}
 };
 
 
@@ -78,6 +79,6 @@ public:
 
 	virtual void GetHit(atackData a, int dir) = 0;
 	virtual SDL_Rect* GetHurtbox();
-	bool GetGround() { return onGround; };
-	void SetGround(bool ground);
+	//bool GetGround() { return onGround; };
+	//void SetGround(bool ground);
 };
