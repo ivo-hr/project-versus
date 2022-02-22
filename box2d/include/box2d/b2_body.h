@@ -378,6 +378,9 @@ public:
 	/// Get the user data pointer that was provided in the body definition.
 	b2BodyUserData& GetUserData();
 	const b2BodyUserData& GetUserData() const;
+	
+	/// Set the user data
+	b2BodyUserData& SetUserData(void* Data);
 
 	/// Get the parent world of this body.
 	b2World* GetWorld();

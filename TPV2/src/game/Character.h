@@ -12,6 +12,49 @@ struct atackData {
 	float multiplier;
 };
 
+//Esto no debería ir aquí pero no se como hacerlo
+//bool onGround;
+
+class myListener : public b2ContactListener
+{
+private:
+
+public:
+	//Character character;
+	void BeginContact(b2Contact* contact)
+	{
+		b2Body* one = contact->GetFixtureA()->GetBody();
+		b2Body* two = contact->GetFixtureB()->GetBody();
+		std::cout << "contacto" << std::endl;
+		if (one->GetType() != two->GetType())
+		{
+			//character.SetGround(true);
+		}
+	}
+	void EndContact(b2Contact* contact)
+	{
+		b2Body* one = contact->GetFixtureA()->GetBody();
+		b2Body* two = contact->GetFixtureB()->GetBody();
+		std::cout << "fin contacto" << std::endl;
+		if (one->GetType() != two->GetType())
+		{
+			//character.SetGround(false);
+		}
+	}
+	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+	{
+		b2Body* one = contact->GetFixtureA()->GetBody();
+		b2Body* two = contact->GetFixtureB()->GetBody();
+		//one->ApplyLinearImpulse(b2Vec2(0, -40), one->GetWorldCenter(), true);
+		//two->ApplyLinearImpulse(b2Vec2(0, -40), two->GetWorldCenter(), true);
+	}
+	void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
+	{
+
+	}
+
+};
+
 class Character
 {
 protected:
@@ -48,6 +91,9 @@ protected:
 
 	int damageTaken;
 
+	bool onGround;
+
+	myListener listener;
 	//frame actual del movimiento que este haciendo
 	int moveFrame;
 	//Metodo del movimiento que este haciendo (esto es una variable que guarda metodos :v)
@@ -65,5 +111,7 @@ public:
 	virtual void GetHit(atackData a, int dir);
 	virtual void SetOponent(Character* op);
 	virtual SDL_Rect* GetHurtbox();
+	bool GetGround() { return onGround; };
+	void SetGround(bool ground);
 
 };

@@ -10,25 +10,7 @@
 #include "sdlutils/sdlutils_demo.h"
 #include "sdlutils/SDLUtils.h"
 
-bool onGround;
 
-class myListener : public b2ContactListener
-{
-	void BeginContact(b2Contact* contact);
-	void EndContact(b2Contact* contact);
-};
-void myListener::BeginContact(b2Contact* contact)
-{
-	onGround = true;
-	b2Body* one = contact->GetFixtureA()->GetBody();
-	b2Body* two = contact->GetFixtureB()->GetBody();
-	std::cout << "contacto" << std::endl;
-}
-void myListener::EndContact(b2Contact* contact)
-{
-	onGround = false;
-	std::cout << "fin contacto" << std::endl;
-}
 
 int main(int ac, char **av) {
 
@@ -72,10 +54,6 @@ int main(int ac, char **av) {
 
 	b2World world = b2World(gravity);
 
-	//creamos el detector de colisiones
-	myListener listener;
-	world.SetContactListener(&listener);
-
 	Character* character1 = new Character(&world, &sdl, true);
 	Character* boxingBag = new Character(&world, &sdl, false);
 	character1->SetOponent(boxingBag);
@@ -87,8 +65,7 @@ int main(int ac, char **av) {
 	groundDef.type = b2_staticBody;
 
 	//Añadimos al mundo
-	b2Body* ground = world.CreateBody(&groundDef);
-
+	b2Body* ground = world.CreateBody(&groundDef);;
 	//Le damos forma...
 	b2PolygonShape floor;
 	floor.SetAsBox(75.0f, 5.0f);
@@ -113,7 +90,6 @@ int main(int ac, char **av) {
 	int32 x2;
 	int32 y2;
 
-	onGround = true;
 
 	int iniJumps = 1;
 	int eJumps = iniJumps;

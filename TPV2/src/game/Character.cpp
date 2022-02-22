@@ -42,13 +42,16 @@ Character::Character(b2World* world, SDLUtils* sdl, bool movable)
 	damageTaken = 0;
 	maxSpeed = 40;
 	speed = 0;
-	this->jumpCounter = 1;
+	this->maxJumps = 1;
 	this->jumpStr = 20000;
 	oponent = nullptr;
+	onGround = true;
 
 	//Tamaño de la hurtbox del personaje
 	hurtbox = { (int)(body->GetPosition().x - width), (int)(body->GetPosition().y - height), (int)width * 10, (int)height * 10 };
 
+	//creamos el detector de colisiones
+	world->SetContactListener(&listener);
 }
 
 Character::~Character()
@@ -67,13 +70,13 @@ void Character::update()
 		// exit when any key is down
 		if (ih.isKeyDown(SDLK_d))
 		{
-			speed = 40;
+			speed = maxSpeed;
 			moving = true;
 			dir = 1;
 		}
 		if (ih.isKeyDown(SDLK_a))
 		{
-			speed = -40;
+			speed = -maxSpeed;
 			moving = true;
 			dir = -1;
 		}
@@ -81,33 +84,32 @@ void Character::update()
 		{
 			// para que no haya movimiento infinito (experimental)
 			moving = false;
+
 		}
 		if (ih.isKeyDown(SDLK_w) && jumpCounter > 0 && currentMove == nullptr)
 		{
-			//MANU COMO SE HACE ESTO
-			/*
-			if (!onGround)
+			std::cout << " OnGround?: " << GetGround() << std::endl;
+			std::cout << " jumps?: " << jumpCounter << std::endl;
+			if (!GetGround())
 			{
-				eJumps--;
+				jumpCounter--;
 			}
-			*/
-
+			body->SetLinearVelocity(b2Vec2(speed, 0));
 			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
 		}
 
 		//boolean to check collision with the ground
-
-		//if (onGround)
-		//{
-		//	eJumps = iniJumps;
-		//}
+		if (GetGround())
+		{
+			jumpCounter = maxJumps;
+		}
 
 		if (!moving)
 		{
 			if (speed > 0)
-				speed--;
+				speed -= 2;
 			if (speed < 0)
-				speed++;
+				speed += 2;
 		}
 
 		//Que se mueva si no esta haciendo un ataque ya
@@ -117,7 +119,7 @@ void Character::update()
 
 		//Si se da la tecla del ataque y no hay un ataque en ejecucion...
 
-		if (ih.isKeyDown(SDLK_e) && currentMove == nullptr /* && onGround ??? */)
+		if (ih.isKeyDown(SDLK_e) && currentMove == nullptr && onGround)
 		{
 			//paramos al personaje
 			body->SetLinearVelocity(b2Vec2(0, 0));
@@ -126,7 +128,7 @@ void Character::update()
 			currentMove = &Character::atackStrong;
 		}
 
-		if (ih.isKeyDown(SDLK_r) && currentMove == nullptr /* && onGround ??? */)
+		if (ih.isKeyDown(SDLK_r) && currentMove == nullptr && onGround)
 		{
 			body->SetLinearVelocity(b2Vec2(0, 0));
 
@@ -228,6 +230,10 @@ void Character::atackWeak(int frameNumber)
 		break;
 	}
 }
+void Character::SetGround(bool ground)
+{
+	onGround = ground;
+}
 
 void Character::draw()
 {
@@ -259,5 +265,3 @@ SDL_Rect* Character::GetHurtbox()
 {
 	return &hurtbox;
 }
-
-
