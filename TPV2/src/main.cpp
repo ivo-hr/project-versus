@@ -1,4 +1,4 @@
-// This file is part of the course Proyectos2@UCM - LeftOvers Productions ®
+// This file is part of the course Proyectos2@UCM - LeftOvers Productions ï¿½
 
 #include <SDL.h>
 #include <iostream>
@@ -20,7 +20,7 @@ int main(int ac, char **av) {
 
 	auto& sdl = *SDLUtils::instance();
 
-	//Obtenemos el tamaño de la pantalla
+	//Obtenemos el tamaï¿½o de la pantalla
 	SDL_DisplayMode DM;
 	SDL_GetDesktopDisplayMode(0, &DM);
 
@@ -31,10 +31,10 @@ int main(int ac, char **av) {
 	SDL_RenderSetScale(sdl.renderer(), scaleX, scaleY);
 	*/
 
-	//Escalamos toda la ventana para que se ajuste al tamaño de la pantalla
+	//Escalamos toda la ventana para que se ajuste al tamaï¿½o de la pantalla
 	SDL_RenderSetLogicalSize(sdl.renderer(), DM.w, DM.h);
 
-	//Cambiamos el tamaño de la ventana
+	//Cambiamos el tamaï¿½o de la ventana
 	SDL_SetWindowSize(sdl.window(), DM.w, DM.h);
 
 	//Ponemos en pantalla completa
@@ -64,7 +64,7 @@ int main(int ac, char **av) {
 	groundDef.position.Set(96.0f, 90.0f);
 	groundDef.type = b2_staticBody;
 
-	//Añadimos al mundo
+	//Aï¿½adimos al mundo
 	b2Body* ground = world.CreateBody(&groundDef);;
 	//Le damos forma...
 	b2PolygonShape floor;
@@ -128,7 +128,7 @@ int main(int ac, char **av) {
 
 		if (frameTime < step)
 		{
-			SDL_Delay(step - frameTime);
+			SDL_Delay(step *1000);
 		}
 	}
 
