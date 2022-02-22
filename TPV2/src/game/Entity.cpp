@@ -51,10 +51,10 @@ void Entity::update()
 	hurtbox.y = body->GetPosition().y * 10 - height * 10 / 2;
 }
 
-void Entity::SetGround(bool ground)
+/*void Entity::SetGround(bool ground)
 {
 	onGround = ground;
-}
+}*/
 
 void Entity::draw()
 {

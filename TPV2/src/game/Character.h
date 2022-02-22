@@ -53,6 +53,6 @@ public:
 	virtual void SetOponent(Character* op);
 	virtual SDL_Rect* GetHurtbox();
 	bool GetGround() { return onGround; };
-	void SetGround(bool ground);
+	void SetGround();
 
 };

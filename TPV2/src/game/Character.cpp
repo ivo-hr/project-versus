@@ -18,6 +18,7 @@ Character::Character(b2World* world, SDLUtils* sdl, bool movable) : Entity(world
 	speed = 0;
 	this->maxJumps = 1;
 	this->jumpStr = 20000;
+	jumpCounter = maxJumps;
 	oponent = nullptr;
 	onGround = true;
 
@@ -41,6 +42,8 @@ void Character::update()
 	//este bool lo puse para el personaje de prueba xd
 	if (movable)
 	{
+		SetGround();
+		//std::cout << onGround << std::endl;
 
 		//basicamente la cadena de ifs que estaba en el main
 		ih.refresh();
@@ -63,10 +66,8 @@ void Character::update()
 			moving = false;
 
 		}
-		if (ih.isKeyDown(SDLK_w) && jumpCounter > 0 && currentMove == nullptr)
+		if (ih.isKeyDown(SDLK_w) && /*jumpCounter > 0 &&*/ currentMove == nullptr)
 		{
-			std::cout << " OnGround?: " << GetGround() << std::endl;
-			std::cout << " jumps?: " << jumpCounter << std::endl;
 			if (!GetGround())
 			{
 				jumpCounter--;
@@ -202,9 +203,9 @@ void Character::atackWeak(int frameNumber)
 		break;
 	}
 }
-void Character::SetGround(bool ground)
+void Character::SetGround()
 {
-	onGround = ground;
+	onGround = listener.CheckGround();
 }
 
 void Character::draw()
