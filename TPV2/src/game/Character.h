@@ -2,16 +2,10 @@
 
 #include <string>
 
-#include "../../../box2d/include/box2d/box2d.h"
-#include <SDL.h>
 #include "../sdlutils/InputHandler.h"
-#include "../sdlutils/SDLUtils.h"
+#include "Entity.h"
 
-struct atackData {
-	int damage;
-	float multiplier;
-};
-
+<<<<<<< Updated upstream
 class myListener : public b2ContactListener
 {
 private:
@@ -54,6 +48,13 @@ public:
 };
 
 class Character
+=======
+//Esto no debería ir aquí pero no se como hacerlo
+//bool onGround;
+
+
+class Character : public Entity
+>>>>>>> Stashed changes
 {
 protected:
 
@@ -61,14 +62,7 @@ protected:
 
 	bool movable;
 
-	SDLUtils* sdl;
 	Character* oponent = nullptr;
-
-	b2Body* body;
-
-	SDL_Rect hurtbox;
-	float width = 5.f;
-	float height = 5.f;
 
 	InputHandler& ih = *InputHandler::instance();
 
@@ -89,9 +83,6 @@ protected:
 
 	int damageTaken;
 
-	bool onGround;
-
-	myListener listener;
 	//frame actual del movimiento que este haciendo
 	int moveFrame;
 	//Metodo del movimiento que este haciendo (esto es una variable que guarda metodos :v)
@@ -101,10 +92,10 @@ public:
 	Character(b2World* world, SDLUtils* sdl, bool movable);
 	~Character();
 
-	virtual void update();
+	virtual void update() override;
 	virtual void atackWeak(int frameNumber);
 	virtual void atackStrong(int frameNumber);
-	virtual void draw();
+	virtual void draw() override;
 
 	virtual void GetHit(atackData a, int dir);
 	virtual void SetOponent(Character* op);

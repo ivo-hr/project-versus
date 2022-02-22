@@ -1,35 +1,9 @@
 #include "Character.h"
 
-Character::Character(b2World* world, SDLUtils* sdl, bool movable)
+Character::Character(b2World* world, SDLUtils* sdl, bool movable) : Entity(world, sdl)
 {
 
 	this->movable = movable;
-
-	this->sdl = sdl;
-
-	//Definimos un objeto (dinámico)
-
-	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(80.0f, 45.0f);
-	groundBodyDef.type = b2_dynamicBody;
-
-	//Definimos un caja
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(width / 2, height / 2);
-
-	//Creamos una "cuerpo" 
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 10.f;
-	fixtureDef.friction = 0.9f;
-
-	body = world->CreateBody(&groundBodyDef);
-	//añadimos el cuerpo al objeto fisico
-	body->CreateFixture(&fixtureDef);
-
-	body->SetFixedRotation(true);
-
-	body->SetGravityScale(10.f);
 
 	//Aqui defino las caracteristicas de cada hitbox (podriamos hacerlo dentro de cada metodo, y vendria de json)(tambien podríamos poner framedata)
 	ataqueFuerte.damage = 20;
@@ -61,6 +35,9 @@ Character::~Character()
 
 void Character::update()
 {
+
+	Entity::update();
+
 	//este bool lo puse para el personaje de prueba xd
 	if (movable)
 	{
@@ -146,11 +123,6 @@ void Character::update()
 		}
 
 	}
-
-	//Actualizamos la posicion del rect
-	hurtbox.x = body->GetPosition().x * 10 - width * 10 / 2;
-	hurtbox.y = body->GetPosition().y * 10 - height * 10 / 2;
-	
 }
 
 void Character::atackStrong(int frameNumber)
@@ -237,11 +209,7 @@ void Character::SetGround(bool ground)
 
 void Character::draw()
 {
-	//if (debug)
-		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 255, 255);
-		SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
-
-	//dibujar los sprite bruh
+	Entity::draw();
 }
 
 
@@ -249,7 +217,6 @@ void Character::GetHit(atackData a, int dir)
 {
 	//Actualiza el daño
 	damageTaken += a.damage;
-
 	//Produce el knoback..
 	body->SetLinearVelocity(b2Vec2((a.multiplier * damageTaken) * dir, -a.multiplier * damageTaken));
 }

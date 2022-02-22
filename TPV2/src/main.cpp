@@ -35,7 +35,7 @@ int main(int ac, char **av) {
 	SDL_RenderSetLogicalSize(sdl.renderer(), DM.w, DM.h);
 
 	//Cambiamos el tama�o de la ventana
-	SDL_SetWindowSize(sdl.window(), DM.w, DM.h);
+	//SDL_SetWindowSize(sdl.window(), DM.w, DM.h);
 
 	//Ponemos en pantalla completa
 	//sdl.toggleFullScreen();
@@ -126,9 +126,9 @@ int main(int ac, char **av) {
 
 		double frameTime = sdl.currRealTime() - startTime;
 
-		if (frameTime < step)
+		if (frameTime < step * 1000)
 		{
-			SDL_Delay(step *1000);
+			SDL_Delay(step * 1000);
 		}
 	}
 
