@@ -12,9 +12,6 @@ struct atackData {
 	float multiplier;
 };
 
-//Esto no debería ir aquí pero no se como hacerlo
-//bool onGround;
-
 class myListener : public b2ContactListener
 {
 private:
@@ -26,9 +23,10 @@ public:
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
 		std::cout << "contacto" << std::endl;
-		if (one->GetType() != two->GetType())
+
+		if (two->GetType() == b2_staticBody)
 		{
-			//character.SetGround(true);
+			//SetGround(true);
 		}
 	}
 	void EndContact(b2Contact* contact)
