@@ -22,6 +22,7 @@ int main(int ac, char **av) {
 
 	float sdlb2Mult = 20;
 
+
 	//Obtenemos el tama�o de la pantalla
 	SDL_DisplayMode DM;
 	SDL_GetDesktopDisplayMode(0, &DM);
@@ -39,8 +40,11 @@ int main(int ac, char **av) {
 	//Cambiamos el tama�o de la ventana
 	SDL_SetWindowSize(sdl.window(), DM.w, DM.h);
 
+	//creamos el renderer
+	SDL_Renderer* gRenderer = NULL;
+
 	//Ponemos en pantalla completa
-	sdl.toggleFullScreen();
+	//sdl.toggleFullScreen();
 
 	//show the cursor
 	sdl.showCursor();
@@ -50,14 +54,20 @@ int main(int ac, char **av) {
 	auto& ih = *InputHandler::instance();
 
 	//-----------------------------------------------------------------------------------------
-
+	//Cargamos las texturas
+	SDL_Texture* player1Text;
+	SDL_Surface* tmpSurface = IMG_Load("images / Maketo.png");
+	player1Text = SDL_CreateTextureFromSurface(gRenderer, tmpSurface);
+	SDL_Texture* punchingBag;
+	SDL_Surface* tmpSurface1 = IMG_Load("images / bag.png");
+	punchingBag = SDL_CreateTextureFromSurface(gRenderer, tmpSurface1);
 	//Creamos el espacio fisico
 	b2Vec2 gravity = b2Vec2(0.0f, 20.0f);
 
 	b2World world = b2World(gravity);
 
-	Character* character1 = new Character(&world, &sdl, true);
-	Character* boxingBag = new Character(&world, &sdl, false);
+	Character* character1 = new Character(&world, &sdl, true, player1Text);
+	Character* boxingBag = new Character(&world, &sdl, false, punchingBag);
 	character1->SetOponent(boxingBag);
 	boxingBag->SetOponent(character1);
 

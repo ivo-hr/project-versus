@@ -41,7 +41,7 @@ protected:
 	void (Character::* currentMove)(int);
 public:
 
-	Character(b2World* world, SDLUtils* sdl, bool movable);
+	Character(b2World* world, SDLUtils* sdl, bool movable, SDL_Texture* texture);
 	~Character();
 
 	virtual void update() override;

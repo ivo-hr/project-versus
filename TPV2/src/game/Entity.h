@@ -9,9 +9,8 @@
 class myListener : public b2ContactListener
 {
 private:
-	bool ground;
 public:
-	//Character character;
+	bool ground = true;
 	void BeginContact(b2Contact* contact)
 	{
 		b2Body* one = contact->GetFixtureA()->GetBody();
@@ -28,8 +27,10 @@ public:
 		b2Body* two = contact->GetFixtureB()->GetBody();
 		if (two->GetType() == b2_staticBody)
 		{
+			std::cout << "ground?" << ground << std::endl;
 			ground = false;
-			std::cout << ground << std::endl;
+			std::cout << "ground?" << ground << std::endl;
+
 
 		}
 	}
@@ -71,7 +72,7 @@ protected:
 	myListener listener;
 public:
 
-	Entity(b2World* world, SDLUtils* sdl);
+	Entity(b2World* world, SDLUtils* sdl, SDL_Texture* texture);
 	~Entity();
 
 	virtual void update();

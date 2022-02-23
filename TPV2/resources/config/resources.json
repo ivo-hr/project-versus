@@ -9,7 +9,11 @@
   "images" : [
     { "id" : "sdl_logo", "file" : "resources/images/SDL_logo.png" },
     { "id" : "tennis_ball", "file" : "resources/images/tennis_ball.png" },
-    { "id" : "star", "file" : "resources/images/star.png"}
+    { "id" : "star", "file" : "resources/images/star.png"},
+    { "id" : "makt", "file" : "resources/images/Maketo.png"},
+    { "id" : "blinkMaster ", "file" : "resources/images/BlinkMaster.png"},
+    { "id" : "punchingBag ", "file" : "resources/images/bag.png"}
+
   ],
   
   "messages" : [

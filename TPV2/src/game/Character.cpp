@@ -1,6 +1,6 @@
 #include "Character.h"
 
-Character::Character(b2World* world, SDLUtils* sdl, bool movable) : Entity(world, sdl)
+Character::Character(b2World* world, SDLUtils* sdl, bool movable, SDL_Texture* texture) : Entity(world, sdl, texture)
 {
 
 	this->movable = movable;
@@ -17,7 +17,7 @@ Character::Character(b2World* world, SDLUtils* sdl, bool movable) : Entity(world
 	maxSpeed = 40;
 	speed = 0;
 	this->maxJumps = 1;
-	this->jumpStr = 20000;
+	this->jumpStr = 4500;
 	jumpCounter = maxJumps;
 	oponent = nullptr;
 	onGround = true;
@@ -108,6 +108,11 @@ void Character::update()
 			body->SetLinearVelocity(b2Vec2(0, 0));
 
 			currentMove = &Character::atackWeak;
+		}
+		if (ih.isKeyDown(SDLK_p))
+		{
+			std::cout << "onGround?" << onGround << std::endl;
+			std::cout << "listener ground?" << listener.CheckGround() << std::endl;
 		}
 
 

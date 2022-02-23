@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-Entity::Entity(b2World* world, SDLUtils* sdl)
+Entity::Entity(b2World* world, SDLUtils* sdl, SDL_Texture* texture)
 {
 	this->sdl = sdl;
 
@@ -30,7 +30,7 @@ Entity::Entity(b2World* world, SDLUtils* sdl)
 
 	body->SetLinearDamping(0.f);
 
-	onGround = true;
+	//onGround = true;
 
 
 
