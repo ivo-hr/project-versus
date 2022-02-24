@@ -137,7 +137,7 @@ void Character::atackStrong(int frameNumber)
 	{
 	case 0:
 		//Empieza el ataque :v
-		std::cout << "primer frame" << std::endl;
+		//No hace nada, esto es el cargar el puño
 		break;
 	case 90:
 	{
@@ -162,7 +162,6 @@ void Character::atackStrong(int frameNumber)
 	case 160:
 
 		//Al ultimo frame...
-		std::cout << "acabe we" << std::endl;
 
 		//Vacia current move para que Character sepa que ha acabado
 		currentMove = nullptr;
@@ -178,9 +177,6 @@ void Character::atackWeak(int frameNumber)
 {
 	switch (frameNumber)
 	{
-	case 0:
-		std::cout << "primer frame" << std::endl;
-		break;
 	case 12:
 	{
 		SDL_Rect hitbox = {
@@ -199,7 +195,6 @@ void Character::atackWeak(int frameNumber)
 	}
 	break;
 	case 20:
-		std::cout << "acabe we" << std::endl;
 		currentMove = nullptr;
 		moveFrame = -1;
 		break;

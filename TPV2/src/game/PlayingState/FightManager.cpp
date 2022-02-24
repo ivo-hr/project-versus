@@ -1,0 +1,115 @@
+#include "FightManager.h"
+
+FightManager::FightManager() : world(b2World(b2Vec2(0.f, 10.f)))
+{
+
+	//Definimos un objeto (estatico)
+	b2BodyDef groundDef;
+	groundDef.position.Set(48.0f, 45.0f);
+	groundDef.type = b2_staticBody;
+
+	//Anadimos al mundo
+	stage = world.CreateBody(&groundDef);;
+	//Le damos forma...
+	b2PolygonShape floor;
+	int floorW = 37, floorH = 2;
+	floor.SetAsBox(floorW, floorH);
+
+	//..cuerpo
+	b2FixtureDef fixt;
+	fixt.shape = &floor;
+	fixt.density = 10.0f;
+	fixt.friction = 0.9f;
+
+	stage->CreateFixture(&fixt);
+
+	//--------------------------
+
+	//Creo las cajas que representaran a los objetos
+	stageRect = GetSDLCoors(stage, new b2Vec2(floorW, floorH));
+}
+
+FightManager::~FightManager()
+{
+}
+
+int FightManager::StartFight(Character* p1, Character* p2)
+{
+	AddEntity(p1);
+	AddEntity(p2);
+
+
+	bool exit_ = false;
+	while (!exit_) {
+		Uint32 startTime = sdl->currRealTime();
+
+
+		if (ih->isKeyDown(SDLK_ESCAPE))
+			exit_ = true;
+
+		//Esto llama al mundo para que simule lo que pasa en el tiempo que se le pase (en este caso 1000.f/60.f (un frame a 60 fps))
+		double step = 1.f / 60.f;
+		world.Step(step, 1, 1);
+
+		// clear screen
+		sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
+
+		//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
+
+		//Dibujamos las cajas
+		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
+		SDL_RenderDrawRect(sdl->renderer(), stageRect);
+
+		for (Entity* ent : entities)
+		{
+			ent->update();
+		}
+
+		// present new frame
+		sdl->presentRenderer();
+
+		double frameTime = sdl->currRealTime() - startTime;
+
+		if (frameTime < step * 1000)
+		{
+			SDL_Delay(step * 1000);
+		}
+	}
+
+	return 1;
+}
+
+void FightManager::AddEntity(Entity* ent)
+{
+	entities.push_back(ent);
+}
+
+bool FightManager::RemoveEntity(Entity* ent)
+{
+	for (int i = 0; i < entities.size(); i++)
+	{
+		if (entities[i] == ent)
+		{
+			for (int j = i + 1; j < entities.size(); j++)
+			{
+				entities[j - 1] = entities[j];
+			}
+			entities.pop_back();
+		}
+	}
+	return false;
+}
+
+void FightManager::HitLag(int mSecs)
+{
+	SDL_RenderPresent(sdl->renderer());
+	SDL_Delay(mSecs);
+}
+
+SDL_Rect* FightManager::GetSDLCoors(b2Body* body, b2Vec2* size)
+{
+	return new SDL_Rect{ (int)(body->GetPosition().x * b2ToSDL - size->x * b2ToSDL / 2),
+		(int)(body->GetPosition().y * b2ToSDL - size->y * b2ToSDL / 2),
+		(int)(size->x * b2ToSDL),
+		(int)(size->y * b2ToSDL) };
+}

@@ -37,6 +37,12 @@
     <Filter Include="Header Files\game">
       <UniqueIdentifier>{c8e9bcb3-61d9-47f2-aaea-e118693a5810}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\game\PlayingState">
+      <UniqueIdentifier>{56485469-8e06-4018-b18f-58e9c2fad7cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\PlayingState">
+      <UniqueIdentifier>{a7907c32-8c8e-4b0b-8047-8a587cf29034}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\json\JSONValue.h">
@@ -91,10 +97,13 @@
       <Filter>Header Files\sdlutil</Filter>
     </ClInclude>
     <ClInclude Include="src\game\Character.h">
-      <Filter>Header Files\game</Filter>
+      <Filter>Header Files\game\PlayingState</Filter>
     </ClInclude>
     <ClInclude Include="src\game\Entity.h">
-      <Filter>Header Files\game</Filter>
+      <Filter>Header Files\game\PlayingState</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\PlayingState\FightManager.h">
+      <Filter>Header Files\game\PlayingState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -132,10 +141,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\game\Character.cpp">
-      <Filter>Source Files\game</Filter>
+      <Filter>Source Files\game\PlayingState</Filter>
     </ClCompile>
     <ClCompile Include="src\game\Entity.cpp">
-      <Filter>Source Files\game</Filter>
+      <Filter>Source Files\game\PlayingState</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\PlayingState\FightManager.cpp">
+      <Filter>Source Files\game\PlayingState</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
