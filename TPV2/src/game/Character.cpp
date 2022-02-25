@@ -16,13 +16,12 @@ Character::Character(b2World* world, SDLUtils* sdl, bool movable, SDL_Texture* t
 	damageTaken = 0;
 	maxSpeed = 40;
 	speed = 0;
-	this->maxJumps = 1;
-	this->jumpStr = 4500;
+	maxJumps = 1;
+	jumpStr = 4500;
 	jumpCounter = maxJumps;
 	oponent = nullptr;
 	onGround = true;
 
-	//creamos el detector de colisiones
 	world->SetContactListener(&listener);
 }
 

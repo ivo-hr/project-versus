@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\jvill\Desktop\UNIIIII\super-proj-melee\TPV2\src\utils\</FILEPATH>
+      <FILENAME>Vector2D.h</FILENAME>
+      <LINE>27</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26439</DEFECTCODE>
+    <DESCRIPTION>Este tipo de función no puede 'throw'. Declárela como "noexcept" (f.6).</DESCRIPTION>
+    <FUNCTION>Vector2D::{ctor}</FUNCTION>
+    <DECORATED>??0Vector2D@@QEAA@$$QEAV0@@Z</DECORATED>
+    <FUNCLINE>27</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\jvill\Desktop\UNIIIII\super-proj-melee\TPV2\src\utils\</FILEPATH>
+      <FILENAME>Vector2D.h</FILENAME>
+      <LINE>88</LINE>
+      <COLUMN>18</COLUMN>
+    </SFA>
+    <DEFECTCODE>26439</DEFECTCODE>
+    <DESCRIPTION>Este tipo de función no puede 'throw'. Declárela como "noexcept" (f.6).</DESCRIPTION>
+    <FUNCTION>Vector2D::=</FUNCTION>
+    <DECORATED>??4Vector2D@@QEAAAEAV0@$$QEBV0@@Z</DECORATED>
+    <FUNCLINE>88</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

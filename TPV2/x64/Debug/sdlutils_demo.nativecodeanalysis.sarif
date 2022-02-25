@@ -1,0 +1,733 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "El tipo de enumeración \"SDL_bool\" no tiene ámbito. Prefiera \"enum class\" a \"enum\" (Enum.3)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/jvill/Desktop/UNIIIII/super-proj-melee/SDL2-2.0.7/include/SDL_rect.h"
+                },
+                "region": {
+                  "startLine": 76,
+                  "startColumn": 29
+                }
+              },
+              "logicalLocations": [
+                {
+                  "decoratedName": "SDL_PointInRect",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "El tipo de enumeración \"SDL_Scancode\" no tiene ámbito. Prefiera \"enum class\" a \"enum\" (Enum.3)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/jvill/Desktop/UNIIIII/super-proj-melee/TPV2/src/sdlutils/InputHandler.h"
+                },
+                "region": {
+                  "startLine": 78,
+                  "startColumn": 14,
+                  "endLine": 78,
+                  "endColumn": 14
+                }
+              },
+              "logicalLocations": [
+                {
+                  "decoratedName": "?isKeyDown@InputHandler@@QEAA_NW4SDL_Scancode@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "El tipo de enumeración \"InputHandler::MOUSEBUTTON\" no tiene ámbito. Prefiera \"enum class\" a \"enum\" (Enum.3)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/jvill/Desktop/UNIIIII/super-proj-melee/TPV2/src/sdlutils/InputHandler.h"
+                },
+                "region": {
+                  "startLine": 107,
+                  "startColumn": 13,
+                  "endLine": 107,
+                  "endColumn": 13
+                }
+              },
+              "logicalLocations": [
+                {
+                  "decoratedName": "?getMouseButtonState@InputHandler@@QEAAHW4MOUSEBUTTON@1@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26439",
+          "message": {
+            "text": "Este tipo de función no puede 'throw'. Declárela como \"noexcept\" (f.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/jvill/Desktop/UNIIIII/super-proj-melee/TPV2/src/utils/Vector2D.h"
+                },
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 2,
+                  "endLine": 27,
+                  "endColumn": 2
+                }
+              },
+              "logicalLocations": [
+                {
+                  "decoratedName": "??0Vector2D@@QEAA@$$QEAV0@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26439",
+          "message": {
+            "text": "Este tipo de función no puede 'throw'. Declárela como \"noexcept\" (f.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/jvill/Desktop/UNIIIII/super-proj-melee/TPV2/src/utils/Vector2D.h"
+                },
+                "region": {
+                  "startLine": 88,
+                  "startColumn": 19,
+                  "endLine": 88,
+                  "endColumn": 19
+                }
+              },
+              "logicalLocations": [
+                {
+                  "decoratedName": "??4Vector2D@@QEAAAEAV0@$$QEBV0@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "El tipo de enumeración \"SDL_RendererFlip\" no tiene ámbito. Prefiera \"enum class\" a \"enum\" (Enum.3)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/jvill/Desktop/UNIIIII/super-proj-melee/TPV2/src/sdlutils/Texture.h"
+                },
+                "region": {
+                  "startLine": 56,
+                  "startColumn": 14,
+                  "endLine": 56,
+                  "endColumn": 14
+                }
+              },
+              "logicalLocations": [
+                {
+                  "decoratedName": "?render@Texture@@QEAAXAEBUSDL_Rect@@0NPEBUSDL_Point@@W4SDL_RendererFlip@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.29.30139.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "commandLine": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX86\\x64\\c1xx.dll\" -ACf{1F7B090C-16DB-4822-966A-A93D26ED4681} -ACpmspft140.dll -Alint -D_PREFAST_ -D_AST_FE_ -Analyze -zm0x0031C1B0 -il C:\\Users\\jvill\\AppData\\Local\\Temp\\_CL_54c8ab1east -typedil -f src\\sdlutils\\sdlutils_demo.cpp -Ze -D_MSC_EXTENSIONS -Zp16 -pc \\:/ -D_MSC_VER=1929 -D_MSC_FULL_VER=192930139 -D_MSC_BUILD=0 -D_M_AMD64=100 -ZILP448 -D_M_X64=100 -D_WIN64 -D_WIN32 -GR -D_CPPRTTI -nologo -W 3 -diagnostics:column -D_GUARDOVERFLOW_CRT_ALLOCATORS=1 -Ot -DCODE_ANALYSIS -D_DEBUG -D_CONSOLE -D_UNICODE -DUNICODE -EHs -D_CPPUNWIND -EHc -D__MSVC_RUNTIME_CHECKS -RTCs -RTCu -MDd -D_DEBUG -D_MT -D_DLL -GS -D_M_FP_PRECISE -permissive- -Zc:wchar_t -Zc:forScope -Fox64\\Debug\\sdlutils_demo.obj -Fdx64\\Debug\\vc142.pdb -external:W 3 -Gd -analyze:projectdirectory C:\\Users\\jvill\\Desktop\\UNIIIII\\super-proj-melee\\TPV2 -analyze:rulesetdirectory ;C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Team Tools\\Static Analysis Tools\\\\Rule Sets; -analyze:ruleset C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Team Tools\\Static Analysis Tools\\Rule Sets\\NativeRecommendedRules.ruleset -analyze:quiet -analyze:plugin C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX86\\x86\\EspXEngine.dll -FC -errorreport:prompt -I C:\\Users\\jvill\\Desktop\\UNIIIII\\super-proj-melee\\box2d\\include\\box2d -I C:\\Users\\jvill\\Desktop\\UNIIIII\\super-proj-melee\\SDL2-2.0.7\\include -I C:\\Users\\jvill\\Desktop\\UNIIIII\\super-proj-melee\\SDL2_image-2.0.1\\include -I C:\\Users\\jvill\\Desktop\\UNIIIII\\super-proj-melee\\SDL2_ttf-2.0.14\\include -I C:\\Users\\jvill\\Desktop\\UNIIIII\\super-proj-melee\\SDL2_mixer-2.0.2\\include -I C:\\Users\\jvill\\Desktop\\UNIIIII\\super-proj-melee\\SDL2_net-2.0.1\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\atlmfc\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\VS\\include -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\ucrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\cppwinrt -I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um -external:I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\include -external:I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\atlmfc\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.29.30133\\atlmfc\\include -external:I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\VS\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\VS\\include -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\ucrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\ucrt -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\um -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\shared -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\winrt -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\cppwinrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\cppwinrt -external:I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um -I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um",
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///C:/Users/jvill/Desktop/UNIIIII/super-proj-melee/TPV2/src/utils/Vector2D.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "md5": "ba67873a698f246423d10d4ba719837e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/utils/vector2d.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "2353c5862b102fd0b4cacdea0f19ec12"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/utils/collisions.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "7dc32ecd9b930304cdc637a8f4ef6961"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/utils/collisions.h"
+          },
+          "hashes": {
+            "md5": "f86c0a17f0de672d212f99f10d61dc8f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/jvill/Desktop/UNIIIII/super-proj-melee/SDL2-2.0.7/include/SDL_rect.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "md5": "86ad815d7e41b8329a9296e798d361e7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/jvill/Desktop/UNIIIII/super-proj-melee/TPV2/src/sdlutils/Texture.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "md5": "ea87e45b982a4f23262838353b3e5a24"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/sdlutils/texture.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "77500230d152527fd9fc678439cbb99b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl.h"
+          },
+          "hashes": {
+            "md5": "92f147e918e944e91a87149952d9fa28"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_main.h"
+          },
+          "hashes": {
+            "md5": "53a3109374ed6c05dcb52225ef3e258f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_stdinc.h"
+          },
+          "hashes": {
+            "md5": "992705050dccfaef338c9d10644c2189"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_config.h"
+          },
+          "hashes": {
+            "md5": "149172bd9518d9ec0991d2fd14524313"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_platform.h"
+          },
+          "hashes": {
+            "md5": "371d9bb664a4c967702eae89691808f8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/begin_code.h"
+          },
+          "hashes": {
+            "md5": "4ab885479a0d0e5e3a8dae7b9bd68221"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/close_code.h"
+          },
+          "hashes": {
+            "md5": "4683d7cdbdb3a910675cd7e422c7c701"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_assert.h"
+          },
+          "hashes": {
+            "md5": "0eae2039dca0c812bf09ff908fe7e34e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_atomic.h"
+          },
+          "hashes": {
+            "md5": "439ebaf050d673933d95d27cef776263"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_audio.h"
+          },
+          "hashes": {
+            "md5": "e5e95391890f3254a58eb58d4a92f787"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_error.h"
+          },
+          "hashes": {
+            "md5": "f63aa6eb5a651c58dde8dff8778380a2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_endian.h"
+          },
+          "hashes": {
+            "md5": "26106b0d1ac6b7d99fef0cb4eb45d50a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_mutex.h"
+          },
+          "hashes": {
+            "md5": "29f8dbb70a263e8a2b97d75df7139e01"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_thread.h"
+          },
+          "hashes": {
+            "md5": "7d83412ded406c897383e9696f084150"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_rwops.h"
+          },
+          "hashes": {
+            "md5": "0b87f3164df14759fc1a0830aa08d461"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_clipboard.h"
+          },
+          "hashes": {
+            "md5": "ba223bab1e975813d11414cba0a24f5d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_cpuinfo.h"
+          },
+          "hashes": {
+            "md5": "dfe995f455c7fc67930acf4e44abffca"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_events.h"
+          },
+          "hashes": {
+            "md5": "375c67a5ba8a3cd1617540f06b0dc472"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_video.h"
+          },
+          "hashes": {
+            "md5": "d84806041e450f115774cd2b22c6d56d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_pixels.h"
+          },
+          "hashes": {
+            "md5": "39caf4124e84e6e606ad9aa2958c4502"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_surface.h"
+          },
+          "hashes": {
+            "md5": "d58aa329e01e08d2bbd095edd3b82f7e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_blendmode.h"
+          },
+          "hashes": {
+            "md5": "50f849d88570b065cae3da8932ca9d7e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_keyboard.h"
+          },
+          "hashes": {
+            "md5": "05219102e888bb292cb01279f7994b6c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_keycode.h"
+          },
+          "hashes": {
+            "md5": "2f5d909cba5f3a9a8732172974a2e663"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_scancode.h"
+          },
+          "hashes": {
+            "md5": "a09038ebca06c5555688d1de950b5fcc"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_mouse.h"
+          },
+          "hashes": {
+            "md5": "c343c06005b6242e7f8da3e80ec07461"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_joystick.h"
+          },
+          "hashes": {
+            "md5": "33ecde7a96f401740664b350cd0a2b5c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_gamecontroller.h"
+          },
+          "hashes": {
+            "md5": "6b5bdd6d0eddf6b88dc7e4cf85b39ae6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_quit.h"
+          },
+          "hashes": {
+            "md5": "3bd767c30069b5aa5da634317303f9a5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_gesture.h"
+          },
+          "hashes": {
+            "md5": "069451a46302aea20d95e696d3572de2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_touch.h"
+          },
+          "hashes": {
+            "md5": "00ea5b3033eed005b4e40493d088bdcc"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_filesystem.h"
+          },
+          "hashes": {
+            "md5": "68831d9a6b141bc2760ed42c59552e65"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_haptic.h"
+          },
+          "hashes": {
+            "md5": "9b0060ad0ba93bad5246264236029e41"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_hints.h"
+          },
+          "hashes": {
+            "md5": "ce75967097712cda87a3c6e1653e858a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_loadso.h"
+          },
+          "hashes": {
+            "md5": "6af2d45c92c33732fe1cad8595b414cc"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_log.h"
+          },
+          "hashes": {
+            "md5": "44231800adcece698549ba936f7548f2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_messagebox.h"
+          },
+          "hashes": {
+            "md5": "d60d8704539113902345fc01ec08b37c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_power.h"
+          },
+          "hashes": {
+            "md5": "8b9f9493145cfa12405ebef768940d1d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_render.h"
+          },
+          "hashes": {
+            "md5": "b4d39e99f92a9707130b789bf35615f7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_shape.h"
+          },
+          "hashes": {
+            "md5": "d84bcee918bf95b64eb4f44a70d88541"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_system.h"
+          },
+          "hashes": {
+            "md5": "e3cafa6216d759a69254a87a209b65b9"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_timer.h"
+          },
+          "hashes": {
+            "md5": "ce42146a58f4947e69cee76f18204635"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2-2.0.7/include/sdl_version.h"
+          },
+          "hashes": {
+            "md5": "0c7657a2aa1282ffcc97119508891b5c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2_image-2.0.1/include/sdl_image.h"
+          },
+          "hashes": {
+            "md5": "167fb8ee7d8a2d3130c1c87199491732"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/sdlutils/font.h"
+          },
+          "hashes": {
+            "md5": "d6caa7013275987608de02f5f662d18f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2_ttf-2.0.14/include/sdl_ttf.h"
+          },
+          "hashes": {
+            "md5": "4cd609b528256259e3c19ea60fc78dfe"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/sdlutils/macros.h"
+          },
+          "hashes": {
+            "md5": "d8a5deefe17d0bda19c40747f7b45e1e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/sdlutils/soundeffect.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "3c994d1b4bbc25758913dbb501046186"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/sdlutils/soundeffect.h"
+          },
+          "hashes": {
+            "md5": "7af280f456b5a4efaac010551cd663e2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/sdl2_mixer-2.0.2/include/sdl_mixer.h"
+          },
+          "hashes": {
+            "md5": "5460eddaeb7d4e514e5ef6527c34533b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/jvill/Desktop/UNIIIII/super-proj-melee/TPV2/src/sdlutils/InputHandler.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "md5": "77c39110fb03698a81e8a45bf3786e1b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/sdlutils/sdlutils_demo.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "md5": "a7d43602c84724d0dbf83c30d059da36"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/sdlutils/sdlutils_demo.h"
+          },
+          "hashes": {
+            "md5": "e44117055d0b02317b62204ca490ee3c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/utils/singleton.h"
+          },
+          "hashes": {
+            "md5": "d07a05e842b18ddc865ade8402ae59c0"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/sdlutils/sdlutils.h"
+          },
+          "hashes": {
+            "md5": "b58d92a97b5cc3c57c73aca9266d88cc"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/sdlutils/randomnumbergenerator.h"
+          },
+          "hashes": {
+            "md5": "17259058d435614cd1f6e56d9977b4b3"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/sdlutils/music.h"
+          },
+          "hashes": {
+            "md5": "ab99a6765718e8b4afee8936f7b43cdb"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/jvill/desktop/uniiiii/super-proj-melee/tpv2/src/sdlutils/virtualtimer.h"
+          },
+          "hashes": {
+            "md5": "7e1a25bfea14c223e9ba3b371985586c"
+          }
+        }
+      ]
+    }
+  ]
+}

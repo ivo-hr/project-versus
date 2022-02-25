@@ -1,10 +1,7 @@
 #pragma once
 
-#include <string>
-
-#include "../sdlutils/InputHandler.h"
 #include "Entity.h"
-
+#include "../sdlutils/InputHandler.h"
 
 class Character : public Entity
 {
@@ -36,7 +33,7 @@ protected:
 	int damageTaken;
 
 	//frame actual del movimiento que este haciendo
-	int moveFrame;
+	int moveFrame = 0;
 	//Metodo del movimiento que este haciendo (esto es una variable que guarda metodos :v)
 	void (Character::* currentMove)(int);
 public:

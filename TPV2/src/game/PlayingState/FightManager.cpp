@@ -1,4 +1,5 @@
 #include "FightManager.h"
+#include "../Entity.h"
 
 FightManager::FightManager() : world(b2World(b2Vec2(0.f, 10.f)))
 {
@@ -26,29 +27,28 @@ FightManager::FightManager() : world(b2World(b2Vec2(0.f, 10.f)))
 	//--------------------------
 
 	//Creo las cajas que representaran a los objetos
-	stageRect = GetSDLCoors(stage, new b2Vec2(floorW, floorH));
+	stageRect = GetSDLCoors(stage, b2Vec2(floorW, floorH));
 }
 
 FightManager::~FightManager()
 {
 }
 
-int FightManager::StartFight(Character* p1, Character* p2)
+int FightManager::StartFight(Entity* p1, Entity* p2)
 {
 	AddEntity(p1);
 	AddEntity(p2);
 
-
 	bool exit_ = false;
-	while (!exit_) {
+	while (!exit_ && !fightEnded) {
 		Uint32 startTime = sdl->currRealTime();
 
 
-		if (ih->isKeyDown(SDLK_ESCAPE))
+		if (ih.isKeyDown(SDLK_ESCAPE))
 			exit_ = true;
 
 		//Esto llama al mundo para que simule lo que pasa en el tiempo que se le pase (en este caso 1000.f/60.f (un frame a 60 fps))
-		double step = 1.f / 60.f;
+		float step = 1.f / 60.f;
 		world.Step(step, 1, 1);
 
 		// clear screen
@@ -106,10 +106,22 @@ void FightManager::HitLag(int mSecs)
 	SDL_Delay(mSecs);
 }
 
-SDL_Rect* FightManager::GetSDLCoors(b2Body* body, b2Vec2* size)
+void FightManager::FighterLost(Entity* loser)
 {
-	return new SDL_Rect{ (int)(body->GetPosition().x * b2ToSDL - size->x * b2ToSDL / 2),
-		(int)(body->GetPosition().y * b2ToSDL - size->y * b2ToSDL / 2),
-		(int)(size->x * b2ToSDL),
-		(int)(size->y * b2ToSDL) };
+	RemoveEntity(loser);
+	numPlayers--;
+
+	if (numPlayers == 1)
+	{
+		fightEnded = true;
+		winner = entities[0];
+	}
+}
+
+SDL_Rect* FightManager::GetSDLCoors(b2Body* body, b2Vec2 size)
+{
+	return new SDL_Rect{ (int)(body->GetPosition().x * b2ToSDL - size.x * b2ToSDL / 2),
+		(int)(body->GetPosition().y * b2ToSDL - size.y * b2ToSDL / 2),
+		(int)(size.x * b2ToSDL),
+		(int)(size.y * b2ToSDL) };
 }

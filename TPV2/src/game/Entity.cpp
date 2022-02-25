@@ -30,13 +30,13 @@ Entity::Entity(b2World* world, SDLUtils* sdl, SDL_Texture* texture)
 
 	body->SetLinearDamping(0.f);
 
-	//onGround = true;
+	onGround = true;
 
 
 
 	//Tamaño de la hurtbox del personaje
-	hurtbox = { 0, 
-		0, 
+	hurtbox = { 0,
+		0,
 		(int)(width * 20.f), (int)(height * 20.f) };
 
 	//creamos el detector de colisiones

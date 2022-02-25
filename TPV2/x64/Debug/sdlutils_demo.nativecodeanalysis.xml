@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\jvill\Desktop\UNIIIII\super-proj-melee\SDL2-2.0.7\include\</FILEPATH>
+      <FILENAME>SDL_rect.h</FILENAME>
+      <LINE>76</LINE>
+      <COLUMN>28</COLUMN>
+    </SFA>
+    <DEFECTCODE>26812</DEFECTCODE>
+    <DESCRIPTION>El tipo de enumeración "SDL_bool" no tiene ámbito. Prefiera "enum class" a "enum" (Enum.3).</DESCRIPTION>
+    <FUNCTION>SDL_PointInRect</FUNCTION>
+    <DECORATED>SDL_PointInRect</DECORATED>
+    <FUNCLINE>73</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\jvill\Desktop\UNIIIII\super-proj-melee\TPV2\src\sdlutils\</FILEPATH>
+      <FILENAME>InputHandler.h</FILENAME>
+      <LINE>78</LINE>
+      <COLUMN>13</COLUMN>
+    </SFA>
+    <DEFECTCODE>26812</DEFECTCODE>
+    <DESCRIPTION>El tipo de enumeración "SDL_Scancode" no tiene ámbito. Prefiera "enum class" a "enum" (Enum.3).</DESCRIPTION>
+    <FUNCTION>InputHandler::isKeyDown</FUNCTION>
+    <DECORATED>?isKeyDown@InputHandler@@QEAA_NW4SDL_Scancode@@@Z</DECORATED>
+    <FUNCLINE>78</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\jvill\Desktop\UNIIIII\super-proj-melee\TPV2\src\sdlutils\</FILEPATH>
+      <FILENAME>InputHandler.h</FILENAME>
+      <LINE>107</LINE>
+      <COLUMN>12</COLUMN>
+    </SFA>
+    <DEFECTCODE>26812</DEFECTCODE>
+    <DESCRIPTION>El tipo de enumeración "InputHandler::MOUSEBUTTON" no tiene ámbito. Prefiera "enum class" a "enum" (Enum.3).</DESCRIPTION>
+    <FUNCTION>InputHandler::getMouseButtonState</FUNCTION>
+    <DECORATED>?getMouseButtonState@InputHandler@@QEAAHW4MOUSEBUTTON@1@@Z</DECORATED>
+    <FUNCLINE>107</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\jvill\Desktop\UNIIIII\super-proj-melee\TPV2\src\utils\</FILEPATH>
+      <FILENAME>Vector2D.h</FILENAME>
+      <LINE>27</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26439</DEFECTCODE>
+    <DESCRIPTION>Este tipo de función no puede 'throw'. Declárela como "noexcept" (f.6).</DESCRIPTION>
+    <FUNCTION>Vector2D::{ctor}</FUNCTION>
+    <DECORATED>??0Vector2D@@QEAA@$$QEAV0@@Z</DECORATED>
+    <FUNCLINE>27</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\jvill\Desktop\UNIIIII\super-proj-melee\TPV2\src\utils\</FILEPATH>
+      <FILENAME>Vector2D.h</FILENAME>
+      <LINE>88</LINE>
+      <COLUMN>18</COLUMN>
+    </SFA>
+    <DEFECTCODE>26439</DEFECTCODE>
+    <DESCRIPTION>Este tipo de función no puede 'throw'. Declárela como "noexcept" (f.6).</DESCRIPTION>
+    <FUNCTION>Vector2D::=</FUNCTION>
+    <DECORATED>??4Vector2D@@QEAAAEAV0@$$QEBV0@@Z</DECORATED>
+    <FUNCLINE>88</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\jvill\Desktop\UNIIIII\super-proj-melee\TPV2\src\sdlutils\</FILEPATH>
+      <FILENAME>Texture.h</FILENAME>
+      <LINE>56</LINE>
+      <COLUMN>13</COLUMN>
+    </SFA>
+    <DEFECTCODE>26812</DEFECTCODE>
+    <DESCRIPTION>El tipo de enumeración "SDL_RendererFlip" no tiene ámbito. Prefiera "enum class" a "enum" (Enum.3).</DESCRIPTION>
+    <FUNCTION>Texture::render</FUNCTION>
+    <DECORATED>?render@Texture@@QEAAXAEBUSDL_Rect@@0NPEBUSDL_Point@@W4SDL_RendererFlip@@@Z</DECORATED>
+    <FUNCLINE>56</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

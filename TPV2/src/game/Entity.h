@@ -1,14 +1,9 @@
 #pragma once
 
-#include <string>
-
-#include "../../../box2d/include/box2d/box2d.h"
-#include <SDL.h>
-#include "../sdlutils/SDLUtils.h"
+#include "PlayingState/FightManager.h"
 
 class myListener : public b2ContactListener
 {
-private:
 public:
 	bool ground = true;
 	void BeginContact(b2Contact* contact)
@@ -49,7 +44,8 @@ public:
 };
 
 
-struct atackData {
+struct atackData 
+{
 	int damage;
 	float multiplier;
 };
@@ -72,7 +68,8 @@ protected:
 	myListener listener;
 public:
 
-	Entity(b2World* world, SDLUtils* sdl, SDL_Texture* texture);
+
+	Entity(b2World* world, SDLUtils* sdl, SDL_Texture* texture); 
 	~Entity();
 
 	virtual void update();

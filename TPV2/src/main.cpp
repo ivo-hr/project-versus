@@ -10,7 +10,7 @@
 #include "sdlutils/sdlutils_demo.h"
 #include "sdlutils/SDLUtils.h"
 
-
+#include "game/PlayingState/FightManager.h"
 
 int main(int ac, char **av) {
 
@@ -55,12 +55,14 @@ int main(int ac, char **av) {
 
 	//-----------------------------------------------------------------------------------------
 	//Cargamos las texturas
+
 	SDL_Texture* player1Text;
 	SDL_Surface* tmpSurface = IMG_Load("images / Maketo.png");
 	player1Text = SDL_CreateTextureFromSurface(gRenderer, tmpSurface);
 	SDL_Texture* punchingBag;
 	SDL_Surface* tmpSurface1 = IMG_Load("images / bag.png");
 	punchingBag = SDL_CreateTextureFromSurface(gRenderer, tmpSurface1);
+
 	//Creamos el espacio fisico
 	b2Vec2 gravity = b2Vec2(0.0f, 20.0f);
 
@@ -92,24 +94,22 @@ int main(int ac, char **av) {
 	ground->CreateFixture(&fixt);
 
 	//--------------------------
-	
+
 	//Creo las cajas que representaran a los objetos
-	SDL_Rect scene = { ground->GetPosition().x * sdlb2Mult - floorW * sdlb2Mult, 
-		ground->GetPosition().y* sdlb2Mult - floorH * sdlb2Mult,
-		floorW* sdlb2Mult * 2,
-		floorH* sdlb2Mult * 2 };
+	SDL_Rect scene = { ground->GetPosition().x * sdlb2Mult - floorW * sdlb2Mult,
+		ground->GetPosition().y * sdlb2Mult - floorH * sdlb2Mult,
+		floorW * sdlb2Mult * 2,
+		floorH * sdlb2Mult * 2 };
 
 	int32 speed = 0;
 
 	// a boolean to exit the loop
 	bool exit_ = false;
-	int32 x2;
-	int32 y2;
 
 
 	int iniJumps = 1;
 	int eJumps = iniJumps;
-	int moveBuffer=0;
+	int moveBuffer = 0;
 	bool moveing = false;
 	//Bucle que estaba en la demo pero modificado xd
 	while (!exit_) {
