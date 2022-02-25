@@ -11,8 +11,6 @@ protected:
 
 	bool movable;
 
-	Character* oponent = nullptr;
-
 	InputHandler& ih = *InputHandler::instance();
 
 	//Datos de los ataques (Deberian salir de jsons en un futuro)
@@ -38,7 +36,7 @@ protected:
 	void (Character::* currentMove)(int);
 public:
 
-	Character(b2World* world, SDLUtils* sdl, bool movable, SDL_Texture* texture);
+	Character(FightManager* manager, bool movable, SDL_Texture* texture);
 	~Character();
 
 	virtual void update() override;
@@ -47,7 +45,6 @@ public:
 	virtual void draw() override;
 
 	virtual void GetHit(atackData a, int dir);
-	virtual void SetOponent(Character* op);
 	virtual SDL_Rect* GetHurtbox();
 	bool GetGround() { return onGround; };
 	void SetGround();

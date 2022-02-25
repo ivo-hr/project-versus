@@ -1,6 +1,6 @@
 #include "Character.h"
 
-Character::Character(b2World* world, SDLUtils* sdl, bool movable, SDL_Texture* texture) : Entity(world, sdl, texture)
+Character::Character(FightManager* manager, bool movable, SDL_Texture* texture) : Entity(manager, texture)
 {
 
 	this->movable = movable;
@@ -17,12 +17,13 @@ Character::Character(b2World* world, SDLUtils* sdl, bool movable, SDL_Texture* t
 	maxSpeed = 40;
 	speed = 0;
 	maxJumps = 1;
-	jumpStr = 4500;
+	jumpStr = 10000;
 	jumpCounter = maxJumps;
-	oponent = nullptr;
 	onGround = true;
 
-	world->SetContactListener(&listener);
+	hurtbox = manager->GetSDLCoors(body, width, height);
+
+	manager->GetWorld()->SetContactListener(&listener);
 }
 
 Character::~Character()
@@ -104,8 +105,6 @@ void Character::update()
 
 		if (ih.isKeyDown(SDLK_r) && currentMove == nullptr && onGround)
 		{
-			body->SetLinearVelocity(b2Vec2(0, 0));
-
 			currentMove = &Character::atackWeak;
 		}
 		if (ih.isKeyDown(SDLK_p))
@@ -142,19 +141,27 @@ void Character::atackStrong(int frameNumber)
 	{
 
 		//Al frame 90, crea un rect y si el oponente colisiona con ello...
-		SDL_Rect hitbox = { 
-			(int)(body->GetPosition().x * 20 - width * 5 + dir * 50),
-			(int)(body->GetPosition().y * 20 - height * 5), 
-			(int)width * 10, 
-			(int)height * 10 };
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+
+		hitbox.w = width / 2;
+		hitbox.h = height / 2;
+
+		hitbox.x += width / 2;
+
+		hitbox.y += height / 2;
+
+		hitbox.x += dir * 100;
 
 		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 		SDL_RenderDrawRect(sdl->renderer(), &hitbox);
 
-		if (SDL_HasIntersection(&hitbox, oponent->GetHurtbox()))
+		for (int i = 0; i < oponents.size(); i++)
 		{
-			//Le hace daño xddd
-			oponent->GetHit(ataqueFuerte, dir);
+			if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox()))
+			{
+				//Le hace daño xddd
+				oponents[i]->GetHit(ataqueFuerte, dir);
+			}
 		}
 	}
 		break;
@@ -187,9 +194,13 @@ void Character::atackWeak(int frameNumber)
 		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 		SDL_RenderDrawRect(sdl->renderer(), &hitbox);
 
-		if (SDL_HasIntersection(&hitbox, oponent->GetHurtbox()))
+		for (int i = 0; i < oponents.size(); i++)
 		{
-			oponent->GetHit(ataqueDebil, dir);
+			if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox()))
+			{
+				//Le hace daño xddd
+				oponents[i]->GetHit(ataqueDebil, dir);
+			}
 		}
 	}
 	break;
@@ -219,11 +230,6 @@ void Character::GetHit(atackData a, int dir)
 }
 
 
-//Le decimos a quien toca dar de ostias xd
-void Character::SetOponent(Character* op)
-{
-	oponent = op;
-}
 
 SDL_Rect* Character::GetHurtbox()
 {

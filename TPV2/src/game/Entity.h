@@ -55,13 +55,17 @@ class Entity
 
 protected:
 
+	FightManager* manager;
+
 	SDLUtils* sdl;
 
 	b2Body* body;
 
 	SDL_Rect hurtbox;
-	float width = 2.5f;
-	float height = 2.5f;
+	float width = 4.f;
+	float height = 4.f;
+
+	std::vector<Entity*> oponents;
 
 	bool onGround;
 
@@ -69,11 +73,13 @@ protected:
 public:
 
 
-	Entity(b2World* world, SDLUtils* sdl, SDL_Texture* texture); 
+	Entity(FightManager* mngr, SDL_Texture* texture); 
 	~Entity();
 
 	virtual void update();
 	virtual void draw();
+
+	virtual void SetOponents(std::vector<Entity*> op);
 
 	virtual void GetHit(atackData a, int dir) = 0;
 	virtual SDL_Rect* GetHurtbox();

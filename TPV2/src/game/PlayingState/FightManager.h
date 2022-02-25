@@ -16,7 +16,7 @@ class FightManager
 {
 
 	b2Body* stage;
-	SDL_Rect* stageRect;
+	SDL_Rect stageRect;
 
 	std::vector<Entity*> entities;
 	SDLUtils* sdl;
@@ -32,7 +32,7 @@ class FightManager
 	int numPlayers = 2;
 
 public:
-	FightManager();
+	FightManager(SDLUtils* sdl);
 	virtual ~FightManager();
 
 	int StartFight(Entity* p1, Entity* p2);
@@ -42,8 +42,12 @@ public:
 
 	void FighterLost(Entity* loser);
 
-	SDL_Rect* GetSDLCoors(b2Body* body, b2Vec2 size);
+	SDL_Rect GetSDLCoors(b2Body* body, float width, float height);
+	int b2ToSDLX(b2Body* body, float width);
+	int b2ToSDLY(b2Body* body, float height);
 
+
+	std::vector<Entity*> GetOponents(Entity* current);
 	b2World* GetWorld() { return &world; };
 	SDLUtils* GetSDLU() { return sdl; };
 };

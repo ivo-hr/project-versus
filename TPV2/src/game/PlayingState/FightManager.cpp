@@ -1,20 +1,20 @@
 #include "FightManager.h"
 #include "../Entity.h"
 
-FightManager::FightManager() : world(b2World(b2Vec2(0.f, 10.f)))
+FightManager::FightManager(SDLUtils* sdl) : world(b2World(b2Vec2(0.f, 20.f))), sdl(sdl)
 {
 
 	//Definimos un objeto (estatico)
 	b2BodyDef groundDef;
-	groundDef.position.Set(48.0f, 45.0f);
+	groundDef.position.Set(48.0f, 37.0f);
 	groundDef.type = b2_staticBody;
 
 	//Anadimos al mundo
 	stage = world.CreateBody(&groundDef);;
 	//Le damos forma...
 	b2PolygonShape floor;
-	int floorW = 37, floorH = 2;
-	floor.SetAsBox(floorW, floorH);
+	float floorW = 55.f, floorH = 4.f;
+	floor.SetAsBox(floorW / 2, floorH / 2);
 
 	//..cuerpo
 	b2FixtureDef fixt;
@@ -27,7 +27,7 @@ FightManager::FightManager() : world(b2World(b2Vec2(0.f, 10.f)))
 	//--------------------------
 
 	//Creo las cajas que representaran a los objetos
-	stageRect = GetSDLCoors(stage, b2Vec2(floorW, floorH));
+	stageRect = GetSDLCoors(stage, floorW, floorH);
 }
 
 FightManager::~FightManager()
@@ -38,6 +38,9 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 {
 	AddEntity(p1);
 	AddEntity(p2);
+
+	p1->SetOponents(entities);
+	p2->SetOponents(entities);
 
 	bool exit_ = false;
 	while (!exit_ && !fightEnded) {
@@ -58,11 +61,15 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 
 		//Dibujamos las cajas
 		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-		SDL_RenderDrawRect(sdl->renderer(), stageRect);
+		SDL_RenderDrawRect(sdl->renderer(), &stageRect);
 
 		for (Entity* ent : entities)
 		{
 			ent->update();
+		}
+		for (Entity* ent : entities)
+		{
+			ent->draw();
 		}
 
 		// present new frame
@@ -118,10 +125,34 @@ void FightManager::FighterLost(Entity* loser)
 	}
 }
 
-SDL_Rect* FightManager::GetSDLCoors(b2Body* body, b2Vec2 size)
+std::vector<Entity*> FightManager::GetOponents(Entity* current)
 {
-	return new SDL_Rect{ (int)(body->GetPosition().x * b2ToSDL - size.x * b2ToSDL / 2),
-		(int)(body->GetPosition().y * b2ToSDL - size.y * b2ToSDL / 2),
-		(int)(size.x * b2ToSDL),
-		(int)(size.y * b2ToSDL) };
+	std::vector<Entity*> a;
+
+	for (int i = 0; i < entities.size(); i++)
+	{
+		if (entities[i] != current)
+		{
+			a.push_back(entities[i]);
+		}
+	}
+	return a;
+}
+
+SDL_Rect FightManager::GetSDLCoors(b2Body* body, float width, float height)
+{
+	return { (int)(body->GetPosition().x * b2ToSDL - width * b2ToSDL / 2.f),
+		(int)(body->GetPosition().y * b2ToSDL - height * b2ToSDL / 2.f),
+		(int)(width * b2ToSDL),
+		(int)(height * b2ToSDL) };
+}
+
+int FightManager::b2ToSDLX(b2Body* body, float width)
+{
+	return (int)(body->GetPosition().x * b2ToSDL - width * b2ToSDL / 2);
+}
+
+int FightManager::b2ToSDLY(b2Body* body, float height)
+{
+	return (int)(body->GetPosition().y * b2ToSDL - height * b2ToSDL / 2);
 }

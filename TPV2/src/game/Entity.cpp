@@ -1,13 +1,13 @@
 #include "Entity.h"
 
-Entity::Entity(b2World* world, SDLUtils* sdl, SDL_Texture* texture)
+Entity::Entity(FightManager* mngr, SDL_Texture* texture) : manager(mngr)
 {
-	this->sdl = sdl;
+	this->sdl = mngr->GetSDLU();
 
 	//Definimos un objeto (dinámico)
 
 	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(40.0f, 42.0f);
+	groundBodyDef.position.Set(48.f, 10.f);
 	groundBodyDef.type = b2_dynamicBody;
 
 	//Definimos un caja
@@ -20,7 +20,7 @@ Entity::Entity(b2World* world, SDLUtils* sdl, SDL_Texture* texture)
 	fixtureDef.density = 10.f;
 	fixtureDef.friction = 0.9f;
 
-	body = world->CreateBody(&groundBodyDef);
+	body = mngr->GetWorld()->CreateBody(&groundBodyDef);
 	//añadimos el cuerpo al objeto fisico
 	body->CreateFixture(&fixtureDef);
 
@@ -35,12 +35,10 @@ Entity::Entity(b2World* world, SDLUtils* sdl, SDL_Texture* texture)
 
 
 	//Tamaño de la hurtbox del personaje
-	hurtbox = { 0,
-		0,
-		(int)(width * 20.f), (int)(height * 20.f) };
+	hurtbox = mngr->GetSDLCoors(body, width, height);
 
 	//creamos el detector de colisiones
-	world->SetContactListener(&listener);
+	mngr->GetWorld()->SetContactListener(&listener);
 }
 
 Entity::~Entity()
@@ -51,8 +49,8 @@ Entity::~Entity()
 void Entity::update()
 {
 	//Actualizamos la posicion del rect
-	hurtbox.x = body->GetPosition().x * 20 - width * 20 / 2;
-	hurtbox.y = body->GetPosition().y * 20 - height * 20 / 2;
+	hurtbox.x = manager->b2ToSDLX(body, width);
+	hurtbox.y = manager->b2ToSDLY(body, height);
 }
 
 /*void Entity::SetGround(bool ground)
@@ -67,6 +65,18 @@ void Entity::draw()
 	SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
 
 	//dibujar los sprite bruh
+}
+
+//Le decimos a quien toca dar de ostias xd
+void Entity::SetOponents(std::vector<Entity*> ents)
+{
+	for (int i = 0; i < ents.size(); i++)
+	{
+		if (ents[i] != this)
+		{
+			oponents.push_back(ents[i]);
+		}
+	}
 }
 
 SDL_Rect* Entity::GetHurtbox()
