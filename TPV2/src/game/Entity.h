@@ -55,6 +55,8 @@ class Entity
 
 protected:
 
+	Texture* texture;
+
 	FightManager* manager;
 
 	SDLUtils* sdl;
@@ -73,7 +75,7 @@ protected:
 public:
 
 
-	Entity(FightManager* mngr, SDL_Texture* texture); 
+	Entity(FightManager* mngr); 
 	~Entity();
 
 	virtual void update();

@@ -1,9 +1,11 @@
 #include "Character.h"
 
-Character::Character(FightManager* manager, bool movable, SDL_Texture* texture) : Entity(manager, texture)
+Character::Character(FightManager* manager, bool movable) : Entity(manager)
 {
 
 	this->movable = movable;
+
+	texture = &sdl->images().at("makt");
 
 	//Aqui defino las caracteristicas de cada hitbox (podriamos hacerlo dentro de cada metodo, y vendria de json)(tambien podríamos poner framedata)
 	ataqueFuerte.damage = 20;
@@ -143,14 +145,14 @@ void Character::atackStrong(int frameNumber)
 		//Al frame 90, crea un rect y si el oponente colisiona con ello...
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
-		hitbox.w = width / 2;
-		hitbox.h = height / 2;
+		hitbox.w /= 2;
+		hitbox.h /= 2;
 
-		hitbox.x += width / 2;
+		hitbox.x += hitbox.w / 2;
 
-		hitbox.y += height / 2;
+		hitbox.y += hitbox.h / 2;
 
-		hitbox.x += dir * 100;
+		hitbox.x += dir * 60;
 
 		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 		SDL_RenderDrawRect(sdl->renderer(), &hitbox);
@@ -185,11 +187,9 @@ void Character::atackWeak(int frameNumber)
 	{
 	case 12:
 	{
-		SDL_Rect hitbox = {
-			(int)(body->GetPosition().x * 20.f - width * 10 + dir * 30),
-			(int)(body->GetPosition().y * 20.f - height * 10),
-			(int)width * 20,
-			(int)height * 20 };
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+
+		hitbox.x += dir * 30;
 
 		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 		SDL_RenderDrawRect(sdl->renderer(), &hitbox);
@@ -218,6 +218,8 @@ void Character::SetGround()
 void Character::draw()
 {
 	Entity::draw();
+
+	texture->render(hurtbox.x, hurtbox.y);
 }
 
 

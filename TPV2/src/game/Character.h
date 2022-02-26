@@ -36,7 +36,7 @@ protected:
 	void (Character::* currentMove)(int);
 public:
 
-	Character(FightManager* manager, bool movable, SDL_Texture* texture);
+	Character(FightManager* manager, bool movable);
 	~Character();
 
 	virtual void update() override;

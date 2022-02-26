@@ -44,7 +44,7 @@ int main(int ac, char **av) {
 	SDL_Renderer* gRenderer = NULL;
 
 	//Ponemos en pantalla completa
-	sdl.toggleFullScreen();
+	//sdl.toggleFullScreen();
 
 	//show the cursor
 	sdl.showCursor();
@@ -65,8 +65,8 @@ int main(int ac, char **av) {
 
 	FightManager* fghtmngr = new FightManager(&sdl);
 
-	Character* character1 = new Character(fghtmngr, true, player1Text);
-	Character* boxingBag = new Character(fghtmngr, false, punchingBag);
+	Character* character1 = new Character(fghtmngr, true);
+	Character* boxingBag = new Character(fghtmngr, false);
 
 	fghtmngr->StartFight(character1, boxingBag);
 	

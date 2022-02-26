@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-Entity::Entity(FightManager* mngr, SDL_Texture* texture) : manager(mngr)
+Entity::Entity(FightManager* mngr) : manager(mngr)
 {
 	this->sdl = mngr->GetSDLU();
 
