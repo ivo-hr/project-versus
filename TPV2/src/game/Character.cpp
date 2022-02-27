@@ -26,6 +26,8 @@ Character::Character(FightManager* manager, bool movable) : Entity(manager)
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
 	manager->GetWorld()->SetContactListener(&listener);
+
+	ih.initialiseJoysticks();
 }
 
 Character::~Character()
@@ -47,25 +49,25 @@ void Character::update()
 		//basicamente la cadena de ifs que estaba en el main
 		ih.refresh();
 		// exit when any key is down
-		if (ih.isKeyDown(SDLK_d))
+		if (ih.isKeyDown(SDLK_d) || ih.getAxesState(0, 1) == 1)
 		{
 			speed = maxSpeed;
 			moving = true;
 			dir = 1;
 		}
-		if (ih.isKeyDown(SDLK_a))
+		if (ih.isKeyDown(SDLK_a) || ih.getAxesState(0, 1) == -1)
 		{
 			speed = -maxSpeed;
 			moving = true;
 			dir = -1;
 		}
-		if (ih.isKeyUp(SDLK_a) && ih.isKeyUp(SDLK_d))
+		if ((ih.isKeyUp(SDLK_a) && ih.isKeyUp(SDLK_d)) || ih.getAxesState(0, 1) == 0)
 		{
 			// para que no haya movimiento infinito (experimental)
 			moving = false;
 
 		}
-		if (ih.isKeyDown(SDLK_w) && /*jumpCounter > 0 &&*/ currentMove == nullptr)
+		if ((ih.isKeyDown(SDLK_w) || ih.getAxesState(0, 4) == -1) && /*jumpCounter > 0 &&*/ currentMove == nullptr)
 		{
 			if (!GetGround())
 			{
@@ -96,7 +98,8 @@ void Character::update()
 
 		//Si se da la tecla del ataque y no hay un ataque en ejecucion...
 
-		if (ih.isKeyDown(SDLK_e) && currentMove == nullptr && onGround)
+		// Ataque con A (provisional)
+		if ((ih.isKeyDown(SDLK_e) || ih.getButtonState(0, 1)) && currentMove == nullptr && onGround)
 		{
 			//paramos al personaje
 			body->SetLinearVelocity(b2Vec2(0, 0));
@@ -105,16 +108,25 @@ void Character::update()
 			currentMove = &Character::atackStrong;
 		}
 
-		if (ih.isKeyDown(SDLK_r) && currentMove == nullptr && onGround)
+		// Ataque con B (provisional)
+		if ((ih.isKeyDown(SDLK_r) || ih.getButtonState(0, 2)) && currentMove == nullptr && onGround)
 		{
 			currentMove = &Character::atackWeak;
 		}
+
 		if (ih.isKeyDown(SDLK_p))
 		{
 			std::cout << "onGround?" << onGround << std::endl;
 			std::cout << "listener ground?" << listener.CheckGround() << std::endl;
 		}
 
+		// Botones START Y SELECT (de momento solo hacen cout)
+		if (ih.getButtonState(0, 8))std::cout << "SELECT PRESSED" << std::endl;
+
+		if (ih.getButtonState(0, 9))std::cout << "START PRESSED" << std::endl;
+
+		// Util para saber que buttonNumber es cada boton del mando
+		//for (int i = 0; i < 10; i++)if (ih.getButtonState(0, i))std::cout << i << std::endl;
 
 		//Si hay un movimiento en ejecucion lo continuamos...
 		if (currentMove != nullptr)

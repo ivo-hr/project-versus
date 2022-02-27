@@ -7,6 +7,7 @@
 #include <array>
 
 #include "../utils/Singleton.h"
+#include <vector>
 
 // Instead of a Singleton class, we could make it part of
 // SDLUtils as well.
@@ -36,6 +37,7 @@ public:
 
 	// update the state with a new event
 	inline void update(const SDL_Event &event) {
+		int whichOne;
 		switch (event.type) {
 		case SDL_KEYDOWN:
 			onKeyDown(event);
@@ -51,6 +53,14 @@ public:
 			break;
 		case SDL_MOUSEBUTTONUP:
 			onMouseButtonChange(event, false);
+			break;
+		case  SDL_JOYBUTTONDOWN:
+			whichOne = event.jaxis.which;
+			m_buttonStates[whichOne][event.jbutton.button] = true;
+			break;
+		case SDL_JOYBUTTONUP:
+			whichOne = event.jaxis.which;
+			m_buttonStates[whichOne][event.jbutton.button] = false;
 			break;
 		default:
 			break;
@@ -107,6 +117,68 @@ public:
 	inline int getMouseButtonState(MOUSEBUTTON b) {
 		return mbState_[b];
 	}
+
+	// NES controller
+	bool m_bJoysticksInitialised;
+
+	inline void initialiseJoysticks() {
+		if (SDL_WasInit(SDL_INIT_JOYSTICK) == 0)
+		{
+			SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+		}
+		if (SDL_NumJoysticks() > 0)
+		{
+			for (int i = 0; i < SDL_NumJoysticks(); i++)
+			{
+				SDL_Joystick* joy = SDL_JoystickOpen(i);
+
+				if (joy)
+				{
+					std::vector<bool> tempButtons;
+					for (int j = 0; j < SDL_JoystickNumButtons(joy); j++)
+					{
+						tempButtons.push_back(false);
+					}
+					m_buttonStates.push_back(tempButtons);
+				}
+				else
+				{
+					std::cout << SDL_GetError();
+				}
+			}
+			SDL_JoystickEventState(SDL_ENABLE);
+			m_bJoysticksInitialised = true;
+		}
+		else
+		{
+			m_bJoysticksInitialised = false;
+		}
+	}
+
+	std::vector<std::vector<bool>> m_buttonStates;
+	inline bool getButtonState(int joy, int buttonNumber)
+	{
+		return m_buttonStates[joy][buttonNumber];
+	}
+
+	inline int getAxesState(int joy, int axesNumber) {
+		SDL_Joystick* joystick = SDL_JoystickOpen(joy);
+		int value;
+		if (SDL_JoystickGetAxis(joystick, axesNumber) > -100)value = 1;
+		else if (SDL_JoystickGetAxis(joystick, axesNumber) < -300)value = -1;
+		else value = 0;
+		return value;
+	}
+
+	/*inline void cleanJoysticks() {
+		if (m_bJoysticksInitialised)
+		{
+			for (unsigned int i = 0; i < SDL_NumJoysticks(); i++)
+			{
+				SDL_JoystickClose(m_joysticks[i]);
+			}
+		}
+	}*/
 
 	// TODO add support for Joystick, see Chapter 4 of
 	// the book 'SDL Game Development'
