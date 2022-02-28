@@ -211,7 +211,7 @@ El Ganso de la ComJamOn, la GameJam de la Universidad Complutense de Madrid, ha 
 
 ###  <a name = "Personajes"> 4.2 Personajes</a>
 
-Los personajes del juego constarán de los protagonistas de los proyectos del año pasado.
+Los personajes del juego son los protagonistas de los proyectos de la asignatura Proyectos 1 del curso 2020/2021.
 
 #### -Makt Fange:
 
@@ -227,7 +227,6 @@ Los personajes del juego constarán de los protagonistas de los proyectos del a�
   - Especial hacia arriba (Recovery): Lanzamiento hacia arriba. Makt gira la herropea con la cadena como si fuera el martillo de Thor y la lanza hacia arriba aún sujeta, impulsándose con ella por la inercia. Si la bola da a un rival no se detiene, pero este recibe daño igual.
   - Característica especial (Herropea): Makt es más pesado y lento cuando lleva la herropea en la mano, además de saltar un poco menos. El ataque Especial Lateral lanza la herropea, haciendo que esta se quede en el suelo. Mientras Makt no tenga la herropea será más ligero y podrá moverse más rápido y saltar más, pero no tendrá acceso a ataques especiales.
 
--
 #### -Gato-Espía (Blink Master):
 
   - Ataque básico:
