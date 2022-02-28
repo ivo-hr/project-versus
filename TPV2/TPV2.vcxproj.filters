@@ -43,6 +43,12 @@
     <Filter Include="Source Files\game\PlayingState">
       <UniqueIdentifier>{a7907c32-8c8e-4b0b-8047-8a587cf29034}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\game\Characters">
+      <UniqueIdentifier>{357beb75-bfc9-4abc-bd0a-65f2482bd2c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game\Characters">
+      <UniqueIdentifier>{dbe4496a-9331-406d-aeb1-21778863c63a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\json\JSONValue.h">
@@ -105,6 +111,12 @@
     <ClInclude Include="src\game\PlayingState\FightManager.h">
       <Filter>Header Files\game\PlayingState</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\Characters\CharacterZero\CharacterZero.h">
+      <Filter>Header Files\game\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="CharInclude.h">
+      <Filter>Header Files\game\Characters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">
@@ -148,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="src\game\PlayingState\FightManager.cpp">
       <Filter>Source Files\game\PlayingState</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Characters\CharacterZero\CharacterZero.cpp">
+      <Filter>Source Files\game\Characters</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

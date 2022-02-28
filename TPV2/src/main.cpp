@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include <iostream>
 #include <box2d.h>
-#include "game/Character.h"
+#include "../CharInclude.h"
 #include "sdlutils/InputHandler.h"
 #include "sdlutils/macros.h"
 
@@ -65,8 +65,8 @@ int main(int ac, char **av) {
 
 	FightManager* fghtmngr = new FightManager(&sdl);
 
-	Character* character1 = new Character(fghtmngr, true);
-	Character* boxingBag = new Character(fghtmngr, false);
+	Character* character1 = new CharacterZero(fghtmngr);
+	Character* boxingBag = new CharacterZero(fghtmngr);
 
 	fghtmngr->StartFight(character1, boxingBag);
 	

@@ -32,8 +32,6 @@ Entity::Entity(FightManager* mngr) : manager(mngr)
 
 	onGround = true;
 
-
-
 	//Tamaño de la hurtbox del personaje
 	hurtbox = mngr->GetSDLCoors(body, width, height);
 

@@ -9,8 +9,6 @@ protected:
 
 	int dir = 1;
 
-	bool movable;
-
 	InputHandler& ih = *InputHandler::instance();
 
 	//Datos de los ataques (Deberian salir de jsons en un futuro)
@@ -36,17 +34,25 @@ protected:
 	void (Character::* currentMove)(int);
 public:
 
-	Character(FightManager* manager, bool movable);
+	Character(FightManager* manager);
 	~Character();
 
 	virtual void update() override;
-	virtual void atackWeak(int frameNumber);
-	virtual void atackStrong(int frameNumber);
 	virtual void draw() override;
 
 	virtual void GetHit(atackData a, int dir);
 	virtual SDL_Rect* GetHurtbox();
 	bool GetGround() { return onGround; };
 	void SetGround();
+
+	virtual void BasicNeutral(int frameNumber) = 0;
+	virtual void BasicForward(int frameNumber) = 0;
+	virtual void BasicUpward(int frameNumber) = 0;
+	virtual void BasicDownward(int frameNumber) = 0;
+
+	virtual void SpecialNeutral(int frameNumber) = 0;
+	virtual void SpecialForward(int frameNumber) = 0;
+	virtual void SpecialUpward(int frameNumber) = 0;
+	virtual void SpecialDownward(int frameNumber) = 0;
 
 };

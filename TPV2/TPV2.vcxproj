@@ -19,7 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CharInclude.h" />
     <ClInclude Include="src\game\Character.h" />
+    <ClInclude Include="src\game\Characters\CharacterZero\CharacterZero.h" />
     <ClInclude Include="src\game\Entity.h" />
     <ClInclude Include="src\game\PlayingState\FightManager.h" />
     <ClInclude Include="src\json\JSON.h" />
@@ -42,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game\Character.cpp" />
+    <ClCompile Include="src\game\Characters\CharacterZero\CharacterZero.cpp" />
     <ClCompile Include="src\game\Entity.cpp" />
     <ClCompile Include="src\game\PlayingState\FightManager.cpp" />
     <ClCompile Include="src\json\JSON.cpp" />

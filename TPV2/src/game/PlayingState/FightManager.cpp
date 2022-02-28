@@ -44,6 +44,7 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 
 	bool exit_ = false;
 	while (!exit_ && !fightEnded) {
+
 		Uint32 startTime = sdl->currRealTime();
 
 
