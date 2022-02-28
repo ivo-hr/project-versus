@@ -158,16 +158,21 @@ public:
 	std::vector<std::vector<bool>> m_buttonStates;
 	inline bool getButtonState(int joy, int buttonNumber)
 	{
-		return m_buttonStates[joy][buttonNumber];
+		if (SDL_NumJoysticks() > 0) return m_buttonStates[joy][buttonNumber];
+		return false;
 	}
 
 	inline int getAxesState(int joy, int axesNumber) {
-		SDL_Joystick* joystick = SDL_JoystickOpen(joy);
-		int value;
-		if (SDL_JoystickGetAxis(joystick, axesNumber) > -100)value = 1;
-		else if (SDL_JoystickGetAxis(joystick, axesNumber) < -300)value = -1;
-		else value = 0;
-		return value;
+		if (SDL_NumJoysticks() > 0) {
+			SDL_Joystick* joystick = SDL_JoystickOpen(joy);
+			int value;
+			if (SDL_JoystickGetAxis(joystick, axesNumber) > -100)value = 1;
+			else if (SDL_JoystickGetAxis(joystick, axesNumber) < -300)value = -1;
+			else value = 0;
+			return value;
+		}
+		else return 0;
+	
 	}
 
 	/*inline void cleanJoysticks() {
