@@ -213,19 +213,19 @@ El Ganso de la ComJamOn, la GameJam de la Universidad Complutense de Madrid, ha 
 
 Los personajes del juego son los protagonistas de los proyectos de la asignatura Proyectos 1 del curso 2020/2021.
 
-#### -Makt Fange:
+#### -Togo (DinoSouls):
+  - Ataque básico:
+    - Ataque neutral 
+    - Ataque lateral: Togo lanza su lanza en la dirección pulsada, y esta viaja en línea recta hasta alcanzar su distancia máxima, atravesando enemigos.
+    - Ataque hacia abajo
+    - Ataque hacia arriba
+  - Movimientos especiales:
+    - Especial neutral: Togo invoca el alma del Triceratops, generando un escudo en cúpula que devuelve proyectiles durante un segundo. Tras usarlo tendrás que esperar 3 segundos para poder usarlo de nuevo.
+    - Especial lateral: Togo invoca el alma del Tiranosaurio, avanzando una pequeña distancia y lanzando un zarpazo en la dirección pulsada, haciendo daño medio. Tiene una recuperación media.
+    - Especial hacia abajo: Togo invoca el alma del Anquilosaurio, arremetiendo a su alrededor con una cola que hace daño medio y tiene un gran noqueo. Tiene una recuperación media.
+    - Especial hacia arriba (Recovery): Togo realiza un dash de larga distancia hacia arriba.
+  - Característica especial (Lanza): Togo posee una lanza con la que realiza ataques básicos de mayor alcance.
 
-- Ataque básico:
-  - Ataque neutral
-  - Ataque lateral.
-  - Ataque hacia abajo
-  - Ataque hacia arriba
-- Movimientos especiales:
-  - Especial neutral: Ataque lento de daño alto con un área de impacto mayor a la de un ataque básico. Makt echa hacia atrás su brazo con la herropea, para a continuación arremeter contra el oponente con ella en la mano. Tiene recuperación media.
-  - Especial lateral: Ataque cargado a distancia de daño medio-alto. Makt agarra la herropea por la cadena, haciendo la bola girar mientras el ataque se cargue. Cuando el botón de ataque sea soltado, Makt lanzará la bola en la dirección en la que ha cargado el ataque. Esta se detendrá al llegar al final de la distancia cargada por el lanzamiento o al chocar con un rival, haciéndole daño y empujándolo. La bola se quedará en el suelo hasta que Makt la recoja. Si esta cae fuera del mapa reaparecerá a los 3 segundos como si fuera un personaje. Este ataque tiene recuperación media.
-  - Especial hacia abajo: Makt agarrará la herropea con ambas manos, pasándola por encima de su cabeza y bajándola con fuerza hacia el suelo, creando un área de daño medio en el suelo a su alrededor. Los oponentes afectados serán levantados en el aire durante una distancia corta determinada por el porcentaje de daño que tengan. Este ataque es lento y tiene recuperación media. Si Makt no tiene la herropea este comando la cogerá si Makt está lo suficientemente cerca.
-  - Especial hacia arriba (Recovery): Lanzamiento hacia arriba. Makt gira la herropea con la cadena como si fuera el martillo de Thor y la lanza hacia arriba aún sujeta, impulsándose con ella por la inercia. Si la bola da a un rival no se detiene, pero este recibe daño igual.
-  - Característica especial (Herropea): Makt es más pesado y lento cuando lleva la herropea en la mano, además de saltar un poco menos. El ataque Especial Lateral lanza la herropea, haciendo que esta se quede en el suelo. Mientras Makt no tenga la herropea será más ligero y podrá moverse más rápido y saltar más, pero no tendrá acceso a ataques especiales.
 
 #### -Gato-Espía (Blink Master):
 
