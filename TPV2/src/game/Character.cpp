@@ -1,4 +1,5 @@
 #include "Character.h"
+#include "Utils/AnimationManager.h"
 
 Character::Character(FightManager* manager) : Entity(manager)
 {
@@ -127,16 +128,10 @@ void Character::draw()
 	//Este rect representa el rectangulo en la spritesheet en si que contiene el sprite concreto que queremos
 	//Cambiad los 0 por numeros entre 0 y 3 para cambiar la posicion del rect y por ende el sprite
 	//Los numeros son en pixeles en la imagen
-	SDL_Rect recorteSheet = { 76 * 0, 96 * 0, 76, 96 };
 
-	//Este rect representa donde se va a renderizar la textura una vez recortada
-	SDL_Rect dest = hurtbox;
-	dest.x -= 12;
-	dest.y -= 120;
-	dest.w += 72;
-	dest.h += 120;
+	anim->update();
 
-	texture->render(recorteSheet, dest);
+
 
 	Entity::draw();
 }

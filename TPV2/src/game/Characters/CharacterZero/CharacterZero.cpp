@@ -1,11 +1,8 @@
 #include "CharacterZero.h"
+#include "../../Utils/AnimationManager.h"
 
 CharacterZero::CharacterZero(FightManager* mngr) : Character(mngr)
 {
-	//Cargamos la textura de archivo
-	SDL_Texture* player1Text;
-	SDL_Surface* tmpSurface = IMG_Load("images / CharZeroSheet.png");
-	player1Text = SDL_CreateTextureFromSurface(sdl->renderer(), tmpSurface);
 
 	//guardamos la textura
 	texture = &sdl->images().at("zero");
@@ -25,6 +22,10 @@ CharacterZero::CharacterZero(FightManager* mngr) : Character(mngr)
 	jumpStr = 10000;
 	jumpCounter = maxJumps;
 	onGround = true;
+
+
+
+	anim = new AnimationManager(texture, this, 4, 3);
 }
 
 CharacterZero::~CharacterZero()

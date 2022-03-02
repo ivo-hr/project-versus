@@ -49,6 +49,12 @@
     <Filter Include="Header Files\game\Characters">
       <UniqueIdentifier>{dbe4496a-9331-406d-aeb1-21778863c63a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\game\Utils">
+      <UniqueIdentifier>{aa692305-7ffb-4904-95ec-1c3c14c97f4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game\Utils">
+      <UniqueIdentifier>{69dea671-14b5-46f8-9a9f-4f4bce307106}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\json\JSONValue.h">
@@ -117,6 +123,9 @@
     <ClInclude Include="CharInclude.h">
       <Filter>Header Files\game\Characters</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\Utils\AnimationManager.h">
+      <Filter>Header Files\game\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">
@@ -163,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="src\game\Characters\CharacterZero\CharacterZero.cpp">
       <Filter>Source Files\game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Utils\AnimationManager.cpp">
+      <Filter>Source Files\game\Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

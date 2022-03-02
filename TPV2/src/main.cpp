@@ -20,9 +20,6 @@ int main(int ac, char **av) {
 
 	auto& sdl = *SDLUtils::instance();
 
-	float sdlb2Mult = 20;
-
-
 	//Obtenemos el tama�o de la pantalla
 	SDL_DisplayMode DM;
 	SDL_GetDesktopDisplayMode(0, &DM);
@@ -53,15 +50,7 @@ int main(int ac, char **av) {
 	// you can also use the inline method ih() that is defined in InputHandler.h
 	auto& ih = *InputHandler::instance();
 
-	//-----------------------------------------------------------------------------------------
-	//Cargamos las texturas
-
-	SDL_Texture* player1Text;
-	SDL_Surface* tmpSurface = IMG_Load("images / Maketo.png");
-	player1Text = SDL_CreateTextureFromSurface(gRenderer, tmpSurface);
-	SDL_Texture* punchingBag;
-	SDL_Surface* tmpSurface1 = IMG_Load("images / bag.png");
-	punchingBag = SDL_CreateTextureFromSurface(gRenderer, tmpSurface1);
+	//------------------------------------------------------------------------------------------
 
 	FightManager* fghtmngr = new FightManager(&sdl);
 

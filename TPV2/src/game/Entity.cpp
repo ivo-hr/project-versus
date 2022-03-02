@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Utils/AnimationManager.h"
 
 Entity::Entity(FightManager* mngr) : manager(mngr)
 {
@@ -17,7 +18,7 @@ Entity::Entity(FightManager* mngr) : manager(mngr)
 	//Creamos una "cuerpo" 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 10.f;
+	fixtureDef.density = 3.f;
 	fixtureDef.friction = 0.9f;
 
 	body = mngr->GetWorld()->CreateBody(&groundBodyDef);

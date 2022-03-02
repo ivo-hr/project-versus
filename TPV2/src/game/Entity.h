@@ -2,6 +2,8 @@
 
 #include "PlayingState/FightManager.h"
 
+class AnimationManager;
+
 class myListener : public b2ContactListener
 {
 public:
@@ -54,6 +56,8 @@ class Entity
 {
 
 protected:
+
+	AnimationManager* anim;
 
 	Texture* texture;
 
