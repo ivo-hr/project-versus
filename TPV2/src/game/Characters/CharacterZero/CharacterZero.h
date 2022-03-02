@@ -6,6 +6,8 @@ public:
 	CharacterZero(FightManager* mngr);
 	~CharacterZero();
 
+	virtual void draw() override;
+
 	virtual void BasicNeutral(int frameNumber) override;
 	virtual void BasicForward(int frameNumber) override {};
 	virtual void BasicUpward(int frameNumber) override {};

@@ -2,7 +2,13 @@
 
 CharacterZero::CharacterZero(FightManager* mngr) : Character(mngr)
 {
-	texture = &sdl->images().at("makt");
+	//Cargamos la textura de archivo
+	SDL_Texture* player1Text;
+	SDL_Surface* tmpSurface = IMG_Load("images / CharZeroSheet.png");
+	player1Text = SDL_CreateTextureFromSurface(sdl->renderer(), tmpSurface);
+
+	//guardamos la textura
+	texture = &sdl->images().at("zero");
 
 	//Aqui defino las caracteristicas de cada hitbox (podriamos hacerlo dentro de cada metodo, y vendria de json)(tambien podríamos poner framedata)
 	ataqueFuerte.damage = 20;
@@ -24,6 +30,11 @@ CharacterZero::CharacterZero(FightManager* mngr) : Character(mngr)
 CharacterZero::~CharacterZero()
 {
 
+}
+
+void CharacterZero::draw()
+{
+	Character::draw();
 }
 
 

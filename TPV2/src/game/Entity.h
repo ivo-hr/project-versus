@@ -64,8 +64,8 @@ protected:
 	b2Body* body;
 
 	SDL_Rect hurtbox;
-	float width = 4.f;
-	float height = 4.f;
+	float width = 6.f;
+	float height = 6.f;
 
 	std::vector<Entity*> oponents;
 

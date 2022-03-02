@@ -11,6 +11,7 @@
     { "id" : "tennis_ball", "file" : "resources/images/tennis_ball.png" },
     { "id" : "star", "file" : "resources/images/star.png"},
     { "id" : "makt", "file" : "resources/images/Maketo.png"},
+    { "id" : "zero", "file" : "resources/images/CharZeroSheet.png"},
     { "id" : "blinkMaster ", "file" : "resources/images/BlinkMaster.png"},
     { "id" : "punchingBag ", "file" : "resources/images/bag.png"}
 
