@@ -3,37 +3,62 @@
 
 
 
-AnimationManager::AnimationManager(Texture* textura, Entity* entity, int x, int y):texture(textura)
+void AnimationManager::UpdateIndex()
+{
+	cont--;
+	if (cont == 0) {
+		currIndex++;
+		if (currIndex == currentAnim.keySprite + currentAnim.iniSprite)
+		{
+			framespSprite = (int)((currentAnim.totalFrames - currentAnim.hitboxFrame) / 
+				(currentAnim.totalSprites - currentAnim.keySprite));
+		}
+		if (currIndex == currentAnim.totalSprites + currentAnim.iniSprite)
+		{
+			if (!currentAnim.loop)
+			{
+				StartAnimation(0);
+			}
+			else
+				currIndex = currentAnim.iniSprite;
+		}
+		cont = framespSprite;
+	}
+}
+
+AnimationManager::AnimationManager(Entity* entity, Texture* textura, spriteSheetData data) : texture(textura), info(data)
 {
 	ent = entity;
 
-	spriteNx = x + 1;
-	spriteNy = y + 1;
-	w = textura->width()/ spriteNx;
-	h = textura->height()/ spriteNy;
-	cont = 10;
+	w = textura->width() / data.spritesInX;
+	h = textura->height() / data.spritesInY;
 
-	int a = 0;
-	for (int i =0; i< spriteNy+1 ; i++)
+	for (int i =0; i < data.spritesInY; i++)
 	{
-		for (int j = 0; j < spriteNx + 1; j++)
+		for (int j = 0; j < data.spritesInX; j++)
 		{
 			SpriteIndex.push_back(b2Vec2(j, i));
-			a++;
 		}
 	}
 	//w y h representan el tamaño de cada sprite
 	//recorteSheet 
-	recorteSheet = { w * spriteNx, h * spriteNy, w, h };
+	recorteSheet = { w * data.spritesInX, h * data.spritesInY, w, h };
+
+	xOffset = data.leftOffset * ent->GetWidth();
+	yOffset = data.upOffset * ent->GetHeight();
 
 	//Este rect representa donde se va a renderizar la textura una vez recortada
 	dest = *entity->GetHurtbox();
 
-	dest.x -= 12;
-	dest.y -= 120;
-	dest.w += 72;
-	dest.h += 120;
+	dest.w += data.sizeXOffset * ent->GetWidth();
+	dest.h += data.sizeYOffset * ent->GetHeight();
 
+
+	currentAnim = data.animations[0];
+	currIndex = currentAnim.iniSprite;
+	framespSprite = (int)(currentAnim.totalFrames / currentAnim.totalSprites);
+
+	cont = framespSprite;
 }
 
 AnimationManager::~AnimationManager()
@@ -48,26 +73,32 @@ void AnimationManager::idle()
 
 void AnimationManager::update()
 {
-	cont--;
-	if (cont == 0) {
-		cont = 10;
-		if (currIndex == 0)
-			currIndex = 1;
-		else
-			currIndex = 0;
-	}
+
+	UpdateIndex();
 
 	//Este rect representa donde se va a renderizar la textura una vez recortada
-	dest = *ent->GetHurtbox();
+	SDL_Rect aux = *ent->GetHurtbox();
 
-	dest.x -= 12;
-	dest.y -= 120;
-	dest.w += 72;
-	dest.h += 120;
+	dest.x = aux.x - xOffset;
+	dest.y = aux.y - yOffset;
 
 	recorteSheet = { w * (int)SpriteIndex[currIndex].x, h * (int)SpriteIndex[currIndex].y, w, h };
 
 	texture->render(recorteSheet, dest);
 
 }
+
+void AnimationManager::StartAnimation(int index)
+{
+	currentAnim = info.animations[index];
+	currIndex = currentAnim.iniSprite;
+	if (currentAnim.keySprite == -1)
+		framespSprite = (int)(currentAnim.totalFrames / currentAnim.totalSprites);
+	else
+		framespSprite = (int)(currentAnim.hitboxFrame / currentAnim.keySprite);
+
+	cont = framespSprite;
+}
+
+
 

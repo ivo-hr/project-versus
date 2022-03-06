@@ -23,9 +23,46 @@ CharacterZero::CharacterZero(FightManager* mngr) : Character(mngr)
 	jumpCounter = maxJumps;
 	onGround = true;
 
+	//Datos para las animaciones (tendrá que venir de json claramente solo hay tres y ya ocupan 37 lineas xd)
 
+	spData.leftOffset = 2;
+	spData.upOffset = 20;
+	spData.sizeXOffset = 12;
+	spData.sizeYOffset = 20;
 
-	anim = new AnimationManager(texture, this, 4, 3);
+	spData.spritesInX = 5;
+	spData.spritesInY = 4;
+
+	animationData aux;
+
+	aux.iniSprite = 0;
+	aux.totalSprites = 2;
+	aux.keySprite = -1;
+	aux.hitboxFrame = -1;
+	aux.totalFrames = 40;
+	aux.loop = true;
+	
+	spData.animations.push_back(aux);
+
+	aux.iniSprite = 2;
+	aux.totalSprites = 4;
+	aux.keySprite = 2;
+	aux.hitboxFrame = 12;
+	aux.totalFrames = 20;
+	aux.loop = false;
+
+	spData.animations.push_back(aux);
+
+	aux.iniSprite = 6;
+	aux.totalSprites = 13;
+	aux.keySprite = 9;
+	aux.hitboxFrame = 60;
+	aux.totalFrames = 100;
+	aux.loop = false;
+
+	spData.animations.push_back(aux);
+
+	anim = new AnimationManager(this, texture, spData);
 }
 
 CharacterZero::~CharacterZero()
@@ -48,9 +85,11 @@ void CharacterZero::BasicNeutral(int frameNumber)
 	{
 	case 0:
 		//Empieza el ataque :v
+		anim->StartAnimation(2);
+		break;
 		//No hace nada, esto es el cargar el puño
 		break;
-	case 90:
+	case 60:
 	{
 
 		//Al frame 90, crea un rect y si el oponente colisiona con ello...
@@ -78,7 +117,7 @@ void CharacterZero::BasicNeutral(int frameNumber)
 		}
 	}
 	break;
-	case 160:
+	case 100:
 
 		//Al ultimo frame...
 
@@ -98,6 +137,9 @@ void CharacterZero::SpecialNeutral(int frameNumber)
 {
 	switch (frameNumber)
 	{
+	case 0:
+		anim->StartAnimation(1);
+		break;
 	case 12:
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
