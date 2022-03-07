@@ -3,7 +3,7 @@
 class CharacterZero : public Character
 {
 public:
-	CharacterZero(FightManager* mngr);
+	CharacterZero(FightManager* mngr,char input);
 	~CharacterZero();
 
 	virtual void draw() override;
