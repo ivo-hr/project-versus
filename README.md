@@ -239,7 +239,22 @@ Los personajes del juego son los protagonistas de los proyectos de la asignatura
     - Especial lateral: Gato-Espía se teletransporta una corta distancia en la dirección pulsada.
     - Especial hacia abajo: Gato-Espía se teletransporta en el sitio en un pestañeo. Si recibiera algún ataque durante este teletransporte el daño es anulado, y si este ataque es cuerpo a cuerpo Gato-Espía aparecerá detrás del atacante, asestando un golpe de daño medio con su cuchillo.
     - Especial hacia arriba (Recovery): Gato-Espía se teletransporta una distancia corta hacia arriba.
-    - Característica especial (Teletransporte): Gato-Espía tiene 3 cargas de teletransporte que puede usar para cualquiera de sus especiales de teletransporte. Estas cargas se regeneran con el tiempo. Si no tiene cargas, los especiales arriba, lateral y abajo no pueden hacerse. Los teletransportes laterales y hacia arriba pueden encadenarse, ya que al teletransportarte no hay endlag. Adicionalmente si mantienes pulsado el botón de Ataque Especial o lo pulsas al final del teletransporte, haces un poderoso ataque de cuchillo de recuperación alta y daño alto. Acertar el ataque te permite seguir teletransportándote, pero fallarlo te dejará en el estado de &quot;noqueado&quot; durante un tiempo determinado.
+  - Característica especial (Teletransporte): Gato-Espía tiene 3 cargas de teletransporte que puede usar para cualquiera de sus especiales de teletransporte. Estas cargas se regeneran con el tiempo. Si no tiene cargas, los especiales arriba, lateral y abajo no pueden hacerse. Los teletransportes laterales y hacia arriba pueden encadenarse, ya que al teletransportarte no hay endlag. Adicionalmente si mantienes pulsado el botón de Ataque Especial o lo pulsas al final del teletransporte, haces un poderoso ataque de cuchillo de recuperación alta y daño alto. Acertar el ataque te permite seguir teletransportándote, pero fallarlo te dejará en el estado de &quot;noqueado&quot; durante un tiempo determinado.
+  
+#### -Makt Fange:
+  
+  - Ataque básico:
+    - Ataque neutral 
+    - Ataque lateral.
+    - Ataque hacia abajo 
+    - Ataque hacia arriba
+  - Movimientos especiales:
+    - Especial neutral: Ataque lento de daño alto con un área de impacto mayor a la de un ataque básico. Makt echa hacia atrás su brazo con la herropea, para a continuación arremeter contra el oponente con ella en la mano. Tiene recuperación media.
+    - Especial lateral: Ataque cargado a distancia de daño medio-alto. Makt agarra la herropea por la cadena, haciendo la bola girar mientras el ataque se cargue. Cuando el botón de ataque sea soltado, Makt lanzará la bola en la dirección en la que ha cargado el ataque. Esta se detendrá al llegar al final de la distancia cargada por el lanzamiento o al chocar con un rival, haciéndole daño y empujándolo. La bola se quedará en el suelo hasta que Makt la recoja. Si esta cae fuera del mapa reaparecerá a los 3 segundos como si fuera un personaje. Este ataque tiene recuperación media.
+    - Especial hacia abajo: Makt agarrará la herropea con ambas manos, pasándola por encima de su cabeza y bajándola con fuerza hacia el suelo, creando un área de daño medio en el suelo a su alrededor. Los oponentes afectados serán levantados en el aire durante una distancia corta determinada por el porcentaje de daño que tengan. Este ataque es lento y tiene recuperación media. Si Makt no tiene la herropea este comando la cogerá si Makt está lo suficientemente cerca.
+    - Especial hacia arriba (Recovery): Lanzamiento hacia arriba. Makt gira la herropea con la cadena como si fuera el martillo de Thor y la lanza hacia arriba aún sujeta, impulsándose con ella por la inercia. Si la bola da a un rival no se detiene, pero este recibe daño igual.
+  - Característica especial (Herropea): Makt es más pesado y lento cuando lleva la herropea en la mano, además de saltar un poco menos. El ataque Especial Lateral lanza la herropea, haciendo que esta se quede en el suelo. Mientras Makt no tenga la herropea será más ligero y podrá moverse más rápido y saltar más, pero no tendrá acceso a ataques especiales.
+
 
  ##  <a name = "Referencias"> 5. Referencias</a>
 
