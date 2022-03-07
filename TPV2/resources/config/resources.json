@@ -23,13 +23,23 @@
   ],
   
   "sounds" : [
-    { "id" : "zeroSmolHit", "file" : "resources/sound/smallhit.wav" },
-    { "id" : "zeroBigHit", "file" : "resources/sound/stronghit.wav" }
+    {
+      "id": "zeroSmolHit",
+      "file": "resources/sound/zeroChar/smallhit.wav"
+    },
+    {
+      "id": "zeroBigHit",
+      "file": "resources/sound/zeroChar/stronghit.wav"
+    },
+    {
+      "id": "zeroTaunt",
+      "file": "resources/sound/zeroChar/taunt.wav"
+    }
   ],
 
   "musics" : [
     { "id" : "beat", "file" : "resources/sound/beat.wav" },
     { "id" : "imperial_march", "file" : "resources/sound/imperial_march.wav" }
-  ]
+  ] 
 
 }
