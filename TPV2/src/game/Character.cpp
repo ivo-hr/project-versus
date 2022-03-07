@@ -3,7 +3,6 @@
 
 Character::Character(FightManager* manager) : Entity(manager)
 {
-
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
 	manager->GetWorld()->SetContactListener(&listener);

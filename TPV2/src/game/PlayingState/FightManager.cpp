@@ -47,6 +47,7 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 
 		Uint32 startTime = sdl->currRealTime();
 
+		//ih.refresh();		//QUE WEA
 
 		if (ih.isKeyDown(SDLK_ESCAPE))
 			exit_ = true;
@@ -78,10 +79,12 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 
 		double frameTime = sdl->currRealTime() - startTime;
 
-		if (frameTime < step * 1000)
+		if (frameTime < (step * 1000) + addedDelay)
 		{
-			SDL_Delay(step * 1000);
+			SDL_Delay((step * 1000) + addedDelay);
 		}
+
+		addedDelay = 0;
 	}
 
 	return 1;

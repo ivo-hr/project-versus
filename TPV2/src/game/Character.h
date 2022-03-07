@@ -7,8 +7,6 @@ class Character : public Entity
 {
 protected:
 
-	int dir = 1;
-
 	InputHandler& ih = *InputHandler::instance();
 
 	//Datos de los ataques (Deberian salir de jsons en un futuro)

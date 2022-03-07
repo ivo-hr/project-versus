@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_map>
 #include "PlayingState/FightManager.h"
 
 class AnimationManager;
@@ -69,6 +70,7 @@ struct spriteSheetData
 	int spritesInY;		//Cuantos frames hay en una columna de la spritesheet entera
 
 	std::vector<animationData> animations;
+	//std::unordered_map<std::string, animationData> animations;
 };
 
 struct atackData 
@@ -97,6 +99,8 @@ protected:
 	float width = 6.f;
 	float height = 6.f;
 
+	int dir;
+
 	std::vector<Entity*> oponents;
 
 	bool onGround;
@@ -113,6 +117,7 @@ public:
 
 	virtual void SetOponents(std::vector<Entity*> op);
 
+	virtual int GetDir() { return dir; };
 	virtual float GetWidth() { return width; };
 	virtual float GetHeight() { return height; };
 	virtual void GetHit(atackData a, int dir) = 0;

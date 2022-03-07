@@ -56,8 +56,17 @@ CharacterZero::CharacterZero(FightManager* mngr) : Character(mngr)
 	aux.iniSprite = 6;
 	aux.totalSprites = 13;
 	aux.keySprite = 9;
-	aux.hitboxFrame = 60;
+	aux.hitboxFrame = 56;
 	aux.totalFrames = 100;
+	aux.loop = false;
+
+	spData.animations.push_back(aux);
+
+	aux.iniSprite = 19;
+	aux.totalSprites = 1;
+	aux.keySprite = -1;
+	aux.hitboxFrame = -1;
+	aux.totalFrames = 30;
 	aux.loop = false;
 
 	spData.animations.push_back(aux);
@@ -89,9 +98,8 @@ void CharacterZero::BasicNeutral(int frameNumber)
 		break;
 		//No hace nada, esto es el cargar el puño
 		break;
-	case 60:
+	case 56:
 	{
-
 		//Al frame 90, crea un rect y si el oponente colisiona con ello...
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
@@ -111,6 +119,7 @@ void CharacterZero::BasicNeutral(int frameNumber)
 		{
 			if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox()))
 			{
+				manager->addedDelay += 500;
 				//Le hace daño xddd
 				oponents[i]->GetHit(ataqueFuerte, dir);
 			}
