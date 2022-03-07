@@ -55,4 +55,5 @@ public:
 	virtual void SpecialUpward(int frameNumber) = 0;
 	virtual void SpecialDownward(int frameNumber) = 0;
 
+	
 };

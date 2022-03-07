@@ -23,8 +23,8 @@
   ],
   
   "sounds" : [
-    { "id" : "gunshot", "file" : "resources/sound/gunshot.wav" },
-    { "id" : "explosion", "file" : "resources/sound/explosion.wav" }
+    { "id" : "zeroSmolHit", "file" : "resources/sound/smallhit.wav" },
+    { "id" : "zeroBigHit", "file" : "resources/sound/stronghit.wav" }
   ],
 
   "musics" : [

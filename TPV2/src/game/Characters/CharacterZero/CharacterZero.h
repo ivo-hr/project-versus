@@ -5,6 +5,8 @@ class CharacterZero : public Character
 public:
 	CharacterZero(FightManager* mngr);
 	~CharacterZero();
+	
+	
 
 	virtual void draw() override;
 

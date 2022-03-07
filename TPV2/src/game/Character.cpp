@@ -1,6 +1,7 @@
 #include "Character.h"
 #include "Utils/AnimationManager.h"
 
+
 Character::Character(FightManager* manager) : Entity(manager)
 {
 
@@ -91,6 +92,7 @@ void Character::update()
 	if ((ih.isKeyDown(SDLK_r) || ih.getButtonState(0, 2)) && currentMove == nullptr && onGround)
 	{
 		currentMove = &Character::SpecialNeutral;
+
 	}
 
 	if (ih.isKeyDown(SDLK_p))
@@ -151,3 +153,5 @@ SDL_Rect* Character::GetHurtbox()
 {
 	return &hurtbox;
 }
+
+

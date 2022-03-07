@@ -6,6 +6,8 @@ CharacterZero::CharacterZero(FightManager* mngr) : Character(mngr)
 
 	//guardamos la textura
 	texture = &sdl->images().at("zero");
+	//smolH = &sdl->soundEffects().at("zeroSmolHit");
+
 
 	//Aqui defino las caracteristicas de cada hitbox (podriamos hacerlo dentro de cada metodo, y vendria de json)(tambien podríamos poner framedata)
 	ataqueFuerte.damage = 20;
@@ -84,6 +86,7 @@ void CharacterZero::BasicNeutral(int frameNumber)
 	switch (frameNumber)
 	{
 	case 0:
+		sdl->soundEffects().at("zeroBigHit").play();
 		//Empieza el ataque :v
 		anim->StartAnimation(2);
 		break;
@@ -135,9 +138,11 @@ void CharacterZero::BasicNeutral(int frameNumber)
 //Lo mismo que el de arriba pero mas rapido y debil xd
 void CharacterZero::SpecialNeutral(int frameNumber)
 {
+	
 	switch (frameNumber)
 	{
 	case 0:
+		sdl->soundEffects().at("zeroSmolHit").play();
 		anim->StartAnimation(1);
 		break;
 	case 12:
