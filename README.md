@@ -17,7 +17,7 @@ Versión 0.1 – 3 de febrero de 2022
     <td colspan = "2"> Resumen </td>
   </tr>
   <tr>
-    <td> Generos: Beat 'em up </td>
+    <td> Generos: Platform Fighter </td>
     <td> Modo: dos jugadores, 1v1</td>
   </tr>
   <tr>
@@ -199,7 +199,7 @@ _Párrafos e ilustraciones donde se describe los controles que se pueden usar en
 
  ##  <a name = "Contenido"> 4. Contenido</a>
 
-El juego tendrá un fondo de escenario, música de batalla y de menú, sonidos de golpes dados y recibidos, así como de selección de botones, sprites y animaciones únicos de cada personaje y otras imágenes como fondo del menú y de la pestaña de ajustes.
+El juego tendrá cuatro escenarios, una canción para menús y una para la batalla, 4 menús: menú inicial, menú de selección de personajes, menú de pausa en partida y menú post-partida; 4 personajes, cada uno con sonidos de golpes dados y recibidos y animaciones de movimiento, ataques básicos y especiales, noqueado, bloqueando, esquiva y taunt; dos tipos de controles: teclado y mando, teclado con opción de dos personas con el mismo teclado; una imagen de fondo de menú principal e imagenes de fondo y perfiles en la selección de personajes, además de imagen de victoria de cada personaje en el menú post-partida.
 
 ###  <a name = "Historia"> 4.1 Historia</a>
   
