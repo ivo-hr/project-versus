@@ -52,6 +52,8 @@ void Entity::update()
 	//Actualizamos la posicion del rect
 	hurtbox.x = manager->b2ToSDLX(body, width);
 	hurtbox.y = manager->b2ToSDLY(body, height);
+
+	anim->update();
 }
 
 /*void Entity::SetGround(bool ground)
@@ -61,6 +63,7 @@ void Entity::update()
 
 void Entity::draw()
 {
+	anim->render();
 	//if (debug)
 	SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 255, 255);
 	SDL_RenderDrawRect(sdl->renderer(), &hurtbox);

@@ -30,6 +30,7 @@ public:
 
 	void idle();
 	void update();
+	void render();
 
 	void StartAnimation(int index);
 };

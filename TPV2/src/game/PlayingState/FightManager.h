@@ -31,18 +31,17 @@ class FightManager
 	float b2ToSDL = 20.f;
 
 	int numPlayers = 2;
+	
+	int addedDelay;
 
 public:
 	FightManager(SDLUtils* sdl);
 	virtual ~FightManager();
 
-
-	int addedDelay;
-
 	int StartFight(Entity* p1, Entity* p2);
 	void AddEntity(Entity* ent);
 	bool RemoveEntity(Entity* ent);
-	void HitLag(int mSecs);
+	void HitLag(int frames);
 
 	void FighterLost(Entity* loser);
 

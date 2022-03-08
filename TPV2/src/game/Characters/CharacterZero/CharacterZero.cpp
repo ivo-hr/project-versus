@@ -10,13 +10,20 @@ CharacterZero::CharacterZero(FightManager* mngr) : Character(mngr)
 
 
 	//Aqui defino las caracteristicas de cada hitbox (podriamos hacerlo dentro de cada metodo, y vendria de json)(tambien podríamos poner framedata)
+	ataqueFuerte.direction = b2Vec2(1, 2);
+	ataqueFuerte.direction.Normalize();
+	ataqueFuerte.base = 40;
 	ataqueFuerte.damage = 20;
 	ataqueFuerte.multiplier = 1.8f;
 
+	ataqueDebil.direction = b2Vec2(1, 4);
+	ataqueDebil.direction.Normalize();
+	ataqueDebil.base = 20;
 	ataqueDebil.damage = 5;
 	ataqueDebil.multiplier = 0.2f;
 
 	// variables
+	weight = 10;
 	damageTaken = 0;
 	maxSpeed = 40;
 	speed = 0;
@@ -122,7 +129,7 @@ void CharacterZero::BasicNeutral(int frameNumber)
 		{
 			if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox()))
 			{
-				manager->addedDelay += 500;
+				manager->HitLag(20);
 				//Le hace daño xddd
 				oponents[i]->GetHit(ataqueFuerte, dir);
 			}

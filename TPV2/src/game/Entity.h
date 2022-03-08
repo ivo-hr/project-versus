@@ -75,6 +75,8 @@ struct spriteSheetData
 
 struct atackData 
 {
+	b2Vec2 direction;
+	int base;
 	int damage;
 	float multiplier;
 };

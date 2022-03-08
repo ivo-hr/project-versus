@@ -74,6 +74,27 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 			ent->draw();
 		}
 
+		while (addedDelay > 0)
+		{
+
+			Uint32 startTime = sdl->currRealTime();
+			addedDelay--;
+
+			for (Entity* ent : entities)
+			{
+				ent->draw();
+			}
+			// present new frame
+			sdl->presentRenderer();
+
+			double frameTime = sdl->currRealTime() - startTime;
+
+			if (frameTime < (step * 1000))
+			{
+				SDL_Delay((step * 1000));
+			}
+		}
+
 		// present new frame
 		sdl->presentRenderer();
 
@@ -111,10 +132,10 @@ bool FightManager::RemoveEntity(Entity* ent)
 	return false;
 }
 
-void FightManager::HitLag(int mSecs)
+void FightManager::HitLag(int frames)
 {
-	SDL_RenderPresent(sdl->renderer());
-	SDL_Delay(mSecs);
+	if (addedDelay < frames)
+		addedDelay = frames;
 }
 
 void FightManager::FighterLost(Entity* loser)

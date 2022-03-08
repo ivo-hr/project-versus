@@ -13,6 +13,8 @@ protected:
 	atackData ataqueFuerte;
 	atackData ataqueDebil;
 
+	int stun;
+
 	bool moving;
 	int maxSpeed;
 	int speed;

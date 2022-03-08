@@ -1,8 +1,6 @@
 #include "AnimationManager.h"
 
 
-
-
 void AnimationManager::UpdateIndex()
 {
 	//Restamos 1 al contador
@@ -104,17 +102,24 @@ void AnimationManager::update()
 		dest.y = aux.y - yOffset;
 
 		recorteSheet = { w * (int)SpriteIndex[currIndex].x, h * (int)SpriteIndex[currIndex].y, w, h };
-
-		texture->render(recorteSheet, dest);
 	}
 	else {
 		dest.x = aux.x + xOffset - info.sizeXOffset * ent->GetWidth();
 		dest.y = aux.y - yOffset;
 
 		recorteSheet = { w * (int)SpriteIndex[currIndex].x, h * (int)SpriteIndex[currIndex].y, w, h };
-		texture->render(recorteSheet, dest, 0., nullptr, SDL_FLIP_HORIZONTAL);
 	}
 
+}
+
+void AnimationManager::render()
+{
+	if (ent->GetDir() >= 0) {
+		texture->render(recorteSheet, dest);
+	}
+	else {
+		texture->render(recorteSheet, dest, 0., nullptr, SDL_FLIP_HORIZONTAL);
+	}
 }
 
 void AnimationManager::StartAnimation(int index)

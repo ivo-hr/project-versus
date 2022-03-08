@@ -6,6 +6,8 @@ Character::Character(FightManager* manager) : Entity(manager)
 {
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
+	stun = 0;
+
 	manager->GetWorld()->SetContactListener(&listener);
 
 	ih.initialiseJoysticks();
@@ -19,8 +21,8 @@ Character::~Character()
 void Character::update()
 {
 
-	Entity::update();
-
+	if (stun > 0)
+		stun--;
 
 	SetGround();
 	//std::cout << onGround << std::endl;
@@ -71,7 +73,7 @@ void Character::update()
 	}
 
 	//Que se mueva si no esta haciendo un ataque ya
-	if (currentMove == nullptr)
+	if (currentMove == nullptr && stun == 0)
 		body->SetLinearVelocity(b2Vec2(speed, body->GetLinearVelocity().y));
 
 
@@ -116,6 +118,9 @@ void Character::update()
 		//Actualiza el frame actual del movimiento
 		moveFrame++;
 	}
+
+	Entity::update();
+
 }
 
 void Character::SetGround()
@@ -126,13 +131,6 @@ void Character::SetGround()
 void Character::draw()
 {
 	//xd
-	//Este rect representa el rectangulo en la spritesheet en si que contiene el sprite concreto que queremos
-	//Cambiad los 0 por numeros entre 0 y 3 para cambiar la posicion del rect y por ende el sprite
-	//Los numeros son en pixeles en la imagen
-
-	anim->update();
-
-
 
 	Entity::draw();
 }
@@ -140,10 +138,25 @@ void Character::draw()
 
 void Character::GetHit(atackData a, int opdir)
 {
+
+	float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
+
+	if (a.base >= 0)
+	{
+		stun = recoil / 1.8f;
+	}
+
 	//Actualiza el daño
 	damageTaken += a.damage;
+
+	b2Vec2 aux = a.direction;
+
+	aux *= recoil;
+	aux.y *= -1;
+	aux.x *= opdir;
+
 	//Produce el knoback..
-	body->SetLinearVelocity(b2Vec2((a.multiplier * damageTaken) * opdir, -a.multiplier * damageTaken));
+	body->SetLinearVelocity(aux);
 }
 
 
