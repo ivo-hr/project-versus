@@ -1,33 +1,6 @@
 #include "InputConfig.h"
 
-//char InputConfig::seeinput()
-//{
-//	switch (typeofInput)
-//	{
-//	case 0:
-//		if (ih.isKeyDown(SDLK_w)) return 'u';
-//		else if (ih.isKeyDown(SDLK_s))return 'd';
-//		else if (ih.isKeyDown(SDLK_a))return 'l';
-//		else if (ih.isKeyDown(SDLK_d))return 'r';
-//		else if (ih.isKeyDown(SDLK_e))return 'a';
-//		else if (ih.isKeyDown(SDLK_r))return 'b';
-//		break;
-//	case 1:
-//		if (ih.isKeyDown(SDLK_UP)) return 'u';
-//		else if (ih.isKeyDown(SDLK_DOWN))return 'd';
-//		else if (ih.isKeyDown(SDLK_LEFT))return 'l';
-//		else if (ih.isKeyDown(SDLK_RIGHT))return 'r';
-//		else if (ih.isKeyDown(SDLK_l))return 'a';
-//		else if (ih.isKeyDown(SDLK_k))return 'b';
-//		break;
-//	case 2:
-//		return ih.getAxesState(0, 4) == -1;
-//		break;
-//	case 3:
-//		return ih.getAxesState(1, 4) == -1;
-//		break;
-//	}
-//}
+
 
 bool InputConfig::up()
 {
@@ -37,7 +10,6 @@ bool InputConfig::up()
 		return ih.isKeyDown(SDLK_w);
 		break;
 	case 1:
-		cout<< ih.isKeyDown(SDLK_UP)<<endl;
 		return ih.isKeyDown(SDLK_UP);
 		break;
 	case 2:

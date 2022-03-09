@@ -9,7 +9,6 @@ Character::Character(FightManager* manager,char input) : Entity(manager)
 
 	manager->GetWorld()->SetContactListener(&listener);
 	this->input = new InputConfig(input);
-	//ih.initialiseJoysticks();
 }
 
 Character::~Character()
@@ -24,55 +23,7 @@ void Character::update()
 
 
 	SetGround();
-	//std::cout << onGround << std::endl;
-
-	//basicamente la cadena de ifs que estaba en el main
-	input->refresh();
-	//char c = input->seeinput();
-	//switch (c)
-	//{
-	//case 'u':
-	//	if (currentMove == nullptr) {
-	//		if (!GetGround())
-	//		{
-	//			jumpCounter--;
-	//		}
-	//		body->SetLinearVelocity(b2Vec2(speed, 0));
-	//		body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
-	//		break;
-	//	}
-
-	//case 'd':
-	//	break;
-	//case 'l':
-	//	speed = -maxSpeed;
-	//	moving = true;
-	//	dir = -1;
-	//	break;
-	//case 'r':
-	//	speed = maxSpeed;
-	//	moving = true;
-	//	dir = 1;
-	//	break;
-	//case 'a':
-	//	if (currentMove == nullptr && onGround) {
-	//		body->SetLinearVelocity(b2Vec2(0, 0));
-
-	//		//Declaramos el valor del ataque como el ataque que queramos
-	//		currentMove = &Character::BasicNeutral;
-	//	}
-
-	//	break;
-	//case 'b':
-	//	if (currentMove == nullptr && onGround) {
-	//		currentMove = &Character::SpecialNeutral;
-	//	}
-	//	break;
-	//default:
-	//	break;
-	//}
-	//c = ' ';
-	//// exit when any key is down
+	
 	if (input->right())
 	{
 		speed = maxSpeed;
@@ -86,7 +37,7 @@ void Character::update()
 		dir = -1;
 	}
 	
-	else if (input->up() && /*jumpCounter > 0 &&*/ currentMove == nullptr)
+	else if (input->up() && currentMove == nullptr)
 	{
 		if (!GetGround())
 		{
