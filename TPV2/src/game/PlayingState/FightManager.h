@@ -13,6 +13,8 @@
 
 class Entity;
 
+class HUDManager;
+
 class FightManager
 {
 
@@ -24,6 +26,7 @@ class FightManager
 	b2World world;
 
 	InputHandler& ih = *InputHandler::instance();
+	HUDManager* hud;
 
 	Entity* winner;
 	bool fightEnded = false;

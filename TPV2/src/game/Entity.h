@@ -73,7 +73,7 @@ struct spriteSheetData
 	//std::unordered_map<std::string, animationData> animations;
 };
 
-struct atackData 
+struct attackData 
 {
 	b2Vec2 direction;
 	int base;
@@ -122,8 +122,9 @@ public:
 	virtual int GetDir() { return dir; };
 	virtual float GetWidth() { return width; };
 	virtual float GetHeight() { return height; };
-	virtual void GetHit(atackData a, int dir) = 0;
+	virtual void GetHit(attackData a, int dir) = 0;
 	virtual SDL_Rect* GetHurtbox();
+	virtual void SendToHUD(Texture* tex);
 	//bool GetGround() { return onGround; };
 	//void SetGround(bool ground);
 };

@@ -126,7 +126,7 @@ void Character::draw()
 }
 
 
-void Character::GetHit(atackData a, int opdir)
+void Character::GetHit(attackData a, int opdir)
 {
 
 	float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));

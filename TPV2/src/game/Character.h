@@ -11,8 +11,8 @@ protected:
 	//InputHandler& ih = *InputHandler::instance();
 	InputConfig *input = nullptr;
 	//Datos de los ataques (Deberian salir de jsons en un futuro)
-	atackData ataqueFuerte;
-	atackData ataqueDebil;
+	attackData ataqueFuerte;
+	attackData ataqueDebil;
 
 	int stun;
 
@@ -41,7 +41,7 @@ public:
 	virtual void update() override;
 	virtual void draw() override;
 
-	virtual void GetHit(atackData a, int dir);
+	virtual void GetHit(attackData a, int dir);
 	virtual SDL_Rect* GetHurtbox();
 	bool GetGround() { return onGround; };
 	void SetGround();
