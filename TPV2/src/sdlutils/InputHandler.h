@@ -128,6 +128,7 @@ public:
 		}
 		if (SDL_NumJoysticks() > 0)
 		{
+			m_buttonStates.resize(SDL_NumJoysticks());
 			for (int i = 0; i < SDL_NumJoysticks(); i++)
 			{
 				SDL_Joystick* joy = SDL_JoystickOpen(i);
@@ -139,7 +140,8 @@ public:
 					{
 						tempButtons.push_back(false);
 					}
-					m_buttonStates.push_back(tempButtons);
+					//m_buttonStates.push_back(tempButtons);
+					m_buttonStates[SDL_JoystickInstanceID(joy)] = tempButtons;
 				}
 				else
 				{
@@ -158,13 +160,14 @@ public:
 	std::vector<std::vector<bool>> m_buttonStates;
 	inline bool getButtonState(int joy, int buttonNumber)
 	{
-		if (SDL_NumJoysticks() > 0) return m_buttonStates[joy][buttonNumber];
+		if (SDL_NumJoysticks() > joy) return m_buttonStates[joy][buttonNumber];
 		return false;
 	}
 
 	inline int getAxesState(int joy, int axesNumber) {
-		if (SDL_NumJoysticks() > 0) {
-			SDL_Joystick* joystick = SDL_JoystickOpen(joy);
+		if (SDL_NumJoysticks() > joy) {
+			SDL_JoystickID id = joy;
+			SDL_Joystick* joystick = SDL_JoystickFromInstanceID(id);
 			int value;
 			if (SDL_JoystickGetAxis(joystick, axesNumber) > -100)value = 1;
 			else if (SDL_JoystickGetAxis(joystick, axesNumber) < -300)value = -1;
