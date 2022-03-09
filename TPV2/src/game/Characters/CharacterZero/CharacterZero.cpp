@@ -75,7 +75,7 @@ CharacterZero::CharacterZero(FightManager* mngr,char input) : Character(mngr,inp
 	aux.totalSprites = 1;
 	aux.keySprite = -1;
 	aux.hitboxFrame = -1;
-	aux.totalFrames = 30;
+	aux.totalFrames = 5;
 	aux.loop = false;
 
 	spData.animations.push_back(aux);

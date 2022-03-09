@@ -124,7 +124,7 @@ public:
 	virtual float GetHeight() { return height; };
 	virtual void GetHit(attackData a, int dir) = 0;
 	virtual SDL_Rect* GetHurtbox();
-	virtual void SendToHUD(Texture* tex);
+	//virtual void SendToHUD(Texture* tex);
 	//bool GetGround() { return onGround; };
 	//void SetGround(bool ground);
 };

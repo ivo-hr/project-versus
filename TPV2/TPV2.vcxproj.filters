@@ -126,6 +126,9 @@
     <ClInclude Include="src\game\Utils\AnimationManager.h">
       <Filter>Header Files\game\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="HUDManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\game\Utils\InputConfig.h">
       <Filter>Header Files\game\Utils</Filter>
     </ClInclude>
@@ -178,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="src\game\Utils\AnimationManager.cpp">
       <Filter>Source Files\game\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="HUDManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\game\Utils\InputConfig.cpp">
       <Filter>Source Files\game\Utils</Filter>
