@@ -2,13 +2,14 @@
 
 #include "Entity.h"
 #include "../sdlutils/InputHandler.h"
+#include "Utils/InputConfig.h"
 
 class Character : public Entity
 {
 protected:
 
-	InputHandler& ih = *InputHandler::instance();
-
+	//InputHandler& ih = *InputHandler::instance();
+	InputConfig *input = nullptr;
 	//Datos de los ataques (Deberian salir de jsons en un futuro)
 	atackData ataqueFuerte;
 	atackData ataqueDebil;
@@ -34,7 +35,7 @@ protected:
 	void (Character::* currentMove)(int);
 public:
 
-	Character(FightManager* manager);
+	Character(FightManager* manager, char input);
 	~Character();
 
 	virtual void update() override;

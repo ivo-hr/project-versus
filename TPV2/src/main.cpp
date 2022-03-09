@@ -49,13 +49,13 @@ int main(int ac, char **av) {
 	// reference to the input handler (we could use a pointer, I just . rather than ->).
 	// you can also use the inline method ih() that is defined in InputHandler.h
 	auto& ih = *InputHandler::instance();
-
+	ih.initialiseJoysticks();
 	//------------------------------------------------------------------------------------------
 
 	FightManager* fghtmngr = new FightManager(&sdl);
 
-	Character* character1 = new CharacterZero(fghtmngr);
-	Character* boxingBag = new CharacterZero(fghtmngr);
+	Character* character1 = new CharacterZero(fghtmngr,0);
+	Character* boxingBag = new CharacterZero(fghtmngr,1);
 
 	fghtmngr->StartFight(character1, boxingBag);
 	

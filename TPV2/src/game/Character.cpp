@@ -1,16 +1,16 @@
 #include "Character.h"
 #include "Utils/AnimationManager.h"
+#include "Utils/InputConfig.h"
 
 
-Character::Character(FightManager* manager) : Entity(manager)
+Character::Character(FightManager* manager,char input) : Entity(manager)
 {
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
 	stun = 0;
 
 	manager->GetWorld()->SetContactListener(&listener);
-
-	ih.initialiseJoysticks();
+	this->input = new InputConfig(input);
 }
 
 Character::~Character()
@@ -25,30 +25,21 @@ void Character::update()
 		stun--;
 
 	SetGround();
-	//std::cout << onGround << std::endl;
-
-	//basicamente la cadena de ifs que estaba en el main
-	ih.refresh();
-	// exit when any key is down
-	if (ih.isKeyDown(SDLK_d) || ih.getAxesState(0, 1) == 1)
+	
+	if (input->right())
 	{
 		speed = maxSpeed;
 		moving = true;
 		dir = 1;
 	}
-	if (ih.isKeyDown(SDLK_a) || ih.getAxesState(0, 1) == -1)
+	else if (input->left())
 	{
 		speed = -maxSpeed;
 		moving = true;
 		dir = -1;
 	}
-	if ((ih.isKeyUp(SDLK_a) && ih.isKeyUp(SDLK_d)) || ih.getAxesState(0, 1) == 0)
-	{
-		// para que no haya movimiento infinito (experimental)
-		moving = false;
-
-	}
-	if ((ih.isKeyDown(SDLK_w) || ih.getAxesState(0, 4) == -1) && /*jumpCounter > 0 &&*/ currentMove == nullptr)
+	
+	else if (input->up() && currentMove == nullptr)
 	{
 		if (!GetGround())
 		{
@@ -57,7 +48,27 @@ void Character::update()
 		body->SetLinearVelocity(b2Vec2(speed, 0));
 		body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
 	}
+	// Ataque con A (provisional)
+	else if (input->basic() && currentMove == nullptr && onGround)
+	{
+		//paramos al personaje
+		body->SetLinearVelocity(b2Vec2(0, 0));
 
+		//Declaramos el valor del ataque como el ataque que queramos
+		currentMove = &Character::BasicNeutral;
+	}
+
+	// Ataque con B (provisional)
+	else if (input->special() && currentMove == nullptr && onGround)
+	{
+		currentMove = &Character::SpecialNeutral;
+	}
+	else if (input->stop())
+	{
+		// para que no haya movimiento infinito (experimental)
+		moving = false;
+
+	}
 	//boolean to check collision with the ground
 	if (GetGround())
 	{
@@ -79,33 +90,12 @@ void Character::update()
 
 	//Si se da la tecla del ataque y no hay un ataque en ejecucion...
 
-	// Ataque con A (provisional)
-	if ((ih.isKeyDown(SDLK_e) || ih.getButtonState(0, 1)) && currentMove == nullptr && onGround)
-	{
-		//paramos al personaje
-		body->SetLinearVelocity(b2Vec2(0, 0));
 
-		//Declaramos el valor del ataque como el ataque que queramos
-		currentMove = &Character::BasicNeutral;
-	}
 
-	// Ataque con B (provisional)
-	if ((ih.isKeyDown(SDLK_r) || ih.getButtonState(0, 2)) && currentMove == nullptr && onGround)
-	{
-		currentMove = &Character::SpecialNeutral;
+	//// Botones START Y SELECT (de momento solo hacen cout)
+	//if (ih.getButtonState(0, 8))std::cout << "SELECT PRESSED" << std::endl;
 
-	}
-
-	if (ih.isKeyDown(SDLK_p))
-	{
-		std::cout << "onGround?" << onGround << std::endl;
-		std::cout << "listener ground?" << listener.CheckGround() << std::endl;
-	}
-
-	// Botones START Y SELECT (de momento solo hacen cout)
-	if (ih.getButtonState(0, 8))std::cout << "SELECT PRESSED" << std::endl;
-
-	if (ih.getButtonState(0, 9))std::cout << "START PRESSED" << std::endl;
+	//if (ih.getButtonState(0, 9))std::cout << "START PRESSED" << std::endl;
 
 	// Util para saber que buttonNumber es cada boton del mando
 	//for (int i = 0; i < 10; i++)if (ih.getButtonState(0, i))std::cout << i << std::endl;
