@@ -41,12 +41,14 @@ void Character::update()
 	
 	else if (input->up() && currentMove == nullptr)
 	{
-		if (!GetGround())
-		{
-			jumpCounter--;
+		if (jumpCounter > 0) {
+			if (!GetGround())
+			{
+				jumpCounter--;
+			}
+			body->SetLinearVelocity(b2Vec2(speed, 0));
+			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
 		}
-		body->SetLinearVelocity(b2Vec2(speed, 0));
-		body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
 	}
 	// Ataque con A (provisional)
 	else if (input->basic() && currentMove == nullptr && onGround)

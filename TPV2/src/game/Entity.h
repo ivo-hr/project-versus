@@ -13,7 +13,7 @@ public:
 	{
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
-		if (two->GetType() == b2_staticBody)
+		if (one->GetType() == b2_staticBody)
 		{
 			ground = true;
 			std::cout << ground << std::endl;
@@ -23,7 +23,7 @@ public:
 	{
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
-		if (two->GetType() == b2_staticBody)
+		if (one->GetType() == b2_staticBody)
 		{
 			std::cout << "ground?" << ground << std::endl;
 			ground = false;
