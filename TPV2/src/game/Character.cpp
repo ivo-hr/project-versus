@@ -24,23 +24,32 @@ void Character::update()
 	if (stun > 0)
 		stun--;
 
-	if (input->right() && !input->left())
+	if (input->right() && input->left())
+	{
+		if (speed > 0) {
+			speed = -maxSpeed;
+			moving = true;
+			dir = -1;
+		}
+		else if (speed < 0) {
+			speed = maxSpeed;
+			moving = true;
+			dir = 1;
+		}
+		else moving = false;
+
+	}
+	else if (input->right())
 	{
 		speed = maxSpeed;
 		moving = true;
 		dir = 1;
 	}
-	else if (input->left() && !input->right())
+	else if (input->left())
 	{
 		speed = -maxSpeed;
 		moving = true;
 		dir = -1;
-	}
-	else if (input->right() && input->left())
-	{
-		speed = 0;
-		moving = false;
-
 	}
 	// Ataque con A (provisional)
 	else if (input->basic() && currentMove == nullptr && onGround)
