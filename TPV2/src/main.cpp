@@ -37,11 +37,8 @@ int main(int ac, char **av) {
 	//Cambiamos el tama�o de la ventana
 	SDL_SetWindowSize(sdl.window(), DM.w, DM.h);
 
-	//creamos el renderer
-	SDL_Renderer* gRenderer = NULL;
-
 	//Ponemos en pantalla completa
-	sdl.toggleFullScreen();
+	//sdl.toggleFullScreen();
 
 	//show the cursor
 	sdl.showCursor();
@@ -52,10 +49,10 @@ int main(int ac, char **av) {
 	ih.initialiseJoysticks();
 	//------------------------------------------------------------------------------------------
 
-	FightManager* fghtmngr = new FightManager(&sdl);
+	FightManager* fghtmngr = new FightManager(&sdl, (float)DM.h / (float)sdl.height());
 
-	Character* character1 = new CharacterZero(fghtmngr, 0);
-	Character* boxingBag = new CharacterZero(fghtmngr, 1);
+	Character* character1 = new CharacterZero(fghtmngr, new Vector2D(20, 0), 0);
+	Character* boxingBag = new CharacterZero(fghtmngr, new Vector2D(30, 0), 1);
 
 	fghtmngr->StartFight(character1, boxingBag);
 	

@@ -59,8 +59,8 @@ protected:
 	b2Body* body;
 
 	SDL_Rect hurtbox;
-	float width = 6.f;
-	float height = 6.f;
+	float width = 4.f;
+	float height = 4.f;
 
 	int dir;
 
@@ -68,10 +68,15 @@ protected:
 
 	bool onGround;
 
+	bool alive;
+	int respawnTimer = 0;
+	int respawnFrames;
+
+
 public:
 
 
-	Entity(FightManager* mngr); 
+	Entity(FightManager* mngr, Vector2D* position);
 	~Entity();
 
 	virtual void update();
@@ -79,6 +84,7 @@ public:
 
 	virtual void SetOponents(std::vector<Entity*> op);
 
+	virtual void OnDeath() { manager->RemoveEntity(this); };
 	virtual int GetDir() { return dir; };
 	virtual float GetWidth() { return width; };
 	virtual float GetHeight() { return height; };

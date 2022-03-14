@@ -3,7 +3,8 @@
 #include "Utils/InputConfig.h"
 
 
-Character::Character(FightManager* manager,char input) : Entity(manager)
+Character::Character(FightManager* manager, Vector2D* pos, char input) : 
+	Entity(manager, pos)
 {
 	hurtbox = manager->GetSDLCoors(body, width, height);
 

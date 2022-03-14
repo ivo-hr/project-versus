@@ -1,7 +1,7 @@
 #include "CharacterZero.h"
 #include "../../Utils/AnimationManager.h"
 
-CharacterZero::CharacterZero(FightManager* mngr,char input) : Character(mngr,input)
+CharacterZero::CharacterZero(FightManager* mngr, Vector2D* pos, char input) : Character(mngr, pos, input)
 {
 
 	//guardamos la textura

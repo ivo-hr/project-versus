@@ -3,7 +3,7 @@
 class CharacterZero : public Character
 {
 public:
-	CharacterZero(FightManager* mngr,char input);
+	CharacterZero(FightManager* mngr, Vector2D* pos, char input);
 	~CharacterZero();
 	
 	

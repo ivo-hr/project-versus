@@ -31,9 +31,12 @@ class FightManager
 	HUDManager* hud;
 
 	Entity* winner;
+
+	SDL_Rect deathZone;
+
 	bool fightEnded = false;
 
-	float b2ToSDL = 20.f;
+	float b2ToSDL;
 
 	int numPlayers = 2;
 	
@@ -43,7 +46,7 @@ class FightManager
 	
 
 public:
-	FightManager(SDLUtils* sdl);
+	FightManager(SDLUtils* sdl, double screenAdjust);
 	virtual ~FightManager();
 
 	int StartFight(Entity* p1, Entity* p2);

@@ -1,15 +1,14 @@
 #include "Entity.h"
 #include "Utils/AnimationManager.h"
 
-
-Entity::Entity(FightManager* mngr) : manager(mngr)
+Entity::Entity(FightManager* mngr, Vector2D* position) : manager(mngr)
 {
 	this->sdl = mngr->GetSDLU();
 
 	//Definimos un objeto (dinámico)
 
 	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(48.f, 10.f);
+	groundBodyDef.position.Set(position->getX(), position->getY());
 	groundBodyDef.type = b2_dynamicBody;
 
 	//Definimos un caja

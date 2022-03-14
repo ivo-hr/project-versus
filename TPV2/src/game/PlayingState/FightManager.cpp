@@ -2,37 +2,40 @@
 #include "../Entity.h"
 #include "../Utils/MyListener.h"
 
-FightManager::FightManager(SDLUtils* sdl) : world(b2World(b2Vec2(0.f, 20.f))), sdl(sdl)
+FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b2Vec2(0.f, 20.f))), sdl(sdl)
 {
 
 	//Definimos un objeto (estatico)
 	b2BodyDef groundDef;
-	groundDef.position.Set(48.0f, 37.0f);
+	groundDef.position.Set(25.f, 20.f);
 	groundDef.type = b2_staticBody;
 
 	//Anadimos al mundo
 	stage = world.CreateBody(&groundDef);;
 	//Le damos forma...
 	b2PolygonShape floor;
-	float floorW = 55.f, floorH = 4.f;
+	float floorW = 25.f, floorH = 3.f;
 	floor.SetAsBox(floorW / 2, floorH / 2);
 
 	//..cuerpo
 	b2FixtureDef fixt;
 	fixt.shape = &floor;
 	fixt.density = 10.0f;
-	fixt.friction = 0.9f;
+	fixt.friction = 0.5f;
 
 	stage->CreateFixture(&fixt);
+
+	b2ToSDL = (sdl->width() * screenAdjust) / 50.f;
 
 	//--------------------------
 
 	//Creo las cajas que representaran a los objetos
 	stageRect = GetSDLCoors(stage, floorW, floorH);
 
-	//
 	listener = new MyListener();
 	world.SetContactListener(listener);
+
+	deathZone = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
 }
 
 FightManager::~FightManager()
@@ -55,6 +58,7 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 
 		Uint32 startTime = sdl->currRealTime();
 
+
 		ih.refresh();		//QUE WEA
 
 		if (ih.isKeyDown(SDLK_ESCAPE))
@@ -72,6 +76,7 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 		//Dibujamos las cajas
 		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 		SDL_RenderDrawRect(sdl->renderer(), &stageRect);
+		SDL_RenderDrawRect(sdl->renderer(), &deathZone);
 
 		for (Entity* ent : entities)
 		{
@@ -108,9 +113,9 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 
 		double frameTime = sdl->currRealTime() - startTime;
 
-		if (frameTime < (step * 1000) + addedDelay)
+		if (frameTime < (step * 1000))
 		{
-			SDL_Delay((step * 1000) + addedDelay);
+			SDL_Delay((step * 1000));
 		}
 
 		addedDelay = 0;
@@ -135,6 +140,7 @@ bool FightManager::RemoveEntity(Entity* ent)
 				entities[j - 1] = entities[j];
 			}
 			entities.pop_back();
+			delete ent;
 		}
 	}
 	return false;
@@ -174,8 +180,8 @@ std::vector<Entity*> FightManager::GetOponents(Entity* current)
 
 SDL_Rect FightManager::GetSDLCoors(b2Body* body, float width, float height)
 {
-	return { (int)(body->GetPosition().x * b2ToSDL - width * b2ToSDL / 2.f),
-		(int)(body->GetPosition().y * b2ToSDL - height * b2ToSDL / 2.f),
+	return { (int)((body->GetPosition().x * b2ToSDL) - (width * b2ToSDL) / 2.f),
+		(int)((body->GetPosition().y * b2ToSDL) - (height * b2ToSDL) / 2.f),
 		(int)(width * b2ToSDL),
 		(int)(height * b2ToSDL) };
 }
