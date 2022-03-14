@@ -51,6 +51,10 @@ void Character::update()
 		moving = true;
 		dir = -1;
 	}
+	else if (input->down() && currentMove == nullptr && onGround) {
+		shield = true;
+		std::cout << shield << std::endl;
+	}
 	// Ataque con A (provisional)
 	else if (input->basic() && currentMove == nullptr && onGround)
 	{
@@ -82,6 +86,11 @@ void Character::update()
 			body->SetLinearVelocity(b2Vec2(speed, 0));
 			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
 		}
+	}
+
+	if (!input->down()) {
+		shield = false;
+		std::cout << shield << std::endl;
 	}
 	//boolean to check collision with the ground
 	if (GetGround())

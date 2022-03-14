@@ -17,6 +17,7 @@ protected:
 	int stun;
 
 	bool moving;
+	bool shield;
 	int maxSpeed;
 	int speed;
 
