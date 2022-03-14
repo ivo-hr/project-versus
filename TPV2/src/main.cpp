@@ -41,7 +41,7 @@ int main(int ac, char **av) {
 	SDL_Renderer* gRenderer = NULL;
 
 	//Ponemos en pantalla completa
-	//sdl.toggleFullScreen();
+	sdl.toggleFullScreen();
 
 	//show the cursor
 	sdl.showCursor();

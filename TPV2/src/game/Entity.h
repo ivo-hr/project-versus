@@ -5,46 +5,7 @@
 
 class AnimationManager;
 
-class myListener : public b2ContactListener
-{
-public:
-	bool ground = true;
-	void BeginContact(b2Contact* contact)
-	{
-		b2Body* one = contact->GetFixtureA()->GetBody();
-		b2Body* two = contact->GetFixtureB()->GetBody();
-		if (one->GetType() == b2_staticBody)
-		{
-			ground = true;
-			std::cout << ground << std::endl;
-		}
-	}
-	void EndContact(b2Contact* contact)
-	{
-		b2Body* one = contact->GetFixtureA()->GetBody();
-		b2Body* two = contact->GetFixtureB()->GetBody();
-		if (one->GetType() == b2_staticBody)
-		{
-			std::cout << "ground?" << ground << std::endl;
-			ground = false;
-			std::cout << "ground?" << ground << std::endl;
 
-
-		}
-	}
-	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
-	{
-
-	}
-	void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
-	{
-
-	}
-	bool CheckGround()
-	{
-		return ground;
-	}
-};
 
 //TODO ESTO DEBERIA SALIR DE JSON TAMBIEN AAAAAAAAAA
 
@@ -107,7 +68,6 @@ protected:
 
 	bool onGround;
 
-	myListener listener;
 public:
 
 
@@ -124,7 +84,8 @@ public:
 	virtual float GetHeight() { return height; };
 	virtual void GetHit(attackData a, int dir) = 0;
 	virtual SDL_Rect* GetHurtbox();
+	virtual b2Body* GetBody() { return body; };
+	void SetGround(bool ground);
+	bool GetGround() { return onGround; };
 	//virtual void SendToHUD(Texture* tex);
-	//bool GetGround() { return onGround; };
-	//void SetGround(bool ground);
 };

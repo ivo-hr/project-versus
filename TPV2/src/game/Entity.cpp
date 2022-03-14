@@ -1,6 +1,7 @@
 #include "Entity.h"
 #include "Utils/AnimationManager.h"
 
+
 Entity::Entity(FightManager* mngr) : manager(mngr)
 {
 	this->sdl = mngr->GetSDLU();
@@ -38,8 +39,6 @@ Entity::Entity(FightManager* mngr) : manager(mngr)
 	//Tamaño de la hurtbox del personaje
 	hurtbox = mngr->GetSDLCoors(body, width, height);
 
-	//creamos el detector de colisiones
-	mngr->GetWorld()->SetContactListener(&listener);
 }
 
 Entity::~Entity()
@@ -56,10 +55,10 @@ void Entity::update()
 	anim->update();
 }
 
-/*void Entity::SetGround(bool ground)
+void Entity::SetGround(bool ground)
 {
 	onGround = ground;
-}*/
+}
 
 void Entity::draw()
 {

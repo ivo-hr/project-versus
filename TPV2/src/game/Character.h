@@ -43,8 +43,7 @@ public:
 
 	virtual void GetHit(attackData a, int dir);
 	virtual SDL_Rect* GetHurtbox();
-	bool GetGround() { return onGround; };
-	void SetGround();
+	
 
 	virtual void BasicNeutral(int frameNumber) = 0;
 	virtual void BasicForward(int frameNumber) = 0;

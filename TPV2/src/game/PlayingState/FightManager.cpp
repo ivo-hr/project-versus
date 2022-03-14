@@ -1,5 +1,6 @@
 #include "FightManager.h"
 #include "../Entity.h"
+#include "../Utils/MyListener.h"
 
 FightManager::FightManager(SDLUtils* sdl) : world(b2World(b2Vec2(0.f, 20.f))), sdl(sdl)
 {
@@ -28,6 +29,10 @@ FightManager::FightManager(SDLUtils* sdl) : world(b2World(b2Vec2(0.f, 20.f))), s
 
 	//Creo las cajas que representaran a los objetos
 	stageRect = GetSDLCoors(stage, floorW, floorH);
+
+	//
+	listener = new MyListener();
+	world.SetContactListener(listener);
 }
 
 FightManager::~FightManager()
@@ -41,6 +46,9 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 
 	p1->SetOponents(entities);
 	p2->SetOponents(entities);
+
+	listener->AddCharacter(p1);
+	listener->AddCharacter(p2);
 
 	bool exit_ = false;
 	while (!exit_ && !fightEnded) {

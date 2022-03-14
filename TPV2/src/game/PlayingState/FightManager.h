@@ -3,17 +3,19 @@
 #include <SDL.h>
 #include <iostream>
 #include <box2d.h>
-#include <vector>
 #include <string>
-
+#include <vector>
 
 #include "../../sdlutils/InputHandler.h"
 #include "../../sdlutils/macros.h"
 #include "../../sdlutils/SDLUtils.h"
 
+
 class Entity;
 
 class HUDManager;
+
+class MyListener;
 
 class FightManager
 {
@@ -36,6 +38,9 @@ class FightManager
 	int numPlayers = 2;
 	
 	int addedDelay;
+
+	MyListener* listener;
+	
 
 public:
 	FightManager(SDLUtils* sdl);

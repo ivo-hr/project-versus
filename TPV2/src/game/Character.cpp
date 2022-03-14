@@ -9,7 +9,7 @@ Character::Character(FightManager* manager,char input) : Entity(manager)
 
 	stun = 0;
 
-	manager->GetWorld()->SetContactListener(&listener);
+
 	this->input = new InputConfig(input);
 }
 
@@ -24,31 +24,23 @@ void Character::update()
 	if (stun > 0)
 		stun--;
 
-	SetGround();
-	
-	if (input->right())
+	if (input->right() && !input->left())
 	{
 		speed = maxSpeed;
 		moving = true;
 		dir = 1;
 	}
-	else if (input->left())
+	else if (input->left() && !input->right())
 	{
 		speed = -maxSpeed;
 		moving = true;
 		dir = -1;
 	}
-	
-	else if (input->up() && currentMove == nullptr)
+	else if (input->right() && input->left())
 	{
-		if (jumpCounter > 0) {
-			if (!GetGround())
-			{
-				jumpCounter--;
-			}
-			body->SetLinearVelocity(b2Vec2(speed, 0));
-			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
-		}
+		speed = 0;
+		moving = false;
+
 	}
 	// Ataque con A (provisional)
 	else if (input->basic() && currentMove == nullptr && onGround)
@@ -70,6 +62,17 @@ void Character::update()
 		// para que no haya movimiento infinito (experimental)
 		moving = false;
 
+	}
+	if (input->up() && currentMove == nullptr)
+	{
+		if (jumpCounter > 0) {
+			if (!GetGround())
+			{
+				jumpCounter--;
+			}
+			body->SetLinearVelocity(b2Vec2(speed, 0));
+			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
+		}
 	}
 	//boolean to check collision with the ground
 	if (GetGround())
@@ -113,11 +116,6 @@ void Character::update()
 
 	Entity::update();
 
-}
-
-void Character::SetGround()
-{
-	onGround = listener.CheckGround();
 }
 
 void Character::draw()
