@@ -49,7 +49,21 @@ int main(int ac, char **av) {
 	ih.initialiseJoysticks();
 	//------------------------------------------------------------------------------------------
 
-	FightManager* fghtmngr = new FightManager(&sdl, (float)DM.h / (float)sdl.height());
+	//Dependiendo de la resolucion con respecto a 16 : 9 tiene que ajustarse al ancho o al alto
+
+	float ancho = (float)DM.w / (float)sdl.width();
+	float alto = (float)DM.h / (float)sdl.height();
+
+	double ratioFin;
+
+	if (ancho <= alto)
+	{
+		ratioFin = ancho;
+	}
+	else 
+		ratioFin = alto;
+
+	FightManager* fghtmngr = new FightManager(&sdl, ratioFin);
 
 	Character* character1 = new CharacterZero(fghtmngr, new Vector2D(20, 0), 0);
 	Character* boxingBag = new CharacterZero(fghtmngr, new Vector2D(30, 0), 1);

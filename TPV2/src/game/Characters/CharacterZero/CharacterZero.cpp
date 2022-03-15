@@ -25,19 +25,21 @@ CharacterZero::CharacterZero(FightManager* mngr, Vector2D* pos, char input) : Ch
 	// variables
 	weight = 10;
 	damageTaken = 0;
-	maxSpeed = 40;
+	maxSpeed = 30;
 	speed = 0;
 	maxJumps = 1;
-	jumpStr = 10000;
+	jumpStr = 1500;
 	jumpCounter = maxJumps;
 	onGround = true;
 
 	//Datos para las animaciones (tendrá que venir de json claramente solo hay tres y ya ocupan 37 lineas xd)
 
-	spData.leftOffset = 2;
-	spData.upOffset = 20;
-	spData.sizeXOffset = 12;
-	spData.sizeYOffset = 20;
+	//Mirando a la derecha
+
+	spData.leftOffset = 4;		//Pixeles en sprite que se dibujaran fuera de la hurtbox a la izquierda
+	spData.upOffset = 48;
+	spData.sizeXOffset = 28;	//Cuantos pixeles en X NO estan dentro de la hurtbox
+	spData.sizeYOffset = 48;
 
 	spData.spritesInX = 5;
 	spData.spritesInY = 4;

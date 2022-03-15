@@ -36,6 +36,8 @@ void AnimationManager::UpdateIndex()
 	}
 }
 
+//-------------------------------------------------------------------------------------------------------------------------------------------
+
 AnimationManager::AnimationManager(Entity* entity, Texture* textura, spriteSheetData data) : texture(textura), info(data)
 {
 	ent = entity;
@@ -55,14 +57,21 @@ AnimationManager::AnimationManager(Entity* entity, Texture* textura, spriteSheet
 	//recorteSheet 
 	recorteSheet = { w * data.spritesInX, h * data.spritesInY, w, h };
 
-	xOffset = data.leftOffset * ent->GetWidth();
-	yOffset = data.upOffset * ent->GetHeight();
+	//ent->GetManager()->GetScreenRatio() a 1920, 1080 esto es 3.75
+
+	xOffset = (data.leftOffset * ent->GetWidth()) * ent->GetManager()->GetScreenRatio() / 4.7f;		//En zero (offset = 4, width = 3, tiene que dar APROX 10
+	//xOffset = 10.f;
+	yOffset = data.upOffset * ent->GetHeight() * ent->GetManager()->GetScreenRatio() / 4.7f;			//En zero (offset = 48, height = 3, tiene que dar APROX 115
+	//yOffset = 115.f;
+
 
 	//Este rect representa donde se va a renderizar la textura una vez recortada
 	dest = *entity->GetHurtbox();
 
-	dest.w += data.sizeXOffset * ent->GetWidth();
-	dest.h += data.sizeYOffset * ent->GetHeight();
+	dest.w += data.sizeXOffset * ent->GetWidth() * ent->GetManager()->GetScreenRatio() / 4.7f;		//En zero (offset = 28, width = 3, tiene que dar APROX 68
+	//dest.w += 68;
+	dest.h += data.sizeYOffset * ent->GetHeight() * ent->GetManager()->GetScreenRatio() / 4.7f;		//En zero (offset = 48, height = 3, tiene que dar APROX 115
+	//dest.h += 115.f;
 
 	//Inicializamos la animacion primera (en zero es idle)
 	currentAnim = data.animations[0];
@@ -120,6 +129,11 @@ void AnimationManager::render()
 	else {
 		texture->render(recorteSheet, dest, 0., nullptr, SDL_FLIP_HORIZONTAL);
 	}
+
+	////If debug...
+	//SDL_SetRenderDrawColor(ent->GetManager()->GetSDLU()->renderer(), 128, 128, 255, 255);
+	//SDL_RenderDrawRect(ent->GetManager()->GetSDLU()->renderer(), &dest);
+
 }
 
 void AnimationManager::StartAnimation(int index)

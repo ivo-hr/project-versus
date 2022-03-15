@@ -63,7 +63,7 @@ void Entity::draw()
 {
 	anim->render();
 	//if (debug)
-	SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 255, 255);
+	SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 0, 255);
 	SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
 
 	//dibujar los sprite bruh

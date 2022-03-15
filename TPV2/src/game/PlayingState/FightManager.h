@@ -60,6 +60,7 @@ public:
 	int b2ToSDLX(b2Body* body, float width);
 	int b2ToSDLY(b2Body* body, float height);
 
+	double GetScreenRatio() { return (b2ToSDL * 50) / sdl->width(); };
 
 	std::vector<Entity*> GetOponents(Entity* current);
 	b2World* GetWorld() { return &world; };
