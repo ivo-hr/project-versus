@@ -17,9 +17,11 @@ protected:
 	int stun;
 
 	bool moving;
-	bool shield;
 	int maxSpeed;
 	int speed;
+	bool shield;
+	int shieldCounter;
+	int maxShield;
 
 	//Variables para el salto (fuerza, maximonumero permitido, y el contador)
 	int jumpStr;
@@ -56,5 +58,6 @@ public:
 	virtual void SpecialUpward(int frameNumber) = 0;
 	virtual void SpecialDownward(int frameNumber) = 0;
 
+	virtual void Shield() = 0;
 	
 };

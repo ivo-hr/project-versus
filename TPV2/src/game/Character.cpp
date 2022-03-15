@@ -9,7 +9,7 @@ Character::Character(FightManager* manager, Vector2D* pos, char input) :
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
 	stun = 0;
-
+	shieldCounter = maxShield;
 
 	this->input = new InputConfig(input);
 }
@@ -52,9 +52,11 @@ void Character::update()
 		moving = true;
 		dir = -1;
 	}
-	else if (input->down() && currentMove == nullptr && onGround) {
-		shield = true;
-		std::cout << shield << std::endl;
+	else if (input->down() && currentMove == nullptr && onGround && shieldCounter > 0) {
+
+		Shield();
+		std::cout << shield << endl;
+
 	}
 	// Ataque con A (provisional)
 	else if (input->basic() && currentMove == nullptr && onGround)
@@ -88,10 +90,15 @@ void Character::update()
 			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
 		}
 	}
+	// para que se quite el escudo
 
 	if (!input->down()) {
-		shield = false;
-		std::cout << shield << std::endl;
+		if (shield)
+		{
+			shield = false;
+		}
+		if (shieldCounter < maxShield)
+			shieldCounter++;	
 	}
 	//boolean to check collision with the ground
 	if (GetGround())
@@ -147,25 +154,34 @@ void Character::draw()
 
 void Character::GetHit(attackData a, int opdir)
 {
-
-	float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
-
-	if (a.base >= 0)
+	std::cout << shield << endl;
+	if(shield)
 	{
-		stun = recoil / 1.8f;
+		//Actualiza el daño
+		damageTaken += (int)(a.damage*0.4f);
+	}
+	else if (!shield)
+	{
+		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
+
+		if (a.base >= 0)
+		{
+			stun = recoil / 1.8f;
+		}
+
+		//Actualiza el daño
+		damageTaken += a.damage;
+		
+		b2Vec2 aux = a.direction;
+
+		aux *= recoil;
+		aux.y *= -1;
+		aux.x *= opdir;
+
+		//Produce el knoback..
+		body->SetLinearVelocity(aux);
 	}
 
-	//Actualiza el daño
-	damageTaken += a.damage;
-
-	b2Vec2 aux = a.direction;
-
-	aux *= recoil;
-	aux.y *= -1;
-	aux.x *= opdir;
-
-	//Produce el knoback..
-	body->SetLinearVelocity(aux);
 }
 
 
