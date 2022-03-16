@@ -145,6 +145,10 @@ bool FightManager::RemoveEntity(Entity* ent)
 			delete ent;
 		}
 	}
+	for (int i = 0; i < entities.size(); i++)
+	{
+		entities[i]->SetOponents(entities);
+	}
 	return false;
 }
 
@@ -184,6 +188,14 @@ SDL_Rect FightManager::GetSDLCoors(b2Body* body, float width, float height)
 {
 	return { (int)((body->GetPosition().x * b2ToSDL) - (width * b2ToSDL) / 2.f),
 		(int)((body->GetPosition().y * b2ToSDL) - (height * b2ToSDL) / 2.f),
+		(int)(width * b2ToSDL),
+		(int)(height * b2ToSDL) };
+}
+
+SDL_Rect FightManager::GetSDLCoors(float x, float y, float width, float height)
+{
+	return { (int)((x * b2ToSDL) - (width * b2ToSDL) / 2.f),
+		(int)((y * b2ToSDL) - (height * b2ToSDL) / 2.f),
 		(int)(width * b2ToSDL),
 		(int)(height * b2ToSDL) };
 }

@@ -15,6 +15,7 @@ protected:
 	attackData ataqueDebil;
 
 	int stun;
+	int lives;
 
 	bool moving;
 	int maxSpeed;
@@ -34,6 +35,9 @@ protected:
 
 	//frame actual del movimiento que este haciendo
 	int moveFrame = 0;
+
+	bool alive = true;
+	int respawnFrames = 150;
 	//Metodo del movimiento que este haciendo (esto es una variable que guarda metodos :v)
 	void (Character::* currentMove)(int);
 public:
@@ -46,6 +50,8 @@ public:
 
 	virtual void GetHit(attackData a, int dir);
 	virtual SDL_Rect* GetHurtbox();
+
+	virtual void OnDeath() override;
 	
 
 	virtual void BasicNeutral(int frameNumber) = 0;

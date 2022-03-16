@@ -56,6 +56,11 @@ void Entity::update()
 	hurtbox.y = manager->b2ToSDLY(body, height);
 
 	anim->update();
+
+	if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()))
+	{
+		OnDeath();
+	}
 }
 
 void Entity::SetGround(bool ground)
@@ -73,6 +78,10 @@ void Entity::draw()
 //Le decimos a quien toca dar de ostias xd
 void Entity::SetOponents(std::vector<Entity*> ents)
 {
+	for (int i = 0; i < oponents.size(); i++)
+	{
+		oponents.pop_back();
+	}
 	for (int i = 0; i < ents.size(); i++)
 	{
 		if (ents[i] != this)

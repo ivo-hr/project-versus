@@ -11,6 +11,8 @@ Character::Character(FightManager* manager, Vector2D* pos, char input) :
 	stun = 0;
 	shieldCounter = maxShield;
 
+	lives = 3;
+
 	this->input = new InputConfig(input);
 }
 
@@ -96,6 +98,7 @@ void Character::update()
 		if (shield)
 		{
 			shield = false;
+			anim->StartAnimation(0);
 		}
 		if (shieldCounter < maxShield)
 			shieldCounter++;	
@@ -205,11 +208,15 @@ void Character::GetHit(attackData a, int opdir)
 
 }
 
-
-
 SDL_Rect* Character::GetHurtbox()
 {
 	return &hurtbox;
+}
+
+void Character::OnDeath()
+{
+	alive = false;
+	lives--;
 }
 
 
