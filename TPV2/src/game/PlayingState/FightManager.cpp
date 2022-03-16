@@ -22,6 +22,8 @@ FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b
 	fixt.shape = &floor;
 	fixt.density = 10.0f;
 	fixt.friction = 0.5f;
+	fixt.filter.categoryBits = 0x0002;
+	fixt.filter.maskBits = 0x0001; // Colisiona con los personajes (tienen este categoryBits en Entity)
 
 	stage->CreateFixture(&fixt);
 
