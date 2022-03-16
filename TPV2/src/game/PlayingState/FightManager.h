@@ -57,12 +57,14 @@ public:
 	void FighterLost(Entity* loser);
 
 	SDL_Rect GetSDLCoors(b2Body* body, float width, float height);
+	SDL_Rect GetSDLCoors(float x, float y, float width, float height);
 	int b2ToSDLX(b2Body* body, float width);
 	int b2ToSDLY(b2Body* body, float height);
 
 	double GetScreenRatio() { return (b2ToSDL * 50) / sdl->width(); };
 
 	std::vector<Entity*> GetOponents(Entity* current);
+	SDL_Rect* GetDeathZone() { return &deathZone; };
 	b2World* GetWorld() { return &world; };
 	SDLUtils* GetSDLU() { return sdl; };
 };

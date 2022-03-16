@@ -35,10 +35,10 @@ bool InputConfig::down()
 		break;
 	case 2:
 
-		return ih.getAxesState(0, 4) == -1;
+		return ih.getAxesState(0, 4) == 1;
 		break;
 	case 3:
-		return ih.getAxesState(1, 4) == -1;
+		return ih.getAxesState(1, 4) == 1;
 		break;
 	}
 }
