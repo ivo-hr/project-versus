@@ -9,7 +9,7 @@ Character::Character(FightManager* manager, Vector2D* pos, char input) :
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
 	stun = 0;
-	shieldCounter = maxShield;
+	shieldCounter = maxShield = 60;
 
 	lives = 3;
 
@@ -66,7 +66,7 @@ void Character::update()
 		dir = -1;
 	}
 	// Ataque con A (provisional)
-	else if (input->basic() && currentMove == nullptr && onGround)
+	if (input->basic() && currentMove == nullptr && onGround)
 	{
 		//paramos al personaje
 		body->SetLinearVelocity(b2Vec2(0, 0));
@@ -76,17 +76,17 @@ void Character::update()
 	}
 
 	// Ataque con B (provisional)
-	else if (input->special() && currentMove == nullptr && onGround)
+	if (input->special() && currentMove == nullptr && onGround)
 	{
 		currentMove = &Character::SpecialNeutral;
 	}
-	else if (input->down() && currentMove == nullptr && onGround && shieldCounter > 0) {
+	if (input->down() && currentMove == nullptr && onGround && shieldCounter > 0) {
 
 		currentMove = &Character::StartShield;
 		shieldCounter--;
 		std::cout << shield << endl;
 		std::cout << shieldCounter << endl;
-
+		body->SetLinearVelocity(b2Vec2(0, 0));
 
 	}
 	else if (input->stop())
@@ -106,17 +106,7 @@ void Character::update()
 			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
 		}
 	}
-	// para que se quite el escudo
-
-	if (!input->down()) {
-		if (shield)
-		{
-			shield = false;
-			anim->StartAnimation(0);
-		}
-		if (shieldCounter < maxShield)
-			shieldCounter++;	
-	}
+	
 	//boolean to check collision with the ground
 	if (GetGround())
 	{
@@ -214,16 +204,12 @@ void Character::GetHit(attackData a, int opdir)
 }
 void Character::StartShield(int frameNumber)
 {
-	switch (frameNumber)
-	{
-	case 0:
+	if (frameNumber == 1)
 	{
 		anim->StartAnimation(3);
 		shield = true;
-		break;
 	}
-	}
-	if (!input->down()|| shieldCounter <= 0)
+	if (!input->down() || shieldCounter <= 0)
 	{
 		currentMove = &Character::EndShield;
 	}
