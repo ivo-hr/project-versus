@@ -79,7 +79,7 @@ CharacterZero::CharacterZero(FightManager* mngr, Vector2D* pos, char input) : Ch
 	aux.keySprite = -1;
 	aux.hitboxFrame = -1;
 	aux.totalFrames = 5;
-	aux.loop = false;
+	aux.loop = true;
 
 	spData.animations.push_back(aux);
 
@@ -194,6 +194,4 @@ void CharacterZero::Shield()
 	anim->StartAnimation(3);
 	shield = true;	
 	shieldCounter--;
-
-	
 }

@@ -149,6 +149,19 @@ void Character::draw()
 	//xd
 
 	Entity::draw();
+
+	//if (debug)
+
+	if (!shield)
+	{
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 0, 255);
+		SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
+	}
+	else
+	{
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 255, 255);
+		SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
+	}
 }
 
 

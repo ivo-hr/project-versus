@@ -113,7 +113,7 @@ void AnimationManager::update()
 		recorteSheet = { w * (int)SpriteIndex[currIndex].x, h * (int)SpriteIndex[currIndex].y, w, h };
 	}
 	else {
-		dest.x = aux.x + xOffset - info.sizeXOffset * ent->GetWidth();
+		dest.x = aux.x + xOffset - info.sizeXOffset * ent->GetWidth() * ent->GetManager()->GetScreenRatio() / 4.7f;
 		dest.y = aux.y - yOffset;
 
 		recorteSheet = { w * (int)SpriteIndex[currIndex].x, h * (int)SpriteIndex[currIndex].y, w, h };
