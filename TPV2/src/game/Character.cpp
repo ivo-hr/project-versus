@@ -9,8 +9,9 @@ Character::Character(FightManager* manager, Vector2D* pos, char input) :
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
 	stun = 0;
+	maxShield = 60;
 	shieldCounter = maxShield;
-
+	dash = false;
 	this->input = new InputConfig(input);
 }
 
@@ -21,7 +22,7 @@ Character::~Character()
 
 void Character::update()
 {
-
+	std::cout << shieldCounter << std::endl;
 	if (stun > 0)
 		stun--;
 
@@ -71,10 +72,6 @@ void Character::update()
 
 		currentMove = &Character::StartShield;
 		shieldCounter--;
-		std::cout << shield << endl;
-		std::cout << shieldCounter << endl;
-
-
 	}
 	else if (input->stop())
 	{
@@ -93,18 +90,24 @@ void Character::update()
 			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
 		}
 	}
-	// para que se quite el escudo
 
-	if (!input->down()) {
-		if (shield)
-		{
-			shield = false;
+	//dash
+	if (input->down() && currentMove == nullptr && !onGround) {
 
-		}
-		if (shieldCounter < maxShield)
-			shieldCounter++;	
+		currentMove = &Character::Dash;
 	}
-	//boolean to check collision with the ground
+
+	//para recuperar escudo
+	if (currentMove != &Character::StartShield && shieldCounter < maxShield)
+	{
+		shieldCounter++;
+	}
+	else if (currentMove == &Character::StartShield)
+	{
+		shieldCounter--;
+	}
+
+
 	if (GetGround())
 	{
 		jumpCounter = maxJumps;
@@ -164,14 +167,19 @@ void Character::draw()
 
 	//if (debug)
 
-	if (!shield)
+	if (shield)
 	{
-		SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 0, 255);
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 255, 255);
+		SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
+	}
+	else if (dash)
+	{
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 255, 255);
 		SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
 	}
 	else
 	{
-		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 255, 255);
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 0, 255);
 		SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
 	}
 }
@@ -180,12 +188,16 @@ void Character::draw()
 void Character::GetHit(attackData a, int opdir)
 {
 	std::cout << shield << endl;
-	if(shield)
+	if (shield)
 	{
 		//Actualiza el daño
-		damageTaken += (int)(a.damage*0.4f);
+		damageTaken += (int)(a.damage * 0.4f);
 	}
-	else if (!shield)
+	if (dash)
+	{
+
+	}
+	else if (!shield && !dash)
 	{
 		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
 

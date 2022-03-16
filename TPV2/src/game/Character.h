@@ -22,6 +22,7 @@ protected:
 	bool shield;
 	int shieldCounter;
 	int maxShield;
+	bool dash;
 
 	//Variables para el salto (fuerza, maximonumero permitido, y el contador)
 	int jumpStr;
@@ -60,5 +61,5 @@ public:
 
 	virtual void StartShield(int frameNumber);
 	virtual void EndShield(int frameNumber);
-	
+	virtual void Dash(int frameNumber) = 0;
 };

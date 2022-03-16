@@ -32,7 +32,6 @@ CharacterZero::CharacterZero(FightManager* mngr, Vector2D* pos, char input) : Ch
 	jumpCounter = maxJumps;
 	onGround = true;
 	shield = false;
-	maxShield = 60;
 	//Datos para las animaciones (tendrá que venir de json claramente solo hay tres y ya ocupan 37 lineas xd)
 
 	//Mirando a la derecha
@@ -187,5 +186,30 @@ void CharacterZero::SpecialNeutral(int frameNumber)
 		currentMove = nullptr;
 		moveFrame = -1;
 		break;
+	}
+}
+void CharacterZero::Dash(int frameNumber)
+{
+
+	switch (frameNumber)
+	{
+	case 0:
+		anim->StartAnimation(3);
+		dash = true;
+		body->SetLinearVelocity(b2Vec2(0, 500));
+	break;
+	case 60:
+		dash = false;
+		currentMove = nullptr;
+		moveFrame = -1;
+		anim->StartAnimation(0);
+		break;
+	}
+	if (onGround)
+	{
+		dash = false;
+		currentMove = nullptr;
+		moveFrame = -1;
+		anim->StartAnimation(0);
 	}
 }
