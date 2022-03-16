@@ -37,6 +37,8 @@ Entity::Entity(FightManager* mngr, Vector2D* position) : manager(mngr)
 
 	dir = 1;
 
+	respawnPos = position;
+
 	//Tamaño de la hurtbox del personaje
 	hurtbox = mngr->GetSDLCoors(body, width, height);
 

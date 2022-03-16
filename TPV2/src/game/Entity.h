@@ -72,6 +72,9 @@ protected:
 	int respawnTimer = 0;
 	int respawnFrames;
 
+	int lives = 3;
+	Vector2D respawnPos;
+
 
 public:
 

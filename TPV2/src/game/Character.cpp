@@ -118,6 +118,14 @@ void Character::update()
 	if (currentMove == nullptr && stun == 0)
 		body->SetLinearVelocity(b2Vec2(speed, body->GetLinearVelocity().y));
 
+	//Que se muera al caer
+	if (body->GetPosition().y > 30 && lives > 0) {
+		lives--;
+		std::cout << "Vidas restantes: " << lives << "\n";
+		body->SetTransform({respawnPos.getX(), respawnPos.getY() }, 0);
+		body->SetLinearVelocity({ 0, 0 }); // resetea la velocidad
+	}
+
 
 	//Si se da la tecla del ataque y no hay un ataque en ejecucion...
 
