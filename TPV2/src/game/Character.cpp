@@ -65,12 +65,6 @@ void Character::update()
 		moving = true;
 		dir = -1;
 	}
-	else if (input->down() && currentMove == nullptr && onGround && shieldCounter > 0) {
-
-		Shield();
-		std::cout << shield << endl;
-
-	}
 	// Ataque con A (provisional)
 	else if (input->basic() && currentMove == nullptr && onGround)
 	{
@@ -85,6 +79,15 @@ void Character::update()
 	else if (input->special() && currentMove == nullptr && onGround)
 	{
 		currentMove = &Character::SpecialNeutral;
+	}
+	else if (input->down() && currentMove == nullptr && onGround && shieldCounter > 0) {
+
+		currentMove = &Character::StartShield;
+		shieldCounter--;
+		std::cout << shield << endl;
+		std::cout << shieldCounter << endl;
+
+
 	}
 	else if (input->stop())
 	{
@@ -208,6 +211,29 @@ void Character::GetHit(attackData a, int opdir)
 		body->SetLinearVelocity(aux);
 	}
 
+}
+void Character::StartShield(int frameNumber)
+{
+	switch (frameNumber)
+	{
+	case 0:
+	{
+		anim->StartAnimation(3);
+		shield = true;
+		break;
+	}
+	}
+	if (!input->down()|| shieldCounter <= 0)
+	{
+		currentMove = &Character::EndShield;
+	}
+}
+void Character::EndShield(int frameNumber)
+{
+	anim->StartAnimation(0);
+	currentMove = nullptr;
+	moveFrame = -1;
+	shield = false;
 }
 
 SDL_Rect* Character::GetHurtbox()

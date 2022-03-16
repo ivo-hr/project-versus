@@ -189,9 +189,3 @@ void CharacterZero::SpecialNeutral(int frameNumber)
 		break;
 	}
 }
-void CharacterZero::Shield()
-{
-	anim->StartAnimation(3);
-	shield = true;	
-	shieldCounter--;
-}
