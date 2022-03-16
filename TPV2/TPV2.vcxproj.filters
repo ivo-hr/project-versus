@@ -191,8 +191,5 @@
     <ClCompile Include="src\game\Utils\InputConfig.cpp">
       <Filter>Source Files\game\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\Utils\MyListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

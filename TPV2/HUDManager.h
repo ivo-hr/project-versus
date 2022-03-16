@@ -34,7 +34,7 @@ public:
 		
 	}
 
-	virtual void init();
+	virtual void init() {};
 protected:
 	HUDManager(float x, float y);
 	~HUDManager();

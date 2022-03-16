@@ -22,8 +22,8 @@ FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b
 	fixt.shape = &floor;
 	fixt.density = 10.0f;
 	fixt.friction = 0.5f;
-	fixt.filter.categoryBits = 0x0002;
-	fixt.filter.maskBits = 0x0001; // Colisiona con los personajes (tienen este categoryBits en Entity)
+	fixt.filter.categoryBits = 2;
+	fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
 
 	stage->CreateFixture(&fixt);
 
@@ -33,6 +33,7 @@ FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b
 
 	//Creo las cajas que representaran a los objetos
 	stageRect = GetSDLCoors(stage, floorW, floorH);
+	platformRect = GetSDLCoors(platform, platW, platH);
 
 	listener = new MyListener();
 	world.SetContactListener(listener);
@@ -78,6 +79,7 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 		//Dibujamos las cajas
 		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 		SDL_RenderDrawRect(sdl->renderer(), &stageRect);
+		SDL_RenderDrawRect(sdl->renderer(), &platformRect);
 		SDL_RenderDrawRect(sdl->renderer(), &deathZone);
 
 		for (Entity* ent : entities)

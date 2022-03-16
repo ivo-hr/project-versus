@@ -20,8 +20,8 @@ Entity::Entity(FightManager* mngr, Vector2D* position) : manager(mngr)
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 3.f;
 	fixtureDef.friction = 0.9f;
-	fixtureDef.filter.categoryBits = 0x0001;
-	fixtureDef.filter.maskBits = 0x0002; // Colisiona con el suelo (tiene este categoryBits en FightManager)
+	fixtureDef.filter.categoryBits = 1;
+	fixtureDef.filter.maskBits = 2; // Colisiona con el suelo (tiene este categoryBits en FightManager)
 
 	body = mngr->GetWorld()->CreateBody(&groundBodyDef);
 	//añadimos el cuerpo al objeto fisico

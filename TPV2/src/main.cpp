@@ -65,8 +65,8 @@ int main(int ac, char **av) {
 
 	FightManager* fghtmngr = new FightManager(&sdl, ratioFin);
 
-	Character* character1 = new CharacterZero(fghtmngr, new Vector2D(20, 0), 2);
-	Character* boxingBag = new CharacterZero(fghtmngr, new Vector2D(30, 0), 3);
+	Character* character1 = new CharacterZero(fghtmngr, new Vector2D(20, 0), 0);
+	Character* boxingBag = new CharacterZero(fghtmngr, new Vector2D(30, 0), 1);
 
 	fghtmngr->StartFight(character1, boxingBag);
 	
