@@ -52,7 +52,7 @@ public:
 	virtual SDL_Rect* GetHurtbox();
 
 	virtual void OnDeath() override;
-	
+	virtual void Respawn();
 
 	virtual void BasicNeutral(int frameNumber) = 0;
 	virtual void BasicForward(int frameNumber) = 0;
