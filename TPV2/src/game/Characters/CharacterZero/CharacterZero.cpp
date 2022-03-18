@@ -123,21 +123,9 @@ void CharacterZero::BasicNeutral(int frameNumber)
 		hitbox.y += hitbox.h / 2;
 
 		hitbox.x += dir * 60;
+		
+		hitboxes.push_back(new Hitbox(hitbox, ataqueFuerte, 1, OnHitData(20, false, false)));
 
-		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-		SDL_RenderDrawRect(sdl->renderer(), &hitbox);
-
-		for (int i = 0; i < oponents.size(); i++)
-		{
-			if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox()))
-			{
-				//Le hace daño xddd
-				if (oponents[i]->GetHit(ataqueFuerte, dir))
-				{
-					manager->HitLag(20);
-				}
-			}
-		}
 	}
 	break;
 	case 100:
@@ -171,17 +159,8 @@ void CharacterZero::SpecialNeutral(int frameNumber)
 
 		hitbox.x += dir * 30;
 
-		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-		SDL_RenderDrawRect(sdl->renderer(), &hitbox);
+		hitboxes.push_back(new Hitbox(hitbox, ataqueDebil, 1));
 
-		for (int i = 0; i < oponents.size(); i++)
-		{
-			if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox()))
-			{
-				//Le hace daño xddd
-				oponents[i]->GetHit(ataqueDebil, dir);
-			}
-		}
 	}
 	break;
 	case 20:

@@ -91,6 +91,38 @@ void Entity::SetOponents(std::vector<Entity*> ents)
 	}
 }
 
+void Entity::CheckHits()
+{
+	for (int i = 0; i < hitboxes.size(); i++)
+	{
+		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
+		SDL_RenderDrawRect(sdl->renderer(), &hitboxes[i]->box);
+
+		for (int i = 0; i < oponents.size(); i++)
+		{
+			if (SDL_HasIntersection(&hitboxes[i]->box, oponents[i]->GetHurtbox()))
+			{
+				//Le hace daño xddd
+				if (oponents[i]->GetHit(hitboxes[i]->data, dir))
+				{
+					manager->HitLag(hitboxes[i]->hit.hitlag);
+				}
+			}
+		}
+		hitboxes[i]->duration--;
+		if (hitboxes[i]->duration <= 0)
+		{
+			Hitbox* aux = hitboxes[i];
+			for (int j = i + 1; j < hitboxes.size(); j++)
+			{
+				hitboxes[j - 1] = hitboxes[j];
+			}
+			hitboxes.pop_back();
+			delete aux;
+		}
+	}
+}
+
 SDL_Rect* Entity::GetHurtbox()
 {
 	return &hurtbox;

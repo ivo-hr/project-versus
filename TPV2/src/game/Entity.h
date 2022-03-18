@@ -42,6 +42,31 @@ struct attackData
 	float multiplier;
 };
 
+struct OnHitData {
+	int hitlag;
+	bool zoom;
+	bool bigHit;
+
+	OnHitData() : 
+		hitlag(0), zoom(false), bigHit(false) 
+	{};
+
+	OnHitData(int lag, bool zoomIn, bool bigEffect) :
+		hitlag(lag), zoom(zoomIn), bigHit(bigEffect)
+	{};
+};
+
+struct Hitbox {
+	SDL_Rect box;
+	attackData data;
+	int duration;
+	OnHitData hit;
+
+	Hitbox(SDL_Rect a, attackData da, int frames, OnHitData b = OnHitData()) : 
+		box(a), data(da), duration(frames), hit(b)
+	{};
+};
+
 class Entity
 {
 
@@ -65,6 +90,7 @@ protected:
 	int dir;
 
 	std::vector<Entity*> oponents;
+	std::vector<Hitbox*> hitboxes;
 
 	bool onGround;
 
@@ -87,6 +113,7 @@ public:
 
 	virtual void SetOponents(std::vector<Entity*> op);
 
+	virtual void CheckHits();
 	virtual void OnDeath() { manager->RemoveEntity(this); };
 	virtual bool GetHit(attackData a, int dir) = 0;
 

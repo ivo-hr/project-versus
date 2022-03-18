@@ -103,6 +103,10 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 		}
 		for (Entity* ent : entities)
 		{
+			ent->CheckHits();
+		}
+		for (Entity* ent : entities)
+		{
 			ent->draw();
 		}
 
