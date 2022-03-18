@@ -88,7 +88,7 @@ public:
 	virtual void SetOponents(std::vector<Entity*> op);
 
 	virtual void OnDeath() { manager->RemoveEntity(this); };
-	virtual void GetHit(attackData a, int dir) = 0;
+	virtual bool GetHit(attackData a, int dir) = 0;
 
 	FightManager* GetManager() { return manager; };
 

@@ -20,6 +20,4 @@ public:
 	virtual void SpecialUpward(int frameNumber) override {};
 	virtual void SpecialDownward(int frameNumber) override {};
 
-	virtual void Dash(int frameNumber) override ;
-
 };

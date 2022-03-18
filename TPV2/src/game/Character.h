@@ -49,7 +49,7 @@ public:
 	virtual void update() override;
 	virtual void draw() override;
 
-	virtual void GetHit(attackData a, int dir);
+	virtual bool GetHit(attackData a, int dir);
 	virtual SDL_Rect* GetHurtbox();
 
 	virtual void OnDeath() override;
@@ -67,5 +67,5 @@ public:
 
 	virtual void StartShield(int frameNumber);
 	virtual void EndShield(int frameNumber);
-	virtual void Dash(int frameNumber) = 0;
+	virtual void Dash(int frameNumber);
 };

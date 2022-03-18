@@ -131,9 +131,11 @@ void CharacterZero::BasicNeutral(int frameNumber)
 		{
 			if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox()))
 			{
-				manager->HitLag(20);
 				//Le hace daño xddd
-				oponents[i]->GetHit(ataqueFuerte, dir);
+				if (oponents[i]->GetHit(ataqueFuerte, dir))
+				{
+					manager->HitLag(20);
+				}
 			}
 		}
 	}
@@ -186,30 +188,5 @@ void CharacterZero::SpecialNeutral(int frameNumber)
 		currentMove = nullptr;
 		moveFrame = -1;
 		break;
-	}
-}
-void CharacterZero::Dash(int frameNumber)
-{
-
-	switch (frameNumber)
-	{
-	case 0:
-		anim->StartAnimation(3);
-		dash = true;
-		body->SetLinearVelocity(b2Vec2(0, 500));
-	break;
-	case 60:
-		dash = false;
-		currentMove = nullptr;
-		moveFrame = -1;
-		anim->StartAnimation(0);
-		break;
-	}
-	if (onGround)
-	{
-		dash = false;
-		currentMove = nullptr;
-		moveFrame = -1;
-		anim->StartAnimation(0);
 	}
 }

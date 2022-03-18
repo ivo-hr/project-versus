@@ -31,86 +31,90 @@ void Character::update()
 		{
 			Respawn();
 			respawnFrames = 150;
-			alive = true;
 		}
+		return;
 	}
 
 	if (stun > 0)
 		stun--;
 
-	if (input->right() && input->left())
+	if (currentMove == nullptr && stun == 0)
 	{
-		if (speed > 0) {
-			speed = -maxSpeed;
-			moving = true;
-			dir = -1;
+		if (input->right() && input->left())
+		{
+			if (speed > 0) {
+				speed = -maxSpeed;
+				moving = true;
+				dir = -1;
+			}
+			else if (speed < 0) {
+				speed = maxSpeed;
+				moving = true;
+				dir = 1;
+			}
+			else moving = false;
+
 		}
-		else if (speed < 0) {
+		else if (input->right())
+		{
 			speed = maxSpeed;
 			moving = true;
 			dir = 1;
 		}
-		else moving = false;
-
-	}
-	else if (input->right())
-	{
-		speed = maxSpeed;
-		moving = true;
-		dir = 1;
-	}
-	else if (input->left())
-	{
-		speed = -maxSpeed;
-		moving = true;
-		dir = -1;
-	}
-	// Ataque con A (provisional)
-	if (input->basic() && currentMove == nullptr && onGround)
-	{
-		//paramos al personaje
-		body->SetLinearVelocity(b2Vec2(0, 0));
-
-		//Declaramos el valor del ataque como el ataque que queramos
-		currentMove = &Character::BasicNeutral;
-	}
-
-	// Ataque con B (provisional)
-	if (input->special() && currentMove == nullptr && onGround)
-	{
-		currentMove = &Character::SpecialNeutral;
-	}
-	if (input->down() && currentMove == nullptr && onGround && shieldCounter > 0) {
-
-		currentMove = &Character::StartShield;
-		shieldCounter--;
-		std::cout << shield << endl;
-		std::cout << shieldCounter << endl;
-		body->SetLinearVelocity(b2Vec2(0, 0));
-
-	}
-	else if (input->stop())
-	{
-		// para que no haya movimiento infinito (experimental)
-		moving = false;
-
-	}
-	if (input->up() && currentMove == nullptr)
-	{
-		if (jumpCounter > 0) {
-			if (!GetGround())
-			{
-				jumpCounter--;
-			}
-			body->SetLinearVelocity(b2Vec2(speed, 0));
-			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
+		else if (input->left())
+		{
+			speed = -maxSpeed;
+			moving = true;
+			dir = -1;
 		}
-	}
+		// Ataque con A (provisional)
+		if (input->basic() && onGround)
+		{
+			//paramos al personaje
+			body->SetLinearVelocity(b2Vec2(0, 0));
 
-	//dash
-	if (input->down() && currentMove == nullptr && !onGround) {
+			//Declaramos el valor del ataque como el ataque que queramos
+			currentMove = &Character::BasicNeutral;
+		}
 
-		currentMove = &Character::Dash;
+		// Ataque con B (provisional)
+		if (input->special() && onGround)
+		{
+			currentMove = &Character::SpecialNeutral;
+		}
+		if (input->down() && onGround && shieldCounter > 0) {
+
+			currentMove = &Character::StartShield;
+			shieldCounter--;
+			std::cout << shield << endl;
+			std::cout << shieldCounter << endl;
+			body->SetLinearVelocity(b2Vec2(0, 0));
+
+		}
+		else if (input->stop())
+		{
+			// para que no haya movimiento infinito (experimental)
+			moving = false;
+
+		}
+		if (input->up())
+		{
+			if (jumpCounter > 0) {
+				if (!GetGround())
+				{
+					jumpCounter--;
+				}
+				body->SetLinearVelocity(b2Vec2(speed, 0));
+				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
+			}
+		}
+
+		//dash
+		if (input->down() && !onGround) {
+
+			currentMove = &Character::Dash;
+		}
+
 	}
 
 	//para recuperar escudo
@@ -144,7 +148,6 @@ void Character::update()
 	//Si se da la tecla del ataque y no hay un ataque en ejecucion...
 
 
-
 	//// Botones START Y SELECT (de momento solo hacen cout)
 	//if (ih.getButtonState(0, 8))std::cout << "SELECT PRESSED" << std::endl;
 
@@ -170,6 +173,8 @@ void Character::draw()
 {
 	//xd
 
+	if (!alive) return;
+
 	Entity::draw();
 
 	//if (debug)
@@ -177,32 +182,31 @@ void Character::draw()
 	if (shield)
 	{
 		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 255, 255);
-		SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
 	}
 	else if (dash)
 	{
 		SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 255, 255);
-		SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
 	}
 	else
 	{
 		SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 0, 255);
-		SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
 	}
+	SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
 }
 
 
-void Character::GetHit(attackData a, int opdir)
+bool Character::GetHit(attackData a, int opdir)
 {
 	std::cout << shield << endl;
 	if (shield)
 	{
 		//Actualiza el da�o
 		damageTaken += (int)(a.damage * 0.4f);
+		return true;
 	}
 	if (dash)
 	{
-
+		return false;
 	}
 	else if (!shield && !dash)
 	{
@@ -224,6 +228,8 @@ void Character::GetHit(attackData a, int opdir)
 
 		//Produce el knoback..
 		body->SetLinearVelocity(aux);
+
+		return true;
 	}
 
 }
@@ -247,6 +253,32 @@ void Character::EndShield(int frameNumber)
 	shield = false;
 }
 
+void Character::Dash(int frameNumber)
+{
+
+	switch (frameNumber)
+	{
+	case 0:
+		anim->StartAnimation(3);
+		dash = true;
+		body->SetLinearVelocity(b2Vec2(0, 500));
+		break;
+	case 60:
+		dash = false;
+		currentMove = nullptr;
+		moveFrame = -1;
+		anim->StartAnimation(0);
+		break;
+	}
+	if (onGround)
+	{
+		dash = false;
+		currentMove = nullptr;
+		moveFrame = -1;
+		anim->StartAnimation(0);
+	}
+}
+
 SDL_Rect* Character::GetHurtbox()
 {
 	return &hurtbox;
@@ -254,19 +286,34 @@ SDL_Rect* Character::GetHurtbox()
 
 void Character::OnDeath()
 {
+	body->SetAwake(false);
 	alive = false;
 	lives--;
 	currentMove = nullptr;
 	moveFrame = 0;
+	moving = false;
+	shield = false;
+	dash = false;
 }
 
 void Character::Respawn()
 {
+	body->SetAwake(true);
+
 	std::cout << "Vidas restantes: " << lives << "\n";
+
 	body->SetTransform({ respawnPos.getX(), respawnPos.getY() }, 0);
 	body->SetLinearVelocity({ 0, 0 }); // resetea la velocidad
+	speed = 0;
+
+	alive = true;
+	damageTaken = 0;
+	moving = false;
+
 	currentMove = nullptr;
 	moveFrame = 0;
+
+	anim->StartAnimation(0);
 }
 
 
