@@ -14,7 +14,7 @@ public:
 	{
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
-		if (one->GetType() == b2_staticBody)
+		if (one->GetType() == b2_staticBody && contact->IsEnabled())
 		{
 			for (int i = 0; i < characters.size(); i++)
 			{
@@ -39,11 +39,23 @@ public:
 				}
 			}
 
+			if (!contact->IsEnabled())
+			{
+				contact->SetEnabled(true);
+			}
 		}
 	}
 	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 	{
-
+		b2Body* one = contact->GetFixtureA()->GetBody();
+		b2Body* two = contact->GetFixtureB()->GetBody();
+		if (one->GetType() == b2_staticBody && one->GetFixtureList()->GetFilterData().categoryBits == 4 && 
+			(two->GetPosition().y > one->GetPosition().y)) 
+			// (two->GetFixtureList()->GetAABB(0).upperBound.y - two->GetFixtureList()->GetAABB(0).lowerBound.y)
+			// oldManifold->pointCount > 0
+		{ 
+			contact->SetEnabled(false);
+		}
 	}
 	void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
 	{

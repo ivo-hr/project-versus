@@ -22,6 +22,8 @@ class FightManager
 
 	b2Body* stage;
 	SDL_Rect stageRect;
+	b2Body* platform;
+	SDL_Rect platformRect;
 
 	std::vector<Entity*> entities;
 	SDLUtils* sdl;

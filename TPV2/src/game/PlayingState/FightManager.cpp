@@ -22,10 +22,25 @@ FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b
 	fixt.shape = &floor;
 	fixt.density = 10.0f;
 	fixt.friction = 0.5f;
-	fixt.filter.categoryBits = 2;
+	fixt.filter.categoryBits = 2; // 2 para el suelo principal
 	fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
 
 	stage->CreateFixture(&fixt);
+
+	b2BodyDef gDef;
+	gDef.position.Set(12.f, 10.f);
+	gDef.type = b2_staticBody;
+	platform = world.CreateBody(&gDef);
+	b2PolygonShape plat;
+	float platW = 10.f, platH = 2.f;
+	plat.SetAsBox(platW / 2, platH / 2);
+	b2FixtureDef fi;
+	fi.shape = &plat;
+	fi.density = 10.0f;;
+	fi.friction = 0.5f;
+	fi.filter.categoryBits = 4; // 4 para las plataformas que puedes atravesar desde abajo
+	fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
+	platform->CreateFixture(&fi);
 
 	b2ToSDL = (sdl->width() * screenAdjust) / 50.f;
 
