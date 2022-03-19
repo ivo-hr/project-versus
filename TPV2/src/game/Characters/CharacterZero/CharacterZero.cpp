@@ -2,6 +2,7 @@
 #include "../../Utils/AnimationManager.h"
 #include "../../../json/json.hpp"
 #include <fstream>
+#include <iostream>
 using json = nlohmann::json;
 
 CharacterZero::CharacterZero(FightManager* mngr, Vector2D* pos, char input) : Character(mngr, pos, input)
@@ -57,9 +58,9 @@ CharacterZero::CharacterZero(FightManager* mngr, Vector2D* pos, char input) : Ch
 
 	animationData aux;
 	auto aData = jsonFile["animationData"]["anim"];
-	uint16 totalanim = jsonFile["animationData"]["totalAnim"];
+	assert(aData.is_array());
 
-	for (uint16 i = 0u; i < totalanim; i++) {
+	for (uint16 i = 0u; i < aData.size(); i++) {
 
 		aux.iniSprite = aData[i]["iniSprite"];
 		aux.totalSprites = aData[i]["totalSprites"];

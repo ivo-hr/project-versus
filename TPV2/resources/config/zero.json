@@ -33,7 +33,6 @@
     "spritesInY":4
   },
   "animationData":{
-    "totalAnim":4,
     "anim":[
       {
         "iniSprite" :0,
