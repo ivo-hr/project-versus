@@ -1,0 +1,73 @@
+{
+  "Ataques": {
+    "Fuerte": {
+      "b2vecX": 1,
+      "b2vecY": 2,
+      "base": 40,
+      "damage": 20,
+      "multiplier": 1.8
+    },
+    "Debil": {
+      "b2vecX": 1,
+      "b2vecY": 4,
+      "base": 20,
+      "damage": 5,
+      "multiplier": 0.2
+    }
+  },
+  "weight": 10,
+  "damageTaken": 0,
+  "maxSpeed": 30,
+  "speed":0,
+  "maxJumps": 1 ,
+  "jumpStr": 1500,
+  "onGround": true,
+  "shield": false ,
+  "maxShield": 60,
+  "spData": {
+    "leftOffset": 4,
+    "upOffset": 48,
+    "sizeXOffset":28,
+    "sizeYOffset":48,
+    "spritesInX":5,
+    "spritesInY":4
+  },
+  "animationData":{
+    "totalAnim":4,
+    "anim":[
+      {
+        "iniSprite" :0,
+        "totalSprites" : 2,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 40,
+        "loop" :true
+      },
+      {
+        "iniSprite" :2,
+        "totalSprites" : 4,
+        "keySprite" : 2,
+        "hitboxFrame" : 12,
+        "totalFrames" : 20,
+        "loop" :false
+      },
+      {
+        "iniSprite" :6,
+        "totalSprites" : 13,
+        "keySprite" : 9,
+        "hitboxFrame" : 56,
+        "totalFrames" : 100,
+        "loop" :false
+      },
+      {
+        "iniSprite" :19,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 5,
+        "loop" :true
+      }
+    ]
+    
+  }
+}
