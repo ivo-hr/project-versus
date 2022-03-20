@@ -3,7 +3,7 @@
 class CharacterZero : public Character
 {
 public:
-	CharacterZero(FightManager* mngr,char input);
+	CharacterZero(FightManager* mngr, Vector2D* pos, char input);
 	~CharacterZero();
 	
 	
@@ -19,4 +19,5 @@ public:
 	virtual void SpecialForward(int frameNumber) override {};
 	virtual void SpecialUpward(int frameNumber) override {};
 	virtual void SpecialDownward(int frameNumber) override {};
+
 };

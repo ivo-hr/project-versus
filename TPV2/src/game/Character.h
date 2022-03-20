@@ -15,10 +15,15 @@ protected:
 	attackData ataqueDebil;
 
 	int stun;
+	int lives;
 
 	bool moving;
 	int maxSpeed;
 	int speed;
+	bool shield;
+	int shieldCounter;
+	int maxShield;
+	bool dash;
 
 	//Variables para el salto (fuerza, maximonumero permitido, y el contador)
 	int jumpStr;
@@ -31,20 +36,24 @@ protected:
 
 	//frame actual del movimiento que este haciendo
 	int moveFrame = 0;
+
+	bool alive = true;
+	int respawnFrames = 150;
 	//Metodo del movimiento que este haciendo (esto es una variable que guarda metodos :v)
 	void (Character::* currentMove)(int);
 public:
 
-	Character(FightManager* manager, char input);
+	Character(FightManager* manager, Vector2D* pos, char input);
 	~Character();
 
 	virtual void update() override;
 	virtual void draw() override;
 
-	virtual void GetHit(attackData a, int dir);
+	virtual bool GetHit(attackData a, int dir);
 	virtual SDL_Rect* GetHurtbox();
-	bool GetGround() { return onGround; };
-	void SetGround();
+
+	virtual void OnDeath() override;
+	virtual void Respawn();
 
 	virtual void BasicNeutral(int frameNumber) = 0;
 	virtual void BasicForward(int frameNumber) = 0;
@@ -56,5 +65,7 @@ public:
 	virtual void SpecialUpward(int frameNumber) = 0;
 	virtual void SpecialDownward(int frameNumber) = 0;
 
-	
+	virtual void StartShield(int frameNumber);
+	virtual void EndShield(int frameNumber);
+	virtual void Dash(int frameNumber);
 };

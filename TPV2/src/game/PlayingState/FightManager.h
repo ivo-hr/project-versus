@@ -3,23 +3,27 @@
 #include <SDL.h>
 #include <iostream>
 #include <box2d.h>
-#include <vector>
 #include <string>
-
+#include <vector>
 
 #include "../../sdlutils/InputHandler.h"
 #include "../../sdlutils/macros.h"
 #include "../../sdlutils/SDLUtils.h"
 
+
 class Entity;
 
 class HUDManager;
+
+class MyListener;
 
 class FightManager
 {
 
 	b2Body* stage;
 	SDL_Rect stageRect;
+	b2Body* platform;
+	SDL_Rect platformRect;
 
 	std::vector<Entity*> entities;
 	SDLUtils* sdl;
@@ -29,16 +33,22 @@ class FightManager
 	HUDManager* hud;
 
 	Entity* winner;
+
+	SDL_Rect deathZone;
+
 	bool fightEnded = false;
 
-	float b2ToSDL = 20.f;
+	float b2ToSDL;
 
 	int numPlayers = 2;
 	
 	int addedDelay;
 
+	MyListener* listener;
+	
+
 public:
-	FightManager(SDLUtils* sdl);
+	FightManager(SDLUtils* sdl, double screenAdjust);
 	virtual ~FightManager();
 
 	int StartFight(Entity* p1, Entity* p2);
@@ -49,11 +59,14 @@ public:
 	void FighterLost(Entity* loser);
 
 	SDL_Rect GetSDLCoors(b2Body* body, float width, float height);
+	SDL_Rect GetSDLCoors(float x, float y, float width, float height);
 	int b2ToSDLX(b2Body* body, float width);
 	int b2ToSDLY(b2Body* body, float height);
 
+	double GetScreenRatio() { return (b2ToSDL * 50) / sdl->width(); };
 
 	std::vector<Entity*> GetOponents(Entity* current);
+	SDL_Rect* GetDeathZone() { return &deathZone; };
 	b2World* GetWorld() { return &world; };
 	SDLUtils* GetSDLU() { return sdl; };
 };

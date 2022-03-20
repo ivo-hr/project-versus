@@ -27,7 +27,9 @@
     <ClInclude Include="src\game\PlayingState\FightManager.h" />
     <ClInclude Include="src\game\Utils\AnimationManager.h" />
     <ClInclude Include="src\game\Utils\InputConfig.h" />
+    <ClInclude Include="src\game\Utils\MyListener.h" />
     <ClInclude Include="src\json\JSON.h" />
+    <ClInclude Include="src\json\json.hpp" />
     <ClInclude Include="src\json\JSONValue.h" />
     <ClInclude Include="src\json\json_demo.h" />
     <ClInclude Include="src\sdlutils\Font.h" />

@@ -3,13 +3,16 @@
 #include "Utils/InputConfig.h"
 
 
-Character::Character(FightManager* manager,char input) : Entity(manager)
+Character::Character(FightManager* manager, Vector2D* pos, char input) : 
+	Entity(manager, pos)
 {
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
 	stun = 0;
+	shieldCounter = maxShield = 60;
+	dash = false;
+	lives = 3;
 
-	manager->GetWorld()->SetContactListener(&listener);
 	this->input = new InputConfig(input);
 }
 
@@ -21,57 +24,110 @@ Character::~Character()
 void Character::update()
 {
 
+	if (!alive)
+	{
+		respawnFrames--;
+		if (respawnFrames == 0)
+		{
+			Respawn();
+			respawnFrames = 150;
+		}
+		return;
+	}
+
 	if (stun > 0)
 		stun--;
 
-	SetGround();
-	
-	if (input->right())
+	if (currentMove == nullptr && stun == 0)
 	{
-		speed = maxSpeed;
-		moving = true;
-		dir = 1;
-	}
-	else if (input->left())
-	{
-		speed = -maxSpeed;
-		moving = true;
-		dir = -1;
-	}
-	
-	else if (input->up() && currentMove == nullptr)
-	{
-		if (jumpCounter > 0) {
-			if (!GetGround())
-			{
-				jumpCounter--;
+		if (input->right() && input->left())
+		{
+			if (speed > 0) {
+				speed = -maxSpeed;
+				moving = true;
+				dir = -1;
 			}
-			body->SetLinearVelocity(b2Vec2(speed, 0));
-			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
+			else if (speed < 0) {
+				speed = maxSpeed;
+				moving = true;
+				dir = 1;
+			}
+			else moving = false;
+
 		}
-	}
-	// Ataque con A (provisional)
-	else if (input->basic() && currentMove == nullptr && onGround)
-	{
-		//paramos al personaje
-		body->SetLinearVelocity(b2Vec2(0, 0));
+		else if (input->right())
+		{
+			speed = maxSpeed;
+			moving = true;
+			dir = 1;
+		}
+		else if (input->left())
+		{
+			speed = -maxSpeed;
+			moving = true;
+			dir = -1;
+		}
+		// Ataque con A (provisional)
+		if (input->basic() && onGround)
+		{
+			//paramos al personaje
+			body->SetLinearVelocity(b2Vec2(0, 0));
 
-		//Declaramos el valor del ataque como el ataque que queramos
-		currentMove = &Character::BasicNeutral;
+			//Declaramos el valor del ataque como el ataque que queramos
+			currentMove = &Character::BasicNeutral;
+		}
+
+		// Ataque con B (provisional)
+		if (input->special() && onGround)
+		{
+			currentMove = &Character::SpecialNeutral;
+		}
+		if (input->down() && onGround && shieldCounter > 0) {
+
+			currentMove = &Character::StartShield;
+			shieldCounter--;
+			std::cout << shield << endl;
+			std::cout << shieldCounter << endl;
+			body->SetLinearVelocity(b2Vec2(0, 0));
+
+		}
+		else if (input->stop())
+		{
+			// para que no haya movimiento infinito (experimental)
+			moving = false;
+
+		}
+		if (input->up())
+		{
+			if (jumpCounter > 0) {
+				if (!GetGround())
+				{
+					jumpCounter--;
+				}
+				body->SetLinearVelocity(b2Vec2(speed, 0));
+				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
+			}
+		}
+
+		//dash
+		if (input->down() && !onGround) {
+
+			currentMove = &Character::Dash;
+		}
+
 	}
 
-	// Ataque con B (provisional)
-	else if (input->special() && currentMove == nullptr && onGround)
+	//para recuperar escudo
+	if (currentMove != &Character::StartShield && shieldCounter < maxShield)
 	{
-		currentMove = &Character::SpecialNeutral;
+		shieldCounter++;
 	}
-	else if (input->stop())
+	else if (currentMove == &Character::StartShield)
 	{
-		// para que no haya movimiento infinito (experimental)
-		moving = false;
+		shieldCounter--;
+	}
 
-	}
-	//boolean to check collision with the ground
+
 	if (GetGround())
 	{
 		jumpCounter = maxJumps;
@@ -89,9 +145,7 @@ void Character::update()
 	if (currentMove == nullptr && stun == 0)
 		body->SetLinearVelocity(b2Vec2(speed, body->GetLinearVelocity().y));
 
-
 	//Si se da la tecla del ataque y no hay un ataque en ejecucion...
-
 
 
 	//// Botones START Y SELECT (de momento solo hacen cout)
@@ -115,47 +169,151 @@ void Character::update()
 
 }
 
-void Character::SetGround()
-{
-	onGround = listener.CheckGround();
-}
-
 void Character::draw()
 {
 	//xd
 
+	if (!alive) return;
+
 	Entity::draw();
+
+	//if (debug)
+
+	if (shield)
+	{
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 255, 255);
+	}
+	else if (dash)
+	{
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 255, 255);
+	}
+	else
+	{
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 0, 255);
+	}
+	SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
 }
 
 
-void Character::GetHit(attackData a, int opdir)
+bool Character::GetHit(attackData a, int opdir)
 {
-
-	float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
-
-	if (a.base >= 0)
+	std::cout << shield << endl;
+	if (shield)
 	{
-		stun = recoil / 1.8f;
+		//Actualiza el daï¿½o
+		damageTaken += (int)(a.damage * 0.4f);
+		return true;
+	}
+	if (dash)
+	{
+		return false;
+	}
+	else if (!shield && !dash)
+	{
+		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
+
+		if (a.base >= 0)
+		{
+			stun = recoil / 1.8f;
+		}
+
+		//Actualiza el daï¿½o
+		damageTaken += a.damage;
+		
+		b2Vec2 aux = a.direction;
+
+		aux *= recoil;
+		aux.y *= -1;
+		aux.x *= opdir;
+
+		//Produce el knoback..
+		body->SetLinearVelocity(aux);
+
+		return true;
 	}
 
-	//Actualiza el daño
-	damageTaken += a.damage;
-
-	b2Vec2 aux = a.direction;
-
-	aux *= recoil;
-	aux.y *= -1;
-	aux.x *= opdir;
-
-	//Produce el knoback..
-	body->SetLinearVelocity(aux);
+}
+void Character::StartShield(int frameNumber)
+{
+	if (frameNumber == 1)
+	{
+		anim->StartAnimation(3);
+		shield = true;
+	}
+	if (!input->down() || shieldCounter <= 0)
+	{
+		currentMove = &Character::EndShield;
+	}
+}
+void Character::EndShield(int frameNumber)
+{
+	anim->StartAnimation(0);
+	currentMove = nullptr;
+	moveFrame = -1;
+	shield = false;
 }
 
+void Character::Dash(int frameNumber)
+{
 
+	switch (frameNumber)
+	{
+	case 0:
+		anim->StartAnimation(3);
+		dash = true;
+		body->SetLinearVelocity(b2Vec2(0, 500));
+		break;
+	case 60:
+		dash = false;
+		currentMove = nullptr;
+		moveFrame = -1;
+		anim->StartAnimation(0);
+		break;
+	}
+	if (onGround)
+	{
+		dash = false;
+		currentMove = nullptr;
+		moveFrame = -1;
+		anim->StartAnimation(0);
+	}
+}
 
 SDL_Rect* Character::GetHurtbox()
 {
 	return &hurtbox;
+}
+
+void Character::OnDeath()
+{
+	body->SetAwake(false);
+	alive = false;
+	lives--;
+	currentMove = nullptr;
+	moveFrame = 0;
+	moving = false;
+	shield = false;
+	dash = false;
+}
+
+void Character::Respawn()
+{
+	body->SetAwake(true);
+
+	std::cout << "Vidas restantes: " << lives << "\n";
+
+	body->SetTransform({ respawnPos.getX(), respawnPos.getY() }, 0);
+	body->SetLinearVelocity({ 0, 0 }); // resetea la velocidad
+	speed = 0;
+
+	alive = true;
+	damageTaken = 0;
+	moving = false;
+
+	currentMove = nullptr;
+	moveFrame = 0;
+
+	anim->StartAnimation(0);
 }
 
 

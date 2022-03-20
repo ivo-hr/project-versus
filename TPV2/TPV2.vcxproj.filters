@@ -132,6 +132,12 @@
     <ClInclude Include="src\game\Utils\InputConfig.h">
       <Filter>Header Files\game\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\Utils\MyListener.h">
+      <Filter>Header Files\game\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\json\json.hpp">
+      <Filter>Source Files\json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">

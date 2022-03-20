@@ -5,46 +5,7 @@
 
 class AnimationManager;
 
-class myListener : public b2ContactListener
-{
-public:
-	bool ground = true;
-	void BeginContact(b2Contact* contact)
-	{
-		b2Body* one = contact->GetFixtureA()->GetBody();
-		b2Body* two = contact->GetFixtureB()->GetBody();
-		if (one->GetType() == b2_staticBody)
-		{
-			ground = true;
-			std::cout << ground << std::endl;
-		}
-	}
-	void EndContact(b2Contact* contact)
-	{
-		b2Body* one = contact->GetFixtureA()->GetBody();
-		b2Body* two = contact->GetFixtureB()->GetBody();
-		if (one->GetType() == b2_staticBody)
-		{
-			std::cout << "ground?" << ground << std::endl;
-			ground = false;
-			std::cout << "ground?" << ground << std::endl;
 
-
-		}
-	}
-	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
-	{
-
-	}
-	void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
-	{
-
-	}
-	bool CheckGround()
-	{
-		return ground;
-	}
-};
 
 //TODO ESTO DEBERIA SALIR DE JSON TAMBIEN AAAAAAAAAA
 
@@ -81,6 +42,31 @@ struct attackData
 	float multiplier;
 };
 
+struct OnHitData {
+	int hitlag;
+	bool zoom;
+	bool bigHit;
+
+	OnHitData() : 
+		hitlag(0), zoom(false), bigHit(false) 
+	{};
+
+	OnHitData(int lag, bool zoomIn, bool bigEffect) :
+		hitlag(lag), zoom(zoomIn), bigHit(bigEffect)
+	{};
+};
+
+struct Hitbox {
+	SDL_Rect box;
+	attackData data;
+	int duration;
+	OnHitData hit;
+
+	Hitbox(SDL_Rect a, attackData da, int frames, OnHitData b = OnHitData()) : 
+		box(a), data(da), duration(frames), hit(b)
+	{};
+};
+
 class Entity
 {
 
@@ -98,20 +84,28 @@ protected:
 	b2Body* body;
 
 	SDL_Rect hurtbox;
-	float width = 6.f;
-	float height = 6.f;
+	float width = 3.f;
+	float height = 3.f;
 
 	int dir;
 
 	std::vector<Entity*> oponents;
+	std::vector<Hitbox*> hitboxes;
 
 	bool onGround;
 
-	myListener listener;
+	bool alive;
+	int respawnTimer = 0;
+	int respawnFrames;
+
+	int lives = 3;
+	Vector2D respawnPos;
+
+
 public:
 
 
-	Entity(FightManager* mngr); 
+	Entity(FightManager* mngr, Vector2D* position);
 	~Entity();
 
 	virtual void update();
@@ -119,12 +113,18 @@ public:
 
 	virtual void SetOponents(std::vector<Entity*> op);
 
+	virtual void CheckHits();
+	virtual void OnDeath() { manager->RemoveEntity(this); };
+	virtual bool GetHit(attackData a, int dir) = 0;
+
+	FightManager* GetManager() { return manager; };
+
 	virtual int GetDir() { return dir; };
 	virtual float GetWidth() { return width; };
 	virtual float GetHeight() { return height; };
-	virtual void GetHit(attackData a, int dir) = 0;
 	virtual SDL_Rect* GetHurtbox();
+	virtual b2Body* GetBody() { return body; };
+	void SetGround(bool ground);
+	bool GetGround() { return onGround; };
 	//virtual void SendToHUD(Texture* tex);
-	//bool GetGround() { return onGround; };
-	//void SetGround(bool ground);
 };

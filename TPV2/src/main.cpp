@@ -37,9 +37,6 @@ int main(int ac, char **av) {
 	//Cambiamos el tama�o de la ventana
 	SDL_SetWindowSize(sdl.window(), DM.w, DM.h);
 
-	//creamos el renderer
-	SDL_Renderer* gRenderer = NULL;
-
 	//Ponemos en pantalla completa
 	//sdl.toggleFullScreen();
 
@@ -52,10 +49,24 @@ int main(int ac, char **av) {
 	ih.initialiseJoysticks();
 	//------------------------------------------------------------------------------------------
 
-	FightManager* fghtmngr = new FightManager(&sdl);
+	//Dependiendo de la resolucion con respecto a 16 : 9 tiene que ajustarse al ancho o al alto
 
-	Character* character1 = new CharacterZero(fghtmngr, 0);
-	Character* boxingBag = new CharacterZero(fghtmngr, 1);
+	float ancho = (float)DM.w / (float)sdl.width();
+	float alto = (float)DM.h / (float)sdl.height();
+
+	double ratioFin;
+
+	if (ancho <= alto)
+	{
+		ratioFin = ancho;
+	}
+	else 
+		ratioFin = alto;
+
+	FightManager* fghtmngr = new FightManager(&sdl, ratioFin);
+
+	Character* character1 = new CharacterZero(fghtmngr, new Vector2D(20, 0), 0);
+	Character* boxingBag = new CharacterZero(fghtmngr, new Vector2D(30, 0), 1);
 
 	fghtmngr->StartFight(character1, boxingBag);
 	

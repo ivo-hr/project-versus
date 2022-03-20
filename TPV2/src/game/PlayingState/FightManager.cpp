@@ -1,33 +1,59 @@
 #include "FightManager.h"
 #include "../Entity.h"
+#include "../Utils/MyListener.h"
 
-FightManager::FightManager(SDLUtils* sdl) : world(b2World(b2Vec2(0.f, 20.f))), sdl(sdl)
+FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b2Vec2(0.f, 20.f))), sdl(sdl)
 {
 
 	//Definimos un objeto (estatico)
 	b2BodyDef groundDef;
-	groundDef.position.Set(48.0f, 37.0f);
+	groundDef.position.Set(25.f, 20.f);
 	groundDef.type = b2_staticBody;
 
 	//Anadimos al mundo
 	stage = world.CreateBody(&groundDef);;
 	//Le damos forma...
 	b2PolygonShape floor;
-	float floorW = 55.f, floorH = 4.f;
+	float floorW = 25.f, floorH = 3.f;
 	floor.SetAsBox(floorW / 2, floorH / 2);
 
 	//..cuerpo
 	b2FixtureDef fixt;
 	fixt.shape = &floor;
 	fixt.density = 10.0f;
-	fixt.friction = 0.9f;
+	fixt.friction = 0.5f;
+	fixt.filter.categoryBits = 2; // 2 para el suelo principal
+	fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
 
 	stage->CreateFixture(&fixt);
+
+	b2BodyDef gDef;
+	gDef.position.Set(12.f, 10.f);
+	gDef.type = b2_staticBody;
+	platform = world.CreateBody(&gDef);
+	b2PolygonShape plat;
+	float platW = 10.f, platH = 2.f;
+	plat.SetAsBox(platW / 2, platH / 2);
+	b2FixtureDef fi;
+	fi.shape = &plat;
+	fi.density = 10.0f;;
+	fi.friction = 0.5f;
+	fi.filter.categoryBits = 4; // 4 para las plataformas que puedes atravesar desde abajo
+	fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
+	platform->CreateFixture(&fi);
+
+	b2ToSDL = (sdl->width() * screenAdjust) / 50.f;
 
 	//--------------------------
 
 	//Creo las cajas que representaran a los objetos
 	stageRect = GetSDLCoors(stage, floorW, floorH);
+	platformRect = GetSDLCoors(platform, platW, platH);
+
+	listener = new MyListener();
+	world.SetContactListener(listener);
+
+	deathZone = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
 }
 
 FightManager::~FightManager()
@@ -42,10 +68,14 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 	p1->SetOponents(entities);
 	p2->SetOponents(entities);
 
+	listener->AddCharacter(p1);
+	listener->AddCharacter(p2);
+
 	bool exit_ = false;
 	while (!exit_ && !fightEnded) {
 
 		Uint32 startTime = sdl->currRealTime();
+
 
 		ih.refresh();		//QUE WEA
 
@@ -64,10 +94,16 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 		//Dibujamos las cajas
 		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 		SDL_RenderDrawRect(sdl->renderer(), &stageRect);
+		SDL_RenderDrawRect(sdl->renderer(), &platformRect);
+		SDL_RenderDrawRect(sdl->renderer(), &deathZone);
 
 		for (Entity* ent : entities)
 		{
 			ent->update();
+		}
+		for (Entity* ent : entities)
+		{
+			ent->CheckHits();
 		}
 		for (Entity* ent : entities)
 		{
@@ -100,9 +136,9 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 
 		double frameTime = sdl->currRealTime() - startTime;
 
-		if (frameTime < (step * 1000) + addedDelay)
+		if (frameTime < (step * 1000))
 		{
-			SDL_Delay((step * 1000) + addedDelay);
+			SDL_Delay((step * 1000));
 		}
 
 		addedDelay = 0;
@@ -127,7 +163,12 @@ bool FightManager::RemoveEntity(Entity* ent)
 				entities[j - 1] = entities[j];
 			}
 			entities.pop_back();
+			delete ent;
 		}
+	}
+	for (int i = 0; i < entities.size(); i++)
+	{
+		entities[i]->SetOponents(entities);
 	}
 	return false;
 }
@@ -166,8 +207,16 @@ std::vector<Entity*> FightManager::GetOponents(Entity* current)
 
 SDL_Rect FightManager::GetSDLCoors(b2Body* body, float width, float height)
 {
-	return { (int)(body->GetPosition().x * b2ToSDL - width * b2ToSDL / 2.f),
-		(int)(body->GetPosition().y * b2ToSDL - height * b2ToSDL / 2.f),
+	return { (int)((body->GetPosition().x * b2ToSDL) - (width * b2ToSDL) / 2.f),
+		(int)((body->GetPosition().y * b2ToSDL) - (height * b2ToSDL) / 2.f),
+		(int)(width * b2ToSDL),
+		(int)(height * b2ToSDL) };
+}
+
+SDL_Rect FightManager::GetSDLCoors(float x, float y, float width, float height)
+{
+	return { (int)((x * b2ToSDL) - (width * b2ToSDL) / 2.f),
+		(int)((y * b2ToSDL) - (height * b2ToSDL) / 2.f),
 		(int)(width * b2ToSDL),
 		(int)(height * b2ToSDL) };
 }
