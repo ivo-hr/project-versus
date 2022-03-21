@@ -37,6 +37,8 @@ int main(int ac, char **av) {
 	//Cambiamos el tama�o de la ventana
 	SDL_SetWindowSize(sdl.window(), DM.w, DM.h);
 
+	SDL_SetWindowPosition(sdl.window(), 0, 5);
+
 	//Ponemos en pantalla completa
 	//sdl.toggleFullScreen();
 

@@ -85,6 +85,107 @@ void GatoEspia::draw()
 	Character::draw();
 }
 
+//Lo mismo que el de arriba pero mas rapido y debil xd
+void GatoEspia::BasicNeutral(int frameNumber)
+{
+	
+	switch (frameNumber)
+	{
+	case 0:
+		sdl->soundEffects().at("zeroSmolHit").play();
+		anim->StartAnimation(1);
+		break;
+	case 12:
+	{
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+
+		hitbox.x += dir * 30;
+
+
+		hitboxes.push_back(new Hitbox(hitbox, ataqueDebil, 2, OnHitData(5, false, false)));
+	}
+	break;
+	case 20:
+		currentMove = nullptr;
+		moveFrame = -1;
+		break;
+	}
+}
+void GatoEspia::BasicForward(int frameNumber)
+{
+
+	switch (frameNumber)
+	{
+	case 0:
+		sdl->soundEffects().at("zeroSmolHit").play();//cambio
+		anim->StartAnimation(1);//cambio
+		break;
+	case 12:
+	{
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+
+		hitbox.x += dir * 50; // cambio
+
+		body->SetLinearVelocity(b2Vec2(dir*20, 0));
+
+		hitboxes.push_back(new Hitbox(hitbox, ataqueFuerte, 1, OnHitData(20, false, false)));
+	}
+	break;
+	case 40:
+		currentMove = nullptr;
+		moveFrame = -1;
+		break;
+	}
+}
+void GatoEspia::BasicDownward(int frameNumber)
+{
+	switch (frameNumber)
+	{
+	case 0:
+		sdl->soundEffects().at("zeroBigHit").play();//cambio
+		anim->StartAnimation(1);//cambio
+		break;
+	case 12:
+	{
+		SDL_Rect hitbox = manager->GetSDLCoors(body-30, width+60, height);
+
+		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
+		SDL_RenderDrawRect(sdl->renderer(), &hitbox);
+
+	}
+	break;
+	case 35:
+		currentMove = nullptr;
+		moveFrame = -1;
+		break;
+	}
+}
+
+void GatoEspia::BasicUpward(int frameNumber)
+{
+	switch (frameNumber)
+	{
+	case 0:
+		sdl->soundEffects().at("zeroBigHit").play();//cambio
+		anim->StartAnimation(1);//cambio
+		break;
+	case 10:
+	{
+		SDL_Rect hitbox = manager->GetSDLCoors(body - 30, width + 60, height);
+
+		hitbox.y -= 50;
+
+		hitboxes.push_back(new Hitbox(hitbox, ataqueDebil, 1, OnHitData(20, false, false)));
+
+	}
+	break;
+	case 20:
+		currentMove = nullptr;
+		moveFrame = -1;
+		break;
+	}
+}
+
 void GatoEspia::SpecialNeutral(int frameNumber)
 {
 
@@ -113,20 +214,9 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 
 		hitbox.x += dir * 60;
 
-		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-		SDL_RenderDrawRect(sdl->renderer(), &hitbox);
 
-		for (int i = 0; i < oponents.size(); i++)
-		{
-			if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox()))
-			{
-				//Le hace daño xddd
-				if (oponents[i]->GetHit(ataqueFuerte, dir))
-				{
-					manager->HitLag(20);
-				}
-			}
-		}
+		hitboxes.push_back(new Hitbox(hitbox, ataqueFuerte, 4, OnHitData(20, false, false)));
+
 	}
 	break;
 	case 100:
@@ -142,104 +232,96 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 	}
 }
 
-//Lo mismo que el de arriba pero mas rapido y debil xd
-void GatoEspia::BasicNeutral(int frameNumber)
+void GatoEspia::SpecialForward(int frameNumber)
 {
-	
 	switch (frameNumber)
 	{
 	case 0:
-		sdl->soundEffects().at("zeroSmolHit").play();
-		anim->StartAnimation(1);
-		break;
-	case 12:
 	{
+		//sdl->soundEffects().at("zeroBigHit").play();
+		//anim->StartAnimation(2);
+		moving = false;
+		break;
+	}
+	break;
+	case 4:
+	{
+		body->SetTransform(body->GetPosition() + b2Vec2(dir * 10, 0),0);
+	}
+	break;
+	case 10:
+	{
+
+		/*if (input->special())
+		{
+			currentMove = &GatoEspia::TpAtack;
+		}*/
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.x += dir * 30;
-
-		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-		SDL_RenderDrawRect(sdl->renderer(), &hitbox);
-
-		for (int i = 0; i < oponents.size(); i++)
-		{
-			if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox()))
-			{
-				//Le hace daño xddd
-				oponents[i]->GetHit(ataqueDebil, dir);
-			}
-		}
+		
+		hitbox.x += dir * 50;
+		
+		hitboxes.push_back(new Hitbox(hitbox, ataqueFuerte, 1, OnHitData(20, false, false)));
 	}
 	break;
-	case 20:
+	case 25:
+
+
+		//Al ultimo frame...
+
+		//Vacia current move para que Character sepa que ha acabado
 		currentMove = nullptr;
+
+		//Reinicia moveFrame para el siguiente
 		moveFrame = -1;
 		break;
 	}
 }
-void GatoEspia::BasicForward(int frameNumber)
+
+//void GatoEspia::TpAtack(int frameNumber)
+//{
+//
+//	switch (frameNumber)
+//	{
+//	case 0:
+//	{
+//		//sdl->soundEffects().at("zeroBigHit").play();
+//		//anim->StartAnimation(2);
+//		moving = false;
+//		break;
+//	}
+//	break;
+//	case 15:
+//	{
+//		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+//
+//		hitbox.x += dir * 50;
+//
+//		hitboxes.push_back(new Hitbox(hitbox, ataqueFuerte, 1, OnHitData(20, false, false)));
+//	}
+//	break;
+//	case 30:
+//
+//
+//		//Al ultimo frame...
+//
+//		//Vacia current move para que Character sepa que ha acabado
+//		currentMove = nullptr;
+//
+//		//Reinicia moveFrame para el siguiente
+//		moveFrame = -1;
+//		break;
+//	}
+//
+//}
+
+
+void GatoEspia::SpecialUpward(int frameNumber)
 {
-
-	switch (frameNumber)
-	{
-	case 0:
-		sdl->soundEffects().at("zeroSmolHit").play();//cambio
-		anim->StartAnimation(1);//cambio
-		break;
-	case 12:
-	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.x += dir * 50; // cambio
-		body->SetLinearVelocity(b2Vec2(dir*50, 0));
-		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-		SDL_RenderDrawRect(sdl->renderer(), &hitbox);
-
-		for (int i = 0; i < oponents.size(); i++)
-		{
-			if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox()))
-			{
-				//Le hace daño xddd
-				oponents[i]->GetHit(ataqueDebil, dir);
-			}
-		}
-	}
-	break;
-	case 35:
-		currentMove = nullptr;
-		moveFrame = -1;
-		break;
-	}
 }
-void GatoEspia::BasicDownward(int frameNumber)
+
+void GatoEspia::SpecialDownward(int frameNumber)
 {
-
-	switch (frameNumber)
-	{
-	case 0:
-		sdl->soundEffects().at("zeroBigHit").play();//cambio
-		anim->StartAnimation(1);//cambio
-		break;
-	case 12:
-	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body-30, width+60, height);
-
-		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-		SDL_RenderDrawRect(sdl->renderer(), &hitbox);
-
-		for (int i = 0; i < oponents.size(); i++)
-		{
-			if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox()))
-			{
-				//Le hace daño xddd
-				oponents[i]->GetHit(ataqueDebil, dir);
-			}
-		}
-	}
-	break;
-	case 35:
-		currentMove = nullptr;
-		moveFrame = -1;
-		break;
-	}
 }
+
+
+

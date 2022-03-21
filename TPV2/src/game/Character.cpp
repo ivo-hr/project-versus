@@ -91,9 +91,16 @@ void Character::update()
 		}
 
 		// Ataque con B (provisional)
+		//especial estático
 		if (input->special() && onGround)
 		{
 			currentMove = &Character::SpecialNeutral;
+		}
+		//especial en movimiento
+		if (input->special() && (input->left() || input->right()))
+		{
+			currentMove = &Character::SpecialForward;
+
 		}
 		if (input->down() && onGround && shieldCounter > 0) {
 
@@ -253,9 +260,21 @@ void Character::StartShield(int frameNumber)
 		anim->StartAnimation(3);
 		shield = true;
 	}
-	if (!input->down() || shieldCounter <= 0 || (input->basic()||input->special()))
+	if (!input->down() || shieldCounter <= 0 )
 	{
 		currentMove = &Character::EndShield;
+	}
+	if (input->basic())
+	{
+		moveFrame = -1;
+		shield = false;
+		currentMove = &Character::BasicDownward;
+	}
+	else if (input->special())
+	{
+		moveFrame = -1;
+		shield = false;
+		currentMove = &Character::SpecialDownward;
 	}
 }
 void Character::EndShield(int frameNumber)
@@ -264,14 +283,6 @@ void Character::EndShield(int frameNumber)
 	currentMove = nullptr;
 	moveFrame = -1;
 	shield = false;
-	if (input->basic() && onGround && input->down())
-	{
-		currentMove = &Character::BasicDownward;
-	}
-	else if(input->special() && onGround && input->down())
-	{
-		currentMove = &Character::SpecialDownward;
-	}
 }
 
 void Character::Dash(int frameNumber)

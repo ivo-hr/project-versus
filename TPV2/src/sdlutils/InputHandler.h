@@ -86,7 +86,7 @@ public:
 	}
 
 	inline bool isKeyDown(SDL_Scancode key) {
-		return keyDownEvent() && kbState_[key] == 1;
+		return kbState_[key] == 1;
 	}
 
 	inline bool isKeyDown(SDL_Keycode key) {
@@ -94,7 +94,7 @@ public:
 	}
 
 	inline bool isKeyUp(SDL_Scancode key) {
-		return keyUpEvent() && kbState_[key] == 0;
+		return kbState_[key] == 0;
 	}
 
 	inline bool isKeyUp(SDL_Keycode key) {

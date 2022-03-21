@@ -55,17 +55,40 @@ public:
 	virtual void OnDeath() override;
 	virtual void Respawn();
 
-	virtual void BasicNeutral(int frameNumber) = 0;
-	virtual void BasicForward(int frameNumber) = 0;
-	virtual void BasicUpward(int frameNumber) = 0;
-	virtual void BasicDownward(int frameNumber) = 0;
+	virtual void BasicNeutral(int frameNumber) {
+		currentMove = nullptr;
+		moveFrame = -1;
+	};
+	virtual void BasicForward(int frameNumber) {
+		currentMove = nullptr;
+		moveFrame = -1;
+	};
+	virtual void BasicUpward(int frameNumber) {
+		currentMove = nullptr;
+		moveFrame = -1;
+	};
+	virtual void BasicDownward(int frameNumber) {
+		currentMove = nullptr;
+		moveFrame = -1;
+	};
 
-	virtual void SpecialNeutral(int frameNumber) = 0;
-	virtual void SpecialForward(int frameNumber) = 0;
-	virtual void SpecialUpward(int frameNumber) = 0;
-	virtual void SpecialDownward(int frameNumber) = 0;
+	virtual void SpecialNeutral(int frameNumber) {
+		currentMove = nullptr;
+		moveFrame = -1;
+	};
+	virtual void SpecialForward(int frameNumber) {
+		currentMove = nullptr;
+		moveFrame = -1;
+	};
+	virtual void SpecialUpward(int frameNumber) {
+		currentMove = nullptr;
+		moveFrame = -1;
+	};
+	virtual void SpecialDownward(int frameNumber) {
+		currentMove = nullptr;
+		moveFrame = -1;
+	};
 
-	virtual void Recovery(int frameNumber) = 0;
 
 	virtual void StartShield(int frameNumber);
 	virtual void EndShield(int frameNumber);
