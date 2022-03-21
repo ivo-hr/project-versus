@@ -46,6 +46,8 @@ class FightManager
 
 	MyListener* listener;
 	
+	Texture* background;
+	Texture* testura;
 
 public:
 	FightManager(SDLUtils* sdl, double screenAdjust);

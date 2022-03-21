@@ -20,6 +20,6 @@ public:
 	virtual void SpecialUpward(int frameNumber) override;
 	virtual void SpecialDownward(int frameNumber) override;
 	
-	//void TpAtack(int frameNumber);
+	void TpAtack(int frameNumber);
 
 };

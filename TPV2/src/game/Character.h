@@ -40,7 +40,12 @@ protected:
 	bool alive = true;
 	int respawnFrames = 150;
 	//Metodo del movimiento que este haciendo (esto es una variable que guarda metodos :v)
-	void (Character::* currentMove)(int);
+	std::function<void(int)> currentMove;
+
+	// [x](int f) { x->TpAtack(f)}
+
+
+//	void (Character::* currentMove)(int);
 public:
 
 	Character(FightManager* manager, Vector2D* pos, char input);

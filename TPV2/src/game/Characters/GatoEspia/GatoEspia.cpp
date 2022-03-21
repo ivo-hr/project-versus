@@ -252,15 +252,11 @@ void GatoEspia::SpecialForward(int frameNumber)
 	case 10:
 	{
 
-		/*if (input->special())
+		if (input->special())
 		{
-			currentMove = &GatoEspia::TpAtack;
-		}*/
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-		
-		hitbox.x += dir * 50;
-		
-		hitboxes.push_back(new Hitbox(hitbox, ataqueFuerte, 1, OnHitData(20, false, false)));
+			currentMove = [this](int f) { TpAtack(f);};
+			moveFrame = -1;
+		}
 	}
 	break;
 	case 25:
@@ -277,42 +273,40 @@ void GatoEspia::SpecialForward(int frameNumber)
 	}
 }
 
-//void GatoEspia::TpAtack(int frameNumber)
-//{
-//
-//	switch (frameNumber)
-//	{
-//	case 0:
-//	{
-//		//sdl->soundEffects().at("zeroBigHit").play();
-//		//anim->StartAnimation(2);
-//		moving = false;
-//		break;
-//	}
-//	break;
-//	case 15:
-//	{
-//		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-//
-//		hitbox.x += dir * 50;
-//
-//		hitboxes.push_back(new Hitbox(hitbox, ataqueFuerte, 1, OnHitData(20, false, false)));
-//	}
-//	break;
-//	case 30:
-//
-//
-//		//Al ultimo frame...
-//
-//		//Vacia current move para que Character sepa que ha acabado
-//		currentMove = nullptr;
-//
-//		//Reinicia moveFrame para el siguiente
-//		moveFrame = -1;
-//		break;
-//	}
-//
-//}
+void GatoEspia::TpAtack(int frameNumber)
+{
+
+	switch (frameNumber)
+	{
+	case 0:
+	{
+		//sdl->soundEffects().at("zeroBigHit").play();
+		//anim->StartAnimation(2);
+		moving = false;
+		break;
+	}
+	break;
+	case 2:
+	{
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+
+		hitboxes.push_back(new Hitbox(hitbox, ataqueFuerte, 1, OnHitData(40, false, false)));
+	}
+	break;
+	case 60:
+
+
+		//Al ultimo frame...
+
+		//Vacia current move para que Character sepa que ha acabado
+		currentMove = nullptr;
+
+		//Reinicia moveFrame para el siguiente
+		moveFrame = -1;
+		break;
+	}
+
+}
 
 
 void GatoEspia::SpecialUpward(int frameNumber)

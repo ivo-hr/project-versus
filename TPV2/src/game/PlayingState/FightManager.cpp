@@ -4,6 +4,8 @@
 
 FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b2Vec2(0.f, 20.f))), sdl(sdl)
 {
+	background = &sdl->images().at("fondo");
+	testura = &sdl->images().at("testura");
 
 	//Definimos un objeto (estatico)
 	b2BodyDef groundDef;
@@ -90,12 +92,16 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 		sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
 
 		//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
-
+		background->render(deathZone); 
+		testura->render(platformRect);
+		testura->render(stageRect);
 		//Dibujamos las cajas
 		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 		SDL_RenderDrawRect(sdl->renderer(), &stageRect);
 		SDL_RenderDrawRect(sdl->renderer(), &platformRect);
 		SDL_RenderDrawRect(sdl->renderer(), &deathZone);
+
+		
 
 		for (Entity* ent : entities)
 		{

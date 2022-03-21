@@ -75,36 +75,36 @@ void Character::update()
 			body->SetLinearVelocity(b2Vec2(0, 0));
 
 			//Declaramos el valor del ataque como el ataque que queramos
-			currentMove = &Character::BasicNeutral;
+			currentMove = [this](int f) { BasicNeutral(f); };
 		}
 		//básico en movimiento
 		if (input->basic() && (input->right() || input->left()) && onGround)
 		{
 			//Declaramos el valor del ataque como el ataque que queramos
-			currentMove = &Character::BasicForward;
+			currentMove = [this](int f) { BasicForward(f); };
 		}
 		//básico abajo
 		if (input->basic() && input->down() && onGround )
 		{
 			//Declaramos el valor del ataque como el ataque que queramos
-			currentMove = &Character::BasicDownward;
+			currentMove = [this](int f) { BasicDownward(f); };
 		}
 
 		// Ataque con B (provisional)
 		//especial estático
 		if (input->special() && onGround)
 		{
-			currentMove = &Character::SpecialNeutral;
+			currentMove = [this](int f) { SpecialNeutral(f); };
 		}
 		//especial en movimiento
 		if (input->special() && (input->left() || input->right()))
 		{
-			currentMove = &Character::SpecialForward;
+			currentMove = [this](int f) { SpecialForward(f); };
 
 		}
 		if (input->down() && onGround && shieldCounter > 0) {
 
-			currentMove = &Character::StartShield;
+			currentMove = [this](int f) { StartShield(f); };
 			shieldCounter--;
 			std::cout << shield << endl;
 			std::cout << shieldCounter << endl;
@@ -132,17 +132,17 @@ void Character::update()
 		//dash
 		if (input->down() && !onGround) {
 
-			currentMove = &Character::Dash;
+			currentMove = [this](int f) { Dash(f); };
 		}
 	}
 
 
 	//para recuperar escudo
-	if (currentMove != &Character::StartShield && shieldCounter < maxShield)
+	if (!shield && shieldCounter < maxShield)
 	{
 		shieldCounter++;
 	}
-	else if (currentMove == &Character::StartShield)
+	else if (shield)
 	{
 		shieldCounter--;
 	}
@@ -180,7 +180,7 @@ void Character::update()
 	if (currentMove != nullptr)
 	{
 		//ejecuta el ataque guardado en la variable
-		(*this.*currentMove)(moveFrame);
+		(currentMove)(moveFrame);
 		//Actualiza el frame actual del movimiento
 		moveFrame++;
 	}
@@ -262,19 +262,19 @@ void Character::StartShield(int frameNumber)
 	}
 	if (!input->down() || shieldCounter <= 0 )
 	{
-		currentMove = &Character::EndShield;
+		currentMove = [this](int f) { EndShield(f); };
 	}
 	if (input->basic())
 	{
 		moveFrame = -1;
 		shield = false;
-		currentMove = &Character::BasicDownward;
+		currentMove = [this](int f) { BasicDownward(f); };
 	}
 	else if (input->special())
 	{
 		moveFrame = -1;
 		shield = false;
-		currentMove = &Character::SpecialDownward;
+		currentMove = [this](int f) { SpecialDownward(f); };
 	}
 }
 void Character::EndShield(int frameNumber)

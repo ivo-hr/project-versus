@@ -13,6 +13,8 @@
     { "id" : "makt", "file" : "resources/images/Maketo.png"},
     { "id" : "zero", "file" : "resources/images/CharZeroSheet.png"},
     { "id" : "blinkMaster ", "file" : "resources/images/BlinkMaster.png"},
+    { "id" : "fondo", "file" : "resources/images/bckgrd.png"},
+    { "id" : "testura", "file" : "resources/images/testura.png"},
     { "id" : "punchingBag ", "file" : "resources/images/bag.png"}
 
   ],
