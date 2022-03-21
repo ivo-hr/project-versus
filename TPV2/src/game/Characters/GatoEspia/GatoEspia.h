@@ -11,9 +11,9 @@ public:
 	virtual void draw() override;
 
 	virtual void BasicNeutral(int frameNumber) override;
-	virtual void BasicForward(int frameNumber) override {};
+	virtual void BasicForward(int frameNumber) override;
 	virtual void BasicUpward(int frameNumber) override {};
-	virtual void BasicDownward(int frameNumber) override {};
+	virtual void BasicDownward(int frameNumber) override;
 
 	virtual void SpecialNeutral(int frameNumber) override;
 	virtual void SpecialForward(int frameNumber) override {};

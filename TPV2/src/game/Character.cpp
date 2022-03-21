@@ -68,6 +68,7 @@ void Character::update()
 			dir = -1;
 		}
 		// Ataque con A (provisional)
+		//básico estático
 		if (input->basic() && onGround)
 		{
 			//paramos al personaje
@@ -75,6 +76,18 @@ void Character::update()
 
 			//Declaramos el valor del ataque como el ataque que queramos
 			currentMove = &Character::BasicNeutral;
+		}
+		//básico en movimiento
+		if (input->basic() && (input->right() || input->left()) && onGround)
+		{
+			//Declaramos el valor del ataque como el ataque que queramos
+			currentMove = &Character::BasicForward;
+		}
+		//básico abajo
+		if (input->basic() && input->down() && onGround )
+		{
+			//Declaramos el valor del ataque como el ataque que queramos
+			currentMove = &Character::BasicDownward;
 		}
 
 		// Ataque con B (provisional)
@@ -108,14 +121,14 @@ void Character::update()
 				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
 			}
 		}
-
+		
 		//dash
 		if (input->down() && !onGround) {
 
 			currentMove = &Character::Dash;
 		}
-
 	}
+
 
 	//para recuperar escudo
 	if (currentMove != &Character::StartShield && shieldCounter < maxShield)
@@ -240,7 +253,7 @@ void Character::StartShield(int frameNumber)
 		anim->StartAnimation(3);
 		shield = true;
 	}
-	if (!input->down() || shieldCounter <= 0)
+	if (!input->down() || shieldCounter <= 0 || (input->basic()||input->special()))
 	{
 		currentMove = &Character::EndShield;
 	}
@@ -251,6 +264,14 @@ void Character::EndShield(int frameNumber)
 	currentMove = nullptr;
 	moveFrame = -1;
 	shield = false;
+	if (input->basic() && onGround && input->down())
+	{
+		currentMove = &Character::BasicDownward;
+	}
+	else if(input->special() && onGround && input->down())
+	{
+		currentMove = &Character::SpecialDownward;
+	}
 }
 
 void Character::Dash(int frameNumber)

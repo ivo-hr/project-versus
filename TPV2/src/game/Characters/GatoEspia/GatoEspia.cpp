@@ -177,3 +177,69 @@ void GatoEspia::BasicNeutral(int frameNumber)
 		break;
 	}
 }
+void GatoEspia::BasicForward(int frameNumber)
+{
+
+	switch (frameNumber)
+	{
+	case 0:
+		sdl->soundEffects().at("zeroSmolHit").play();//cambio
+		anim->StartAnimation(1);//cambio
+		break;
+	case 12:
+	{
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+
+		hitbox.x += dir * 50; // cambio
+		body->SetLinearVelocity(b2Vec2(dir*50, 0));
+		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
+		SDL_RenderDrawRect(sdl->renderer(), &hitbox);
+
+		for (int i = 0; i < oponents.size(); i++)
+		{
+			if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox()))
+			{
+				//Le hace daño xddd
+				oponents[i]->GetHit(ataqueDebil, dir);
+			}
+		}
+	}
+	break;
+	case 35:
+		currentMove = nullptr;
+		moveFrame = -1;
+		break;
+	}
+}
+void GatoEspia::BasicDownward(int frameNumber)
+{
+
+	switch (frameNumber)
+	{
+	case 0:
+		sdl->soundEffects().at("zeroBigHit").play();//cambio
+		anim->StartAnimation(1);//cambio
+		break;
+	case 12:
+	{
+		SDL_Rect hitbox = manager->GetSDLCoors(body-30, width+60, height);
+
+		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
+		SDL_RenderDrawRect(sdl->renderer(), &hitbox);
+
+		for (int i = 0; i < oponents.size(); i++)
+		{
+			if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox()))
+			{
+				//Le hace daño xddd
+				oponents[i]->GetHit(ataqueDebil, dir);
+			}
+		}
+	}
+	break;
+	case 35:
+		currentMove = nullptr;
+		moveFrame = -1;
+		break;
+	}
+}
