@@ -8,6 +8,7 @@
 
 #include "../utils/Singleton.h"
 #include <vector>
+#include <unordered_map>
 
 // Instead of a Singleton class, we could make it part of
 // SDLUtils as well.
@@ -17,6 +18,10 @@ class InputHandler: public Singleton<InputHandler> {
 	friend Singleton<InputHandler> ;
 
 public:
+	// Ampliacion keyboard
+
+	unordered_map<SDL_Keycode, bool>keyboardState;
+
 	enum MOUSEBUTTON : uint8_t {
 		LEFT = 0, MIDDLE = 1, RIGHT = 2
 	};
@@ -41,9 +46,11 @@ public:
 		switch (event.type) {
 		case SDL_KEYDOWN:
 			onKeyDown(event);
+			keyboardState[event.key.type] = true;
 			break;
 		case SDL_KEYUP:
 			onKeyUp(event);
+			keyboardState[event.key.type] = false;
 			break;
 		case SDL_MOUSEMOTION:
 			onMouseMotion(event);
@@ -85,7 +92,7 @@ public:
 		return isKeyUpEvent_;
 	}
 
-	inline bool isKeyDown(SDL_Scancode key) {
+	/*inline bool isKeyDown(SDL_Scancode key) {
 		return keyDownEvent() && kbState_[key] == 1;
 	}
 
@@ -99,7 +106,7 @@ public:
 
 	inline bool isKeyUp(SDL_Keycode key) {
 		return isKeyUp(SDL_GetScancodeFromKey(key));
-	}
+	}*/
 
 	// mouse
 	inline bool mouseMotionEvent() {
@@ -116,6 +123,32 @@ public:
 
 	inline int getMouseButtonState(MOUSEBUTTON b) {
 		return mbState_[b];
+	}
+
+
+
+	inline void initialiseKeyboardState() {
+		keyboardState[SDLK_w] = false;
+		keyboardState[SDLK_UP] = false;
+		keyboardState[SDLK_s] = false;
+		keyboardState[SDLK_DOWN] = false;
+		keyboardState[SDLK_a] = false;
+		keyboardState[SDLK_LEFT] = false;
+		keyboardState[SDLK_d] = false;
+		keyboardState[SDLK_RIGHT] = false;
+		keyboardState[SDLK_e] = false;
+		keyboardState[SDLK_l] = false;
+		keyboardState[SDLK_r] = false;
+		keyboardState[SDLK_k] = false;
+		keyboardState[SDLK_SPACE] = false;
+	}
+
+	inline bool isKeyDown(SDL_Scancode key) {
+		return keyboardState[key];
+	}
+
+	inline bool isKeyUp(SDL_Scancode key) {
+		return !keyboardState[key];
 	}
 
 	// NES controller

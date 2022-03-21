@@ -50,6 +50,7 @@ int main(int ac, char **av) {
 	// you can also use the inline method ih() that is defined in InputHandler.h
 	auto& ih = *InputHandler::instance();
 	ih.initialiseJoysticks();
+	ih.initialiseKeyboardState();
 	//------------------------------------------------------------------------------------------
 
 	FightManager* fghtmngr = new FightManager(&sdl);
