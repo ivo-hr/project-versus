@@ -135,6 +135,9 @@
     <ClInclude Include="src\game\Utils\MyListener.h">
       <Filter>Header Files\game\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\Characters\GatoEspia\GatoEspia.h">
+      <Filter>Header Files\game\Characters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">
@@ -190,6 +193,9 @@
     </ClCompile>
     <ClCompile Include="src\game\Utils\InputConfig.cpp">
       <Filter>Source Files\game\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Characters\GatoEspia\GatoEspia.cpp">
+      <Filter>Source Files\game\Characters</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

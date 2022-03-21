@@ -23,6 +23,7 @@
     <ClInclude Include="HUDManager.h" />
     <ClInclude Include="src\game\Character.h" />
     <ClInclude Include="src\game\Characters\CharacterZero\CharacterZero.h" />
+    <ClInclude Include="src\game\Characters\GatoEspia\GatoEspia.h" />
     <ClInclude Include="src\game\Entity.h" />
     <ClInclude Include="src\game\PlayingState\FightManager.h" />
     <ClInclude Include="src\game\Utils\AnimationManager.h" />
@@ -50,6 +51,7 @@
     <ClCompile Include="HUDManager.cpp" />
     <ClCompile Include="src\game\Character.cpp" />
     <ClCompile Include="src\game\Characters\CharacterZero\CharacterZero.cpp" />
+    <ClCompile Include="src\game\Characters\GatoEspia\GatoEspia.cpp" />
     <ClCompile Include="src\game\Entity.cpp" />
     <ClCompile Include="src\game\PlayingState\FightManager.cpp" />
     <ClCompile Include="src\game\Utils\AnimationManager.cpp" />

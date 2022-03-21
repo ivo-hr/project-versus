@@ -65,6 +65,8 @@ public:
 	virtual void SpecialUpward(int frameNumber) = 0;
 	virtual void SpecialDownward(int frameNumber) = 0;
 
+	virtual void Recovery(int frameNumber) = 0;
+
 	virtual void StartShield(int frameNumber);
 	virtual void EndShield(int frameNumber);
 	virtual void Dash(int frameNumber);

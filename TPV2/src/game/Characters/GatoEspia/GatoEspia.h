@@ -1,10 +1,10 @@
 #include "../../Character.h"
 
-class CharacterZero : public Character
+class GatoEspia : public Character
 {
 public:
-	CharacterZero(FightManager* mngr, Vector2D* pos, char input);
-	~CharacterZero();
+	GatoEspia(FightManager* mngr, Vector2D* pos, char input);
+	~GatoEspia();
 	
 	
 
@@ -19,7 +19,7 @@ public:
 	virtual void SpecialForward(int frameNumber) override {};
 	virtual void SpecialUpward(int frameNumber) override {};
 	virtual void SpecialDownward(int frameNumber) override {};
-
+	
 	virtual void Recovery(int frameNumber) override {};
 
 };
