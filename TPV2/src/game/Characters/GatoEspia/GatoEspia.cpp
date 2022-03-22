@@ -1,5 +1,6 @@
 #include "GatoEspia.h"
 #include "../../Utils/AnimationManager.h"
+#include "bullet.h"
 #include "../../../json/json.hpp"
 #include <fstream>
 #include <iostream>
@@ -207,24 +208,12 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 		//Empieza el ataque :v
 		anim->StartAnimation("basicN");
 		break;
-		//No hace nada, esto es el cargar el puño
-		break;
-	case 56:
+	case 5:
 	{
 		//Al frame 90, crea un rect y si el oponente colisiona con ello...
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+		Entity* bala = new Bullet(manager, new Vector2D(20, 0), 0.5 , 0.5);
+		manager->AddEntity(bala);
 
-		hitbox.w /= 2;
-		hitbox.h /= 2;
-
-		hitbox.x += hitbox.w / 2;
-
-		hitbox.y += hitbox.h / 2;
-
-		hitbox.x += dir * 60;
-
-
-		hitboxes.push_back(new Hitbox(hitbox, ataqueFuerte, 4, OnHitData(10, false, false)));
 
 	}
 	break;

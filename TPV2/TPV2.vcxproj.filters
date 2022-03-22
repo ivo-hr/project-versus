@@ -138,6 +138,12 @@
     <ClInclude Include="src\game\Characters\GatoEspia\GatoEspia.h">
       <Filter>Header Files\game\Characters</Filter>
     </ClInclude>
+    <ClInclude Include="src\json\json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\Characters\GatoEspia\bullet.h">
+      <Filter>Header Files\game\Characters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">
@@ -195,6 +201,9 @@
       <Filter>Source Files\game\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\game\Characters\GatoEspia\GatoEspia.cpp">
+      <Filter>Source Files\game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Characters\GatoEspia\bullet.cpp">
       <Filter>Source Files\game\Characters</Filter>
     </ClCompile>
   </ItemGroup>

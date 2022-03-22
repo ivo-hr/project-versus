@@ -134,7 +134,7 @@ void CharacterZero::BasicNeutral(int frameNumber)
 
 
 
-//Lo mismo que el de arriba pero mas rapido y debil xd
+//Lo mismo que el de arriba pero mas lento y fuerte xd
 void CharacterZero::SpecialNeutral(int frameNumber)
 {
 	
