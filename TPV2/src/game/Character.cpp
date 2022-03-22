@@ -3,8 +3,8 @@
 #include "Utils/InputConfig.h"
 
 
-Character::Character(FightManager* manager, Vector2D* pos, char input) : 
-	Entity(manager, pos)
+Character::Character(FightManager* manager, Vector2D* pos, char input, float w, float h) :
+	Entity(manager, pos, w, h)
 {
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
@@ -67,41 +67,54 @@ void Character::update()
 			moving = true;
 			dir = -1;
 		}
-		// Ataque con A (provisional)
-		//básico estático
-		if (input->basic() && onGround)
-		{
-			//paramos al personaje
-			body->SetLinearVelocity(b2Vec2(0, 0));
 
-			//Declaramos el valor del ataque como el ataque que queramos
-			currentMove = [this](int f) { BasicNeutral(f); };
-		}
-		//básico en movimiento
-		if (input->basic() && (input->right() || input->left()) && onGround)
+		// Ataque con A (provisional)
+		if (input->basic())
 		{
-			//Declaramos el valor del ataque como el ataque que queramos
-			currentMove = [this](int f) { BasicForward(f); };
-		}
-		//básico abajo
-		if (input->basic() && input->down() && onGround )
-		{
-			//Declaramos el valor del ataque como el ataque que queramos
-			currentMove = [this](int f) { BasicDownward(f); };
+
+			if (input->right() || input->left())
+			{
+				currentMove = [this](int f) { BasicForward(f); };
+			}
+			else if (input->down())
+			{
+				currentMove = [this](int f) { BasicDownward(f); };
+			}
+			else if (input->up())
+			{
+				currentMove = [this](int f) { BasicUpward(f); };
+			}
+			else
+			{
+				currentMove = [this](int f) { BasicNeutral(f); };
+			}
+
 		}
 
 		// Ataque con B (provisional)
-		//especial estático
-		if (input->special() && onGround)
+		if (input->special())
 		{
-			currentMove = [this](int f) { SpecialNeutral(f); };
-		}
-		//especial en movimiento
-		if (input->special() && (input->left() || input->right()))
-		{
-			currentMove = [this](int f) { SpecialForward(f); };
+
+			if (input->right() || input->left())
+			{
+				currentMove = [this](int f) { SpecialForward(f); };
+			}
+			else if (input->down())
+			{
+				currentMove = [this](int f) { SpecialDownward(f); };
+			}
+			else if (input->up())
+			{
+				currentMove = [this](int f) { SpecialUpward(f); };
+			}
+			else
+			{
+				currentMove = [this](int f) { SpecialNeutral(f); };
+			}
 
 		}
+
+
 		if (input->down() && onGround && shieldCounter > 0) {
 
 			currentMove = [this](int f) { StartShield(f); };
@@ -111,12 +124,17 @@ void Character::update()
 			body->SetLinearVelocity(b2Vec2(0, 0));
 
 		}
-		else if (input->stop())
+
+
+
+		if (input->stop())
 		{
 			// para que no haya movimiento infinito (experimental)
 			moving = false;
 
 		}
+
+
 		if (input->up())
 		{
 			if (jumpCounter > 0) {
@@ -147,11 +165,12 @@ void Character::update()
 		shieldCounter--;
 	}
 
-
+	//Chequeo de tierra
 	if (GetGround())
 	{
 		jumpCounter = maxJumps;
 	}
+
 
 	if (!moving)
 	{
@@ -165,16 +184,6 @@ void Character::update()
 	if (currentMove == nullptr && stun == 0)
 		body->SetLinearVelocity(b2Vec2(speed, body->GetLinearVelocity().y));
 
-	//Si se da la tecla del ataque y no hay un ataque en ejecucion...
-
-
-	//// Botones START Y SELECT (de momento solo hacen cout)
-	//if (ih.getButtonState(0, 8))std::cout << "SELECT PRESSED" << std::endl;
-
-	//if (ih.getButtonState(0, 9))std::cout << "START PRESSED" << std::endl;
-
-	// Util para saber que buttonNumber es cada boton del mando
-	//for (int i = 0; i < 10; i++)if (ih.getButtonState(0, i))std::cout << i << std::endl;
 
 	//Si hay un movimiento en ejecucion lo continuamos...
 	if (currentMove != nullptr)
@@ -257,7 +266,7 @@ void Character::StartShield(int frameNumber)
 {
 	if (frameNumber == 1)
 	{
-		anim->StartAnimation(3);
+		anim->StartAnimation("shield");
 		shield = true;
 	}
 	if (!input->down() || shieldCounter <= 0 )
@@ -279,7 +288,7 @@ void Character::StartShield(int frameNumber)
 }
 void Character::EndShield(int frameNumber)
 {
-	anim->StartAnimation(0);
+	anim->StartAnimation("idle");
 	currentMove = nullptr;
 	moveFrame = -1;
 	shield = false;
@@ -291,7 +300,7 @@ void Character::Dash(int frameNumber)
 	switch (frameNumber)
 	{
 	case 0:
-		anim->StartAnimation(3);
+		anim->StartAnimation("dash");
 		dash = true;
 		body->SetLinearVelocity(b2Vec2(0, 500));
 		break;
@@ -307,7 +316,7 @@ void Character::Dash(int frameNumber)
 		dash = false;
 		currentMove = nullptr;
 		moveFrame = -1;
-		anim->StartAnimation(0);
+		anim->StartAnimation("idle");
 	}
 }
 
@@ -345,7 +354,7 @@ void Character::Respawn()
 	currentMove = nullptr;
 	moveFrame = 0;
 
-	anim->StartAnimation(0);
+	anim->StartAnimation("idle");
 }
 
 

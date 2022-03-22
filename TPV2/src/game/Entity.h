@@ -31,7 +31,7 @@ struct spriteSheetData
 	int spritesInX;		//Cuantos frames hay en una fila de la spritesheet entera
 	int spritesInY;		//Cuantos frames hay en una columna de la spritesheet entera
 
-	std::vector<animationData> animations;
+	std::unordered_map<std::string, animationData> animations;
 	//std::unordered_map<std::string, animationData> animations;
 };
 
@@ -106,7 +106,7 @@ protected:
 public:
 
 
-	Entity(FightManager* mngr, Vector2D* position);
+	Entity(FightManager* mngr, Vector2D* position, float w = 3.f, float h = 3.f);
 	~Entity();
 
 	virtual void update();

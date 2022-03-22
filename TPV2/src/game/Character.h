@@ -48,7 +48,7 @@ protected:
 //	void (Character::* currentMove)(int);
 public:
 
-	Character(FightManager* manager, Vector2D* pos, char input);
+	Character(FightManager* manager, Vector2D* pos, char input, float w = 3.f, float h = 3.f);
 	~Character();
 
 	virtual void update() override;

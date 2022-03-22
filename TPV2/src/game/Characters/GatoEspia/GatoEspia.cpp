@@ -4,16 +4,16 @@
 #include <fstream>
 #include <iostream>
 using json = nlohmann::json;
-GatoEspia::GatoEspia(FightManager* mngr, Vector2D* pos, char input) : Character(mngr, pos, input)
+GatoEspia::GatoEspia(FightManager* mngr, Vector2D* pos, char input) : Character(mngr, pos, input, 1.5f, 3.f)
 {
 
 	//importamos json del personaje
-	std::ifstream file("resources/config/zero.json");
+	std::ifstream file("resources/config/gato.json");
 	json jsonFile;
 	file >> jsonFile;
 
 	//guardamos la textura
-	texture = &sdl->images().at("zero");
+	texture = &sdl->images().at("blinkMaster");
 	//smolH = &sdl->soundEffects().at("zeroSmolHit");
 
 
@@ -70,7 +70,7 @@ GatoEspia::GatoEspia(FightManager* mngr, Vector2D* pos, char input) : Character(
 		aux.totalFrames = aData[i]["totalFrames"];
 		aux.loop = aData[i]["loop"];
 
-		spData.animations.push_back(aux);
+		spData.animations.insert({ aData[i]["id"], aux });
 	}
 	anim = new AnimationManager(this, texture, spData);
 }
@@ -93,9 +93,9 @@ void GatoEspia::BasicNeutral(int frameNumber)
 	{
 	case 0:
 		sdl->soundEffects().at("zeroSmolHit").play();
-		anim->StartAnimation(1);
+		anim->StartAnimation("basicN");
 		break;
-	case 12:
+	case 4:
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
@@ -105,7 +105,7 @@ void GatoEspia::BasicNeutral(int frameNumber)
 		hitboxes.push_back(new Hitbox(hitbox, ataqueDebil, 2, OnHitData(5, false, false)));
 	}
 	break;
-	case 20:
+	case 15:
 		currentMove = nullptr;
 		moveFrame = -1;
 		break;
@@ -118,7 +118,7 @@ void GatoEspia::BasicForward(int frameNumber)
 	{
 	case 0:
 		sdl->soundEffects().at("zeroSmolHit").play();//cambio
-		anim->StartAnimation(1);//cambio
+		anim->StartAnimation("basicF");//cambio
 		break;
 	case 12:
 	{
@@ -143,7 +143,7 @@ void GatoEspia::BasicDownward(int frameNumber)
 	{
 	case 0:
 		sdl->soundEffects().at("zeroBigHit").play();//cambio
-		anim->StartAnimation(1);//cambio
+		anim->StartAnimation("basicD");//cambio
 		break;
 	case 12:
 	{
@@ -167,7 +167,7 @@ void GatoEspia::BasicUpward(int frameNumber)
 	{
 	case 0:
 		sdl->soundEffects().at("zeroBigHit").play();//cambio
-		anim->StartAnimation(1);//cambio
+		anim->StartAnimation("basicU");//cambio
 		break;
 	case 10:
 	{
@@ -196,7 +196,7 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 	case 0:
 		sdl->soundEffects().at("zeroBigHit").play();
 		//Empieza el ataque :v
-		anim->StartAnimation(2);
+		anim->StartAnimation("basicN");
 		break;
 		//No hace nada, esto es el cargar el puño
 		break;
@@ -215,7 +215,7 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 		hitbox.x += dir * 60;
 
 
-		hitboxes.push_back(new Hitbox(hitbox, ataqueFuerte, 4, OnHitData(20, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, ataqueFuerte, 4, OnHitData(10, false, false)));
 
 	}
 	break;
@@ -239,19 +239,25 @@ void GatoEspia::SpecialForward(int frameNumber)
 	case 0:
 	{
 		//sdl->soundEffects().at("zeroBigHit").play();
-		//anim->StartAnimation(2);
+		anim->StartAnimation("idle");
 		moving = false;
 		break;
 	}
 	break;
-	case 4:
+	case 2:
 	{
-		body->SetTransform(body->GetPosition() + b2Vec2(dir * 10, 0),0);
+		dash = true;
 	}
 	break;
-	case 10:
+	case 6:
 	{
-
+		body->SetTransform(body->GetPosition() + b2Vec2(dir * 10, 0),0);
+		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, 0 });
+		dash = false;
+	}
+	break;
+	case 7:
+	{
 		if (input->special())
 		{
 			currentMove = [this](int f) { TpAtack(f);};
@@ -259,7 +265,7 @@ void GatoEspia::SpecialForward(int frameNumber)
 		}
 	}
 	break;
-	case 25:
+	case 8:
 
 
 		//Al ultimo frame...
@@ -281,7 +287,7 @@ void GatoEspia::TpAtack(int frameNumber)
 	case 0:
 	{
 		//sdl->soundEffects().at("zeroBigHit").play();
-		//anim->StartAnimation(2);
+		anim->StartAnimation("basicF");
 		moving = false;
 		break;
 	}
@@ -307,15 +313,5 @@ void GatoEspia::TpAtack(int frameNumber)
 	}
 
 }
-
-
-void GatoEspia::SpecialUpward(int frameNumber)
-{
-}
-
-void GatoEspia::SpecialDownward(int frameNumber)
-{
-}
-
 
 

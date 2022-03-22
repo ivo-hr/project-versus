@@ -32,5 +32,5 @@ public:
 	void update();
 	void render();
 
-	void StartAnimation(int index);
+	void StartAnimation(std::string index);
 };

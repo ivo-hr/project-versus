@@ -70,7 +70,7 @@ CharacterZero::CharacterZero(FightManager* mngr, Vector2D* pos, char input) : Ch
 		aux.totalFrames = aData[i]["totalFrames"];
 		aux.loop = aData[i]["loop"];
 
-		spData.animations.push_back(aux);
+		spData.animations.insert({ aData[i]["id"], aux });
 	}
 	anim = new AnimationManager(this, texture, spData);
 }
@@ -96,7 +96,7 @@ void CharacterZero::BasicNeutral(int frameNumber)
 	case 0:
 		sdl->soundEffects().at("zeroBigHit").play();
 		//Empieza el ataque :v
-		anim->StartAnimation(2);
+		anim->StartAnimation("big");
 		break;
 		//No hace nada, esto es el cargar el puño
 		break;
@@ -141,7 +141,7 @@ void CharacterZero::SpecialNeutral(int frameNumber)
 	{
 	case 0:
 		sdl->soundEffects().at("zeroSmolHit").play();
-		anim->StartAnimation(1);
+		anim->StartAnimation("small");
 		break;
 	case 12:
 	{
