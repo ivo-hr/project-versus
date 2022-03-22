@@ -1,0 +1,15 @@
+stepX: 	walking/running sounds. to be played one after another.
+
+shield: 	shield activated sound
+
+taunt: 	taunt sound
+
+jumpX: 	jumping sounds. "0" plays if jumping from the ground, rest are midair jumps in order
+
+atkX: 	attacking sounds. to be played randomly between themselves
+
+specN: 	special move sounds. They go as follows:
+	U: 		up-special
+	D: 		down-special
+	S: 		left/right-special
+	N: 		neutral-special
