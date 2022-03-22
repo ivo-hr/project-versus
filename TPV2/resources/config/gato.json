@@ -23,7 +23,7 @@
   "jumpStr": 1500,
   "onGround": true,
   "shield": false ,
-  "maxShield": 60,
+  "maxShield": 360,
   "spData": {
     "leftOffset": 4,
     "upOffset": 48,

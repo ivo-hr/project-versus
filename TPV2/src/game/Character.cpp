@@ -9,7 +9,6 @@ Character::Character(FightManager* manager, Vector2D* pos, char input) :
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
 	stun = 0;
-	shieldCounter = maxShield = 60;
 	dash = false;
 	lives = 3;
 
@@ -69,7 +68,7 @@ void Character::update()
 		}
 		// Ataque con A (provisional)
 		//básico estático
-		if (input->basic() && onGround)
+		if (input->basic())
 		{
 			//paramos al personaje
 			body->SetLinearVelocity(b2Vec2(0, 0));
@@ -78,13 +77,19 @@ void Character::update()
 			currentMove = [this](int f) { BasicNeutral(f); };
 		}
 		//básico en movimiento
-		if (input->basic() && (input->right() || input->left()) && onGround)
+		if (input->basic() && (input->right() || input->left()))
 		{
 			//Declaramos el valor del ataque como el ataque que queramos
 			currentMove = [this](int f) { BasicForward(f); };
 		}
 		//básico abajo
-		if (input->basic() && input->down() && onGround )
+		if (input->basic() && input->down())
+		{
+			//Declaramos el valor del ataque como el ataque que queramos
+			currentMove = [this](int f) { BasicDownward(f); };
+		}
+		//básico abajo
+		if (input->basic() && input->up())
 		{
 			//Declaramos el valor del ataque como el ataque que queramos
 			currentMove = [this](int f) { BasicDownward(f); };
@@ -92,7 +97,7 @@ void Character::update()
 
 		// Ataque con B (provisional)
 		//especial estático
-		if (input->special() && onGround)
+		if (input->special())
 		{
 			currentMove = [this](int f) { SpecialNeutral(f); };
 		}
@@ -102,7 +107,9 @@ void Character::update()
 			currentMove = [this](int f) { SpecialForward(f); };
 
 		}
-		if (input->down() && onGround && shieldCounter > 0) {
+
+		//Escudo
+		if (input->down() && onGround && shieldCounter > (maxShield/3)) {
 
 			currentMove = [this](int f) { StartShield(f); };
 			shieldCounter--;
@@ -140,11 +147,13 @@ void Character::update()
 	//para recuperar escudo
 	if (!shield && shieldCounter < maxShield)
 	{
+		std::cout << shieldCounter << endl;
 		shieldCounter++;
 	}
 	else if (shield)
 	{
-		shieldCounter--;
+		std::cout << shieldCounter << endl;
+		shieldCounter-=2;
 	}
 
 

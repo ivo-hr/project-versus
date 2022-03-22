@@ -8,7 +8,7 @@ GatoEspia::GatoEspia(FightManager* mngr, Vector2D* pos, char input) : Character(
 {
 
 	//importamos json del personaje
-	std::ifstream file("resources/config/zero.json");
+	std::ifstream file("resources/config/gato.json");
 	json jsonFile;
 	file >> jsonFile;
 
@@ -44,6 +44,7 @@ GatoEspia::GatoEspia(FightManager* mngr, Vector2D* pos, char input) : Character(
 	onGround = jsonFile["onGround"];
 	shield = jsonFile["shield"];
 	maxShield = jsonFile["maxShield"];
+	shieldCounter = maxShield;
 
 	//Datos para las animaciones (tendrá que venir de json claramente solo hay tres y ya ocupan 37 lineas xd)
 	auto sData = jsonFile["spData"];
