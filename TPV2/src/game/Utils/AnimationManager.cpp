@@ -14,8 +14,16 @@ void AnimationManager::UpdateIndex()
 		if (currIndex == currentAnim.keySprite + currentAnim.iniSprite)
 		{
 			//Vuelve a calcular los frames que dura cada sprite para que el final coincida con el final del movimiento
-			framespSprite = (int)((currentAnim.totalFrames - currentAnim.hitboxFrame) / 
-				(currentAnim.totalSprites - currentAnim.keySprite));
+
+			if (currentAnim.totalSprites - currentAnim.keySprite == 0)
+			{
+				framespSprite = currentAnim.totalFrames - currentAnim.hitboxFrame;
+			}
+			else
+			{
+				framespSprite = (int)((currentAnim.totalFrames - currentAnim.hitboxFrame) /
+					(currentAnim.totalSprites - currentAnim.keySprite));
+			}
 		}
 
 		//Si llega al final..
@@ -24,7 +32,7 @@ void AnimationManager::UpdateIndex()
 			if (!currentAnim.loop)
 			{
 				//Si no loopea inicia la animacion de idle
-				StartAnimation(0);
+				StartAnimation("idle");
 			}
 			else
 				//Si loopea reinicia la animacion
@@ -74,7 +82,7 @@ AnimationManager::AnimationManager(Entity* entity, Texture* textura, spriteSheet
 	//dest.h += 115.f;
 
 	//Inicializamos la animacion primera (en zero es idle)
-	currentAnim = data.animations[0];
+	currentAnim = data.animations["idle"];
 
 	//El index es el primer sprite
 	currIndex = currentAnim.iniSprite;
@@ -136,7 +144,7 @@ void AnimationManager::render()
 
 }
 
-void AnimationManager::StartAnimation(int index)
+void AnimationManager::StartAnimation(std::string index)
 {
 	//La animacion actual cambia a ser la nueva especificada
 	currentAnim = info.animations[index];

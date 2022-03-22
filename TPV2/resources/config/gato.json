@@ -20,51 +20,73 @@
   "maxSpeed": 30,
   "speed":0,
   "maxJumps": 1 ,
-  "jumpStr": 1500,
+  "jumpStr": 800,
   "onGround": true,
   "shield": false ,
   "maxShield": 360,
   "spData": {
-    "leftOffset": 4,
-    "upOffset": 48,
-    "sizeXOffset":28,
-    "sizeYOffset":48,
-    "spritesInX":5,
-    "spritesInY":4
+    "leftOffset": 32,
+    "upOffset": 16,
+    "sizeXOffset": 72,
+    "sizeYOffset": 16,
+    "spritesInX": 6,
+    "spritesInY": 5
   },
   "animationData":{
     "anim":[
       {
-        "iniSprite" :0,
+        "id" : "idle",
+        "iniSprite" : 6,
         "totalSprites" : 2,
         "keySprite" : -1,
         "hitboxFrame" : -1,
-        "totalFrames" : 40,
+        "totalFrames" : 30,
         "loop" :true
       },
       {
-        "iniSprite" :2,
+        "id" : "basicN",
+        "iniSprite" : 12,
+        "totalSprites" : 3,
+        "keySprite" : 3,
+        "hitboxFrame" : 4,
+        "totalFrames" : 15,
+        "loop" :false
+      },
+      {
+        "id" : "basicU",
+        "iniSprite" : 15,
         "totalSprites" : 4,
-        "keySprite" : 2,
-        "hitboxFrame" : 12,
+        "keySprite" : 3,
+        "hitboxFrame" : 10,
         "totalFrames" : 20,
         "loop" :false
       },
       {
-        "iniSprite" :6,
-        "totalSprites" : 13,
-        "keySprite" : 9,
-        "hitboxFrame" : 56,
-        "totalFrames" : 100,
+        "id" : "basicD",
+        "iniSprite" : 19,
+        "totalSprites" : 3,
+        "keySprite" : 3,
+        "hitboxFrame" : 12,
+        "totalFrames" : 35,
         "loop" :false
       },
       {
-        "iniSprite" :19,
+        "id" : "basicF",
+        "iniSprite" : 22,
+        "totalSprites" : 4,
+        "keySprite" : 3,
+        "hitboxFrame" : 12,
+        "totalFrames" : 40,
+        "loop" :false
+      },
+      {
+        "id" : "shield",
+        "iniSprite" : 27,
         "totalSprites" : 1,
         "keySprite" : -1,
         "hitboxFrame" : -1,
-        "totalFrames" : 5,
-        "loop" :true
+        "totalFrames" : 40,
+        "loop" : true
       }
     ]
     

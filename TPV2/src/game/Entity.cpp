@@ -1,7 +1,7 @@
 #include "Entity.h"
 #include "Utils/AnimationManager.h"
 
-Entity::Entity(FightManager* mngr, Vector2D* position) : manager(mngr)
+Entity::Entity(FightManager* mngr, Vector2D* position, float w, float h) : manager(mngr), width(w), height(h)
 {
 	this->sdl = mngr->GetSDLU();
 

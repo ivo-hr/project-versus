@@ -17,8 +17,6 @@ public:
 
 	virtual void SpecialNeutral(int frameNumber) override;
 	virtual void SpecialForward(int frameNumber) override;
-	virtual void SpecialUpward(int frameNumber) override;
-	virtual void SpecialDownward(int frameNumber) override;
 	
 	void TpAtack(int frameNumber);
 
