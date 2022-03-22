@@ -117,16 +117,13 @@ void Character::update()
 		if (input->down() && onGround && shieldCounter > (maxShield/3)) {
 
 			currentMove = [this](int f) { StartShield(f); };
-			shieldCounter--;
-			std::cout << shield << endl;
-			std::cout << shieldCounter << endl;
 			body->SetLinearVelocity(b2Vec2(0, 0));
 
 		}
 
 
 
-		if (input->stop())
+		if (!input->left() && !input->right())
 		{
 			// para que no haya movimiento infinito (experimental)
 			moving = false;
@@ -136,21 +133,33 @@ void Character::update()
 		// salto
 		if (input->up()) 
 		{
-			if (jumpCounter > 0 && jumpCooldown) {
-				if (!GetGround())
-				{
-					jumpCounter--;
-				}
-					jumpCooldown = false;
-				body->SetLinearVelocity(b2Vec2(speed, 0));
-				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
-			}
+			currentMove = [this](int f) { StartJump(f); };
 		}
 		
 		//dash
 		if (input->down() && !onGround) {
 
 			currentMove = [this](int f) { Dash(f); };
+		}
+
+		if (!GetGround())
+		{
+			if (anim->CurrentAnimation() != "airborne")
+				anim->StartAnimation("airborne");
+		}
+		else
+		{
+			if (moving)
+			{
+				if (anim->CurrentAnimation() != "run")
+					anim->StartAnimation("run");
+			}
+			//frenarse
+			else
+			{
+				if (anim->CurrentAnimation() != "idle")
+					anim->StartAnimation("idle");
+			}
 		}
 	}
 
@@ -269,6 +278,40 @@ bool Character::GetHit(attackData a, int opdir)
 	}
 
 }
+void Character::StartJump(int frameNumber)
+{
+	if (jumpCounter <= 0 || !jumpCooldown)
+	{
+		currentMove = nullptr;
+		moveFrame = -1;
+	}
+	if (frameNumber < 4)
+	{
+		if (input->special())
+		{
+			currentMove = [this](int f) { SpecialUpward(f); };
+			moveFrame = -1;
+		}
+		else if (input->basic())
+		{
+			currentMove = [this](int f) { BasicUpward(f); };
+			moveFrame = -1;
+		}
+	}
+	else
+	{
+		if (!GetGround())
+		{
+			jumpCounter--;
+		}
+		jumpCooldown = false;
+		body->SetLinearVelocity(b2Vec2(speed, 0));
+		body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
+
+		currentMove = nullptr;
+		moveFrame = -1;
+	}
+}
 void Character::StartShield(int frameNumber)
 {
 	if (frameNumber == 1)
@@ -309,7 +352,7 @@ void Character::Dash(int frameNumber)
 	case 0:
 		anim->StartAnimation("dash");
 		dash = true;
-		body->SetLinearVelocity(b2Vec2(0, 500));
+		body->SetLinearVelocity(b2Vec2(0, 20));
 		break;
 	case 60:
 		dash = false;

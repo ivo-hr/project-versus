@@ -44,6 +44,42 @@
         "loop" :true
       },
       {
+        "id" : "run",
+        "iniSprite" :0,
+        "totalSprites" : 2,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 20,
+        "loop" :true
+      },
+      {
+        "id" : "airborne",
+        "iniSprite" : 4,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 50,
+        "loop" : true
+      },
+      {
+        "id" : "shield",
+        "iniSprite" : 2,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 40,
+        "loop" :true
+      },
+      {
+        "id" : "dash",
+        "iniSprite" : 4,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 40,
+        "loop" :true
+      },
+      {
         "id" : "small",
         "iniSprite" :2,
         "totalSprites" : 4,

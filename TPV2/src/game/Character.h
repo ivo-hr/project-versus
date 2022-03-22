@@ -95,6 +95,7 @@ public:
 	};
 
 
+	virtual void StartJump(int frameNumber);
 	virtual void StartShield(int frameNumber);
 	virtual void EndShield(int frameNumber);
 	virtual void Dash(int frameNumber);

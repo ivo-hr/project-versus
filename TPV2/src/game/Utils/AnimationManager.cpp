@@ -82,6 +82,7 @@ AnimationManager::AnimationManager(Entity* entity, Texture* textura, spriteSheet
 	//dest.h += 115.f;
 
 	//Inicializamos la animacion primera (en zero es idle)
+	currentAnimIndex = "idle";
 	currentAnim = data.animations["idle"];
 
 	//El index es el primer sprite
@@ -146,6 +147,7 @@ void AnimationManager::render()
 
 void AnimationManager::StartAnimation(std::string index)
 {
+	currentAnimIndex = index;
 	//La animacion actual cambia a ser la nueva especificada
 	currentAnim = info.animations[index];
 

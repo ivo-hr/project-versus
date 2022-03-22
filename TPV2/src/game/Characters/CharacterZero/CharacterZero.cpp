@@ -141,7 +141,6 @@ void CharacterZero::SpecialNeutral(int frameNumber)
 	switch (frameNumber)
 	{
 	case 0:
-		sdl->soundEffects().at("zeroSmolHit").play();
 		anim->StartAnimation("small");
 		break;
 	case 12:

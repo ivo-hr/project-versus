@@ -11,6 +11,9 @@ protected:
 	int xOffset, yOffset;
 	int framespSprite;
 	int w, h, cont;
+
+	std::string currentAnimIndex;
+
 	std::vector<b2Vec2> SpriteIndex;
 	std::vector<std::vector<int>> AnimationsInfo;
 	Texture* texture;
@@ -33,4 +36,5 @@ public:
 	void render();
 
 	void StartAnimation(std::string index);
+	std::string CurrentAnimation() { return currentAnimIndex; };
 };

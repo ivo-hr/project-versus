@@ -24,6 +24,8 @@
   "onGround": true,
   "shield": false ,
   "maxShield": 360,
+
+
   "spData": {
     "leftOffset": 32,
     "upOffset": 16,
@@ -47,7 +49,7 @@
         "id" : "basicN",
         "iniSprite" : 12,
         "totalSprites" : 3,
-        "keySprite" : 3,
+        "keySprite" : 2,
         "hitboxFrame" : 4,
         "totalFrames" : 15,
         "loop" :false
@@ -65,7 +67,7 @@
         "id" : "basicD",
         "iniSprite" : 19,
         "totalSprites" : 3,
-        "keySprite" : 3,
+        "keySprite" : 2,
         "hitboxFrame" : 12,
         "totalFrames" : 35,
         "loop" :false
@@ -82,6 +84,33 @@
       {
         "id" : "shield",
         "iniSprite" : 27,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 40,
+        "loop" : true
+      },
+      {
+        "id" : "run",
+        "iniSprite" : 0,
+        "totalSprites" : 6,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 50,
+        "loop" : true
+      },
+      {
+        "id" : "airborne",
+        "iniSprite" : 10,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 50,
+        "loop" : true
+      },
+      {
+        "id" : "dash",
+        "iniSprite" : 29,
         "totalSprites" : 1,
         "keySprite" : -1,
         "hitboxFrame" : -1,
