@@ -24,11 +24,11 @@ protected:
 	int shieldCounter;
 	int maxShield;
 	bool dash;
-
-	//Variables para el salto (fuerza, maximonumero permitido, y el contador)
+	//Variables para el salto (fuerza, maximo numero permitido, y el contador)
 	int jumpStr;
 	int maxJumps;
 	int jumpCounter;
+	bool jumpCooldown;
 
 	int weight;
 

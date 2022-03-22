@@ -11,7 +11,6 @@ Character::Character(FightManager* manager, Vector2D* pos, char input, float w, 
 	stun = 0;
 	dash = false;
 	lives = 3;
-
 	this->input = new InputConfig(input);
 }
 
@@ -68,23 +67,23 @@ void Character::update()
 		}
 
 		// Ataque con A (provisional)
-		//básico estático
+		
 		if (input->basic())
 		{
 
-			if (input->right() || input->left())
+			if (input->right() || input->left()) //básico en movimiento
 			{
 				currentMove = [this](int f) { BasicForward(f); };
 			}
-			else if (input->down())
+			else if (input->down()) //básico abajo
 			{
 				currentMove = [this](int f) { BasicDownward(f); };
 			}
-			else if (input->up())
+			else if (input->up()) //básico arriba
 			{
 				currentMove = [this](int f) { BasicUpward(f); };
 			}
-			else
+			else //básico estático
 			{
 				currentMove = [this](int f) { BasicNeutral(f); };
 			}
@@ -95,19 +94,19 @@ void Character::update()
 		if (input->special())
 		{
 
-			if (input->right() || input->left())
+			if (input->right() || input->left()) //especial en movimiento
 			{
 				currentMove = [this](int f) { SpecialForward(f); };
 			}
-			else if (input->down())
+			else if (input->down()) //especial abajo
 			{
 				currentMove = [this](int f) { SpecialDownward(f); };
 			}
-			else if (input->up())
+			else if (input->up()) //especial arriba
 			{
 				currentMove = [this](int f) { SpecialUpward(f); };
 			}
-			else
+			else //especial estático
 			{
 				currentMove = [this](int f) { SpecialNeutral(f); };
 			}
@@ -134,14 +133,15 @@ void Character::update()
 
 		}
 
-
-		if (input->up())
+		// salto
+		if (input->up()) 
 		{
-			if (jumpCounter > 0) {
+			if (jumpCounter > 0 && jumpCooldown) {
 				if (!GetGround())
 				{
 					jumpCounter--;
 				}
+					jumpCooldown = false;
 				body->SetLinearVelocity(b2Vec2(speed, 0));
 				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
 			}
@@ -172,8 +172,13 @@ void Character::update()
 	{
 		jumpCounter = maxJumps;
 	}
+	//chequeo doble salto
+	if (!input->up() && !jumpCooldown)
+	{
+		jumpCooldown = true;
+	}
 
-
+	//frenarse
 	if (!moving)
 	{
 		if (speed > 0)

@@ -45,6 +45,7 @@ GatoEspia::GatoEspia(FightManager* mngr, Vector2D* pos, char input) : Character(
 	shield = jsonFile["shield"];
 	maxShield = jsonFile["maxShield"];
 	shieldCounter = maxShield;
+	jumpCooldown = true;
 
 	//Datos para las animaciones (tendrá que venir de json claramente solo hay tres y ya ocupan 37 lineas xd)
 	auto sData = jsonFile["spData"];
