@@ -63,7 +63,7 @@
       },
       {
         "id" : "shield",
-        "iniSprite" : 2,
+        "iniSprite" : 19,
         "totalSprites" : 1,
         "keySprite" : -1,
         "hitboxFrame" : -1,

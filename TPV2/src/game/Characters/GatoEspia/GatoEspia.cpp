@@ -206,13 +206,13 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 	case 0:
 		sdl->soundEffects().at("zeroBigHit").play();
 		//Empieza el ataque :v
-		anim->StartAnimation("basicN");
+		anim->StartAnimation("especialNL");
 		break;
 	case 5:
 	{
-		//Al frame 90, crea un rect y si el oponente colisiona con ello...
-		Entity* bala = new Bullet(manager, new Vector2D(20, 0), 0.5 , 0.5);
-		manager->AddEntity(bala);
+		////Al frame 90, crea un rect y si el oponente colisiona con ello...
+		//Entity* bala = new Bullet(manager, new Vector2D(20, 0), 0.5 , 0.5);
+		//manager->AddEntity(bala);
 
 
 	}
@@ -237,7 +237,7 @@ void GatoEspia::SpecialForward(int frameNumber)
 	case 0:
 	{
 		//sdl->soundEffects().at("zeroBigHit").play();
-		anim->StartAnimation("idle");
+		anim->StartAnimation("entrarTP");
 		moving = false;
 		break;
 	}
@@ -250,6 +250,7 @@ void GatoEspia::SpecialForward(int frameNumber)
 	case 6:
 	{
 		body->SetTransform(body->GetPosition() + b2Vec2(dir * 10, 0),0);
+		anim->StartAnimation("salirTP");
 		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, 0 });
 		dash = false;
 	}
@@ -284,7 +285,7 @@ void GatoEspia::SpecialUpward(int frameNumber)
 	case 0:
 	{
 		//sdl->soundEffects().at("zeroBigHit").play();
-		anim->StartAnimation("idle");
+		anim->StartAnimation("entrarTP");
 		moving = false;
 		break;
 	}
@@ -304,6 +305,7 @@ void GatoEspia::SpecialUpward(int frameNumber)
 	case 6:
 	{
 		body->SetTransform(body->GetPosition() + b2Vec2(0, -10), 0);
+		anim->StartAnimation("especialU");
 		body->SetLinearVelocity({ 0, -10 });
 		dash = false;
 	}
@@ -338,7 +340,7 @@ void GatoEspia::SpecialDownward(int frameNumber)
 		dash = false;
 		body->SetLinearVelocity({ 0, body->GetLinearVelocity().y / 2 });
 		//sdl->soundEffects().at("zeroBigHit").play();
-		anim->StartAnimation("idle");
+		anim->StartAnimation("especialDEntrada");
 		moving = false;
 		break;
 	}
@@ -346,6 +348,12 @@ void GatoEspia::SpecialDownward(int frameNumber)
 	case 2:
 	{
 		dash = true;
+	}
+	break;
+	case 7:
+	{
+		anim->StartAnimation("especialDSalida");
+		
 	}
 	break;
 	case 9:
@@ -379,7 +387,7 @@ void GatoEspia::TpAtack(int frameNumber)
 	case 0:
 	{
 		//sdl->soundEffects().at("zeroBigHit").play();
-		anim->StartAnimation("basicF");
+		anim->StartAnimation("especialL");
 		moving = false;
 		break;
 	}

@@ -163,7 +163,10 @@ void Character::update()
 		}
 	}
 
-
+	if (stun > 0) {
+		if (anim->CurrentAnimation() != "stun")
+			anim->StartAnimation("stun");
+	}
 	//para recuperar escudo
 	if (!shield && shieldCounter < maxShield)
 	{
@@ -255,6 +258,8 @@ bool Character::GetHit(attackData a, int opdir)
 	}
 	else if (!shield && !dash)
 	{
+		anim->StartAnimation("stun");
+		anim->update();
 		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
 
 		if (a.base >= 0)

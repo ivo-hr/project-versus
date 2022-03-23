@@ -70,7 +70,7 @@ int main(int ac, char **av) {
 	Character* character1 = new GatoEspia(fghtmngr, new Vector2D(20, 0), 0);
 	Character* character2 = new CharacterZero(fghtmngr, new Vector2D(30, 0), 1);
 
-	fghtmngr->StartFight(character1, character2);
+	fghtmngr->StartFight(character2, character1);
 	
 
 	return 0;
