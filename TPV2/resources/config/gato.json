@@ -116,8 +116,7 @@
         "hitboxFrame" : -1,
         "totalFrames" : 40,
         "loop" : true
-      }
-      ,
+      },
       {
         "id" : "especialNL",
         "iniSprite" : 30,
@@ -126,8 +125,7 @@
         "hitboxFrame" : 5,
         "totalFrames" : 40,
         "loop" : false
-      }
-      ,
+      },
       {
         "id" : "especialND",
         "iniSprite" : 35,
@@ -147,6 +145,80 @@
         "totalFrames" : 40,
         "loop" : false
       }
+      ,
+      {
+        "id" : "salirTP",
+        "iniSprite" : 45,
+        "totalSprites" : 3,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 6,
+        "loop" : false
+      },
+      {
+        "id" : "entrarTP",
+        "iniSprite" : 64,
+        "totalSprites" : 3,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 6,
+        "loop" : false
+      },
+      {
+        "id" : "especialDEntrada",
+        "iniSprite" : 48,
+        "totalSprites" : 3,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 3,
+        "loop" : false
+      },
+      {
+        "id" : "especialDGolpe",
+        "iniSprite" : 51,
+        "totalSprites" : 5,
+        "keySprite" : 3,
+        "hitboxFrame" : 3,
+        "totalFrames" : 30,
+        "loop" : false
+      },
+      {
+        "id" : "especialDSalida",
+        "iniSprite" : 67,
+        "totalSprites" : 3,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 3,
+        "loop" : false
+      },
+      {
+        "id" : "especialL",
+        "iniSprite" : 51,
+        "totalSprites" : 8,
+        "keySprite" : 3,
+        "hitboxFrame" : 3,
+        "totalFrames" : 60,
+        "loop" : false
+      },
+      {
+        "id" : "especialU",
+        "iniSprite" : 59,
+        "totalSprites" : 4,
+        "keySprite" : 3,
+        "hitboxFrame" : 3,
+        "totalFrames" : 4,
+        "loop" : false
+      },
+      {
+        "id" : "stun",
+        "iniSprite" : 63,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 50,
+        "loop" : true
+      }
+
     ]
     
   }

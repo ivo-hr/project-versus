@@ -105,6 +105,15 @@
         "hitboxFrame" : -1,
         "totalFrames" : 5,
         "loop" :true
+      },
+      {
+        "id" : "stun",
+        "iniSprite" : 5,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "hitboxFrame" : -1,
+        "totalFrames" : 50,
+        "loop" : true
       }
     ]
     
