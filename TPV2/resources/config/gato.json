@@ -32,7 +32,7 @@
     "sizeXOffset": 72,
     "sizeYOffset": 16,
     "spritesInX": 6,
-    "spritesInY": 5
+    "spritesInY": 12
   },
   "animationData":{
     "anim":[
@@ -83,8 +83,8 @@
       },
       {
         "id" : "shield",
-        "iniSprite" : 27,
-        "totalSprites" : 1,
+        "iniSprite" : 26,
+        "totalSprites" : 2,
         "keySprite" : -1,
         "hitboxFrame" : -1,
         "totalFrames" : 40,
@@ -110,12 +110,42 @@
       },
       {
         "id" : "dash",
-        "iniSprite" : 29,
-        "totalSprites" : 1,
+        "iniSprite" : 28,
+        "totalSprites" : 2,
         "keySprite" : -1,
         "hitboxFrame" : -1,
         "totalFrames" : 40,
         "loop" : true
+      }
+      ,
+      {
+        "id" : "especialNL",
+        "iniSprite" : 30,
+        "totalSprites" : 5,
+        "keySprite" : 2,
+        "hitboxFrame" : 5,
+        "totalFrames" : 40,
+        "loop" : false
+      }
+      ,
+      {
+        "id" : "especialND",
+        "iniSprite" : 35,
+        "totalSprites" : 5,
+        "keySprite" : 2,
+        "hitboxFrame" : 5,
+        "totalFrames" : 40,
+        "loop" : false
+      }
+      ,
+      {
+        "id" : "especialNU",
+        "iniSprite" : 40,
+        "totalSprites" : 5,
+        "keySprite" : 2,
+        "hitboxFrame" : 5,
+        "totalFrames" : 40,
+        "loop" : false
       }
     ]
     
