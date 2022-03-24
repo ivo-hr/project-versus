@@ -16,6 +16,8 @@ public:
 	virtual void BasicDownward(int frameNumber) override;
 
 	virtual void SpecialNeutral(int frameNumber) override;
+	virtual void SpecialNeutralU(int frameNumber);
+	virtual void SpecialNeutralD(int frameNumber);
 	virtual void SpecialForward(int frameNumber) override;
 	virtual void SpecialUpward(int frameNumber) override;
 	virtual void SpecialDownward(int frameNumber) override;

@@ -8,73 +8,11 @@ using json = nlohmann::json;
 GatoEspia::GatoEspia(FightManager* mngr, Vector2D* pos, char input) : Character(mngr, pos, input, 1.5f, 3.f)
 {
 
-	//importamos json del personaje
-	std::ifstream file("resources/config/gato.json");
-	json jsonFile;
-	file >> jsonFile;
-
+	ReadJson("resources/config/gato.json");
 	//guardamos la textura
 	texture = &sdl->images().at("blinkMaster");
 	//smolH = &sdl->soundEffects().at("zeroSmolHit");
 
-
-	//Aqui defino las caracteristicas de cada hitbox (podriamos hacerlo dentro de cada metodo, y vendria de json)(tambien podríamos poner framedata)
-	auto AF = jsonFile["Ataques"]["Fuerte"];
-	auto AD = jsonFile["Ataques"]["Debil"];
-
-	ataqueFuerte.direction = b2Vec2(AF["b2vecX"], AF["b2vecY"]);
-	ataqueFuerte.direction.Normalize();
-	ataqueFuerte.base = AF["base"];
-	ataqueFuerte.damage = AF["damage"];
-	ataqueFuerte.multiplier = AF["multiplier"];
-
-	ataqueDebil.direction = b2Vec2(AD["b2vecX"], AD["b2vecY"]);
-	ataqueDebil.direction.Normalize();
-	ataqueDebil.base = AD["base"];
-	ataqueDebil.damage = AD["damage"];
-	ataqueDebil.multiplier = AD["multiplier"];
-
-	// variables
-	weight = jsonFile["weight"];
-	damageTaken = jsonFile["damageTaken"];
-	maxSpeed = jsonFile["maxSpeed"];
-	speed = jsonFile["speed"];
-	maxJumps = jsonFile["maxJumps"];
-	jumpStr = jsonFile["jumpStr"];
-	jumpCounter = maxJumps;
-	onGround = jsonFile["onGround"];
-	shield = jsonFile["shield"];
-	maxShield = jsonFile["maxShield"];
-	shieldCounter = maxShield;
-	jumpCooldown = true;
-
-	//Datos para las animaciones (tendrá que venir de json claramente solo hay tres y ya ocupan 37 lineas xd)
-	auto sData = jsonFile["spData"];
-	//Mirando a la derecha
-
-	spData.leftOffset = sData["leftOffset"];		//Pixeles en sprite que se dibujaran fuera de la hurtbox a la izquierda
-	spData.upOffset = sData["upOffset"];
-	spData.sizeXOffset = sData["sizeXOffset"];	//Cuantos pixeles en X NO estan dentro de la hurtbox
-	spData.sizeYOffset = sData["sizeYOffset"];
-
-	spData.spritesInX = sData["spritesInX"];
-	spData.spritesInY = sData["spritesInY"];
-
-	animationData aux;
-	auto aData = jsonFile["animationData"]["anim"];
-	assert(aData.is_array());
-
-	for (uint16 i = 0u; i < aData.size(); i++) {
-
-		aux.iniSprite = aData[i]["iniSprite"];
-		aux.totalSprites = aData[i]["totalSprites"];
-		aux.keySprite = aData[i]["keySprite"];
-		aux.hitboxFrame = aData[i]["hitboxFrame"];
-		aux.totalFrames = aData[i]["totalFrames"];
-		aux.loop = aData[i]["loop"];
-
-		spData.animations.insert({ aData[i]["id"], aux });
-	}
 	anim = new AnimationManager(this, texture, spData);
 }
 
@@ -91,64 +29,56 @@ void GatoEspia::draw()
 //Lo mismo que el de arriba pero mas rapido y debil xd
 void GatoEspia::BasicNeutral(int frameNumber)
 {
-	
-	switch (frameNumber)
+	if (frameNumber == 0)
 	{
-	case 0:
-		sdl->soundEffects().at("zeroSmolHit").play();
 		anim->StartAnimation("basicN");
-		break;
-	case 4:
+	}
+	else if (frameNumber == attacks["basicN"].startUp)
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
 		hitbox.x += dir * 30;
 
 
-		hitboxes.push_back(new Hitbox(hitbox, ataqueDebil, 2, OnHitData(5, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, attacks["basicN"], 2, OnHitData(5, false, false)));
 	}
-	break;
-	case 15:
+	else if (frameNumber == attacks["basicN"].totalFrames)
+	{
 		currentMove = nullptr;
 		moveFrame = -1;
-		break;
 	}
 }
 void GatoEspia::BasicForward(int frameNumber)
 {
-
-	switch (frameNumber)
+	if (frameNumber == 0)
 	{
-	case 0:
 		moving = false;
-		anim->StartAnimation("basicF");//cambio
-		break;
-	case 12:
+		anim->StartAnimation("basicF");
+	}
+	else if (frameNumber == attacks["basicF"].startUp)
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
-		hitbox.x += dir * 50; // cambio
+		hitbox.x += dir * 50;
 
 		body->SetLinearVelocity(b2Vec2(dir*20, 0));
 
-		hitboxes.push_back(new Hitbox(hitbox, ataqueFuerte, 1, OnHitData(20, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, attacks["basicF"], 1, OnHitData(20, false, false)));
 	}
-	break;
-	case 40:
+	else if (frameNumber == attacks["basicF"].totalFrames)
+	{
 		currentMove = nullptr;
 		moveFrame = -1;
-		break;
 	}
 }
 void GatoEspia::BasicDownward(int frameNumber)
 {
-	switch (frameNumber)
+	if (frameNumber == 0)
 	{
-	case 0:
-		sdl->soundEffects().at("zeroBigHit").play();//cambio
-		anim->StartAnimation("basicD");//cambio
-		break;
-	case 12:
+		moving = false;
+		anim->StartAnimation("basicD");
+	}
+	else if (frameNumber == attacks["basicD"].startUp)
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
@@ -159,24 +89,23 @@ void GatoEspia::BasicDownward(int frameNumber)
 		hitbox.x -= hitbox.w / 3;
 		hitbox.y -= hitbox.h;
 
-		hitboxes.push_back(new Hitbox(hitbox, ataqueDebil, 1, OnHitData(5, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 1, OnHitData(5, false, false)));
 	}
-	break;
-	case 35:
+	else if (frameNumber == attacks["basicD"].totalFrames)
+	{
 		currentMove = nullptr;
 		moveFrame = -1;
-		break;
 	}
 }
 
 void GatoEspia::BasicUpward(int frameNumber)
 {
-	switch (frameNumber)
+	if (frameNumber == 0)
 	{
-	case 0:
-		anim->StartAnimation("basicU");//cambio
-		break;
-	case 10:
+		moving = false;
+		anim->StartAnimation("basicU");
+	}
+	else if (frameNumber == attacks["basicU"].startUp)
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
@@ -185,231 +114,306 @@ void GatoEspia::BasicUpward(int frameNumber)
 		hitbox.x -= hitbox.w / 3;
 		hitbox.y -= 45;
 
-		hitboxes.push_back(new Hitbox(hitbox, ataqueDebil, 1, OnHitData(5, false, false)));
-
+		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 1, OnHitData(5, false, false)));
 	}
-	break;
-	case 20:
+	else if (frameNumber == attacks["basicU"].totalFrames)
+	{
 		currentMove = nullptr;
 		moveFrame = -1;
-		break;
 	}
 }
 
+//--------------------------------------------------------------------------------------------------
+
 void GatoEspia::SpecialNeutral(int frameNumber)
 {
-
-	//Dependiendo del frame en el que esté, hara una cosa u otra..
-
-	switch (frameNumber)
+	if (frameNumber == 0)
 	{
-	case 0:
-		sdl->soundEffects().at("zeroBigHit").play();
-		//Empieza el ataque :v
+		moving = false;
 		anim->StartAnimation("especialNL");
-		break;
-	case 5:
-	{
-		////Al frame 90, crea un rect y si el oponente colisiona con ello...
-		//Entity* bala = new Bullet(manager, new Vector2D(20, 0), 0.5 , 0.5);
-		//manager->AddEntity(bala);
-
-
 	}
-	break;
-	case 100:
+	else if (frameNumber == attacks["specialN"].startUp)
+	{
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
-		//Al ultimo frame...
+		hitbox.w *= 2.4f;
+		hitbox.h *= 0.7f;
+		hitbox.x -= hitbox.w / 3;
+		hitbox.y -= 45;
 
-		//Vacia current move para que Character sepa que ha acabado
-		currentMove = nullptr;
+		hitboxes.push_back(new Hitbox(hitbox, attacks["specialN"], 1, OnHitData(5, false, false)));
+	}
+	else if (frameNumber == attacks["specialN"].totalFrames)
+	{
+		//La cadena de ifs para cambiar a donde está apuntando (hay una parecida en cada variante)
+		if (!input->special())
+		{
+			currentMove = nullptr;
+			moveFrame = -1;
+		}
+		else
+		{
+			if (input->up())
+			{
+				if (input->left())
+				{
+					dir = -1;
+					currentMove = [this](int f) { SpecialNeutralD(f); };
+				}
+				else if (input->right())
+				{
+					dir = 1;
+					currentMove = [this](int f) { SpecialNeutralD(f); };
+				}
+				currentMove = [this](int f) { SpecialNeutralU(f); };
+				moveFrame = -1;
+			}
+			else
+			{
+				if (input->left())
+				{
+					dir = -1;
+				}
+				else if (input->right())
+				{
+					dir = 1;
+				}
+				moveFrame = -1;
+			}
+		}
+	}
+}
 
-		//Reinicia moveFrame para el siguiente
-		moveFrame = -1;
-		break;
+void GatoEspia::SpecialNeutralU(int frameNumber)
+{
+	if (frameNumber == 0)
+	{
+		moving = false;
+		anim->StartAnimation("especialNU");
+	}
+	else if (frameNumber == attacks["specialN"].startUp)
+	{
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+
+		hitbox.w *= 2.4f;
+		hitbox.h *= 0.7f;
+		hitbox.x -= hitbox.w / 3;
+		hitbox.y -= 45;
+
+		hitboxes.push_back(new Hitbox(hitbox, attacks["specialN"], 1, OnHitData(5, false, false)));
+	}
+	else if (frameNumber == attacks["specialN"].totalFrames)
+	{
+
+		if (!input->special())
+		{
+			currentMove = nullptr;
+			moveFrame = -1;
+		}
+		else
+		{
+			if (!input->up())
+			{
+				if (input->left())
+				{
+					dir = -1;
+					currentMove = [this](int f) { SpecialNeutral(f); };
+				}
+				else if (input->right())
+				{
+					dir = 1;
+					currentMove = [this](int f) { SpecialNeutral(f); };
+				}
+				moveFrame = -1;
+			}
+			else
+			{
+				if (input->left())
+				{
+					dir = -1;
+					currentMove = [this](int f) { SpecialNeutralD(f); };
+				}
+				else if (input->right())
+				{
+					dir = 1;
+					currentMove = [this](int f) { SpecialNeutralD(f); };
+				}
+				moveFrame = -1;
+			}
+		}
+	}
+}
+
+void GatoEspia::SpecialNeutralD(int frameNumber)
+{
+	if (frameNumber == 0)
+	{
+		moving = false;
+		anim->StartAnimation("especialND");
+	}
+	else if (frameNumber == attacks["specialN"].startUp)
+	{
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+
+		hitbox.w *= 2.4f;
+		hitbox.h *= 0.7f;
+		hitbox.x -= hitbox.w / 3;
+		hitbox.y -= 45;
+
+		hitboxes.push_back(new Hitbox(hitbox, attacks["specialN"], 1, OnHitData(5, false, false)));
+	}
+	else if (frameNumber == attacks["specialN"].totalFrames)
+	{
+
+		if (!input->special())
+		{
+			currentMove = nullptr;
+			moveFrame = -1;
+		}
+		else
+		{
+			if (!input->up())
+			{
+				if (input->left())
+				{
+					dir = -1;
+					currentMove = [this](int f) { SpecialNeutral(f); };
+				}
+				else if (input->right())
+				{
+					dir = 1;
+					currentMove = [this](int f) { SpecialNeutral(f); };
+				}
+				moveFrame = -1;
+			}
+			else
+			{
+				if (input->left())
+				{
+					dir = -1;
+				}
+				else if (input->right())
+				{
+					dir = 1;
+				}
+				else
+				{
+					currentMove = [this](int f) { SpecialNeutralU(f); };
+				}
+				moveFrame = -1;
+			}
+		}
 	}
 }
 
 void GatoEspia::SpecialForward(int frameNumber)
 {
-	switch (frameNumber)
+	if (frameNumber == 0)
 	{
-	case 0:
-	{
-		//sdl->soundEffects().at("zeroBigHit").play();
 		anim->StartAnimation("entrarTP");
 		moving = false;
-		break;
 	}
-	break;
-	case 2:
+	else if (frameNumber == attacks["specialL"].startUp / 2)
 	{
 		dash = true;
 	}
-	break;
-	case 6:
+	else if (frameNumber == attacks["specialL"].startUp)
 	{
-		body->SetTransform(body->GetPosition() + b2Vec2(dir * 10, 0),0);
+		body->SetTransform(body->GetPosition() + b2Vec2(dir * 7, 0),0);
 		anim->StartAnimation("salirTP");
 		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, 0 });
 		dash = false;
-	}
-	break;
-	case 7:
-	{
+
 		if (input->special())
 		{
-			currentMove = [this](int f) { TpAtack(f);};
-			moveFrame = -1;
+			currentMove = [this](int f) { TpAtack(f); };
+			moveFrame = -5;
 		}
 	}
-	break;
-	case 8:
-
-
-		//Al ultimo frame...
-
-		//Vacia current move para que Character sepa que ha acabado
+	else if (frameNumber == attacks["specialL"].totalFrames)
+	{
 		currentMove = nullptr;
-
-		//Reinicia moveFrame para el siguiente
 		moveFrame = -1;
-		break;
 	}
 }
 
 void GatoEspia::SpecialUpward(int frameNumber)
 {
-	switch (frameNumber)
+
+	if (frameNumber == 0)
 	{
-	case 0:
-	{
-		//sdl->soundEffects().at("zeroBigHit").play();
 		anim->StartAnimation("entrarTP");
 		moving = false;
-		break;
 	}
-	break;
-	case 2:
+	else if (frameNumber == attacks["specialU"].startUp / 2)
 	{
 		dash = true;
 	}
-	break;
-	case 5:
+	//No me pregunten por que pero tengo que poner esto para que se vea bienxd
+	else if (frameNumber == attacks["specialU"].startUp - 2)
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitboxes.push_back(new Hitbox(hitbox, ataqueDebil, 1, OnHitData(6, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 1, OnHitData(6, false, false)));
 	}
-	break;
-	case 6:
+	else if (frameNumber == attacks["specialU"].startUp - 1)
 	{
-		body->SetTransform(body->GetPosition() + b2Vec2(0, -10), 0);
 		anim->StartAnimation("especialU");
-		body->SetLinearVelocity({ 0, -10 });
+		body->SetTransform(body->GetPosition() + b2Vec2(0, -7), 0);
+		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, -25 });
 		dash = false;
-	}
-	break;
-	case 7:
-	{
+
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
-		hitboxes.push_back(new Hitbox(hitbox, ataqueDebil, 1, OnHitData(6, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 1, OnHitData(6, false, false)));
 	}
-	break;
-	case 8:
-
-
-		//Al ultimo frame...
-
-		//Vacia current move para que Character sepa que ha acabado
+	else if (frameNumber == attacks["specialL"].totalFrames)
+	{
 		currentMove = nullptr;
-
-		//Reinicia moveFrame para el siguiente
 		moveFrame = -1;
-		break;
 	}
 }
 
 void GatoEspia::SpecialDownward(int frameNumber)
 {
-	switch (frameNumber)
+	if (frameNumber == 0)
 	{
-	case 0:
-	{
-		dash = false;
-		body->SetLinearVelocity({ 0, body->GetLinearVelocity().y / 2 });
-		//sdl->soundEffects().at("zeroBigHit").play();
 		anim->StartAnimation("especialDEntrada");
 		moving = false;
-		break;
 	}
-	break;
-	case 2:
+	else if (frameNumber == attacks["specialD"].startUp)
 	{
 		dash = true;
 	}
-	break;
-	case 7:
+	else if (frameNumber == attacks["specialD"].totalFrames)
 	{
 		anim->StartAnimation("especialDSalida");
-		
-	}
-	break;
-	case 9:
-	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitboxes.push_back(new Hitbox(hitbox, ataqueFuerte, 1, OnHitData(40, false, false)));
-
 		dash = false;
 	}
-	break;
-	case 16:
-
-
-		//Al ultimo frame...
-
-		//Vacia current move para que Character sepa que ha acabado
+	else if (frameNumber == attacks["specialD"].totalFrames + 30)
+	{
 		currentMove = nullptr;
-
-		//Reinicia moveFrame para el siguiente
 		moveFrame = -1;
-		break;
 	}
 }
 
 void GatoEspia::TpAtack(int frameNumber)
 {
 
-	switch (frameNumber)
+	if (frameNumber == 0)
 	{
-	case 0:
-	{
-		//sdl->soundEffects().at("zeroBigHit").play();
-		anim->StartAnimation("especialL");
 		moving = false;
-		break;
+		anim->StartAnimation("especialL");
 	}
-	break;
-	case 2:
+	else if (frameNumber == attacks["specialLHit"].startUp)
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
-		hitboxes.push_back(new Hitbox(hitbox, ataqueFuerte, 1, OnHitData(40, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, attacks["specialLHit"], 1, OnHitData(20, false, false)));
 	}
-	break;
-	case 60:
-
-
-		//Al ultimo frame...
-
-		//Vacia current move para que Character sepa que ha acabado
+	else if (frameNumber == attacks["specialLHit"].totalFrames)
+	{
 		currentMove = nullptr;
-
-		//Reinicia moveFrame para el siguiente
 		moveFrame = -1;
-		break;
 	}
 
 }

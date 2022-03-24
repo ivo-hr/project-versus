@@ -2,7 +2,7 @@
 #include "../Entity.h"
 #include "../Utils/MyListener.h"
 
-FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b2Vec2(0.f, 20.f))), sdl(sdl)
+FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b2Vec2(0.f, 15.f))), sdl(sdl)
 {
 	background = &sdl->images().at("fondo");
 	testura = &sdl->images().at("testura");

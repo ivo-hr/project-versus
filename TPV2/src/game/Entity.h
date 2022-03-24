@@ -41,6 +41,9 @@ struct attackData
 	int base;
 	int damage;
 	float multiplier;
+
+	int startUp;
+	int totalFrames;
 };
 
 struct OnHitData {

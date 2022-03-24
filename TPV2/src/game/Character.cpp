@@ -1,7 +1,93 @@
 #include "Character.h"
 #include "Utils/AnimationManager.h"
 #include "Utils/InputConfig.h"
+#include "../json/json.hpp"
+#include <fstream>
+#include <iostream>
+using json = nlohmann::json;
 
+
+void Character::ReadJson(std::string filename)
+{
+	std::ifstream file(filename);
+	json jsonFile;
+	file >> jsonFile;
+
+
+	// variables
+	weight = jsonFile["weight"];
+	maxSpeed = jsonFile["maxSpeed"];
+	speed = jsonFile["speed"];
+	maxJumps = jsonFile["maxJumps"];
+	jumpStr = jsonFile["jumpStr"];
+	onGround = jsonFile["onGround"];
+	shield = jsonFile["shield"];
+	maxShield = jsonFile["maxShield"];
+	jumpCounter = maxJumps;
+	damageTaken = 0;
+	shieldCounter = maxShield;
+	jumpCooldown = true;
+
+
+	//Aqui defino las caracteristicas de cada hitbox (podriamos hacerlo dentro de cada metodo, y vendria de json)(tambien podríamos poner framedata)
+
+
+	attackData aux;
+	auto aData = jsonFile["attacksData"];
+	assert(aData.is_array());
+
+	for (uint16 i = 0u; i < aData.size(); i++) {
+
+		aux.direction = b2Vec2(aData[i]["b2vecX"], aData[i]["b2vecY"]);
+		aux.direction.Normalize();
+		aux.base = aData[i]["base"];
+		aux.damage = aData[i]["damage"];
+		aux.multiplier = aData[i]["multiplier"];
+		aux.startUp = aData[i]["startUp"];
+		aux.totalFrames = aData[i]["totalFrames"];
+
+		attacks.insert({ aData[i]["id"], aux });
+	}
+
+
+	//Datos para las animaciones (tendrá que venir de json claramente solo hay tres y ya ocupan 37 lineas xd)
+	auto sData = jsonFile["spData"];
+	//Mirando a la derecha
+
+	spData.leftOffset = sData["leftOffset"];		//Pixeles en sprite que se dibujaran fuera de la hurtbox a la izquierda
+	spData.upOffset = sData["upOffset"];
+	spData.sizeXOffset = sData["sizeXOffset"];	//Cuantos pixeles en X NO estan dentro de la hurtbox
+	spData.sizeYOffset = sData["sizeYOffset"];
+
+	spData.spritesInX = sData["spritesInX"];
+	spData.spritesInY = sData["spritesInY"];
+
+	animationData auxAnim;
+	auto animData = jsonFile["animationData"]["anim"];
+	assert(animData.is_array());
+
+	for (uint16 i = 0u; i < animData.size(); i++) {
+
+		auxAnim.iniSprite = animData[i]["iniSprite"];
+		auxAnim.totalSprites = animData[i]["totalSprites"];
+		auxAnim.keySprite = animData[i]["keySprite"];
+
+		if (animData[i]["attack"] != "")
+		{
+			auxAnim.hitboxFrame = attacks[animData[i]["attack"]].startUp;
+			auxAnim.totalFrames = attacks[animData[i]["attack"]].totalFrames;
+		}
+		else
+		{
+			auxAnim.keySprite = -1;
+			auxAnim.hitboxFrame = -1;
+			auxAnim.totalFrames = animData[i]["totalFrames"];
+		}
+		auxAnim.loop = animData[i]["loop"];
+
+		spData.animations.insert({ animData[i]["id"], auxAnim });
+	}
+}
 
 Character::Character(FightManager* manager, Vector2D* pos, char input, float w, float h) :
 	Entity(manager, pos, w, h)

@@ -11,8 +11,8 @@ protected:
 	//InputHandler& ih = *InputHandler::instance();
 	InputConfig *input = nullptr;
 	//Datos de los ataques (Deberian salir de jsons en un futuro)
-	attackData ataqueFuerte;
-	attackData ataqueDebil;
+
+	std::unordered_map<std::string, attackData> attacks;
 
 	int stun;
 	int lives;
@@ -42,7 +42,7 @@ protected:
 	//Metodo del movimiento que este haciendo (esto es una variable que guarda metodos :v)
 	std::function<void(int)> currentMove;
 
-	// [x](int f) { x->TpAtack(f)}
+	void ReadJson(std::string file);
 
 
 //	void (Character::* currentMove)(int);
