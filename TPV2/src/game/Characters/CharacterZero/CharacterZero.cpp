@@ -33,7 +33,7 @@ void CharacterZero::BasicNeutral(int frameNumber)
 	switch (frameNumber)
 	{
 	case 0:
-		sdl->soundEffects().at("zeroBigHit").play();
+		sdl->soundEffects().at("zeroSpecN").play();
 		//Empieza el ataque :v
 		anim->StartAnimation("big");
 		break;

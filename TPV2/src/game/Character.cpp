@@ -393,8 +393,12 @@ void Character::StartJump(int frameNumber)
 	{
 		if (!GetGround())
 		{
+			sdl->soundEffects().at("jump1").play();
+
 			jumpCounter--;
 		}
+		else sdl->soundEffects().at("jump0").play();
+
 		jumpCooldown = false;
 		body->SetLinearVelocity(b2Vec2(speed, 0));
 		body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
@@ -407,6 +411,8 @@ void Character::StartShield(int frameNumber)
 {
 	if (frameNumber == 1)
 	{
+		sdl->soundEffects().at("shield").play();
+
 		anim->StartAnimation("shield");
 		shield = true;
 	}

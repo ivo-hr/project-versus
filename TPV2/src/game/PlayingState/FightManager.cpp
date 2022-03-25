@@ -44,7 +44,7 @@ FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b
 	fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
 	platform->CreateFixture(&fi);
 
-	b2ToSDL = (sdl->width() * screenAdjust) / 50.f;
+	b2ToSDL = (sdl->width() * screenAdjust) / 75.f;
 
 	//--------------------------
 
@@ -72,6 +72,10 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 
 	listener->AddCharacter(p1);
 	listener->AddCharacter(p2);
+
+	
+	sdl->musics().at("running_grass").play();
+	Music::setMusicVolume(20);
 
 	bool exit_ = false;
 	while (!exit_ && !fightEnded) {

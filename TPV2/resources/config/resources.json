@@ -24,25 +24,86 @@
     { "id" : "PressAnyKey", "text" : "Press Any Key", "font" : "ARIAL24", "color" : "0x112233ff", "bg" : "0xffffffff" },
     { "id" : "HelloSDL", "text" : "Hello SDL!", "font" : "ARIAL48", "color" : "0x0000ffff" }
   ],
-  
-  "sounds" : [
+
+  "sounds": [
     {
-      "id": "zeroSmolHit",
-      "file": "resources/sound/zeroChar/smallhit.wav"
+      "id": "shield",
+      "file": "resources/sound/01General/shield.wav"
     },
     {
-      "id": "zeroBigHit",
-      "file": "resources/sound/zeroChar/stronghit.wav"
+      "id": "jump0",
+      "file": "resources/sound/01General/jump0.wav"
+    },
+    {
+      "id": "jump1",
+      "file": "resources/sound/01General/jump1.wav"
+    },
+    {
+      "id": "zeroAtk0",
+      "file": "resources/sound/ZeroChar/atk0.wav"
+    },
+    {
+      "id": "zeroSpecN",
+      "file": "resources/sound/ZeroChar/specN.wav"
     },
     {
       "id": "zeroTaunt",
-      "file": "resources/sound/zeroChar/taunt.wav"
+      "file": "resources/sound/ZeroChar/taunt.wav"
+    },
+    {
+      "id": "catAtk0",
+      "file": "resources/sound/CatChar/atk0.wav"
+    },
+    {
+      "id": "catAtk1",
+      "file": "resources/sound/CatChar/atk1.wav"
+    },
+    {
+      "id": "catAtk2",
+      "file": "resources/sound/CatChar/atk2.wav"
+    },
+    {
+      "id": "catAtk3",
+      "file": "resources/sound/CatChar/atk3.wav"
+    },
+    {
+      "id": "catAtk3",
+      "file": "resources/sound/CatChar/atk3.wav"
+    },
+    {
+      "id": "catSpecD",
+      "file": "resources/sound/CatChar/specD.wav"
+    },
+    {
+      "id": "catSpecN",
+      "file": "resources/sound/CatChar/specN.wav"
+    },
+    {
+      "id": "catSpecS",
+      "file": "resources/sound/CatChar/specS.wav"
+    },
+    {
+      "id": "catSpecU",
+      "file": "resources/sound/CatChar/specU.wav"
+    },
+    {
+      "id": "catStep0",
+      "file": "resources/sound/CatChar/step0.wav"
+    },
+    {
+      "id": "catStep1",
+      "file": "resources/sound/CatChar/step1.wav"
+    },
+    {
+      "id": "catTaunt",
+      "file": "resources/sound/CatChar/taunt.wav"
     }
+
   ],
 
   "musics" : [
-    { "id" : "beat", "file" : "resources/sound/beat.wav" },
-    { "id" : "imperial_march", "file" : "resources/sound/imperial_march.wav" }
+    { "id" : "sky_charter", "file" : "resources/sound/00Music/sky_charter.midi" },
+    { "id" : "running_grass", "file" : "resources/sound/00Music/running_grass.midi" }
   ] 
 
 }
