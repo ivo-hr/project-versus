@@ -75,10 +75,6 @@ class Entity
 {
 
 protected:
-
-	spriteSheetData spData;
-	AnimationManager* anim;
-
 	Texture* texture;
 
 	FightManager* manager;

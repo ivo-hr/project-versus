@@ -299,6 +299,7 @@ void Character::update()
 		moveFrame++;
 	}
 
+	anim->update();
 	Entity::update();
 
 }
@@ -310,6 +311,7 @@ void Character::draw()
 	if (!alive) return;
 
 	Entity::draw();
+	anim->render();
 
 	//if (debug)
 

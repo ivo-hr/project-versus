@@ -134,14 +134,9 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.w *= 2.4f;
-		hitbox.h *= 0.7f;
-		hitbox.x -= hitbox.w / 3;
-		hitbox.y -= 45;
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialN"], 1, OnHitData(5, false, false)));
+		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y),attacks["specialN"], dir);
+		manager->AddEntity(bullet);
+		bullet->SetOponents(oponents);
 	}
 	else if (frameNumber == attacks["specialN"].totalFrames)
 	{

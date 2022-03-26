@@ -55,8 +55,6 @@ void Entity::update()
 	hurtbox.x = manager->b2ToSDLX(body, width);
 	hurtbox.y = manager->b2ToSDLY(body, height);
 
-	anim->update();
-
 	if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()))
 	{
 		OnDeath();
@@ -70,7 +68,6 @@ void Entity::SetGround(bool ground)
 
 void Entity::draw()
 {
-	anim->render();
 
 	//dibujar los sprite bruh
 }

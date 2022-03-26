@@ -10,8 +10,12 @@ protected:
 
 	//InputHandler& ih = *InputHandler::instance();
 	InputConfig *input = nullptr;
-	//Datos de los ataques (Deberian salir de jsons en un futuro)
 
+	spriteSheetData spData;
+
+	AnimationManager* anim;
+
+	//Datos de los ataques (Deberian salir de jsons en un futuro)
 	std::unordered_map<std::string, attackData> attacks;
 
 	int stun;
