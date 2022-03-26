@@ -50,7 +50,7 @@ void Bullet::CheckHits()
 	{
 		if (SDL_HasIntersection(&hurtbox, oponents[j]->GetHurtbox()))
 		{
-			//Le hace daño xddd
+			//Le hace daï¿½o xddd
 			if (oponents[j]->GetHit(data, dir))
 			{
 				manager->HitLag(3);

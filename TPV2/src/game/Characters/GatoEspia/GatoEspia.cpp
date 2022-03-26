@@ -136,7 +136,7 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialN"].totalFrames)
 	{
-		//La cadena de ifs para cambiar a donde está apuntando (hay una parecida en cada variante)
+		//La cadena de ifs para cambiar a donde estï¿½ apuntando (hay una parecida en cada variante)
 		if (!input->special())
 		{
 			currentMove = nullptr;
