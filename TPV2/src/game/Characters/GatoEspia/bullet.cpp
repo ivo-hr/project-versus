@@ -1,16 +1,25 @@
 #include "../../Utils/AnimationManager.h"
 #include "bullet.h"
 
-Bullet::Bullet(FightManager* manager, Vector2D* pos, attackData attack, int dir) :
+Bullet::Bullet(FightManager* manager, Vector2D* pos, attackData attack, b2Vec2 dir) :
 	Entity(manager, pos, 0.3f, 0.1f)
 {
 	hurtbox = manager->GetSDLCoors(body, width, height);
 	texture = &sdl->images().at("bullet");
 	iniPos = position = pos;
 
-	this->dir = dir;
+	vecDir = dir;
 
-	speed = 20 * dir;
+	speed = 20;
+
+
+	vecDir.Normalize();
+
+	//funciona , but i dont know why
+	ang = (acos(-vecDir.x)*180)/M_PI ;
+	vecDir *= speed;
+
+	
 
 	body->SetGravityScale(0);
 
@@ -26,7 +35,7 @@ void Bullet::update()
 {
 	if (abs(position->getX() - iniPos->getX()) <= range)
 	{
-		body->SetLinearVelocity(b2Vec2(speed, 0));
+		body->SetLinearVelocity(vecDir);
 
 		Entity::update();
 	}
@@ -41,7 +50,8 @@ void Bullet::update()
 
 void Bullet::draw()
 {
-	texture->render(hurtbox);
+	
+	texture->render(hurtbox,ang);
 }
 
 void Bullet::CheckHits()

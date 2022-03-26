@@ -256,12 +256,11 @@ void Character::update()
 	//para recuperar escudo
 	if (!shield && shieldCounter < maxShield)
 	{
-		std::cout << shieldCounter << endl;
 		shieldCounter++;
 	}
 	else if (shield)
 	{
-		std::cout << shieldCounter << endl;
+
 		shieldCounter-=2;
 	}
 
@@ -333,7 +332,7 @@ void Character::draw()
 
 bool Character::GetHit(attackData a, int opdir)
 {
-	std::cout << shield << endl;
+	
 	if (shield)
 	{
 		//Actualiza el da�o

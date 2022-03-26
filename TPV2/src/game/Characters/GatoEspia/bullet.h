@@ -12,11 +12,12 @@ protected:
 	int range = 20;
 	Vector2D* position;
 	Vector2D* iniPos;
-
+	b2Vec2 vecDir;
 	attackData data;
+	float ang;
 
 public:
-	Bullet(FightManager* manager, Vector2D* pos, attackData attack, int dir);
+	Bullet(FightManager* manager, Vector2D* pos, attackData attack, b2Vec2 dir);
 	~Bullet();
 
 	virtual void update() override;

@@ -21,7 +21,6 @@ GatoEspia::~GatoEspia()
 
 }
 
-
 //Lo mismo que el de arriba pero mas rapido y debil xd
 void GatoEspia::BasicNeutral(int frameNumber)
 {
@@ -34,7 +33,6 @@ void GatoEspia::BasicNeutral(int frameNumber)
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
 		hitbox.x += dir * 30;
-
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["basicN"], 2, OnHitData(5, false, false)));
 	}
@@ -130,7 +128,7 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
-		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y),attacks["specialN"], dir);
+		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y),attacks["specialN"], b2Vec2(dir, 0));
 		manager->AddEntity(bullet);
 		bullet->SetOponents(oponents);
 	}
@@ -184,14 +182,18 @@ void GatoEspia::SpecialNeutralU(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+		//SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
-		hitbox.w *= 2.4f;
-		hitbox.h *= 0.7f;
-		hitbox.x -= hitbox.w / 3;
-		hitbox.y -= 45;
+		//hitbox.w *= 2.4f;
+		//hitbox.h *= 0.7f;
+		//hitbox.x -= hitbox.w / 3;
+		//hitbox.y -= 45;
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialN"], 1, OnHitData(5, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox, attacks["specialN"], 1, OnHitData(5, false, false)));
+		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y), attacks["specialN"], b2Vec2(0,-1));
+		manager->AddEntity(bullet);
+		bullet->SetOponents(oponents);
+
 	}
 	else if (frameNumber == attacks["specialN"].totalFrames)
 	{
@@ -244,14 +246,9 @@ void GatoEspia::SpecialNeutralD(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.w *= 2.4f;
-		hitbox.h *= 0.7f;
-		hitbox.x -= hitbox.w / 3;
-		hitbox.y -= 45;
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialN"], 1, OnHitData(5, false, false)));
+		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y), attacks["specialN"], b2Vec2(dir, -1));
+		manager->AddEntity(bullet);
+		bullet->SetOponents(oponents);
 	}
 	else if (frameNumber == attacks["specialN"].totalFrames)
 	{

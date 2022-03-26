@@ -27,7 +27,6 @@ struct spriteSheetData
 	int upOffset;		//bruh
 	int sizeXOffset;	//Que tan grande se tiene que hacer el sprite en X para que coincida
 	int sizeYOffset;	//bruh
-
 	int spritesInX;		//Cuantos frames hay en una fila de la spritesheet entera
 	int spritesInY;		//Cuantos frames hay en una columna de la spritesheet entera
 
