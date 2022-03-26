@@ -5,10 +5,7 @@ class GatoEspia : public Character
 public:
 	GatoEspia(FightManager* mngr, Vector2D* pos, char input);
 	~GatoEspia();
-	
-	
 
-	virtual void draw() override;
 
 	virtual void BasicNeutral(int frameNumber) override;
 	virtual void BasicForward(int frameNumber) override;
@@ -23,5 +20,13 @@ public:
 	virtual void SpecialDownward(int frameNumber) override;
 	
 	void TpAtack(int frameNumber);
+
+	virtual void update() override;
+	virtual void Respawn() override;
+
+private:
+	float maxBlinks = 3.2;
+	float blinks = maxBlinks;
+	float blinkRecover = 0.01;
 
 };
