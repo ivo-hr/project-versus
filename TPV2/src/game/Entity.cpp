@@ -98,12 +98,12 @@ void Entity::CheckHits()
 		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 		SDL_RenderDrawRect(sdl->renderer(), &hitboxes[i]->box);
 
-		for (int i = 0; i < oponents.size(); i++)
+		for (int j = 0; j < oponents.size(); j++)
 		{
-			if (SDL_HasIntersection(&hitboxes[i]->box, oponents[i]->GetHurtbox()))
+			if (SDL_HasIntersection(&hitboxes[i]->box, oponents[j]->GetHurtbox()))
 			{
 				//Le hace daño xddd
-				if (oponents[i]->GetHit(hitboxes[i]->data, dir))
+				if (oponents[j]->GetHit(hitboxes[i]->data, dir))
 				{
 					manager->HitLag(hitboxes[i]->hit.hitlag);
 				}
