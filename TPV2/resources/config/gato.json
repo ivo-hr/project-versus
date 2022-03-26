@@ -37,8 +37,8 @@
       "base": 30,
       "damage": 10,
       "multiplier": 1.2,
-      "startUp": 18,
-      "totalFrames": 39
+      "startUp": 7,
+      "totalFrames": 15
     },
     {
       "id": "basicU",
@@ -67,8 +67,8 @@
       "base": 0,
       "damage": 0,
       "multiplier": 0,
-      "startUp": 6,
-      "totalFrames": 12
+      "startUp": 15,
+      "totalFrames": 30
     },
     {
       "id": "specialLHit",
@@ -87,8 +87,8 @@
       "base": 12,
       "damage": 4,
       "multiplier": 0.3,
-      "startUp": 6,
-      "totalFrames": 12
+      "startUp": 12,
+      "totalFrames": 25
     },
     {
       "id": "specialD",
@@ -97,8 +97,8 @@
       "base": 0,
       "damage": 0,
       "multiplier": 0,
-      "startUp": 12,
-      "totalFrames": 24
+      "startUp": 10,
+      "totalFrames": 30
     },
     {
       "id": "specialDHit",
@@ -136,7 +136,7 @@
         "iniSprite" : 12,
         "totalSprites" : 3,
         "keySprite" : 2,
-        "attack": "",
+        "attack": "basicN",
         "totalFrames" : 15,
         "loop" :false
       },
@@ -145,7 +145,7 @@
         "iniSprite" : 15,
         "totalSprites" : 4,
         "keySprite" : 3,
-        "attack": "",
+        "attack": "basicU",
         "totalFrames" : 20,
         "loop" :false
       },
@@ -154,7 +154,7 @@
         "iniSprite" : 19,
         "totalSprites" : 3,
         "keySprite" : 2,
-        "attack": "",
+        "attack": "basicD",
         "totalFrames" : 35,
         "loop" :false
       },
@@ -162,8 +162,8 @@
         "id" : "basicF",
         "iniSprite" : 22,
         "totalSprites" : 4,
-        "keySprite" : 3,
-        "attack": "",
+        "keySprite" : 2,
+        "attack": "basicF",
         "totalFrames" : 40,
         "loop" :false
       },
@@ -238,7 +238,7 @@
         "totalSprites" : 3,
         "keySprite" : -1,
         "attack": "",
-        "totalFrames" : 6,
+        "totalFrames" : 15,
         "loop" : false
       },
       {
@@ -247,7 +247,7 @@
         "totalSprites" : 3,
         "keySprite" : -1,
         "attack": "",
-        "totalFrames" : 6,
+        "totalFrames" : 15,
         "loop" : false
       },
       {
@@ -292,7 +292,7 @@
         "totalSprites" : 4,
         "keySprite" : 3,
         "attack": "",
-        "totalFrames" : 4,
+        "totalFrames" : 15,
         "loop" : false
       },
       {

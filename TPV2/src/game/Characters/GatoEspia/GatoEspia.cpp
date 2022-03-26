@@ -306,6 +306,8 @@ void GatoEspia::SpecialForward(int frameNumber)
 			moveFrame = -1;
 			return;
 		}
+		body->SetLinearVelocity(b2Vec2(0, 0));
+		body->SetGravityScale(0);
 		anim->StartAnimation("entrarTP");
 		moving = false;
 	}
@@ -318,6 +320,7 @@ void GatoEspia::SpecialForward(int frameNumber)
 		body->SetTransform(body->GetPosition() + b2Vec2(dir * 7, 0), 0);
 		anim->StartAnimation("salirTP");
 		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, 0 });
+		body->SetGravityScale(10.0f);
 		dash = false;
 		blinks -= 1.0f;
 
@@ -345,6 +348,8 @@ void GatoEspia::SpecialUpward(int frameNumber)
 			return;
 		}
 		anim->StartAnimation("entrarTP");
+		body->SetLinearVelocity(b2Vec2(0, 0));
+		body->SetGravityScale(0);
 		moving = false;
 	}
 	else if (frameNumber == attacks["specialU"].startUp / 2)
@@ -352,25 +357,33 @@ void GatoEspia::SpecialUpward(int frameNumber)
 		dash = true;
 	}
 	//No me pregunten por que pero tengo que poner esto para que se vea bienxd
-	else if (frameNumber == attacks["specialU"].startUp - 2)
-	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 1, OnHitData(6, false, false)));
-	}
-	else if (frameNumber == attacks["specialU"].startUp - 1)
+	//else if (frameNumber == attacks["specialU"].startUp - 2)
+	//{
+	//	SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+	//	hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 1, OnHitData(6, false, false)));
+	//}
+	else if (frameNumber == attacks["specialU"].startUp)
 	{
 		anim->StartAnimation("especialU");
 		body->SetTransform(body->GetPosition() + b2Vec2(0, -7), 0);
 		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, -25 });
+		body->SetGravityScale(10.0f);
 		dash = false;
 		blinks -= 1.0f;
 
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 1, OnHitData(6, false, false)));
+
 	}
-	else if (frameNumber == attacks["specialL"].totalFrames)
+	else if (frameNumber == attacks["specialU"].startUp+5)
 	{
+		body->SetLinearVelocity(b2Vec2(0, 0));
+		body->SetGravityScale(0);
+	}
+	else if (frameNumber == attacks["specialU"].totalFrames)
+	{
+		body->SetGravityScale(10.0f);
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
@@ -390,19 +403,26 @@ void GatoEspia::SpecialDownward(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialD"].startUp)
 	{
-		dash = true;
+		anim->StartAnimation("entrarTP");
+		dash = true;	
 	}
-	else if (frameNumber == attacks["specialD"].totalFrames)
+	else if (frameNumber == attacks["specialD"].totalFrames-4)
 	{
-		anim->StartAnimation("especialDSalida");
+		anim->StartAnimation("salirTP");
 		dash = false;
 		blinks -= 1.0f;
 	}
-	else if (frameNumber == attacks["specialD"].totalFrames + 30)
-	{
+	else if (frameNumber == attacks["specialD"].totalFrames) {
+		anim->StartAnimation("especialDSalida");
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
+	//else if (frameNumber == attacks["specialD"].totalFrames + 30)
+	//{
+	//	anim->StartAnimation("especialDSalida");
+	//	currentMove = nullptr;
+	//	moveFrame = -1;
+	//}
 }
 
 void GatoEspia::TpAtack(int frameNumber)

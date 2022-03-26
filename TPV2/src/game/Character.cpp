@@ -488,6 +488,9 @@ void Character::OnDeath()
 
 void Character::Respawn()
 {
+	if (lives <= 0) {
+		return;
+	}
 	body->SetAwake(true);
 
 	std::cout << "Vidas restantes: " << lives << "\n";

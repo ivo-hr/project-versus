@@ -345,3 +345,5 @@ MigrationBackup/
 *.tlog
 =======
 >>>>>>> Stashed changes
+*.lastbuildstate
+*.recipe
