@@ -9,6 +9,16 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.exe
+*.exp
+*.tlog
+*.recipe
+*.idb
+*.lastbuildstate
+*.tlog
+*.lastbuildstate
+*.recipe
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -335,12 +345,3 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-*.exe
-*.exp
-*.tlog
-*.recipe
-*.idb
-*.lastbuildstate
-*.tlog
-*.lastbuildstate
-*.recipe
