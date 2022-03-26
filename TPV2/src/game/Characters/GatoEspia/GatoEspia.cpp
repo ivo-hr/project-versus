@@ -21,10 +21,6 @@ GatoEspia::~GatoEspia()
 
 }
 
-void GatoEspia::draw()
-{
-	Character::draw();
-}
 
 //Lo mismo que el de arriba pero mas rapido y debil xd
 void GatoEspia::BasicNeutral(int frameNumber)
@@ -310,6 +306,11 @@ void GatoEspia::SpecialForward(int frameNumber)
 {
 	if (frameNumber == 0)
 	{
+		if (blinks < 1.0f) {
+			currentMove = nullptr;
+			moveFrame = -1;
+			return;
+		}
 		anim->StartAnimation("entrarTP");
 		moving = false;
 	}
@@ -319,10 +320,11 @@ void GatoEspia::SpecialForward(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialL"].startUp)
 	{
-		body->SetTransform(body->GetPosition() + b2Vec2(dir * 7, 0),0);
+		body->SetTransform(body->GetPosition() + b2Vec2(dir * 7, 0), 0);
 		anim->StartAnimation("salirTP");
 		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, 0 });
 		dash = false;
+		blinks -= 1.0f;
 
 		if (input->special())
 		{
@@ -342,6 +344,11 @@ void GatoEspia::SpecialUpward(int frameNumber)
 
 	if (frameNumber == 0)
 	{
+		if (blinks < 1.0f) {
+			currentMove = nullptr;
+			moveFrame = -1;
+			return;
+		}
 		anim->StartAnimation("entrarTP");
 		moving = false;
 	}
@@ -361,6 +368,7 @@ void GatoEspia::SpecialUpward(int frameNumber)
 		body->SetTransform(body->GetPosition() + b2Vec2(0, -7), 0);
 		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, -25 });
 		dash = false;
+		blinks -= 1.0f;
 
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
@@ -377,6 +385,11 @@ void GatoEspia::SpecialDownward(int frameNumber)
 {
 	if (frameNumber == 0)
 	{
+		if (blinks < 1.0f) {
+			currentMove = nullptr;
+			moveFrame = -1;
+			return;
+		}
 		anim->StartAnimation("especialDEntrada");
 		moving = false;
 	}
@@ -388,6 +401,7 @@ void GatoEspia::SpecialDownward(int frameNumber)
 	{
 		anim->StartAnimation("especialDSalida");
 		dash = false;
+		blinks -= 1.0f;
 	}
 	else if (frameNumber == attacks["specialD"].totalFrames + 30)
 	{
@@ -416,6 +430,20 @@ void GatoEspia::TpAtack(int frameNumber)
 		moveFrame = -1;
 	}
 
+}
+
+void GatoEspia::update()
+{
+	Character::update();
+	if (blinks < maxBlinks) {
+		blinks += blinkRecover;
+	}
+}
+
+void GatoEspia::Respawn()
+{
+	Character::Respawn();
+	blinks = maxBlinks;
 }
 
 
