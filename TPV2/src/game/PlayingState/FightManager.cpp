@@ -107,9 +107,9 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 
 		
 
-		for (Entity* ent : entities)
+		for (auto i = 0u; i < entities.size(); i++)
 		{
-			ent->update();
+			entities[i]->update();
 		}
 		for (Entity* ent : entities)
 		{
@@ -173,13 +173,13 @@ bool FightManager::RemoveEntity(Entity* ent)
 				entities[j - 1] = entities[j];
 			}
 			entities.pop_back();
-			delete ent;
 		}
 	}
 	for (int i = 0; i < entities.size(); i++)
 	{
-		entities[i]->SetOponents(entities);
+		entities[i]->DeleteOponent(ent);
 	}
+	delete ent;
 	return false;
 }
 

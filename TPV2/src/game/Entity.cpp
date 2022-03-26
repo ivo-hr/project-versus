@@ -75,15 +75,27 @@ void Entity::draw()
 //Le decimos a quien toca dar de ostias xd
 void Entity::SetOponents(std::vector<Entity*> ents)
 {
-	for (int i = 0; i < oponents.size(); i++)
-	{
-		oponents.pop_back();
-	}
+	oponents.clear();
 	for (int i = 0; i < ents.size(); i++)
 	{
 		if (ents[i] != this)
 		{
 			oponents.push_back(ents[i]);
+		}
+	}
+}
+
+void Entity::DeleteOponent(Entity* ent)
+{
+	for (int i = 0; i < oponents.size(); i++)
+	{
+		if (oponents[i] == ent)
+		{
+			for (int j = i + 1; j < oponents.size(); j++)
+			{
+				oponents[j - 1] = oponents[j];
+			}
+			oponents.pop_back();
 		}
 	}
 }

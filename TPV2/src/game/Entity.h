@@ -112,6 +112,7 @@ public:
 	virtual void draw();
 
 	virtual void SetOponents(std::vector<Entity*> op);
+	virtual void DeleteOponent(Entity* ent);
 
 	virtual void CheckHits();
 	virtual void OnDeath() { manager->RemoveEntity(this); };
