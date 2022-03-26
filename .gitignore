@@ -341,9 +341,6 @@ MigrationBackup/
 *.recipe
 *.idb
 *.lastbuildstate
-<<<<<<< Updated upstream
 *.tlog
-=======
->>>>>>> Stashed changes
 *.lastbuildstate
 *.recipe
