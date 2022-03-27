@@ -90,6 +90,7 @@ protected:
 
 	std::vector<Entity*> oponents;
 	std::vector<Hitbox*> hitboxes;
+	std::vector<bool> isHit;
 
 	bool onGround;
 
@@ -115,7 +116,7 @@ public:
 
 	virtual void CheckHits();
 	virtual void OnDeath() { manager->RemoveEntity(this); };
-	virtual bool GetHit(attackData a, int dir) = 0;
+	virtual bool GetHit(attackData a, Entity* attacker) = 0;
 
 	FightManager* GetManager() { return manager; };
 
@@ -126,5 +127,7 @@ public:
 	virtual b2Body* GetBody() { return body; };
 	void SetGround(bool ground);
 	bool GetGround() { return onGround; };
+
+	void resetHit();
 	//virtual void SendToHUD(Texture* tex);
 };

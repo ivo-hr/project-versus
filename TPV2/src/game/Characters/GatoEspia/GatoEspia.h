@@ -23,7 +23,8 @@ public:
 
 	virtual void update() override;
 	virtual void Respawn() override;
-	virtual bool GetHit(attackData a, int opdir) override;
+	virtual bool GetHit(attackData a, Entity* attacker) override;
+	void Counter(int frameNumber);
 
 private:
 	float maxBlinks = 3.2;

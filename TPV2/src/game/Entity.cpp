@@ -66,6 +66,13 @@ void Entity::SetGround(bool ground)
 	onGround = ground;
 }
 
+void Entity::resetHit()
+{
+	for (int i = 0; i < isHit.size(); i++) {
+		isHit[i] = false;
+	}
+}
+
 void Entity::draw()
 {
 
@@ -76,11 +83,13 @@ void Entity::draw()
 void Entity::SetOponents(std::vector<Entity*> ents)
 {
 	oponents.clear();
+	isHit.clear();
 	for (int i = 0; i < ents.size(); i++)
 	{
 		if (ents[i] != this)
 		{
 			oponents.push_back(ents[i]);
+			isHit.push_back(false);
 		}
 	}
 }
@@ -94,8 +103,10 @@ void Entity::DeleteOponent(Entity* ent)
 			for (int j = i + 1; j < oponents.size(); j++)
 			{
 				oponents[j - 1] = oponents[j];
+				isHit[j - 1] = isHit[j];
 			}
 			oponents.pop_back();
+			isHit.pop_back();
 		}
 	}
 }
@@ -109,13 +120,14 @@ void Entity::CheckHits()
 
 		for (int j = 0; j < oponents.size(); j++)
 		{
-			if (SDL_HasIntersection(&hitboxes[i]->box, oponents[j]->GetHurtbox()))
+			if (SDL_HasIntersection(&hitboxes[i]->box, oponents[j]->GetHurtbox()) & !isHit[j])
 			{
 				//Le hace daño xddd
-				if (oponents[j]->GetHit(hitboxes[i]->data, dir))
+				if (oponents[j]->GetHit(hitboxes[i]->data, this))
 				{
 					manager->HitLag(hitboxes[i]->hit.hitlag);
 				}
+				isHit[j] = true;
 			}
 		}
 		hitboxes[i]->duration--;
@@ -128,6 +140,7 @@ void Entity::CheckHits()
 			}
 			hitboxes.pop_back();
 			delete aux;
+			resetHit();
 		}
 	}
 }

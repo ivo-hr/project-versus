@@ -23,6 +23,6 @@ public:
 	virtual void update() override;
 	virtual void draw() override;
 	virtual void CheckHits() override;
-	virtual bool GetHit(attackData a, int dir) { return(false);};
+	virtual bool GetHit(attackData a, Entity* attacker) { return(false);};
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox;};
 };

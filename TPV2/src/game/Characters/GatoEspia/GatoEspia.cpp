@@ -159,8 +159,10 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 					dir = 1;
 					currentMove = [this](int f) { SpecialNeutralD(f); };
 				}
-				currentMove = [this](int f) { SpecialNeutralU(f); };
-				moveFrame = -1;
+				else {
+					currentMove = [this](int f) { SpecialNeutralU(f); };
+					moveFrame = -1;
+				}
 			}
 			else
 			{
@@ -373,7 +375,24 @@ void GatoEspia::SpecialUpward(int frameNumber)
 	else if (frameNumber == attacks["specialU"].startUp)
 	{
 		anim->StartAnimation("especialU");
-		body->SetTransform(body->GetPosition() + b2Vec2(0, -7), 0);
+		b2Vec2 a;
+		if (input->left()) {
+			a = b2Vec2(-7, -7);
+			a.Normalize();
+			a *= 7;
+		}
+		else if (input->right())
+		{
+			a = b2Vec2(7, -7);
+			a.Normalize();
+			a *= 7;
+		}
+		else {
+			a = b2Vec2(0, -7);
+			a.Normalize();
+			a *= 7;
+		}
+		body->SetTransform(body->GetPosition() + a, 0);
 		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, -25 });
 		body->SetGravityScale(10.0f);
 		dash = false;
@@ -472,52 +491,41 @@ void GatoEspia::Respawn()
 	blinks = maxBlinks;
 }
 
-bool GatoEspia::GetHit(attackData a, int opdir)
+
+bool GatoEspia::GetHit(attackData a, Entity* attacker)
 {
-	if (shield)
-	{
-		//Actualiza el da�o
-		damageTaken += (int)(a.damage * 0.4f);
-		return true;
-	}
 	if (counter) {
-		body->SetTransform(body->GetPosition() + b2Vec2(oponents[0]->GetHurtbox()->x, oponents[0]->GetHurtbox()->y), 0);
-		dir = -dir;
+		dir = attacker->GetDir();
+		body->SetTransform(attacker->GetBody()->GetPosition() + b2Vec2(-dir, 0), 0);
+		currentMove = [this](int f) { Counter(f); };
+		moveFrame = -1;
+		return false;
+	}
+	Character::GetHit(a, attacker);
+}
+
+void GatoEspia::Counter(int frameNumber)
+{
+	if (frameNumber == 0)
+	{
 		anim->StartAnimation("salirTP");
 		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, 0 });
-		currentMove = [this](int f) { TpAtack(f); };
-		moveFrame = -5;
-		return false;
+		dash = false;
+		counter = false;
 	}
-	if (dash)
+	else if (frameNumber == attacks["specialLHit"].startUp)
 	{
-		return false;
+		anim->StartAnimation("especialL");
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+
+		hitboxes.push_back(new Hitbox(hitbox, attacks["specialLHit"], 1, OnHitData(20, false, false)));
 	}
-	else if (!shield && !dash)
+	else if (frameNumber == attacks["specialLHit"].totalFrames)
 	{
-		anim->StartAnimation("stun");
-		anim->update();
-		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
-
-		if (a.base >= 0)
-		{
-			stun = recoil / 1.8f;
-		}
-
-		//Actualiza el da�o
-		damageTaken += a.damage;
-
-		b2Vec2 aux = a.direction;
-
-		aux *= recoil;
-		aux.y *= -1;
-		aux.x *= opdir;
-
-		//Produce el knoback..
-		body->SetLinearVelocity(aux);
-
-		return true;
+		currentMove = nullptr;
+		moveFrame = -1;
 	}
+
 }
 
 

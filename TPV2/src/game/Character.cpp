@@ -334,7 +334,7 @@ void Character::draw()
 }
 
 
-bool Character::GetHit(attackData a, int opdir)
+bool Character::GetHit(attackData a, Entity* attacker)
 {
 	
 	if (shield)
@@ -349,6 +349,8 @@ bool Character::GetHit(attackData a, int opdir)
 	}
 	else if (!shield && !dash)
 	{
+		currentMove = nullptr;
+		moveFrame = -1;
 		anim->StartAnimation("stun");
 		anim->update();
 		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
@@ -365,7 +367,7 @@ bool Character::GetHit(attackData a, int opdir)
 
 		aux *= recoil;
 		aux.y *= -1;
-		aux.x *= opdir;
+		aux.x *= attacker->GetDir();
 
 		//Produce el knoback..
 		body->SetLinearVelocity(aux);

@@ -59,7 +59,7 @@ public:
 	virtual void update() override;
 	virtual void draw() override;
 
-	virtual bool GetHit(attackData a, int dir);
+	virtual bool GetHit(attackData a, Entity* attacker);
 	virtual SDL_Rect* GetHurtbox();
 
 	virtual void OnDeath() override;

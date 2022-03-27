@@ -61,7 +61,7 @@ void Bullet::CheckHits()
 		if (SDL_HasIntersection(&hurtbox, oponents[j]->GetHurtbox()))
 		{
 			//Le hace da�o xddd
-			if (oponents[j]->GetHit(data, dir))
+			if (oponents[j]->GetHit(data, this))
 			{
 				manager->HitLag(3);
 			}
