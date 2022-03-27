@@ -15,6 +15,7 @@ void Character::ReadJson(std::string filename)
 
 
 	// variables
+	codeName = jsonFile["codeName"];
 	weight = jsonFile["weight"];
 	maxSpeed = jsonFile["maxSpeed"];
 	speed = jsonFile["speed"];
@@ -239,6 +240,9 @@ void Character::update()
 			{
 				if (anim->CurrentAnimation() != "run")
 					anim->StartAnimation("run");
+
+				sdl->soundEffects().at(codeName + "Step0").play();
+				sdl->soundEffects().at(codeName + "Step1").play();
 			}
 			//frenarse
 			else

@@ -51,6 +51,14 @@
       "file": "resources/sound/ZeroChar/taunt.wav"
     },
     {
+      "id": "zeroStep0",
+      "file": "resources/sound/CatChar/step0.wav"
+    },
+    {
+      "id": "zeroStep1",
+      "file": "resources/sound/CatChar/step1.wav"
+    },
+    {
       "id": "catAtk0",
       "file": "resources/sound/CatChar/atk0.wav"
     },

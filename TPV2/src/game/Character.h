@@ -21,6 +21,7 @@ protected:
 	int stun;
 	int lives;
 
+	string codeName;
 	bool moving;
 	int maxSpeed;
 	int speed;

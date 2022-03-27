@@ -27,6 +27,7 @@ void GatoEspia::BasicNeutral(int frameNumber)
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("basicN");
+		sdl->soundEffects().at("catAtk0").play();
 	}
 	else if (frameNumber == attacks["basicN"].startUp)
 	{
@@ -48,6 +49,7 @@ void GatoEspia::BasicForward(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("basicF");
+		sdl->soundEffects().at("catAtk1").play();
 	}
 	else if (frameNumber == attacks["basicF"].startUp)
 	{
@@ -71,6 +73,7 @@ void GatoEspia::BasicDownward(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("basicD");
+		sdl->soundEffects().at("catAtk2").play();
 	}
 	else if (frameNumber == attacks["basicD"].startUp)
 	{
@@ -98,6 +101,7 @@ void GatoEspia::BasicUpward(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("basicU");
+		sdl->soundEffects().at("catAtk3").play();
 	}
 	else if (frameNumber == attacks["basicU"].startUp)
 	{
@@ -125,6 +129,7 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("especialNL");
+		sdl->soundEffects().at("catSpecN").play();
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
@@ -179,6 +184,7 @@ void GatoEspia::SpecialNeutralU(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("especialNU");
+
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
@@ -306,6 +312,7 @@ void GatoEspia::SpecialForward(int frameNumber)
 		body->SetLinearVelocity(b2Vec2(0, 0));
 		body->SetGravityScale(0);
 		anim->StartAnimation("entrarTP");
+		sdl->soundEffects().at("catSpecS").play();
 		moving = false;
 	}
 	else if (frameNumber == attacks["specialL"].startUp / 2)
@@ -345,6 +352,7 @@ void GatoEspia::SpecialUpward(int frameNumber)
 			return;
 		}
 		anim->StartAnimation("entrarTP");
+		sdl->soundEffects().at("catSpecU").play();
 		body->SetLinearVelocity(b2Vec2(0, 0));
 		body->SetGravityScale(0);
 		moving = false;
@@ -396,6 +404,7 @@ void GatoEspia::SpecialDownward(int frameNumber)
 			return;
 		}
 		anim->StartAnimation("especialDEntrada");
+		sdl->soundEffects().at("catSpecD").play();
 		moving = false;
 	}
 	else if (frameNumber == attacks["specialD"].startUp)
