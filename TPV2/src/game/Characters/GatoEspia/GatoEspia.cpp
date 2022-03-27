@@ -184,6 +184,7 @@ void GatoEspia::SpecialNeutralU(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("especialNU");
+		sdl->soundEffects().at("catSpecN").play();
 
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
@@ -249,6 +250,7 @@ void GatoEspia::SpecialNeutralD(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("especialND");
+		sdl->soundEffects().at("catSpecN").play();
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
@@ -332,6 +334,7 @@ void GatoEspia::SpecialForward(int frameNumber)
 		{
 			currentMove = [this](int f) { TpAtack(f); };
 			moveFrame = -5;
+			sdl->soundEffects().at("catAtk1").play();
 		}
 	}
 	else if (frameNumber == attacks["specialL"].totalFrames)
