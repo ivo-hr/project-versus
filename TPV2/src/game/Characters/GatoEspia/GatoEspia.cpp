@@ -319,7 +319,7 @@ void GatoEspia::SpecialForward(int frameNumber)
 	{
 		dash = true;
 	}
-	else if (frameNumber == attacks["specialL"].startUp)
+	else if (frameNumber == attacks["specialL"].startUp-1)
 	{
 		body->SetTransform(body->GetPosition() + b2Vec2(dir * 7, 0), 0);
 		anim->StartAnimation("salirTP");
@@ -412,7 +412,7 @@ void GatoEspia::SpecialDownward(int frameNumber)
 		anim->StartAnimation("entrarTP");
 		dash = true;	
 	}
-	else if (frameNumber == attacks["specialD"].totalFrames-4)
+	else if (frameNumber == attacks["specialD"].totalFrames-8)
 	{
 		anim->StartAnimation("salirTP");
 		dash = false;
