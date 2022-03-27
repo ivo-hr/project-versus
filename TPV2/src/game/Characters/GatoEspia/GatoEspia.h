@@ -23,10 +23,12 @@ public:
 
 	virtual void update() override;
 	virtual void Respawn() override;
+	virtual bool GetHit(attackData a, int opdir) override;
 
 private:
 	float maxBlinks = 3.2;
 	float blinks = maxBlinks;
 	float blinkRecover = 0.01;
+	bool counter = false;
 
 };

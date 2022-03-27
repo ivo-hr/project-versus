@@ -414,15 +414,17 @@ void GatoEspia::SpecialDownward(int frameNumber)
 	{
 		anim->StartAnimation("entrarTP");
 		dash = true;	
+		counter = true;
 	}
 	else if (frameNumber == attacks["specialD"].totalFrames-8)
 	{
 		anim->StartAnimation("salirTP");
-		dash = false;
 		blinks -= 1.0f;
 	}
 	else if (frameNumber == attacks["specialD"].totalFrames) {
 		anim->StartAnimation("especialDSalida");
+		dash = false;
+		counter = false;
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
@@ -468,6 +470,54 @@ void GatoEspia::Respawn()
 {
 	Character::Respawn();
 	blinks = maxBlinks;
+}
+
+bool GatoEspia::GetHit(attackData a, int opdir)
+{
+	if (shield)
+	{
+		//Actualiza el da�o
+		damageTaken += (int)(a.damage * 0.4f);
+		return true;
+	}
+	if (counter) {
+		body->SetTransform(body->GetPosition() + b2Vec2(oponents[0]->GetHurtbox()->x, oponents[0]->GetHurtbox()->y), 0);
+		dir = -dir;
+		anim->StartAnimation("salirTP");
+		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, 0 });
+		currentMove = [this](int f) { TpAtack(f); };
+		moveFrame = -5;
+		return false;
+	}
+	if (dash)
+	{
+		return false;
+	}
+	else if (!shield && !dash)
+	{
+		anim->StartAnimation("stun");
+		anim->update();
+		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
+
+		if (a.base >= 0)
+		{
+			stun = recoil / 1.8f;
+		}
+
+		//Actualiza el da�o
+		damageTaken += a.damage;
+
+		b2Vec2 aux = a.direction;
+
+		aux *= recoil;
+		aux.y *= -1;
+		aux.x *= opdir;
+
+		//Produce el knoback..
+		body->SetLinearVelocity(aux);
+
+		return true;
+	}
 }
 
 

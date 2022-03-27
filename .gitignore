@@ -292,3 +292,10 @@ IATETerminologyProvider/IATETerminologyProvider/pluginpackage.manifest_LOCAL_178
 *.tlog
 *.idb
 bin/PVersus21Debug.exe
+*.exe
+*.exp
+*.lib
+*.tlog
+*.lastbuildstate
+*.recipe
+*.idb
