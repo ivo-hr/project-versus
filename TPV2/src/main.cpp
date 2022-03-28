@@ -67,8 +67,8 @@ int main(int ac, char **av) {
 
 	FightManager* fghtmngr = new FightManager(&sdl, ratioFin);
 
-	Character* character1 = new GatoEspia(fghtmngr, new Vector2D(20, 0), 0);
-	Character* character2 = new CharacterZero(fghtmngr, new Vector2D(30, 0), 1);
+	Character* character1 = new Togo(fghtmngr, new Vector2D(20, 0), 0);
+	Character* character2 = new GatoEspia(fghtmngr, new Vector2D(30, 0), 1);
 
 	fghtmngr->StartFight(character2, character1);
 	
