@@ -9,14 +9,14 @@ FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b
 
 	//Definimos un objeto (estatico)
 	b2BodyDef groundDef;
-	groundDef.position.Set(25.f, 20.f);
+	groundDef.position.Set(37.5f, 50.f);
 	groundDef.type = b2_staticBody;
 
 	//Anadimos al mundo
 	stage = world.CreateBody(&groundDef);;
 	//Le damos forma...
 	b2PolygonShape floor;
-	float floorW = 25.f, floorH = 3.f;
+	float floorW = 40.f, floorH = 30.f;
 	floor.SetAsBox(floorW / 2, floorH / 2);
 
 	//..cuerpo
@@ -30,11 +30,11 @@ FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b
 	stage->CreateFixture(&fixt);
 
 	b2BodyDef gDef;
-	gDef.position.Set(12.f, 10.f);
+	gDef.position.Set(37.5f, 27.f);
 	gDef.type = b2_staticBody;
 	platform = world.CreateBody(&gDef);
 	b2PolygonShape plat;
-	float platW = 10.f, platH = 2.f;
+	float platW = 10.f, platH = 0.5f;
 	plat.SetAsBox(platW / 2, platH / 2);
 	b2FixtureDef fi;
 	fi.shape = &plat;
@@ -55,7 +55,7 @@ FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b
 	listener = new MyListener();
 	world.SetContactListener(listener);
 
-	deathZone = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
+	deathZone = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust)};
 }
 
 FightManager::~FightManager()

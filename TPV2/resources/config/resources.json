@@ -51,13 +51,10 @@
       "file": "resources/sound/ZeroChar/taunt.wav"
     },
     {
-      "id": "zeroStep0",
-      "file": "resources/sound/CatChar/step0.wav"
+      "id": "zeroSteps",
+      "file": "resources/sound/ZeroChar/steps.wav"
     },
-    {
-      "id": "zeroStep1",
-      "file": "resources/sound/CatChar/step1.wav"
-    },
+  
     {
       "id": "catAtk0",
       "file": "resources/sound/CatChar/atk0.wav"
@@ -95,12 +92,8 @@
       "file": "resources/sound/CatChar/specU.wav"
     },
     {
-      "id": "catStep0",
-      "file": "resources/sound/CatChar/step0.wav"
-    },
-    {
-      "id": "catStep1",
-      "file": "resources/sound/CatChar/step1.wav"
+      "id": "catSteps",
+      "file": "resources/sound/CatChar/steps.wav"
     },
     {
       "id": "catTaunt",

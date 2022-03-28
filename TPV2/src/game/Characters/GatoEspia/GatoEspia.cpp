@@ -161,8 +161,9 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 				}
 				else {
 					currentMove = [this](int f) { SpecialNeutralU(f); };
-					moveFrame = -1;
+					
 				}
+				moveFrame = -1;
 			}
 			else
 			{

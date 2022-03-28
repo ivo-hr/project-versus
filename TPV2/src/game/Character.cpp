@@ -241,8 +241,7 @@ void Character::update()
 				if (anim->CurrentAnimation() != "run")
 					anim->StartAnimation("run");
 
-				sdl->soundEffects().at(codeName + "Step0").play();
-				sdl->soundEffects().at(codeName + "Step1").play();
+				sdl->soundEffects().at(codeName + "Steps").play();
 			}
 			//frenarse
 			else
