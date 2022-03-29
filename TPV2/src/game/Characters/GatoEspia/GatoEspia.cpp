@@ -319,6 +319,7 @@ void GatoEspia::SpecialForward(int frameNumber)
 		anim->StartAnimation("entrarTP");
 		sdl->soundEffects().at("catSpecS").play();
 		moving = false;
+		blinks -= 1.0f;
 	}
 	else if (frameNumber == attacks["specialL"].startUp / 2)
 	{
@@ -331,7 +332,6 @@ void GatoEspia::SpecialForward(int frameNumber)
 		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, 0 });
 		body->SetGravityScale(10.0f);
 		dash = false;
-		blinks -= 1.0f;
 
 		if (input->special())
 		{
@@ -362,6 +362,7 @@ void GatoEspia::SpecialUpward(int frameNumber)
 		body->SetLinearVelocity(b2Vec2(0, 0));
 		body->SetGravityScale(0);
 		moving = false;
+		blinks -= 1.0f;
 	}
 	else if (frameNumber == attacks["specialU"].startUp / 2)
 	{
@@ -397,7 +398,6 @@ void GatoEspia::SpecialUpward(int frameNumber)
 		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, -25 });
 		body->SetGravityScale(10.0f);
 		dash = false;
-		blinks -= 1.0f;
 
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
@@ -429,6 +429,7 @@ void GatoEspia::SpecialDownward(int frameNumber)
 		anim->StartAnimation("especialDEntrada");
 		sdl->soundEffects().at("catSpecD").play();
 		moving = false;
+		blinks -= 1.0f;
 	}
 	else if (frameNumber == attacks["specialD"].startUp)
 	{
@@ -439,7 +440,6 @@ void GatoEspia::SpecialDownward(int frameNumber)
 	else if (frameNumber == attacks["specialD"].totalFrames-8)
 	{
 		anim->StartAnimation("salirTP");
-		blinks -= 1.0f;
 	}
 	else if (frameNumber == attacks["specialD"].totalFrames) {
 		anim->StartAnimation("especialDSalida");
@@ -502,7 +502,9 @@ bool GatoEspia::GetHit(attackData a, Entity* attacker)
 		moveFrame = -1;
 		return false;
 	}
-	Character::GetHit(a, attacker);
+	if (Character::GetHit(a, attacker)) {
+		body->SetGravityScale(10.f);
+	}
 }
 
 void GatoEspia::Counter(int frameNumber)

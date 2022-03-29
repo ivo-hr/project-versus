@@ -28,6 +28,7 @@
     <ClInclude Include="src\game\Characters\Togo\Togo.h" />
     <ClInclude Include="src\game\Entity.h" />
     <ClInclude Include="src\game\PlayingState\FightManager.h" />
+    <ClInclude Include="src\game\Projectile.h" />
     <ClInclude Include="src\game\Utils\AnimationManager.h" />
     <ClInclude Include="src\game\Utils\InputConfig.h" />
     <ClInclude Include="src\game\Utils\MyListener.h" />
@@ -59,6 +60,7 @@
     <ClCompile Include="src\game\Characters\Togo\Togo.cpp" />
     <ClCompile Include="src\game\Entity.cpp" />
     <ClCompile Include="src\game\PlayingState\FightManager.cpp" />
+    <ClCompile Include="src\game\Projectile.cpp" />
     <ClCompile Include="src\game\Utils\AnimationManager.cpp" />
     <ClCompile Include="src\game\Utils\InputConfig.cpp" />
     <ClCompile Include="src\json\JSON.cpp" />
