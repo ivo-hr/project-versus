@@ -112,7 +112,7 @@ void GatoEspia::BasicUpward(int frameNumber)
 		hitbox.x -= hitbox.w / 3;
 		hitbox.y -= 45;
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 1, OnHitData(5, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 5, OnHitData(5, false, false)));
 	}
 	else if (frameNumber == attacks["basicU"].totalFrames)
 	{

@@ -29,7 +29,7 @@ public:
 private:
 	float maxBlinks = 3.2;
 	float blinks = maxBlinks;
-	float blinkRecover = 0.01;
+	float blinkRecover = 0.008;
 	bool counter = false;
 
 };

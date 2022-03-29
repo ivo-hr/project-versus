@@ -39,7 +39,7 @@
       "damage": 10,
       "multiplier": 1.2,
       "startUp": 7,
-      "totalFrames": 15
+      "totalFrames": 25
     },
     {
       "id": "basicU",
@@ -48,7 +48,7 @@
       "base": 50,
       "damage": 15,
       "multiplier": 0.5,
-      "startUp": 15,
+      "startUp": 12,
       "totalFrames": 30
     },
     {
@@ -145,7 +145,7 @@
         "id" : "basicU",
         "iniSprite" : 15,
         "totalSprites" : 4,
-        "keySprite" : 3,
+        "keySprite" : 2,
         "attack": "basicU",
         "totalFrames" : 20,
         "loop" :false

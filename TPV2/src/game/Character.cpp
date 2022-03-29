@@ -281,10 +281,12 @@ void Character::update()
 	//frenarse
 	if (!moving)
 	{
-		if (speed > 0)
-			speed -= 2;
-		if (speed < 0)
-			speed += 2;
+		if (speed > 4)
+			speed -= 4;
+		else if (speed < -4)
+			speed += 4;
+		else
+			speed = 0;
 	}
 
 	//Que se mueva si no esta haciendo un ataque ya
