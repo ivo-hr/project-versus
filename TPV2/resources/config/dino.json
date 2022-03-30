@@ -1,5 +1,5 @@
 {
-  "codeName": "dino",
+  "codeName": "cat",
   "weight": 10,
   "damageTaken": 0,
   "maxSpeed": 30,
@@ -15,8 +15,8 @@
       "id": "basicN",
       "b2vecX": 1,
       "b2vecY": 1.8,
-      "base": 20,
-      "damage": 8,
+      "base": 10,
+      "damage": 6,
       "multiplier": 0.6,
       "startUp": 4,
       "totalFrames": 18
@@ -25,9 +25,9 @@
       "id": "basicF",
       "b2vecX": 1,
       "b2vecY": 2.5,
-      "base": 40,
-      "damage": 14,
-      "multiplier": 0.8,
+      "base": 1,
+      "damage": 1,
+      "multiplier": 0.5,
       "startUp": 12,
       "totalFrames": 36
     },
@@ -45,10 +45,10 @@
       "id": "basicU",
       "b2vecX": 1,
       "b2vecY": 9,
-      "base": 50,
-      "damage": 15,
+      "base": 10,
+      "damage": 5,
       "multiplier": 0.5,
-      "startUp": 15,
+      "startUp": 12,
       "totalFrames": 30
     },
     {

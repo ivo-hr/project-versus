@@ -6,7 +6,6 @@ public:
 	Togo(FightManager* mngr, Vector2D* pos, char input);
 	~Togo();
 
-
 	virtual void BasicNeutral(int frameNumber) override;
 	virtual void BasicForward(int frameNumber) override;
 	virtual void BasicUpward(int frameNumber) override;
@@ -17,6 +16,11 @@ public:
 	virtual void SpecialUpward(int frameNumber) override;
 	virtual void SpecialDownward(int frameNumber) override;
 
-private:
+	virtual void SetSpear(bool spear);
 
+private:
+	bool lanza = true;
+	float spearTime;
+	int attackBase;
+	float attackMul;
 };
