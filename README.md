@@ -230,17 +230,17 @@ Los personajes del juego son los protagonistas de los proyectos de la asignatura
 #### -Gato-Espía (Blink Master):
 
   - Ataque básico:
-    - Ataque neutral
-    - Ataque lateral.
-    - Ataque hacia abajo
-    - Ataque hacia arriba
-  - Movimientos especiales:
+    - Ataque neutral: cuchillazo rápido y de corto alcance
+    - Ataque lateral: dash lateral y cuchillazo de amplio rango.
+    - Ataque hacia abajo: espagat y cascanueces en ambas direcciones
+    - Ataque hacia arriba: un cuchillazo de amplio rango hacia arriba.
+  Movimientos especiales:
     - Especial neutral: For his neutral special, he wields a G U N. Gato-Espía apuntará con su pistola, disparando una bala en la dirección en la que está mirando en ese momento. La bala viajará en una línea recta hasta que choque con un rival, haciendo daño bajo e interrumpiendo movimientos y ataques pero no knockeando, o alcance su distancia máxima. Si se deja pulsado, Gato-Espía dejará la pistola apuntando y la dirección de apuntado se podrá cambiar con las teclas de movimiento. Este ataque tiene rápida recuperación.
-    - Especial lateral: Gato-Espía se teletransporta una corta distancia en la dirección pulsada. Si se mantiene el ataque especial mientras el teletransporte termina, el gato hará un ataque pesado con mucho daño y un tiempo de recuperación lenta, pero si no se pulsa el tiempo de recuperación del teletransporte será mucho más rápido.
+    - Especial lateral: Gato-Espía se teletransporta una corta distancia en la dirección pulsada.
     - Especial hacia abajo: Gato-Espía se teletransporta en el sitio en un pestañeo. Si recibiera algún ataque durante este teletransporte el daño es anulado, y si este ataque es cuerpo a cuerpo Gato-Espía aparecerá detrás del atacante, asestando un golpe de daño medio con su cuchillo.
-    - Especial hacia arriba (Recovery): Gato-Espía se teletransporta una distancia corta hacia arriba. Si entra en contacto con algún enemigo, le daña moderadamente.
-  - Característica especial (Teletransporte): Gato-Espía tiene 3 cargas de teletransporte que puede usar para cualquiera de sus especiales de teletransporte. Estas cargas se regeneran con el tiempo. Si no tiene cargas, los especiales arriba, lateral y abajo no pueden hacerse. Los teletransportes laterales y hacia arriba pueden encadenarse, ya que al teletransportarte no hay endlag. Adicionalmente si mantienes pulsado el botón de Ataque Especial o lo pulsas al final del teletransporte, haces un poderoso ataque de cuchillo de recuperación alta y daño alto. Acertar el ataque te permite seguir teletransportándote, pero fallarlo te dejará en el estado de &quot;noqueado&quot; durante un tiempo determinado.
-  
+    - Especial hacia arriba (Recovery): Gato-Espía se teletransporta una distancia corta hacia arriba.
+    - Característica especial (Teletransporte): Gato-Espía tiene 3 cargas de teletransporte que puede usar para cualquiera de sus especiales de teletransporte. Estas cargas se regeneran con el tiempo. Si no tiene cargas, los especiales arriba, lateral y abajo no pueden hacerse. Los teletransportes laterales y hacia arriba pueden encadenarse, ya que al teletransportarte no hay endlag. Adicionalmente si mantienes pulsado el botón de Ataque Especial o lo pulsas al final del teletransporte, haces un poderoso ataque de cuchillo de recuperación alta y daño alto. Acertar el ataque te permite seguir teletransportándote, pero fallarlo te dejará en el estado de “noqueado” durante un tiempo determinado.
+
 #### -Makt Fange:
   
   - Ataque básico:
@@ -253,7 +253,37 @@ Los personajes del juego son los protagonistas de los proyectos de la asignatura
     - Especial lateral: Ataque cargado a distancia de daño medio-alto. Makt agarra la herropea por la cadena, haciendo la bola girar mientras el ataque se cargue. Cuando el botón de ataque sea soltado, Makt lanzará la bola en la dirección en la que ha cargado el ataque. Esta se detendrá al llegar al final de la distancia cargada por el lanzamiento o al chocar con un rival, haciéndole daño y empujándolo bastante. La bola se quedará en el suelo hasta que Makt la recoja intentando hacer un ataque especial encima de ella. Si esta cae fuera del mapa reaparecerá a los 3 segundos como si fuera un personaje. Este ataque tiene recuperación media.
     - Especial hacia abajo: Makt agarrará la herropea con ambas manos, pasándola por encima de su cabeza y bajándola con fuerza hacia el suelo, creando un área de daño medio en el suelo a su alrededor. Los oponentes afectados serán levantados en el aire durante una distancia corta determinada por el porcentaje de daño que tengan. Este ataque es lento y tiene recuperación lenta.
     - Especial hacia arriba (Recovery): Lanzamiento hacia arriba. Makt gira la herropea con la cadena como si fuera el martillo de Thor y la lanza hacia arriba aún sujeta, impulsándose con ella por la inercia. Si la bola da a un rival no se detiene, pero este recibe daño leve igual.
-  - Característica especial (Herropea): Makt es más pesado y lento cuando lleva la herropea en la mano, además de saltar un poco menos. El ataque Especial Lateral lanza la herropea, haciendo que esta se quede en el suelo. Mientras Makt no tenga la herropea será más ligero y podrá moverse más rápido y saltar más, pero no tendrá acceso a ataques especiales.   A DISCUTIR (El lanzamiento de herropea se hará con un ángulo de unos 30 grados y caerá de forma física haciendo un arco hasta que entre en contacto con el suelo o se caiga por el vacío.)
+  - Característica especial (Herropea): Makt es más pesado y lento cuando lleva la herropea en la mano, además de saltar un poco menos. El ataque Especial Lateral lanza la herropea, haciendo que esta se quede en el suelo. Mientras Makt no tenga la herropea será más ligero y podrá moverse más rápido y saltar más, pero no tendrá acceso a ataques especiales.   A DISCUTIR (El lanzamiento de herropea se hará con un ángulo de unos 30 grados y caerá de forma física haciendo un arco hasta que entre en contacto con el suelo o se caiga por el vacío.).
+
+  
+#### -NasNas:
+
+  - Ataque básico (todos con el bastón):
+    - Ataque neutral: estocada hacia la dirección en la que está mirando
+    - Ataque lateral: barrido hacia la dirección en la que está mirando
+    - Ataque hacia abajo: mini explosion por los extremos del bastón
+    - Ataque hacia arriba: barrido hacia arriba
+  - Movimientos especiales:
+    - Especial neutral (efectos elementales bajos): 
+      - Fuego: Dispara una bola de fuego de daño medio
+      - Agua: Dispara una bola de agua de daño medio
+      - Rayo: Dispara un rayo de daño bajo
+    - Especial lateral (efectos elementales medios): 
+      - Fuego: Dispara una llamarada de corto alcance, alto daño y amplia hitbox.
+      - Agua: Dispara un chorro de agua de medio alcance, daño medio y media hitbox
+      - Rayo: Dispara un rayo de largo alcance, daño bajo y estrecha hitbox.
+    - Especial hacia abajo: Cambia entre los tres elementos de NasNas en orden (fuego, rayo y agua)
+    - Especial hacia arriba (efectos elementales altos): Realiza un salto vertical y cae con fuerza al suelo, realizando una explosión en área del elemento que tenga en ese momento.
+  - Característica especial (Ser rana y cambio de estado): NasNas, al ser una rana, tiene piernas que le otorgan una gran movilidad. Es más ágil y a diferencia del resto de luchadores tiene dos saltos en el aire, haciendo un total de tres.   
+Además con su bastón controla tres elementos mágicos que producen efectos en el oponente.
+    - Fuego: Hace daño por tiempo.
+    - Agua: Ralentiza durante un tiempo.
+    - Rayo: Inmoviliza durante un tiempo.  
+Realizar combinaciones de estos efectos produce efectos adicionales, lo que hace que los dos efectos puestos se limpien instantáneamente.  
+    - Fuego+Agua: Evapora el agua, realizando mucho daño
+    - Fuego+Rayo: Crea una explosión que empuja al rival
+    - Agua+Rayo: Electrocuta varias veces al oponente.
+Todos estos hechizos dependen de una barra de maná que NasNas regenera con el tiempo (a razón de 5 de maná por segundo). Si tenemos en cuenta que la barra al máximo son 100, el especial neutral gasta 15, el especial lateral 25 y el especial arriba 50. Además, cada especial realiza el efecto del elemento de forma distinta. El especial neutral tendrá efectos de elemento más débiles, el especial lateral más fuerte y el máximo será el especial hacia arriba. Por ejemplo, en el caso del rayo el especial neutral paraliza durante 0.2 segundos, el especial lateral durante 0.6 y el especial hacia arriba durante 1 segundo. En el caso de las combinaciones su potencia viene determinada por el ataque que aplica el segundo efecto. Si el rival estuviera afectado por fuego y le asestamos un especial neutral de rayo, será empujado con menos fuerza que si le asestamos un especial lateral, y este con menos fuerza que el especial hacia arriba.
 
 
  ##  <a name = "Referencias"> 5. Referencias</a>
