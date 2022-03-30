@@ -119,9 +119,9 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 		{
 			ent->CheckHits();
 		}
-		for (Entity* ent : entities)
+		for (int i = entities.size() - 1; i >= 0; i--)
 		{
-			ent->draw();
+			entities[i]->draw();
 		}
 
 		while (addedDelay > 0)
@@ -151,9 +151,9 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 			{
 				ent->updateParticles();
 			}
-			for (Entity* ent : entities)
+			for (int i = entities.size() - 1; i >= 0; i--)
 			{
-				ent->draw();
+				entities[i]->draw();
 			}
 			// present new frame
 			sdl->presentRenderer();
@@ -206,6 +206,22 @@ bool FightManager::RemoveEntity(Entity* ent)
 	}
 	delete ent;
 	return false;
+}
+
+void FightManager::MoveToFront(Entity* ent)
+{
+	for (auto i = 0u; i < entities.size(); i++)
+	{
+		if (entities[i] == ent)
+		{
+			for (int j = i; j > 0; j--)
+			{
+				entities[j] = entities[j - 1];
+			}
+			entities[0] = ent;
+			return;
+		}
+	}
 }
 
 void FightManager::AddParticle(Particle* par)

@@ -6,10 +6,6 @@
 
 class AnimationManager;
 
-
-
-//TODO ESTO DEBERIA SALIR DE JSON TAMBIEN AAAAAAAAAA
-
 struct animationData
 {
 	//Por cada animación...

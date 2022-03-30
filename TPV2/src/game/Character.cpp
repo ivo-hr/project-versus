@@ -176,6 +176,8 @@ void Character::update()
 				currentMove = [this](int f) { BasicNeutral(f); };
 			}
 
+			manager->MoveToFront(this);
+
 		}
 
 		// Ataque con B (provisional)
@@ -198,6 +200,8 @@ void Character::update()
 			{
 				currentMove = [this](int f) { SpecialNeutral(f); };
 			}
+
+			manager->MoveToFront(this);
 
 		}
 

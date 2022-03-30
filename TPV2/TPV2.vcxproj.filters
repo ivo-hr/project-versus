@@ -150,13 +150,11 @@
     <ClInclude Include="src\game\Projectile.h">
       <Filter>Header Files\game\PlayingState</Filter>
     </ClInclude>
-<<<<<<< Updated upstream
     <ClInclude Include="src\game\Characters\Togo\Spear.h">
       <Filter>Header Files\game\Characters</Filter>
-=======
+    </ClInclude>
     <ClInclude Include="src\game\Utils\Particle.h">
       <Filter>Header Files\game\Utils</Filter>
->>>>>>> Stashed changes
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -226,13 +224,11 @@
     <ClCompile Include="src\game\Projectile.cpp">
       <Filter>Source Files\game\PlayingState</Filter>
     </ClCompile>
-<<<<<<< Updated upstream
     <ClCompile Include="src\game\Characters\Togo\Spear.cpp">
       <Filter>Source Files\game\Characters</Filter>
-=======
+    </ClCompile>
     <ClCompile Include="src\game\Utils\Particle.cpp">
       <Filter>Source Files\game\Utils</Filter>
->>>>>>> Stashed changes
     </ClCompile>
   </ItemGroup>
 </Project>

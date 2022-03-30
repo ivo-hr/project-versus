@@ -59,6 +59,7 @@ public:
 	int StartFight(Entity* p1, Entity* p2);
 	void AddEntity(Entity* ent);
 	bool RemoveEntity(Entity* ent);
+	void MoveToFront(Entity* ent);
 
 	void AddParticle(Particle* par);
 	bool RemoveParticle(Particle* par);

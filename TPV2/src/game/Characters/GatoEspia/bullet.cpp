@@ -15,5 +15,3 @@ Bullet::~Bullet()
 {
 
 }
-
-
