@@ -1,5 +1,5 @@
-
 #include "Projectile.h"
+#include "Utils/Particle.h"
 
 Projectile::Projectile(FightManager* manager, Vector2D* pos, b2Vec2 dir, float width, float height, int speed) :
 	Entity(manager, pos, width, height)
@@ -55,12 +55,17 @@ void Projectile::CheckHits()
 {
 	for (int j = 0; j < oponents.size(); j++)
 	{
-		if (SDL_HasIntersection(&hurtbox, oponents[j]->GetHurtbox()))
+		SDL_Rect hitArea;
+		if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea))
 		{
 			//Le hace da�o xddd
 			if (oponents[j]->GetHit(data, this))
 			{
 				manager->HitLag(lag);
+
+				AddParticle(new Particle(this,
+					new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+					1, "sHitParticle"));
 			}
 			manager->RemoveEntity(this);
 		}

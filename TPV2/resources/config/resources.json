@@ -16,7 +16,10 @@
     { "id" : "fondo", "file" : "resources/images/bckgrd.png"},
     { "id" : "testura", "file" : "resources/images/testura.png"},
     { "id" : "punchingBag", "file" : "resources/images/bag.png"},
-    { "id" : "bullet", "file" : "resources/images/bullet.png"}
+    { "id" : "bullet", "file" : "resources/images/bullet.png"},
+    { "id" : "sHitParticle", "file" : "resources/images/smallHit.png"},
+    { "id" : "bHitParticle", "file" : "resources/images/bigHit.png"},
+    { "id" : "killHit", "file" : "resources/images/kill.png"}
 
   ],
   

@@ -1,5 +1,6 @@
 #include "FightManager.h"
 #include "../Entity.h"
+#include "../Utils/Particle.h"
 #include "../Utils/MyListener.h"
 
 FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b2Vec2(0.f, 15.f))), sdl(sdl)
@@ -92,7 +93,6 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 		float step = 1.f / 60.f;
 		world.Step(step, 1, 1);
 
-		// clear screen
 		sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
 
 		//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
@@ -106,7 +106,11 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 		SDL_RenderDrawRect(sdl->renderer(), &deathZone);
 
 		
-
+		for (Particle* part : particulas)
+		{
+			part->draw();
+			part->update();
+		}
 		for (auto i = 0u; i < entities.size(); i++)
 		{
 			entities[i]->update();
@@ -126,6 +130,27 @@ int FightManager::StartFight(Entity* p1, Entity* p2)
 			Uint32 startTime = sdl->currRealTime();
 			addedDelay--;
 
+			// clear screen
+			sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
+			//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
+			background->render(deathZone);
+			testura->render(platformRect);
+			testura->render(stageRect);
+			//Dibujamos las cajas
+			SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
+			SDL_RenderDrawRect(sdl->renderer(), &stageRect);
+			SDL_RenderDrawRect(sdl->renderer(), &platformRect);
+			SDL_RenderDrawRect(sdl->renderer(), &deathZone);
+
+			for (Particle* part : particulas)
+			{
+				part->draw();
+				part->update();
+			}
+			for (Entity* ent : entities)
+			{
+				ent->updateParticles();
+			}
 			for (Entity* ent : entities)
 			{
 				ent->draw();
@@ -183,10 +208,40 @@ bool FightManager::RemoveEntity(Entity* ent)
 	return false;
 }
 
+void FightManager::AddParticle(Particle* par)
+{
+	particulas.push_back(par);
+}
+
+bool FightManager::RemoveParticle(Particle* par)
+{
+	for (int i = 0; i < particulas.size(); i++)
+	{
+		if (particulas[i] == par)
+		{
+			for (int j = i + 1; j < particulas.size(); j++)
+			{
+				particulas[j - 1] = particulas[j];
+			}
+			particulas.pop_back();
+		}
+	}
+	delete par;
+	return false;
+}
+
 void FightManager::HitLag(int frames)
 {
 	if (addedDelay < frames)
 		addedDelay = frames;
+}
+
+void FightManager::KillingBlow(Vector2D dead)
+{
+	addedDelay = 40;
+	AddParticle(new Particle(this,
+		&dead,
+		1, "killHit"));
 }
 
 void FightManager::FighterLost(Entity* loser)

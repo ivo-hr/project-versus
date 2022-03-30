@@ -78,6 +78,8 @@ protected:
 
 	FightManager* manager;
 
+	std::vector<Particle*> particulas;
+
 	SDLUtils* sdl;
 
 	b2Body* body;
@@ -108,8 +110,12 @@ public:
 	Entity(FightManager* mngr, Vector2D* position, float w = 3.f, float h = 3.f);
 	~Entity();
 
+	virtual void updateParticles();
 	virtual void update();
 	virtual void draw();
+
+	void AddParticle(Particle* par);
+	bool RemoveParticle(Particle* par);
 
 	virtual void SetOponents(std::vector<Entity*> op);
 	virtual void DeleteOponent(Entity* ent);

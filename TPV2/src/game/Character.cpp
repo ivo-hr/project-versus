@@ -1,6 +1,7 @@
 #include "Character.h"
 #include "Utils/AnimationManager.h"
 #include "Utils/InputConfig.h"
+#include "Utils/Particle.h"
 #include "../json/json.hpp"
 #include <fstream>
 #include <iostream>
@@ -391,6 +392,13 @@ bool Character::GetHit(attackData a, Entity* attacker)
 		damageTaken += a.damage;
 		
 		b2Vec2 aux = a.direction;
+
+		if (recoil > 100)
+		{
+			manager->KillingBlow(Vector2D(
+				manager->ToSDL(body->GetPosition().x),
+				manager->ToSDL(body->GetPosition().y)));
+		}
 
 		aux *= recoil;
 		aux.y *= -1;

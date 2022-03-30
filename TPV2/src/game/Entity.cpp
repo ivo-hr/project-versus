@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "Utils/AnimationManager.h"
+#include "Utils/Particle.h"
 
 Entity::Entity(FightManager* mngr, Vector2D* position, float w, float h) : manager(mngr), width(w), height(h)
 {
@@ -49,11 +50,21 @@ Entity::~Entity()
 
 }
 
+void Entity::updateParticles()
+{
+	for (Particle* ent : particulas)
+	{
+		ent->update();
+	}
+}
+
 void Entity::update()
 {
 	//Actualizamos la posicion del rect
 	hurtbox.x = manager->b2ToSDLX(body, width);
 	hurtbox.y = manager->b2ToSDLY(body, height);
+
+	updateParticles();
 
 	if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()))
 	{
@@ -75,8 +86,32 @@ void Entity::resetHit()
 
 void Entity::draw()
 {
+	for (Particle* ent : particulas)
+	{
+		ent->draw();
+	}
+}
 
-	//dibujar los sprite bruh
+void Entity::AddParticle(Particle* par)
+{
+	particulas.push_back(par);
+}
+
+bool Entity::RemoveParticle(Particle* par)
+{
+	for (int i = 0; i < particulas.size(); i++)
+	{
+		if (particulas[i] == par)
+		{
+			for (int j = i + 1; j < particulas.size(); j++)
+			{
+				particulas[j - 1] = particulas[j];
+			}
+			particulas.pop_back();
+		}
+	}
+	delete par;
+	return false;
 }
 
 //Le decimos a quien toca dar de ostias xd
@@ -120,12 +155,26 @@ void Entity::CheckHits()
 
 		for (int j = 0; j < oponents.size(); j++)
 		{
-			if (SDL_HasIntersection(&hitboxes[i]->box, oponents[j]->GetHurtbox()) & !isHit[j])
+			SDL_Rect hitArea;
+			if (SDL_IntersectRect(&hitboxes[i]->box, oponents[j]->GetHurtbox(), &hitArea) & !isHit[j])
 			{
 				//Le hace daño xddd
 				if (oponents[j]->GetHit(hitboxes[i]->data, this))
 				{
 					manager->HitLag(hitboxes[i]->hit.hitlag);
+
+					if (hitboxes[i]->hit.hitlag >= 15)
+					{
+						AddParticle(new Particle(this,
+							new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+							1, "bHitParticle"));
+					}
+					else
+					{
+						AddParticle(new Particle(this,
+							new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+							1, "sHitParticle"));
+					}
 				}
 				isHit[j] = true;
 			}
