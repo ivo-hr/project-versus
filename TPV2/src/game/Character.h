@@ -34,6 +34,10 @@ protected:
 	int maxJumps;
 	int jumpCounter;
 	bool jumpCooldown;
+	int maxFallCount = 30; // Para iniciar los dos siguientes contadores:
+	int fall = 0; // Contador entre pulsaciones de abajo (para bajar plataformas)
+	int reactivateColl = 0; // Contador para reactivar colisiones con plataforma
+	bool down = false; // El jugador pulsó abajo
 
 	int weight;
 

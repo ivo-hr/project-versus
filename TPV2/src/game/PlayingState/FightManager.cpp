@@ -25,7 +25,7 @@ FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b
 	fixt.density = 10.0f;
 	fixt.friction = 0.5f;
 	fixt.filter.categoryBits = 2; // 2 para el suelo principal
-	fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
+	//fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
 
 	stage->CreateFixture(&fixt);
 
@@ -41,7 +41,7 @@ FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b
 	fi.density = 10.0f;;
 	fi.friction = 0.5f;
 	fi.filter.categoryBits = 4; // 4 para las plataformas que puedes atravesar desde abajo
-	fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
+	//fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
 	platform->CreateFixture(&fi);
 
 	b2ToSDL = (sdl->width() * screenAdjust) / 75.f;

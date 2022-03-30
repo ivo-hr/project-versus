@@ -43,6 +43,28 @@ bool InputConfig::down()
 	}
 }
 
+bool InputConfig::downReleased()
+{
+
+	switch (typeofInput)
+	{
+	case 0:
+		return ih.isKeyUp(SDLK_s);
+		break;
+	case 1:
+
+		return ih.isKeyUp(SDLK_DOWN);
+		break;
+	case 2:
+
+		return ih.getAxesState(0, 4) == 0;
+		break;
+	case 3:
+		return ih.getAxesState(1, 4) == 0;
+		break;
+	}
+}
+
 bool InputConfig::left()
 {
 

@@ -16,6 +16,7 @@ public:
 	//char seeinput();
 	bool up();
 	bool down();
+	bool downReleased();
 	bool left();
 	bool right();
 	bool basic();

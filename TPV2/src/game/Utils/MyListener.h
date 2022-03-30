@@ -14,6 +14,7 @@ public:
 	{
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
+		// Mira si está en contacto con el suelo
 		if (one->GetType() == b2_staticBody && contact->IsEnabled())
 		{
 			for (int i = 0; i < characters.size(); i++)
@@ -29,6 +30,7 @@ public:
 	{
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
+		// Mira si deja de contactar con el suelo
 		if (one->GetType() == b2_staticBody)
 		{
 			for (int i = 0; i < characters.size(); i++)
@@ -38,21 +40,14 @@ public:
 					characters[i]->SetGround(false);
 				}
 			}
-
-			if (!contact->IsEnabled())
-			{
-				contact->SetEnabled(true);
-			}
 		}
 	}
 	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 	{
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
-		if (one->GetType() == b2_staticBody && one->GetFixtureList()->GetFilterData().categoryBits == 4 && 
-			(two->GetPosition().y > one->GetPosition().y)) 
-			// (two->GetFixtureList()->GetAABB(0).upperBound.y - two->GetFixtureList()->GetAABB(0).lowerBound.y)
-			// oldManifold->pointCount > 0
+		// Mira si quiere subir a la plataforma (atravesándola)
+		if (one->GetFixtureList()->GetFilterData().categoryBits == 4 && (two->GetPosition().y > one->GetPosition().y))
 		{ 
 			contact->SetEnabled(false);
 		}

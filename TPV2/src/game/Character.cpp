@@ -250,6 +250,32 @@ void Character::update()
 					anim->StartAnimation("idle");
 			}
 		}
+
+		// bajar plataformas
+		if (down && input->downReleased()) {
+			down = false;
+			fall = maxFallCount; // Activa contador para reconocer el bajar plataformas
+		}
+
+		if (onGround && fall > 0) {
+			fall--;
+			if (input->down()) { // Va a atravesar la plataforma
+				reactivateColl = maxFallCount; 
+				b2Filter f = body->GetFixtureList()->GetFilterData();
+				f.maskBits = 2; // Quita la colisión con la plataforma momentáneamente
+				body->GetFixtureList()->SetFilterData(f);
+				fall = 0;
+			}
+		}
+	}
+
+	if (input->down()) down = true; // Marca que se ha pulsado abajo (para el tema de bajar plataformas)
+
+	if (reactivateColl > 0) reactivateColl--;
+	if (reactivateColl == 0 && body->GetFixtureList()->GetFilterData().maskBits == 2) { // Tras medio segundo reactiva colisión jugador-plataformas
+		b2Filter f = body->GetFixtureList()->GetFilterData();
+		f.maskBits = 2 | 4;
+		body->GetFixtureList()->SetFilterData(f);
 	}
 
 	if (stun > 0) {
