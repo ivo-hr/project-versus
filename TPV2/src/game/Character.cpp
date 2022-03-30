@@ -269,7 +269,7 @@ void Character::update()
 		}
 	}
 
-	if (input->down()) down = true; // Marca que se ha pulsado abajo (para el tema de bajar plataformas)
+	if (input->down() && body->GetFixtureList()->GetFilterData().maskBits != 2) down = true; // Marca que se ha pulsado abajo (para el tema de bajar plataformas)
 
 	if (reactivateColl > 0) reactivateColl--;
 	if (reactivateColl == 0 && body->GetFixtureList()->GetFilterData().maskBits == 2) { // Tras medio segundo reactiva colisión jugador-plataformas
