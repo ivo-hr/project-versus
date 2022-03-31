@@ -24,8 +24,10 @@
 *.lai
 *.la
 *.a
+*.lib
 
 # Executables
+*.exe
 *.out
 *.app
 
@@ -42,7 +44,14 @@
 *.userprefs
 
 # Build results
-
+**/[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+bld/
+[Bb]in/
+[Oo]bj/
 
 # Visual Studo 2015 cache/options directory
 .vs/
@@ -56,6 +65,8 @@
 TestResult.xml
 
 # Build Results of an ATL Project
+[Dd]ebugPS/
+[Rr]eleasePS/
 dlldata.c
 
 *_i.c
@@ -283,6 +294,7 @@ IATETerminologyProvider/IATETerminologyProvider/pluginpackage.manifest_LOCAL_178
 bin/PVersus21Debug.exe
 *.exe
 *.exp
+*.lib
 *.tlog
 *.lastbuildstate
 *.recipe
