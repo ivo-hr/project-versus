@@ -9,10 +9,7 @@
 #include "../../sdlutils/InputHandler.h"
 #include "../../sdlutils/macros.h"
 #include "../../sdlutils/SDLUtils.h"
-#include "../State/StateMachine.h"
-#include "../State/State.h"
-#include "../State/PlayingState.h"
-#include "../State/MenuState.h"
+
 
 class Entity;
 class Particle;
@@ -21,7 +18,7 @@ class HUDManager;
 
 class MyListener;
 
-class FightManager : public StateMachine
+class FightManager
 {
 
 	b2Body* stage;
@@ -86,6 +83,4 @@ public:
 	SDL_Rect* GetDeathZone() { return &deathZone; };
 	b2World* GetWorld() { return &world; };
 	SDLUtils* GetSDLU() { return sdl; };
-	friend class PlayingState;
-	friend class MenuState;
 };
