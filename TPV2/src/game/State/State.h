@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "../../sdlutils/InputHandler.h"
+#include "../../sdlutils/SDLUtils.h"
 
 class FightManager;
 using namespace std;

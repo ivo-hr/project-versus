@@ -378,9 +378,6 @@ public:
 	/// Get the user data pointer that was provided in the body definition.
 	b2BodyUserData& GetUserData();
 	const b2BodyUserData& GetUserData() const;
-	
-	/// Set the user data
-	b2BodyUserData& SetUserData(void* Data);
 
 	/// Get the parent world of this body.
 	b2World* GetWorld();
@@ -512,7 +509,7 @@ inline void b2Body::SetLinearVelocity(const b2Vec2& v)
 	{
 		SetAwake(true);
 	}
-	//std::cout << "me estan poniend!" << std::endl;
+
 	m_linearVelocity = v;
 }
 

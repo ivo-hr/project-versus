@@ -3,7 +3,7 @@
 #include "State.h"
 
 class MenuState : public State {
-
+    Texture* tex;
 public:
 
     MenuState(FightManager* game);

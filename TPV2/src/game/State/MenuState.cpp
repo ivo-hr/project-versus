@@ -2,8 +2,9 @@
 #include "PlayingState.h"
 #include "../PlayingState/FightManager.h"
 
-MenuState::MenuState(FightManager* game) : State(game) {
 
+MenuState::MenuState(FightManager* game) : State(game) {
+    tex = &fmngr->sdl->images().at("sdl_logo");
 }
 
 void MenuState::update() {
@@ -11,8 +12,11 @@ void MenuState::update() {
 }
 
 void MenuState::draw() {
+  
     fmngr->sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
+    tex->render(fmngr->sdl->width(), fmngr->sdl->height());
     fmngr->sdl->presentRenderer();
+   
 }
 
 void MenuState::next() {
