@@ -55,6 +55,12 @@
     <Filter Include="Header Files\game\Utils">
       <UniqueIdentifier>{69dea671-14b5-46f8-9a9f-4f4bce307106}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\game\State">
+      <UniqueIdentifier>{1e8e7ad6-90c2-4ada-970b-e521dea8d3f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game\State">
+      <UniqueIdentifier>{d68ed3de-c6a7-4b30-a51c-17774e601a82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\json\JSONValue.h">
@@ -156,6 +162,24 @@
     <ClInclude Include="src\game\Utils\Particle.h">
       <Filter>Header Files\game\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\State\GameOverState.h">
+      <Filter>Header Files\game\State</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\State\MenuState.h">
+      <Filter>Header Files\game\State</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\State\PauseState.h">
+      <Filter>Header Files\game\State</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\State\PlayingState.h">
+      <Filter>Header Files\game\State</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\State\State.h">
+      <Filter>Header Files\game\State</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\State\StateMachine.h">
+      <Filter>Header Files\game\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">
@@ -229,6 +253,21 @@
     </ClCompile>
     <ClCompile Include="src\game\Utils\Particle.cpp">
       <Filter>Source Files\game\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\State\GameOverState.cpp">
+      <Filter>Source Files\game\State</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\State\MenuState.cpp">
+      <Filter>Source Files\game\State</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\State\PauseState.cpp">
+      <Filter>Source Files\game\State</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\State\PlayingState.cpp">
+      <Filter>Source Files\game\State</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\State\State.cpp">
+      <Filter>Source Files\game\State</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
