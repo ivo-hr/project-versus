@@ -27,12 +27,19 @@ void Spear::update()
 	{
 		body->SetLinearVelocity(vecDir);
 
-		Entity::update();
+		hurtbox.x = manager->b2ToSDLX(body, width);
+		hurtbox.y = manager->b2ToSDLY(body, height);
+
+		updateParticles();
+
+		if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()))
+		{
+			OnDeath();
+		}
 	}
 	else
 	{
-		owner->SetSpear(true);
-		manager->RemoveEntity(this);		
+		OnDeath();
 	}
 }
 
@@ -49,6 +56,11 @@ void Spear::CheckHits()
 			}
 		}
 	}
+}
+
+void Spear::OnDeath() {
+	owner->SetSpear(true);
+	manager->RemoveEntity(this);
 }
 
 

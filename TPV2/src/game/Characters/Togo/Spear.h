@@ -25,6 +25,8 @@ public:
 	virtual bool GetHit(attackData a, Entity* attacker) { return(false);};
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox;};
 
+	virtual void OnDeath() override;
+
 private:
 	Togo* owner;
 };

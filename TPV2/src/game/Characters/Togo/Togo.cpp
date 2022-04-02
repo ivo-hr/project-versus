@@ -173,7 +173,59 @@ void Togo::BasicUpward(int frameNumber)
 }
 void Togo::BasicDownward(int frameNumber)
 {
+	if (frameNumber == 0)
+	{
+		moving = false;
+		anim->StartAnimation("basicD");
+		sdl->soundEffects().at("catAtk2").play();
+	}
+	else if (frameNumber == attacks["basicD"].startUp)
+	{
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
+
+		hitbox.w /= 2;
+		hitbox.h /= 4;
+
+		//hitbox.x += hitbox.w / 4;
+
+		hitbox.y += hitbox.h*3;
+
+		if (dir == -1) {
+			hitbox.x = hitbox.x - 2 - hitbox.w;
+		}
+		else if (dir == 1) {
+			hitbox.x += 30;
+		}
+
+		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 4, OnHitData(5, false, false)));
+	}
+	else if (frameNumber == attacks["basicD"].startUp+5)
+	{
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+
+
+		hitbox.w /= 2;
+		hitbox.h /= 4;
+
+		//hitbox.x += hitbox.w / 4;
+
+		hitbox.y += hitbox.h*3;
+
+		if (dir == -1) {
+			hitbox.x += 30;			
+		}
+		else if (dir == 1) {
+			hitbox.x = hitbox.x - 2 - hitbox.w;
+		}
+
+		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 4, OnHitData(5, false, false)));
+	}
+	else if (frameNumber == attacks["basicD"].totalFrames)
+	{
+		currentMove = nullptr;
+		moveFrame = -1;
+	}
 }
 
 //--------------------------------------------------------------------------------------------------

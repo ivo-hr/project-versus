@@ -299,3 +299,10 @@ bin/PVersus21Debug.exe
 *.lastbuildstate
 *.recipe
 *.idb
+*.exe
+*.exp
+*.lib
+*.tlog
+*.lastbuildstate
+*.recipe
+*.idb
