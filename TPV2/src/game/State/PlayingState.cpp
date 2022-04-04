@@ -11,11 +11,12 @@ PlayingState::PlayingState(FightManager* game) : State(game) {
 	Character* character2 = new GatoEspia(fmngr, new Vector2D(30, 0), 1);
 
 	fmngr->StartFight(character2, character1);
+
 }
 
 
 void PlayingState::update() {
-	
+		fmngr->Update();
 }
 
 void PlayingState::draw() {

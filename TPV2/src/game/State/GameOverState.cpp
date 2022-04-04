@@ -8,6 +8,7 @@ GameOverState::GameOverState(FightManager* game) : State(game) {
 }
 
 void GameOverState::update() {
+    if (ih.isKeyDown(SDLK_SPACE))fmngr->getState()->next();
 }
 
 void GameOverState::draw() {

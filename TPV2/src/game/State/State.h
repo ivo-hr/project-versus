@@ -10,6 +10,7 @@ class State {
 protected:
     FightManager* fmngr = nullptr;
     InputHandler& ih = *InputHandler::instance();
+    SDLUtils* sdl = SDLUtils::instance();
 public:
     State(FightManager* fmngr) : fmngr(fmngr) {
     };
