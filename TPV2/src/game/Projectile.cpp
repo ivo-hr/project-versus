@@ -63,9 +63,9 @@ void Projectile::CheckHits()
 			{
 				manager->HitLag(lag);
 
-				AddParticle(new Particle(this,
+				AddParticle(new Particle(
 					new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-					1, "sHitParticle"));
+					1, "sHitParticle", nullptr, this));
 			}
 			manager->RemoveEntity(this);
 		}

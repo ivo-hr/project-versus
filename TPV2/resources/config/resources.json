@@ -8,6 +8,7 @@
   
   "images" : [
     { "id" : "sdl_logo", "file" : "resources/images/SDL_logo.png" },
+    { "id" : "pause", "file" : "resources/images/Pause.png" },
     { "id" : "tennis_ball", "file" : "resources/images/tennis_ball.png" },
     { "id" : "star", "file" : "resources/images/star.png"},
     { "id" : "makt", "file" : "resources/images/Maketo.png"},
@@ -19,7 +20,8 @@
     { "id" : "bullet", "file" : "resources/images/bullet.png"},
     { "id" : "sHitParticle", "file" : "resources/images/smallHit.png"},
     { "id" : "bHitParticle", "file" : "resources/images/bigHit.png"},
-    { "id" : "killHit", "file" : "resources/images/kill.png"}
+    { "id" : "killHit", "file" : "resources/images/kill.png"},
+    { "id" : "killVfx", "file" : "resources/images/kill2.png"}
 
   ],
   

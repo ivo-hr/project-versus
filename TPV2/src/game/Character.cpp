@@ -126,32 +126,22 @@ void Character::update()
 
 	if (currentMove == nullptr && stun == 0)
 	{
-		if (input->right() && input->left())
-		{
-			if (speed > 0) {
-				speed = -maxSpeed;
-				moving = true;
-				dir = -1;
-			}
-			else if (speed < 0) {
-				speed = maxSpeed;
-				moving = true;
-				dir = 1;
-			}
-			else moving = false;
 
-		}
-		else if (input->right())
+		speed -= 4;
+
+		if (input->right())
 		{
 			speed = maxSpeed;
-			moving = true;
 			dir = 1;
 		}
-		else if (input->left())
+		if (input->left())
 		{
 			speed = -maxSpeed;
-			moving = true;
 			dir = -1;
+		}
+		if (input->right() && input->left())
+		{
+			speed = 0;
 		}
 
 		// Ataque con A (provisional)
@@ -206,21 +196,17 @@ void Character::update()
 		}
 
 		//Escudo
-		if (input->down() && onGround && shieldCounter > (maxShield/3)) {
+		if (input->down() && onGround && shieldCounter > (maxShield/3) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
 
 			currentMove = [this](int f) { StartShield(f); };
 			body->SetLinearVelocity(b2Vec2(0, 0));
 
 		}
-
-
-
-		if (!input->left() && !input->right())
+		else if (input->down() && !onGround)
 		{
-			// para que no haya movimiento infinito (experimental)
-			moving = false;
-
+			currentMove = [this](int f) { Dash(f); };
 		}
+
 
 		// salto
 		if (input->up()) 
@@ -229,9 +215,8 @@ void Character::update()
 		}
 		
 		//dash
-		if (input->down() && !onGround) {
+		if () {
 
-			currentMove = [this](int f) { Dash(f); };
 		}
 
 		if (!GetGround())

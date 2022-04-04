@@ -57,6 +57,7 @@ FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b
 	world.SetContactListener(listener);
 
 	deathZone = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust)};
+
 	setState(new MenuState(this));
 	while (!exit_) {
 		ih.refresh();
@@ -64,7 +65,6 @@ FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b
 			exit_ = true;
 		getState()->update();
 		getState()->draw();
-
 	}
 }
 
@@ -72,38 +72,67 @@ FightManager::~FightManager()
 {
 }
 
-int FightManager::StartFight(std::vector<Entity*> ent)
+void FightManager::Update()
 {
-	entities = ent;
 
-	for (auto e : entities) {
-		e->SetOponents(entities);
-		listener->AddCharacter(e);
+	Uint32 startTime = sdl->currRealTime();
+
+	if (ih.isKeyDown(SDLK_ESCAPE))
+		exit_ = true;
+	if (ih.isKeyDown(SDLK_p) && ih.keyDownEvent()) {
+		if (getSavedState() == nullptr) {
+			//pause
+			std::cout << "pause" << std::endl;
+			saveState(getState());
+			setState(new PauseState(this));
+			return;
+		}
+	}
+	//Esto llama al mundo para que simule lo que pasa en el tiempo que se le pase (en este caso 1000.f/60.f (un frame a 60 fps))
+	float step = 1.f / 60.f;
+	world.Step(step, 1, 1);
+
+	sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
+
+	//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
+	background->render(deathZone);
+	testura->render(platformRect);
+	testura->render(stageRect);
+	//Dibujamos las cajas
+	SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
+	SDL_RenderDrawRect(sdl->renderer(), &stageRect);
+	SDL_RenderDrawRect(sdl->renderer(), &platformRect);
+	SDL_RenderDrawRect(sdl->renderer(), &deathZone);
+
+
+	for (Particle* part : particulas)
+	{
+		part->draw();
+		part->update();
+	}
+	for (auto i = 0u; i < entities.size(); i++)
+	{
+		entities[i]->update();
+	}
+	for (Entity* ent : entities)
+	{
+		ent->CheckHits();
+	}
+	for (int i = entities.size() - 1; i >= 0; i--)
+	{
+		entities[i]->draw();
 	}
 
-	
-	sdl->musics().at("running_grass").play();
-	Music::setMusicVolume(20);
-
-	
-	while (!exit_ && !fightEnded) {
+	while (addedDelay > 0)
+	{
 
 		Uint32 startTime = sdl->currRealTime();
+		addedDelay--;
 
-
-		ih.refresh();		//QUE WEA
-
-		if (ih.isKeyDown(SDLK_ESCAPE))
-			exit_ = true;
-
-		//Esto llama al mundo para que simule lo que pasa en el tiempo que se le pase (en este caso 1000.f/60.f (un frame a 60 fps))
-		float step = 1.f / 60.f;
-		world.Step(step, 1, 1);
-
+		// clear screen
 		sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
-
 		//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
-		background->render(deathZone); 
+		background->render(deathZone);
 		testura->render(platformRect);
 		testura->render(stageRect);
 		//Dibujamos las cajas
@@ -112,67 +141,19 @@ int FightManager::StartFight(std::vector<Entity*> ent)
 		SDL_RenderDrawRect(sdl->renderer(), &platformRect);
 		SDL_RenderDrawRect(sdl->renderer(), &deathZone);
 
-		
 		for (Particle* part : particulas)
 		{
 			part->draw();
 			part->update();
 		}
-		for (auto i = 0u; i < entities.size(); i++)
-		{
-			entities[i]->update();
-		}
 		for (Entity* ent : entities)
 		{
-			ent->CheckHits();
+			ent->updateParticles();
 		}
 		for (int i = entities.size() - 1; i >= 0; i--)
 		{
 			entities[i]->draw();
 		}
-
-		while (addedDelay > 0)
-		{
-
-			Uint32 startTime = sdl->currRealTime();
-			addedDelay--;
-
-			// clear screen
-			sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
-			//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
-			background->render(deathZone);
-			testura->render(platformRect);
-			testura->render(stageRect);
-			//Dibujamos las cajas
-			SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-			SDL_RenderDrawRect(sdl->renderer(), &stageRect);
-			SDL_RenderDrawRect(sdl->renderer(), &platformRect);
-			SDL_RenderDrawRect(sdl->renderer(), &deathZone);
-
-			for (Particle* part : particulas)
-			{
-				part->draw();
-				part->update();
-			}
-			for (Entity* ent : entities)
-			{
-				ent->updateParticles();
-			}
-			for (int i = entities.size() - 1; i >= 0; i--)
-			{
-				entities[i]->draw();
-			}
-			// present new frame
-			sdl->presentRenderer();
-
-			double frameTime = sdl->currRealTime() - startTime;
-
-			if (frameTime < (step * 1000))
-			{
-				SDL_Delay((step * 1000));
-			}
-		}
-
 		// present new frame
 		sdl->presentRenderer();
 
@@ -182,9 +163,32 @@ int FightManager::StartFight(std::vector<Entity*> ent)
 		{
 			SDL_Delay((step * 1000));
 		}
-
-		addedDelay = 0;
 	}
+
+	// present new frame
+	sdl->presentRenderer();
+
+	double frameTime = sdl->currRealTime() - startTime;
+
+	if (frameTime < (step * 1000))
+	{
+		SDL_Delay((step * 1000));
+	}
+
+	addedDelay = 0;
+}
+
+int FightManager::StartFight(std::vector<Entity*> ent)
+{
+	
+	entities = ent;
+
+	for (auto e : entities) {
+		e->SetOponents(entities);
+		listener->AddCharacter(e);
+	}
+	sdl->musics().at("running_grass").play();
+	Music::setMusicVolume(20);
 
 	return 1;
 }
@@ -262,9 +266,12 @@ void FightManager::HitLag(int frames)
 void FightManager::KillingBlow(Vector2D dead)
 {
 	addedDelay = 40;
-	AddParticle(new Particle(this,
+	AddParticle(new Particle(
 		&dead,
-		1, "killHit"));
+		1, "killVfx", this));
+	AddParticle(new Particle(
+		&dead,
+		1, "killHit", this));
 }
 
 void FightManager::FighterLost(Entity* loser)

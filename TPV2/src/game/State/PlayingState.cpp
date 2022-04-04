@@ -13,11 +13,12 @@ PlayingState::PlayingState(FightManager* game) : State(game) {
 	entities.push_back(new GatoEspia(fmngr, new Vector2D(40, 0), 2));
 
 	fmngr->StartFight(entities);
+
 }
 
 
 void PlayingState::update() {
-	
+	fmngr->Update();
 }
 
 void PlayingState::draw() {

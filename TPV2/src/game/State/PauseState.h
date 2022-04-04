@@ -3,7 +3,7 @@
 #include "State.h"
 
 class PauseState : public State {
-
+    Uint32 startTime;
 public:
 
     PauseState(FightManager* fmngr);

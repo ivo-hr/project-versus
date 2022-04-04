@@ -36,8 +36,7 @@ protected:
 public:
 
 
-	Particle(FightManager* mngr, Vector2D position, int dir, std::string id);
-	Particle(Entity* ent, Vector2D position, int dir, std::string id);
+	Particle(Vector2D position, int dir, std::string id, FightManager* mngr = nullptr, Entity* ent = nullptr);
 	~Particle();
 
 	virtual void update();
