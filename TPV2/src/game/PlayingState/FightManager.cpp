@@ -57,6 +57,7 @@ FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b
 	world.SetContactListener(listener);
 
 	deathZone = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust)};
+
 	setState(new MenuState(this));
 	while (!exit_) {
 		ih.refresh();
@@ -76,13 +77,9 @@ void FightManager::Update()
 
 	Uint32 startTime = sdl->currRealTime();
 
-
-	//ih.refresh();		//QUE WEA
-
 	if (ih.isKeyDown(SDLK_ESCAPE))
 		exit_ = true;
-
-	if (ih.isKeyDown(SDLK_p)&& ih.keyDownEvent()) {
+	if (ih.isKeyDown(SDLK_p) && ih.keyDownEvent()) {
 		if (getSavedState() == nullptr) {
 			//pause
 			std::cout << "pause" << std::endl;
@@ -91,8 +88,6 @@ void FightManager::Update()
 			return;
 		}
 	}
-
-
 	//Esto llama al mundo para que simule lo que pasa en el tiempo que se le pase (en este caso 1000.f/60.f (un frame a 60 fps))
 	float step = 1.f / 60.f;
 	world.Step(step, 1, 1);
@@ -183,19 +178,18 @@ void FightManager::Update()
 	addedDelay = 0;
 }
 
-int FightManager::StartFight(Entity* p1, Entity* p2)
+int FightManager::StartFight(std::vector<Entity*> ent)
 {
+	
+	entities = ent;
 
-	AddEntity(p1);
-	AddEntity(p2);
-
-	p1->SetOponents(entities);
-	p2->SetOponents(entities);
-
-	listener->AddCharacter(p1);
-	listener->AddCharacter(p2);
+	for (auto e : entities) {
+		e->SetOponents(entities);
+		listener->AddCharacter(e);
+	}
 	sdl->musics().at("running_grass").play();
 	Music::setMusicVolume(20);
+
 	return 1;
 }
 
