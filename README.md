@@ -223,7 +223,7 @@ Los personajes del juego son los protagonistas de los proyectos de la asignatura
     - Especial neutral: Togo invoca el alma del Triceratops, generando un escudo en cúpula que devuelve proyectiles durante un segundo. Tras usarlo tendrás que esperar 3 segundos para poder usarlo de nuevo.
     - Especial lateral: Togo invoca el alma del Tiranosaurio, avanzando una pequeña distancia y lanzando un bocado en la dirección pulsada, haciendo daño medio. Tiene una recuperación media.
     - Especial hacia abajo: Togo invoca el alma del Anquilosaurio, arremetiendo a su alrededor con una cola que hace daño medio y tiene un gran noqueo. Tiene una recuperación media. (Dos hitbox, una a un lado y otra al otro, no simultaneas)
-    - Especial hacia arriba (Recovery): Togo realiza un dash de larga distancia hacia arriba.
+    - Especial hacia arriba (Recovery): Togo realiza un dash de media distancia hacia arriba.
   - Característica especial (Lanza): Togo posee una lanza con la que realiza ataques básicos de mayor alcance.
 
 
