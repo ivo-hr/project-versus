@@ -306,3 +306,5 @@ bin/PVersus21Debug.exe
 *.lastbuildstate
 *.recipe
 *.idb
+*.exe
+

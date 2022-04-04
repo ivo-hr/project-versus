@@ -13,6 +13,7 @@
 #include "../State/MenuState.h"
 #include "../State/PlayingState.h"
 #include "../State/GameOverState.h"
+#include "../State/PauseState.h"
 
 
 class Entity;
@@ -62,7 +63,11 @@ public:
 	FightManager(SDLUtils* sdl, double screenAdjust);
 	virtual ~FightManager();
 
-	int StartFight(Entity* p1, Entity* p2);
+
+	bool isExit() { return exit_; };
+	bool isFinish() { return fightEnded; };
+	void Update();
+	int StartFight(std::vector<Entity*> ent);
 	void AddEntity(Entity* ent);
 	bool RemoveEntity(Entity* ent);
 	void MoveToFront(Entity* ent);
@@ -89,6 +94,4 @@ public:
 	SDL_Rect* GetDeathZone() { return &deathZone; };
 	b2World* GetWorld() { return &world; };
 	SDLUtils* GetSDLU() { return sdl; };
-	friend class PlayingState;
-	friend class MenuState;
 };
