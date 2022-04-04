@@ -4,7 +4,7 @@
 #include "../Entity.h"
 #include "../Utils/Particle.h"
 #include "../Utils/MyListener.h"
-#include "../../CharInclude.h"
+#include "../../../CharInclude.h"
 
 PlayingState::PlayingState(FightManager* game) : State(game) {
 	Character* character1 = new Togo(fmngr, new Vector2D(20, 0), 0);

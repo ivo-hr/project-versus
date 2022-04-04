@@ -43,6 +43,8 @@ protected:
 
 	int damageTaken;
 
+	bool recovery = true;
+
 	//frame actual del movimiento que este haciendo
 	int moveFrame = 0;
 
