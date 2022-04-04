@@ -169,7 +169,6 @@ void FightManager::Update()
 	sdl->presentRenderer();
 
 	double frameTime = sdl->currRealTime() - startTime;
-
 	if (frameTime < (step * 1000))
 	{
 		SDL_Delay((step * 1000));
