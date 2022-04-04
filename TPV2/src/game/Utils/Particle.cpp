@@ -49,6 +49,27 @@ Particle::Particle(Vector2D position, int dir, std::string id, FightManager* mng
 		numSprites = 7;
 		duration = 35;
 	}
+	else if (id == "run")
+	{
+		int w = 50;
+		int h = w / 2;
+
+		if (dir > 0)
+		{
+			dest = { (int)(position.getX() - w), (int)(position.getY() - h), (int)w, (int)h };
+		}
+		else
+		{
+			dest = { (int)(position.getX()), (int)(position.getY() - h), (int)w, (int)h };
+		}
+
+		texture = &mngr->GetSDLU()->images().at("run");
+
+		numSpritesinX = 1;
+		numSpritesinY = 3;
+		numSprites = 3;
+		duration = 12;
+	}
 	else if (id == "killHit")
 	{
 		int w = 620;

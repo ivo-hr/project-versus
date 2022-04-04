@@ -124,24 +124,58 @@ void Character::update()
 	if (stun > 0)
 		stun--;
 
-	if (currentMove == nullptr && stun == 0)
-	{
 
-		speed -= 4;
+	if (stun > 0) {
+		if (anim->CurrentAnimation() != "stun")
+			anim->StartAnimation("stun");
 
 		if (input->right())
 		{
-			speed = maxSpeed;
-			dir = 1;
+			body->ApplyLinearImpulseToCenter({ 50, 0 }, true);
 		}
 		if (input->left())
 		{
-			speed = -maxSpeed;
-			dir = -1;
+			body->ApplyLinearImpulseToCenter({ -50, 0 }, true);
 		}
+	}
+
+	if (speed > 4)
+		speed -= 4;
+	else if (speed < -4)
+		speed += 4;
+	else
+		speed = 0;
+
+	if (currentMove == nullptr && stun == 0)
+	{
+
 		if (input->right() && input->left())
 		{
 			speed = 0;
+		}
+		else
+		{
+
+			if (input->right())
+			{
+				dir = 1;
+
+				SDL_Rect a = manager->GetSDLCoors(body, width, height);
+				if (speed < 1)
+					AddParticle(new Particle(Vector2D(a.x + a.w / 2, a.y + a.h), dir, "run", nullptr, this));
+
+				speed = maxSpeed;
+			}
+			if (input->left())
+			{
+				dir = -1;
+
+				SDL_Rect a = manager->GetSDLCoors(body, width, height);
+				if (speed > -1)
+					AddParticle(new Particle(Vector2D(a.x + a.w / 2, a.y + a.h), dir, "run", nullptr, this));
+
+				speed = -maxSpeed;
+			}
 		}
 
 		// Ataque con A (provisional)
@@ -207,26 +241,20 @@ void Character::update()
 			currentMove = [this](int f) { Dash(f); };
 		}
 
-
 		// salto
 		if (input->up()) 
 		{
 			currentMove = [this](int f) { StartJump(f); };
 		}
-		
-		//dash
-		if () {
 
-		}
-
-		if (!GetGround())
+		if (!GetGround() && (body->GetLinearVelocity().y < -0.1f || body->GetLinearVelocity().y > 0.1f))
 		{
 			if (anim->CurrentAnimation() != "airborne")
 				anim->StartAnimation("airborne");
 		}
 		else
 		{
-			if (moving)
+			if (speed > 0.1f || speed < -0.1f)
 			{
 				if (anim->CurrentAnimation() != "run")
 					anim->StartAnimation("run");
@@ -267,11 +295,6 @@ void Character::update()
 		f.maskBits = 2 | 4;
 		body->GetFixtureList()->SetFilterData(f);
 	}
-
-	if (stun > 0) {
-		if (anim->CurrentAnimation() != "stun")
-			anim->StartAnimation("stun");
-	}
 	//para recuperar escudo
 	if (!shield && shieldCounter < maxShield)
 	{
@@ -292,17 +315,6 @@ void Character::update()
 	if (!input->up() && !jumpCooldown)
 	{
 		jumpCooldown = true;
-	}
-
-	//frenarse
-	if (!moving)
-	{
-		if (speed > 4)
-			speed -= 4;
-		else if (speed < -4)
-			speed += 4;
-		else
-			speed = 0;
 	}
 
 	//Que se mueva si no esta haciendo un ataque ya
@@ -409,6 +421,21 @@ void Character::StartJump(int frameNumber)
 	}
 	if (frameNumber < 4)
 	{
+		if (input->right())
+		{
+			speed = maxSpeed;
+			dir = 1;
+		}
+		if (input->left())
+		{
+			speed = -maxSpeed;
+			dir = -1;
+		}
+		if (input->right() && input->left())
+		{
+			speed = 0;
+		}
+
 		if (input->special())
 		{
 			currentMove = [this](int f) { SpecialUpward(f); };
