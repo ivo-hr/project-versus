@@ -528,6 +528,7 @@ void Character::OnDeath()
 	moving = false;
 	shield = false;
 	dash = false;
+	stun = 0;
 }
 
 void Character::Respawn()
