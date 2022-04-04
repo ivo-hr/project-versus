@@ -72,16 +72,14 @@ FightManager::~FightManager()
 {
 }
 
-int FightManager::StartFight(Entity* p1, Entity* p2)
+int FightManager::StartFight(std::vector<Entity*> ent)
 {
-	AddEntity(p1);
-	AddEntity(p2);
+	entities = ent;
 
-	p1->SetOponents(entities);
-	p2->SetOponents(entities);
-
-	listener->AddCharacter(p1);
-	listener->AddCharacter(p2);
+	for (auto e : entities) {
+		e->SetOponents(entities);
+		listener->AddCharacter(e);
+	}
 
 	
 	sdl->musics().at("running_grass").play();

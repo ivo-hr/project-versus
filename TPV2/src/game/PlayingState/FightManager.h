@@ -62,7 +62,7 @@ public:
 	FightManager(SDLUtils* sdl, double screenAdjust);
 	virtual ~FightManager();
 
-	int StartFight(Entity* p1, Entity* p2);
+	int StartFight(std::vector<Entity*> ent);
 	void AddEntity(Entity* ent);
 	bool RemoveEntity(Entity* ent);
 	void MoveToFront(Entity* ent);
