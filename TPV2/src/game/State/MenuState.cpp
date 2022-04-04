@@ -5,6 +5,7 @@
 
 MenuState::MenuState(FightManager* game) : State(game) {
     tex = &fmngr->sdl->images().at("sdl_logo");
+
 }
 
 void MenuState::update() {

@@ -51,6 +51,8 @@ class FightManager:public StateMachine
 	
 	int addedDelay;
 
+	bool exit_ = false;
+
 	MyListener* listener;
 	
 	Texture* background;
