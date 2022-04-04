@@ -215,10 +215,10 @@ Los personajes del juego son los protagonistas de los proyectos de la asignatura
 
 #### -Togo (DinoSouls):
   - Ataque básico:
-    - Ataque neutral 
-    - Ataque lateral: Togo lanza su lanza en la dirección pulsada, y esta viaja en línea recta hasta alcanzar su distancia máxima, atravesando enemigos.
-    - Ataque hacia abajo
-    - Ataque hacia arriba
+    - Ataque neutral: Estocada de largo alcance con la lanza
+    - Ataque lateral: Togo lanza su lanza en la dirección pulsada, y esta viaja en línea recta hasta alcanzar su distancia máxima, atravesando enemigos. No puede volver a hacer este movimiento hasta que la lanza haya desaparecido.
+    - Ataque hacia abajo: Giro sobre sí mismo, dando con la capa primero en un lado y luego en otro.
+    - Ataque hacia arriba: Un giro de lanza hacia arriba estilo aspas de helicóptero.
   - Movimientos especiales:
     - Especial neutral: Togo invoca el alma del Triceratops, generando un escudo en cúpula que devuelve proyectiles durante un segundo. Tras usarlo tendrás que esperar 3 segundos para poder usarlo de nuevo.
     - Especial lateral: Togo invoca el alma del Tiranosaurio, avanzando una pequeña distancia y lanzando un zarpazo en la dirección pulsada, haciendo daño medio. Tiene una recuperación media.
