@@ -62,24 +62,14 @@
       "totalFrames": 25
     },
     {
-      "id": "specialL",
+      "id": "specialF",
       "b2vecX": 1,
-      "b2vecY": 1,
-      "base": 0,
-      "damage": 0,
-      "multiplier": 0,
-      "startUp": 15,
-      "totalFrames": 30
-    },
-    {
-      "id": "specialLHit",
-      "b2vecX": 1,
-      "b2vecY": 3,
-      "base": 15,
-      "damage": 18,
-      "multiplier": 1.6,
-      "startUp": 3,
-      "totalFrames": 60
+      "b2vecY": 2,
+      "base": 30,
+      "damage": 40,
+      "multiplier": 1.3,
+      "startUp": 25,
+      "totalFrames": 50
     },
     {
       "id": "specialU",

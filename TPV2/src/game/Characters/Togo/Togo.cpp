@@ -237,12 +237,74 @@ void Togo::SpecialNeutral(int frameNumber)
 
 void Togo::SpecialForward(int frameNumber)
 {
+	if (frameNumber == 0)
+	{
+		anim->StartAnimation("basicF");
 
+		//sdl->soundEffects().at("catAtk1").play();
+		
+		//body->ApplyLinearImpulseToCenter(b2Vec2(dir*100, 0), true);
+		body->SetLinearVelocity(b2Vec2(dir * 40, 0));
+
+	}
+	else if (frameNumber == attacks["specialF"].startUp)
+	{
+		moving = false;
+		
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+
+		hitbox.x += dir * 80;
+		hitbox.y + 20;
+		hitbox.w += 20;
+		hitbox.h = hitbox.h / 2;
+		hitbox.h += 10;
+
+
+		hitboxes.push_back(new Hitbox(hitbox, attacks["specialF"], 10, OnHitData(20, false, false)));
+
+	}
+	else if (frameNumber == attacks["specialF"].totalFrames)
+	{
+		currentMove = nullptr;
+		moveFrame = -1;
+	}
 }
 
 void Togo::SpecialUpward(int frameNumber)
 {
+	if (frameNumber == 0)
+	{
+		if (!recovery)
+		{
+			currentMove = nullptr;
+			moveFrame = -1;
+		}
+		else 
+		{
+			moving = false;
+			dash = true;
+			recovery = false;
+			//body->SetGravityScale(0);
+		}
+		//sdl->soundEffects().at("catAtk1").play();	
 
+	}
+
+	else if (frameNumber == attacks["specialU"].startUp)
+	{
+		body->SetLinearVelocity(b2Vec2(0, -65));
+		
+		dash = true;
+
+	}
+	else if (frameNumber == attacks["specialF"].totalFrames)
+	{
+		dash = false;
+		currentMove = nullptr;
+		moveFrame = -1;
+		//body->SetGravityScale(10);
+
+	}
 }
 
 void Togo::SpecialDownward(int frameNumber)

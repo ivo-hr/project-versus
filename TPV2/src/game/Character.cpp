@@ -311,6 +311,7 @@ void Character::update()
 	if (GetGround())
 	{
 		jumpCounter = maxJumps;
+		if (!recovery) recovery = true;
 	}
 	//chequeo doble salto
 	if (!input->up() && !jumpCooldown)
@@ -541,6 +542,7 @@ void Character::OnDeath()
 	moving = false;
 	shield = false;
 	dash = false;
+	stun = 0;
 }
 
 void Character::Respawn()
