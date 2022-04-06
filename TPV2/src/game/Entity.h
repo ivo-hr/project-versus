@@ -6,6 +6,7 @@
 
 class AnimationManager;
 
+
 struct animationData
 {
 	//Por cada animación...
