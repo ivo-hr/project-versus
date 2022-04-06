@@ -26,7 +26,7 @@
       "b2vecX": 1,
       "b2vecY": 2.5,
       "base": 1,
-      "damage": 1,
+      "damage": 2,
       "multiplier": 0.5,
       "startUp": 12,
       "totalFrames": 36
@@ -35,7 +35,7 @@
       "id": "basicD",
       "b2vecX": 1.5,
       "b2vecY": 1,
-      "base": 30,
+      "base": 15,
       "damage": 10,
       "multiplier": 1.2,
       "startUp": 7,
@@ -65,10 +65,10 @@
       "id": "specialF",
       "b2vecX": 1,
       "b2vecY": 2,
-      "base": 30,
-      "damage": 40,
+      "base": 20,
+      "damage": 30,
       "multiplier": 1.3,
-      "startUp": 25,
+      "startUp": 30,
       "totalFrames": 50
     },
     {
@@ -85,21 +85,11 @@
       "id": "specialD",
       "b2vecX": 1,
       "b2vecY": 1,
-      "base": 0,
-      "damage": 0,
-      "multiplier": 0,
-      "startUp": 10,
-      "totalFrames": 30
-    },
-    {
-      "id": "specialDHit",
-      "b2vecX": 1,
-      "b2vecY": 2,
-      "base": 20,
-      "damage": 27,
-      "multiplier": 1.6,
-      "startUp": 3,
-      "totalFrames": 30
+      "base": 35,
+      "damage": 15,
+      "multiplier": 1.5,
+      "startUp": 15,
+      "totalFrames": 50
     }
   ],
 
