@@ -20,7 +20,9 @@
     { "id" : "bullet", "file" : "resources/images/bullet.png"},
     { "id" : "sHitParticle", "file" : "resources/images/smallHit.png"},
     { "id" : "bHitParticle", "file" : "resources/images/bigHit.png"},
-    { "id" : "killHit", "file" : "resources/images/kill.png"}
+    { "id" : "killHit", "file" : "resources/images/kill.png"},
+    { "id" : "killVfx", "file" : "resources/images/kill2.png"},
+    { "id" : "run", "file" : "resources/images/runSmoke.png"}
 
   ],
   

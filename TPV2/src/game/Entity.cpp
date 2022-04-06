@@ -47,7 +47,7 @@ Entity::Entity(FightManager* mngr, Vector2D* position, float w, float h) : manag
 
 Entity::~Entity()
 {
-
+	manager->GetWorld()->DestroyBody(body);
 }
 
 void Entity::updateParticles()
@@ -165,15 +165,15 @@ void Entity::CheckHits()
 
 					if (hitboxes[i]->hit.hitlag >= 15)
 					{
-						AddParticle(new Particle(this,
+						AddParticle(new Particle(
 							new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-							1, "bHitParticle"));
+							1, "bHitParticle", nullptr, this));
 					}
 					else
 					{
-						AddParticle(new Particle(this,
+						AddParticle(new Particle(
 							new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-							1, "sHitParticle"));
+							1, "sHitParticle", nullptr, this));
 					}
 				}
 				isHit[j] = true;

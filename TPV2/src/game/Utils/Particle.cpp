@@ -13,8 +13,14 @@ void Particle::CalcularResto()
 	src.h = texture->height() / numSpritesinY;
 }
 
-Particle::Particle(FightManager* mngr, Vector2D position, int dir, std::string id) : manager(mngr), ent(), dir(dir)
+Particle::Particle(Vector2D position, int dir, std::string id, FightManager* mngr, Entity* ent): manager(mngr), ent(ent), dir(dir)
 {
+
+	if (mngr == nullptr)
+	{
+		mngr = ent->GetManager();
+	}
+
 	if (id == "sHitParticle")
 	{
 		int w = 75;
@@ -43,6 +49,27 @@ Particle::Particle(FightManager* mngr, Vector2D position, int dir, std::string i
 		numSprites = 7;
 		duration = 35;
 	}
+	else if (id == "run")
+	{
+		int w = 50;
+		int h = w / 2;
+
+		if (dir > 0)
+		{
+			dest = { (int)(position.getX() - w), (int)(position.getY() - h), (int)w, (int)h };
+		}
+		else
+		{
+			dest = { (int)(position.getX()), (int)(position.getY() - h), (int)w, (int)h };
+		}
+
+		texture = &mngr->GetSDLU()->images().at("run");
+
+		numSpritesinX = 1;
+		numSpritesinY = 3;
+		numSprites = 3;
+		duration = 12;
+	}
 	else if (id == "killHit")
 	{
 		int w = 620;
@@ -57,53 +84,19 @@ Particle::Particle(FightManager* mngr, Vector2D position, int dir, std::string i
 		numSprites = 6;
 		duration = 40;
 	}
-
-	CalcularResto();
-}
-
-Particle::Particle(Entity* ent, Vector2D position, int dir, std::string id) : manager(), ent(ent), dir(dir)
-{
-	if (id == "sHitParticle")
+	else if (id == "killVfx")
 	{
-		int w = 75;
-		int h = 75;
+		int w = 384;
+		int h = w;
 
 		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
-		texture = &ent->GetManager()->GetSDLU()->images().at("sHitParticle");
+		texture = &mngr->GetSDLU()->images().at("killVfx");
 
-		numSpritesinX = 2;
+		numSpritesinX = 3;
 		numSpritesinY = 3;
-		numSprites = 5;
-		duration = 15;
-	}
-	else if (id == "bHitParticle")
-	{
-		int w = 120;
-		int h = 120;
-
-		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
-
-		texture = &ent->GetManager()->GetSDLU()->images().at("bHitParticle");
-
-		numSpritesinX = 2;
-		numSpritesinY = 4;
 		numSprites = 7;
-		duration = 35;
-	}
-	else if (id == "killHit")
-	{
-		int w = 620;
-		int h = w / 4;
-
-		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
-
-		texture = &ent->GetManager()->GetSDLU()->images().at("killHit");
-
-		numSpritesinX = 1;
-		numSpritesinY = 6;
-		numSprites = 6;
-		duration = 40;
+		duration = 30;
 	}
 
 	CalcularResto();

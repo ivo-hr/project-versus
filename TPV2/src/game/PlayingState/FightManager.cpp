@@ -97,7 +97,6 @@ void FightManager::Update()
 	sdl->presentRenderer();
 
 	double frameTime = sdl->currRealTime() - startTime;
-
 	if (frameTime < (step * 1000))
 	{
 		SDL_Delay((step * 1000));
@@ -194,9 +193,12 @@ void FightManager::HitLag(int frames)
 void FightManager::KillingBlow(Vector2D dead)
 {
 	addedDelay = 40;
-	AddParticle(new Particle(this,
+	AddParticle(new Particle(
 		&dead,
-		1, "killHit"));
+		1, "killVfx", this));
+	AddParticle(new Particle(
+		&dead,
+		1, "killHit", this));
 }
 
 void FightManager::FighterLost(Entity* loser)
