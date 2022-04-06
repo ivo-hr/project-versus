@@ -41,6 +41,8 @@ void FightManager::Update()
 
 	stage->Update();
 
+	stage->GetWorld()->Step(step, 1, 1);
+
 
 	for (Particle* part : particulas)
 	{

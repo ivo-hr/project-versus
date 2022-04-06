@@ -8,8 +8,8 @@
 
 PlayingState::PlayingState(FightManager* game) : State(game) {
 	std::vector<Entity*> entities;
-	entities.push_back(new Togo(fmngr, new Vector2D(20, 0), 2));
-	entities.push_back(new GatoEspia(fmngr, new Vector2D(30, 0), 3));
+	entities.push_back(new Togo(fmngr, new Vector2D(20, 0), 0));
+	entities.push_back(new GatoEspia(fmngr, new Vector2D(30, 0), 1));
 
 	fmngr->StartFight(entities);
 

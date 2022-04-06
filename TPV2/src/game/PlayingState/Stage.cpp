@@ -73,7 +73,6 @@ void Stage::Update()
 {
 	//Esto llama al mundo para que simule lo que pasa en el tiempo que se le pase (en este caso 1000.f/60.f (un frame a 60 fps))
 	sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
-	world.Step(step, 1, 1);
 
 	//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
 	background->render(deathZone);

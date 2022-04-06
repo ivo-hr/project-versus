@@ -386,10 +386,7 @@ bool Character::GetHit(attackData a, Entity* attacker)
 		anim->update();
 		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
 
-		if (a.base >= 0)
-		{
-			stun = recoil / 1.8f;
-		}
+		stun = (recoil / 1.8f) + 4;
 
 		//Actualiza el da�o
 		damageTaken += a.damage;

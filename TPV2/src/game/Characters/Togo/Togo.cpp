@@ -85,6 +85,12 @@ void Togo::BasicForward(int frameNumber)
 }
 void Togo::BasicUpward(int frameNumber)
 {
+	attackData a = attacks["basicU"];
+
+	a.base = 0;
+	a.multiplier = 0;
+
+	 
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -97,10 +103,6 @@ void Togo::BasicUpward(int frameNumber)
 		if (!onGround) {
 			body->SetGravityScale(0.0f);
 		}
-		attackBase = attacks["basicU"].base;
-		attackMul = attacks["basicU"].multiplier;
-		attacks["basicU"].base = 0;
-		attacks["basicU"].multiplier = 0;
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
 		hitbox.w *= 2.4f;
@@ -110,7 +112,7 @@ void Togo::BasicUpward(int frameNumber)
 		hitbox.h = hitbox.h / 3;
 		hitbox.w *= 1.5;
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 3, OnHitData(15, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, a, 3, OnHitData(3, false, false)));
 	}
 	else if (frameNumber == attacks["basicU"].startUp+3)
 	{
@@ -123,7 +125,7 @@ void Togo::BasicUpward(int frameNumber)
 		hitbox.h = hitbox.h / 3;
 		hitbox.w *= 1.5;
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 3, OnHitData(15, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, a, 3, OnHitData(3, false, false)));
 	}
 	else if (frameNumber == attacks["basicU"].startUp+6)
 	{
@@ -136,7 +138,7 @@ void Togo::BasicUpward(int frameNumber)
 		hitbox.h = hitbox.h / 3;
 		hitbox.w *= 1.5;
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 3, OnHitData(15, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, a, 3, OnHitData(3, false, false)));
 	}
 	else if (frameNumber == attacks["basicU"].startUp+9)
 	{
@@ -149,12 +151,10 @@ void Togo::BasicUpward(int frameNumber)
 		hitbox.h = hitbox.h / 3;
 		hitbox.w *= 1.5;
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 3, OnHitData(15, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, a, 3, OnHitData(3, false, false)));
 	}
 	else if (frameNumber == attacks["basicU"].startUp+12)
 	{
-		attacks["basicU"].base = attackBase;
-		attacks["basicU"].multiplier = attackMul;
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
 		hitbox.w *= 2.4f;
