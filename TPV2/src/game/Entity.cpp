@@ -47,7 +47,7 @@ Entity::Entity(FightManager* mngr, Vector2D* position, float w, float h) : manag
 
 Entity::~Entity()
 {
-
+	manager->GetWorld()->DestroyBody(body);
 }
 
 void Entity::updateParticles()

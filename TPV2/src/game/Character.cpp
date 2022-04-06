@@ -104,7 +104,8 @@ Character::Character(FightManager* manager, Vector2D* pos, char input, float w, 
 
 Character::~Character()
 {
-
+	delete input;
+	delete anim;
 }
 
 void Character::update()
@@ -131,11 +132,11 @@ void Character::update()
 
 		if (input->right())
 		{
-			body->ApplyLinearImpulseToCenter({ 50, 0 }, true);
+			body->ApplyLinearImpulseToCenter({ 5, 0 }, true);
 		}
 		if (input->left())
 		{
-			body->ApplyLinearImpulseToCenter({ -50, 0 }, true);
+			body->ApplyLinearImpulseToCenter({ -5, 0 }, true);
 		}
 	}
 
@@ -242,12 +243,12 @@ void Character::update()
 		}
 
 		// salto
-		if (input->up()) 
+		if (input->up() && !(jumpCounter <= 0 || !jumpCooldown))
 		{
 			currentMove = [this](int f) { StartJump(f); };
 		}
 
-		if (!GetGround() && (body->GetLinearVelocity().y < -0.1f || body->GetLinearVelocity().y > 0.1f))
+		if (!GetGround() && (body->GetLinearVelocity().y < -0.01f || body->GetLinearVelocity().y > 0.01f))
 		{
 			if (anim->CurrentAnimation() != "airborne")
 				anim->StartAnimation("airborne");

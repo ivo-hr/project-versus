@@ -50,14 +50,14 @@ void GatoEspia::BasicForward(int frameNumber)
 		moving = false;
 		anim->StartAnimation("basicF");
 		sdl->soundEffects().at("catAtk1").play();
+
+		body->SetLinearVelocity(b2Vec2(dir * 30, body->GetLinearVelocity().y));
 	}
 	else if (frameNumber == attacks["basicF"].startUp)
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
 		hitbox.x += dir * 50;
-
-		body->SetLinearVelocity(b2Vec2(dir*20, 0));
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["basicF"], 1, OnHitData(20, false, false)));
 	}
@@ -134,7 +134,7 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
 		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y),attacks["specialN"], b2Vec2(dir, 0));
-		manager->AddEntity(bullet);
+		manager->AddEntity(bullet);			//QUE LA BALA SALGA DE LA PISTOLA Y EL MEMORY LEAK DE TEXTURE QUE DIJO SAMIR
 		bullet->SetOponents(oponents);
 	}
 	else if (frameNumber == attacks["specialN"].totalFrames)
