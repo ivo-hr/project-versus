@@ -29,6 +29,7 @@
     <ClInclude Include="src\game\Characters\Togo\Togo.h" />
     <ClInclude Include="src\game\Entity.h" />
     <ClInclude Include="src\game\PlayingState\FightManager.h" />
+    <ClInclude Include="src\game\PlayingState\Stage.h" />
     <ClInclude Include="src\game\Projectile.h" />
     <ClInclude Include="src\game\State\GameOverState.h" />
     <ClInclude Include="src\game\State\MenuState.h" />
@@ -69,6 +70,7 @@
     <ClCompile Include="src\game\Characters\Togo\Togo.cpp" />
     <ClCompile Include="src\game\Entity.cpp" />
     <ClCompile Include="src\game\PlayingState\FightManager.cpp" />
+    <ClCompile Include="src\game\PlayingState\Stage.cpp" />
     <ClCompile Include="src\game\Projectile.cpp" />
     <ClCompile Include="src\game\State\GameOverState.cpp" />
     <ClCompile Include="src\game\State\MenuState.cpp" />

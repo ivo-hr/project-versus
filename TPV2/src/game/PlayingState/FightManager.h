@@ -16,6 +16,7 @@
 #include "../State/PauseState.h"
 
 
+
 class Entity;
 class Particle;
 
@@ -23,30 +24,22 @@ class HUDManager;
 
 class MyListener;
 
-class FightManager:public StateMachine
+class Stage;
+
+class FightManager :public StateMachine
 {
-
-	b2Body* stage;
-	SDL_Rect stageRect;
-	b2Body* platform;
-	SDL_Rect platformRect;
-
 	std::vector<Entity*> entities;
 	std::vector<Particle*> particulas;
 
 	SDLUtils* sdl;
-	b2World world;
+
 
 	InputHandler& ih = *InputHandler::instance();
 	HUDManager* hud;
 
 	Entity* winner;
 
-	SDL_Rect deathZone;
-
 	bool fightEnded = false;
-
-	float b2ToSDL;
 
 	int numPlayers = 2;
 	
@@ -56,8 +49,9 @@ class FightManager:public StateMachine
 
 	MyListener* listener;
 	
-	Texture* background;
-	Texture* testura;
+	float step = 1.f / 60.f;
+
+	Stage* stage;
 
 public:
 	FightManager(SDLUtils* sdl, double screenAdjust);
@@ -84,14 +78,12 @@ public:
 	SDL_Rect GetSDLCoors(float x, float y, float width, float height);
 	int b2ToSDLX(b2Body* body, float width);
 	int b2ToSDLY(b2Body* body, float height);
-	int ToSDL(float x) {
-		return x * b2ToSDL;
-	};
+	int ToSDL(float x);
 
-	double GetScreenRatio() { return (b2ToSDL * 50) / sdl->width(); };
+	double GetScreenRatio();
 
 	std::vector<Entity*> GetOponents(Entity* current);
-	SDL_Rect* GetDeathZone() { return &deathZone; };
-	b2World* GetWorld() { return &world; };
+	SDL_Rect* GetDeathZone() ;
+	b2World* GetWorld();
 	SDLUtils* GetSDLU() { return sdl; };
 };

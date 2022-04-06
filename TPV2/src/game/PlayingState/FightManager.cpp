@@ -2,62 +2,12 @@
 #include "../Entity.h"
 #include "../Utils/Particle.h"
 #include "../Utils/MyListener.h"
+#include "../PlayingState/Stage.h"
 
-FightManager::FightManager(SDLUtils* sdl, double screenAdjust) : world(b2World(b2Vec2(0.f, 15.f))), sdl(sdl)
+FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 {
-	background = &sdl->images().at("fondo");
-	testura = &sdl->images().at("testura");
-
-	//Definimos un objeto (estatico)
-	b2BodyDef groundDef;
-	groundDef.position.Set(37.5f, 50.f);
-	groundDef.type = b2_staticBody;
-
-	//Anadimos al mundo
-	stage = world.CreateBody(&groundDef);;
-	//Le damos forma...
-	b2PolygonShape floor;
-	float floorW = 40.f, floorH = 30.f;
-	floor.SetAsBox(floorW / 2, floorH / 2);
-
-	//..cuerpo
-	b2FixtureDef fixt;
-	fixt.shape = &floor;
-	fixt.density = 10.0f;
-	fixt.friction = 0.5f;
-	fixt.filter.categoryBits = 2; // 2 para el suelo principal
-	//fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
-
-	stage->CreateFixture(&fixt);
-
-	b2BodyDef gDef;
-	gDef.position.Set(37.5f, 27.f);
-	gDef.type = b2_staticBody;
-	platform = world.CreateBody(&gDef);
-	b2PolygonShape plat;
-	float platW = 10.f, platH = 0.5f;
-	plat.SetAsBox(platW / 2, platH / 2);
-	b2FixtureDef fi;
-	fi.shape = &plat;
-	fi.density = 10.0f;;
-	fi.friction = 0.5f;
-	fi.filter.categoryBits = 4; // 4 para las plataformas que puedes atravesar desde abajo
-	//fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
-	platform->CreateFixture(&fi);
-
-	b2ToSDL = (sdl->width() * screenAdjust) / 75.f;
-
-	//--------------------------
-
-	//Creo las cajas que representaran a los objetos
-	stageRect = GetSDLCoors(stage, floorW, floorH);
-	platformRect = GetSDLCoors(platform, platW, platH);
-
 	listener = new MyListener();
-	world.SetContactListener(listener);
-
-	deathZone = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust)};
-
+	stage = new Stage(sdl, listener, screenAdjust, step, "resources/config/stage1.json");
 	setState(new MenuState(this));
 	while (!exit_) {
 		ih.refresh();
@@ -85,24 +35,11 @@ void FightManager::Update()
 			std::cout << "pause" << std::endl;
 			saveState(getState());
 			setState(new PauseState(this));
-			return;
+				return;
 		}
 	}
-	//Esto llama al mundo para que simule lo que pasa en el tiempo que se le pase (en este caso 1000.f/60.f (un frame a 60 fps))
-	float step = 1.f / 60.f;
-	world.Step(step, 1, 1);
 
-	sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
-
-	//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
-	background->render(deathZone);
-	testura->render(platformRect);
-	testura->render(stageRect);
-	//Dibujamos las cajas
-	SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-	SDL_RenderDrawRect(sdl->renderer(), &stageRect);
-	SDL_RenderDrawRect(sdl->renderer(), &platformRect);
-	SDL_RenderDrawRect(sdl->renderer(), &deathZone);
+	stage->Update();
 
 
 	for (Particle* part : particulas)
@@ -129,17 +66,8 @@ void FightManager::Update()
 		Uint32 startTime = sdl->currRealTime();
 		addedDelay--;
 
-		// clear screen
-		sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
-		//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
-		background->render(deathZone);
-		testura->render(platformRect);
-		testura->render(stageRect);
-		//Dibujamos las cajas
-		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-		SDL_RenderDrawRect(sdl->renderer(), &stageRect);
-		SDL_RenderDrawRect(sdl->renderer(), &platformRect);
-		SDL_RenderDrawRect(sdl->renderer(), &deathZone);
+
+		stage->Update();
 
 		for (Particle* part : particulas)
 		{
@@ -297,28 +225,42 @@ std::vector<Entity*> FightManager::GetOponents(Entity* current)
 	return a;
 }
 
+SDL_Rect* FightManager::GetDeathZone()
+{
+	return stage->GetDeathZone();
+}
+
+b2World* FightManager::GetWorld()
+{
+	return stage->GetWorld();
+}
+
 SDL_Rect FightManager::GetSDLCoors(b2Body* body, float width, float height)
 {
-	return { (int)((body->GetPosition().x * b2ToSDL) - (width * b2ToSDL) / 2.f),
-		(int)((body->GetPosition().y * b2ToSDL) - (height * b2ToSDL) / 2.f),
-		(int)(width * b2ToSDL),
-		(int)(height * b2ToSDL) };
+	return stage->GetSDLCoors(body, width, height);
 }
 
 SDL_Rect FightManager::GetSDLCoors(float x, float y, float width, float height)
 {
-	return { (int)((x * b2ToSDL) - (width * b2ToSDL) / 2.f),
-		(int)((y * b2ToSDL) - (height * b2ToSDL) / 2.f),
-		(int)(width * b2ToSDL),
-		(int)(height * b2ToSDL) };
+	return stage->GetSDLCoors(x, y, width, height);
 }
 
 int FightManager::b2ToSDLX(b2Body* body, float width)
 {
-	return (int)(body->GetPosition().x * b2ToSDL - width * b2ToSDL / 2);
+	return stage->b2ToSDLX(body, width);
 }
 
 int FightManager::b2ToSDLY(b2Body* body, float height)
 {
-	return (int)(body->GetPosition().y * b2ToSDL - height * b2ToSDL / 2);
+	return stage->b2ToSDLY(body, height);
+}
+
+int FightManager::ToSDL(float x)
+{
+	return x * stage->getb2ToSDL();
+}
+
+double FightManager::GetScreenRatio()
+{
+	return stage->GetScreenRatio();
 }
