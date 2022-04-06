@@ -133,8 +133,8 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
-		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y),attacks["specialN"], b2Vec2(dir, 0));
-		manager->AddEntity(bullet);			//QUE LA BALA SALGA DE LA PISTOLA Y EL MEMORY LEAK DE TEXTURE QUE DIJO SAMIR
+		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x + dir * 2, body->GetPosition().y - height / 3),attacks["specialN"], b2Vec2(dir, 0));
+		manager->AddEntity(bullet);
 		bullet->SetOponents(oponents);
 	}
 	else if (frameNumber == attacks["specialN"].totalFrames)
@@ -200,7 +200,7 @@ void GatoEspia::SpecialNeutralU(int frameNumber)
 		//hitbox.y -= 45;
 
 		//hitboxes.push_back(new Hitbox(hitbox, attacks["specialN"], 1, OnHitData(5, false, false)));
-		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y), attacks["specialN"], b2Vec2(0,-1));
+		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["specialN"], b2Vec2(0,-1));
 		manager->AddEntity(bullet);
 		bullet->SetOponents(oponents);
 
@@ -257,7 +257,7 @@ void GatoEspia::SpecialNeutralD(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
-		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y), attacks["specialN"], b2Vec2(dir, -1));
+		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x + dir / 2, body->GetPosition().y - height / 2), attacks["specialN"], b2Vec2(dir, -1));
 		manager->AddEntity(bullet);
 		bullet->SetOponents(oponents);
 	}
