@@ -51,6 +51,15 @@ void Projectile::draw()
 	texture->render(hurtbox, ang);
 }
 
+void Projectile::draw(int x, int y)
+{
+	SDL_Rect aux = hurtbox;
+	aux.x += x;
+	aux.y += y;
+
+	texture->render(aux, ang);
+}
+
 void Projectile::CheckHits()
 {
 	for (int j = 0; j < oponents.size(); j++)

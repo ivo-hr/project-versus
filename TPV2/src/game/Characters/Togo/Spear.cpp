@@ -1,6 +1,7 @@
 #include "../../Utils/AnimationManager.h"
 #include "Togo.h"
 #include "Spear.h"
+#include "../../Utils/Particle.h"
 
 Spear::Spear(FightManager* manager, Vector2D* pos, attackData attack, b2Vec2 dir, Togo* togo) :
 	Projectile(manager, pos, dir, 2.f, 0.5f, 20)
@@ -49,8 +50,8 @@ void Spear::CheckHits()
 	{
 		if (SDL_HasIntersection(&hurtbox, oponents[j]->GetHurtbox()))
 		{
-			//Le hace dano xddd
-			if (oponents[j]->GetHit(data, this))
+			SDL_Rect hitArea;
+			if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea))
 			{
 				manager->HitLag(lag);
 			}

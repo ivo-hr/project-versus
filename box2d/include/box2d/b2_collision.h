@@ -190,6 +190,16 @@ struct B2_API b2AABB
 		return 2.0f * (wx + wy);
 	}
 
+	b2Vec2 UpperBound() const
+	{
+		return upperBound;
+	}
+
+	b2Vec2 LowerBound() const
+	{
+		return lowerBound;
+	}
+
 	/// Combine an AABB into this one.
 	void Combine(const b2AABB& aabb)
 	{

@@ -99,12 +99,6 @@ AnimationManager::~AnimationManager()
 {
 }
 
-void AnimationManager::idle()
-{
-
-
-}
-
 void AnimationManager::update()
 {
 
@@ -143,6 +137,21 @@ void AnimationManager::render()
 	//SDL_SetRenderDrawColor(ent->GetManager()->GetSDLU()->renderer(), 128, 128, 255, 255);
 	//SDL_RenderDrawRect(ent->GetManager()->GetSDLU()->renderer(), &dest);
 
+}
+
+void AnimationManager::render(int x, int y)
+{
+
+	SDL_Rect aux = dest;
+	aux.x += x;
+	aux.y += y;
+
+	if (ent->GetDir() >= 0) {
+		texture->render(recorteSheet, aux);
+	}
+	else {
+		texture->render(recorteSheet, aux, 0., nullptr, SDL_FLIP_HORIZONTAL);
+	}
 }
 
 void AnimationManager::StartAnimation(std::string index)

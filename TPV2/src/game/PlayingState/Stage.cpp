@@ -71,7 +71,6 @@ Stage::~Stage()
 
 void Stage::Update() 
 {
-	//Esto llama al mundo para que simule lo que pasa en el tiempo que se le pase (en este caso 1000.f/60.f (un frame a 60 fps))
 	sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
 
 	//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
@@ -83,6 +82,34 @@ void Stage::Update()
 	SDL_RenderDrawRect(sdl->renderer(), &stageRect);
 	SDL_RenderDrawRect(sdl->renderer(), &platformRect);
 	SDL_RenderDrawRect(sdl->renderer(), &deathZone);
+}
+
+void Stage::Update(int x, int y)
+{
+	sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
+
+	SDL_Rect auxDeath = deathZone;
+	auxDeath.x += x;
+	auxDeath.y += y;
+
+	SDL_Rect auxPlat = platformRect;
+	auxPlat.x += x;
+	auxPlat.y += y;
+
+	SDL_Rect auxStage = stageRect;
+	auxStage.x += x;
+	auxStage.y += y;
+
+	//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
+	background->render(auxDeath);
+	platformTexture->render(auxPlat);
+	platformTexture->render(auxStage);
+
+	//Dibujamos las cajas
+	SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
+	SDL_RenderDrawRect(sdl->renderer(), &auxStage);
+	SDL_RenderDrawRect(sdl->renderer(), &auxPlat);
+	SDL_RenderDrawRect(sdl->renderer(), &auxDeath);
 }
 
 SDL_Rect Stage::GetSDLCoors(b2Body* body, float width, float height) 

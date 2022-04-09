@@ -148,3 +148,20 @@ void Particle::draw()
 		texture->render(src, dest);
 	}
 }
+
+void Particle::draw(int x, int y)
+{
+
+	SDL_Rect aux = dest;
+	aux.x += x;
+	aux.y += y;
+
+	if (dir < 0)
+	{
+		texture->render(src, aux, 0, nullptr, SDL_FLIP_HORIZONTAL);
+	}
+	else
+	{
+		texture->render(src, aux);
+	}
+}

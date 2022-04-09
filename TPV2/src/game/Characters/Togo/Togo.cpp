@@ -12,7 +12,6 @@ Togo::Togo(FightManager* mngr, Vector2D* pos, char input) : Character(mngr, pos,
 	ReadJson("resources/config/dino.json");
 	//guardamos la textura
 	texture = &sdl->images().at("blinkMaster");
-	//smolH = &sdl->soundEffects().at("zeroSmolHit");
 
 	anim = new AnimationManager(this, texture, spData);
 }
@@ -99,9 +98,9 @@ void Togo::BasicUpward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicU"].startUp)
 	{
-		body->SetLinearVelocity({ 0, body->GetLinearVelocity().y / 10 });
+		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, body->GetLinearVelocity().y / 5 });
 		if (!onGround) {
-			body->SetGravityScale(0.0f);
+			body->SetGravityScale(5.0f);
 		}
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 

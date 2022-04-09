@@ -68,12 +68,15 @@ void FightManager::Update()
 		Uint32 startTime = sdl->currRealTime();
 		addedDelay--;
 
+		Vector2D shake = Vector2D((rand() % 9) - 4, (rand() % 3) - 1);
+		shake.normalize();
+		shake = shake * (addedDelay / 8) * 2;
 
-		stage->Update();
+		stage->Update(shake.getX(), shake.getY());
 
 		for (Particle* part : particulas)
 		{
-			part->draw();
+			part->draw(shake.getX(), shake.getY());
 			part->update();
 		}
 		for (Entity* ent : entities)
@@ -82,7 +85,7 @@ void FightManager::Update()
 		}
 		for (int i = entities.size() - 1; i >= 0; i--)
 		{
-			entities[i]->draw();
+			entities[i]->draw(shake.getX(), shake.getY());
 		}
 		// present new frame
 		sdl->presentRenderer();
@@ -99,6 +102,7 @@ void FightManager::Update()
 	sdl->presentRenderer();
 
 	double frameTime = sdl->currRealTime() - startTime;
+
 	if (frameTime < (step * 1000))
 	{
 		SDL_Delay((step * 1000));
@@ -117,7 +121,7 @@ int FightManager::StartFight(std::vector<Entity*> ent)
 		listener->AddCharacter(e);
 	}
 	sdl->musics().at("running_grass").play();
-	Music::setMusicVolume(20);
+	Music::setMusicVolume(1);
 
 	return 1;
 }

@@ -31,9 +31,9 @@ public:
 	AnimationManager(Entity* entity, Texture* textura, spriteSheetData data);
 	~AnimationManager();
 
-	void idle();
 	void update();
 	void render();
+	void render(int x, int y);
 
 	void StartAnimation(std::string index);
 	std::string CurrentAnimation() { return currentAnimIndex; };

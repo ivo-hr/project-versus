@@ -184,17 +184,17 @@ void Character::update()
 		if (input->basic())
 		{
 
-			if (input->right() || input->left()) //básico en movimiento
+			if (input->up()) //básico arriba
 			{
-				currentMove = [this](int f) { BasicForward(f); };
+				currentMove = [this](int f) { BasicUpward(f); };
 			}
 			else if (input->down()) //básico abajo
 			{
 				currentMove = [this](int f) { BasicDownward(f); };
 			}
-			else if (input->up()) //básico arriba
+			else if (input->right() || input->left()) //básico en movimiento
 			{
-				currentMove = [this](int f) { BasicUpward(f); };
+				currentMove = [this](int f) { BasicForward(f); };
 			}
 			else //básico estático
 			{
@@ -209,17 +209,17 @@ void Character::update()
 		if (input->special())
 		{
 
-			if (input->right() || input->left()) //especial en movimiento
+			if (input->up()) //especial arriba
 			{
-				currentMove = [this](int f) { SpecialForward(f); };
+				currentMove = [this](int f) { SpecialUpward(f); };
 			}
 			else if (input->down()) //especial abajo
 			{
 				currentMove = [this](int f) { SpecialDownward(f); };
 			}
-			else if (input->up()) //especial arriba
+			else if (input->right() || input->left()) //especial en movimiento
 			{
-				currentMove = [this](int f) { SpecialUpward(f); };
+				currentMove = [this](int f) { SpecialForward(f); };
 			}
 			else //especial estático
 			{
@@ -364,6 +364,36 @@ void Character::draw()
 	SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
 }
 
+void Character::draw(int x, int y)
+{
+	//xd
+
+	if (!alive) return;
+
+	Entity::draw(x, y);
+	anim->render(x, y);
+
+	//if (debug)
+
+	if (shield)
+	{
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 255, 255);
+	}
+	else if (dash)
+	{
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 255, 255);
+	}
+	else
+	{
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 0, 255);
+	}
+
+	SDL_Rect aux = hurtbox;
+	aux.x += x;
+	aux.y += y;
+
+	SDL_RenderDrawRect(sdl->renderer(), &aux);
+}
 
 bool Character::GetHit(attackData a, Entity* attacker)
 {

@@ -28,6 +28,8 @@ Entity::Entity(FightManager* mngr, Vector2D* position, float w, float h) : manag
 	//añadimos el cuerpo al objeto fisico
 	body->CreateFixture(&fixtureDef);
 
+	body->SetBullet(true);
+
 	body->SetFixedRotation(true);
 
 	body->SetGravityScale(10.f);
@@ -89,6 +91,14 @@ void Entity::draw()
 	for (Particle* ent : particulas)
 	{
 		ent->draw();
+	}
+}
+
+void Entity::draw(int x, int y)
+{
+	for (Particle* ent : particulas)
+	{
+		ent->draw(x, y);
 	}
 }
 

@@ -110,6 +110,7 @@ public:
 	virtual void updateParticles();
 	virtual void update();
 	virtual void draw();
+	virtual void draw(int x, int y);
 
 	void AddParticle(Particle* par);
 	bool RemoveParticle(Particle* par);
