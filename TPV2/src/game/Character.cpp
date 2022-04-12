@@ -110,6 +110,8 @@ Character::~Character()
 
 void Character::update()
 {
+	// Para probar mandos
+	//input->controllerTest();
 
 	if (!alive)
 	{

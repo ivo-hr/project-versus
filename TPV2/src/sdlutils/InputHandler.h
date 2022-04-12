@@ -178,6 +178,61 @@ public:
 	
 	}
 
+	// direction: 0=up / 1=right / 2=down / 3=left
+	inline bool xboxGetDpadState(int joy, int direction) {
+		if (SDL_NumJoysticks() > joy) {
+			SDL_GameController* gc = SDL_GameControllerOpen(SDL_NumJoysticks() - joy - 1);
+			switch (direction)
+			{
+			case 0:
+				return SDL_GameControllerGetButton(gc, SDL_CONTROLLER_BUTTON_DPAD_UP);
+				break;
+			case 1:
+				return SDL_GameControllerGetButton(gc, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+				break;
+			case 2:
+				return SDL_GameControllerGetButton(gc, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+				break;
+			case 3:
+				return SDL_GameControllerGetButton(gc, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+				break;
+			default:
+				return false;
+				break;
+			}
+		}
+		else return false;
+	}
+
+	// axesNumber: 0=joystick izq eje X / 1=joystick izq eje Y / 2=L2 trigger / 3=joystick der eje X
+	//	4=joystick der eje Y / 5=R2 trigger
+	inline int xboxGetAxesState(int joy, int axesNumber) {
+		if (SDL_NumJoysticks() > joy) {
+			SDL_JoystickID id = joy;
+			SDL_Joystick* joystick = SDL_JoystickFromInstanceID(id);
+			int deathZone = 15000;
+			int value;
+			if (SDL_JoystickGetAxis(joystick, axesNumber) > deathZone)value = 1;
+			else if (SDL_JoystickGetAxis(joystick, axesNumber) < -deathZone)value = -1;
+			else value = 0;
+			return value;
+		}
+		else return 0;
+	}
+
+	// Para hacer pruebas con los mandos
+	inline void controllerAxesTest(int joy, int axesNumber) {
+		if (SDL_NumJoysticks() > joy) {
+			SDL_JoystickID id = joy;
+			SDL_Joystick* joystick = SDL_JoystickFromInstanceID(id);
+			std::cout << "eje"<< axesNumber<<": " << SDL_JoystickGetAxis(joystick, axesNumber) << std::endl;
+			
+			/*SDL_GameController* gc = SDL_GameControllerOpen(0);
+			if (SDL_GameControllerGetButton(gc, SDL_CONTROLLER_BUTTON_DPAD_UP))std::cout << "Pulsado" << std::endl;*/
+			//std::cout << "dpad" << axesNumber << ": " << SDL_GameControllerGetButton(gc, SDL_CONTROLLER_BUTTON_DPAD_UP) << std::endl;
+		}
+	}
+
 	/*inline void cleanJoysticks() {
 		if (m_bJoysticksInitialised)
 		{
