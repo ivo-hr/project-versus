@@ -41,5 +41,5 @@ public:
 
 	virtual void update();
 	virtual void draw();
-	virtual void draw(int x, int y);
+	virtual void draw(SDL_Rect* camera);
 };

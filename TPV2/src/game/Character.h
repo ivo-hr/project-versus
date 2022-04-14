@@ -64,7 +64,7 @@ public:
 
 	virtual void update() override;
 	virtual void draw() override;
-	virtual void draw(int x, int y) override;
+	virtual void draw(SDL_Rect* camera) override;
 
 	virtual bool GetHit(attackData a, Entity* attacker);
 	virtual SDL_Rect* GetHurtbox();

@@ -21,6 +21,8 @@ Particle::Particle(Vector2D position, int dir, std::string id, FightManager* mng
 		mngr = ent->GetManager();
 	}
 
+	manager = mngr;
+
 	if (id == "sHitParticle")
 	{
 		int w = 75;
@@ -149,12 +151,18 @@ void Particle::draw()
 	}
 }
 
-void Particle::draw(int x, int y)
+void Particle::draw(SDL_Rect* camera)
 {
-
 	SDL_Rect aux = dest;
-	aux.x += x;
-	aux.y += y;
+
+	aux.x -= camera->x;
+	aux.x *= (manager->GetActualWidth() / camera->w);
+
+	aux.y -= camera->y;
+	aux.y *= (manager->GetActualHeight() / camera->h);
+
+	aux.w *= (manager->GetActualWidth() / camera->w);
+	aux.h *= (manager->GetActualHeight() / camera->h);
 
 	if (dir < 0)
 	{

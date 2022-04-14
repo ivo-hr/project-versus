@@ -33,11 +33,12 @@ class FightManager :public StateMachine
 
 	SDLUtils* sdl;
 
-
 	InputHandler& ih = *InputHandler::instance();
 	HUDManager* hud;
 
 	Entity* winner;
+
+	double screenAdjust;
 
 	bool fightEnded = false;
 
@@ -52,6 +53,8 @@ class FightManager :public StateMachine
 	float step = 1.f / 60.f;
 
 	Stage* stage;
+
+	SDL_Rect camera;
 
 public:
 	FightManager(SDLUtils* sdl, double screenAdjust);
@@ -79,6 +82,9 @@ public:
 	int b2ToSDLX(b2Body* body, float width);
 	int b2ToSDLY(b2Body* body, float height);
 	int ToSDL(float x);
+
+	int GetActualWidth();
+	int GetActualHeight();
 
 	double GetScreenRatio();
 

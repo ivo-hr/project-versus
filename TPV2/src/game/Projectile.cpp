@@ -51,11 +51,21 @@ void Projectile::draw()
 	texture->render(hurtbox, ang);
 }
 
-void Projectile::draw(int x, int y)
+void Projectile::draw(SDL_Rect* camera)
 {
 	SDL_Rect aux = hurtbox;
-	aux.x += x;
-	aux.y += y;
+
+	//si hurtbox.x = camera w + camera x                   aux.x = manager->GetActualWidth()
+	//   hurtbox.x = camera w / 2 + camera x               aux.x = manager->GetActualWidth() / 2
+
+	aux.x -= camera->x;
+	aux.x *= (manager->GetActualWidth() / camera->w);
+
+	aux.y -= camera->y;
+	aux.y *= (manager->GetActualHeight() / camera->h);
+
+	aux.w *= (manager->GetActualWidth() / camera->w);
+	aux.h *= (manager->GetActualHeight() / camera->h);
 
 	texture->render(aux, ang);
 }

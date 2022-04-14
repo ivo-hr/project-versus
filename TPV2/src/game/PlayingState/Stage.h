@@ -36,7 +36,7 @@ public:
 	~Stage();
 
 	void Update();
-	void Update(int x, int y);
+	void Update(SDL_Rect* camera);
 
 	double GetScreenRatio() { return (b2ToSDL * 50) / sdl->width(); }
 

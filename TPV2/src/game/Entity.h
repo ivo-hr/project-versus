@@ -110,7 +110,7 @@ public:
 	virtual void updateParticles();
 	virtual void update();
 	virtual void draw();
-	virtual void draw(int x, int y);
+	virtual void draw(SDL_Rect* camera);
 
 	void AddParticle(Particle* par);
 	bool RemoveParticle(Particle* par);

@@ -139,12 +139,18 @@ void AnimationManager::render()
 
 }
 
-void AnimationManager::render(int x, int y)
+void AnimationManager::render(SDL_Rect* camera)
 {
-
 	SDL_Rect aux = dest;
-	aux.x += x;
-	aux.y += y;
+
+	aux.x -= camera->x;
+	aux.x *= (ent->GetManager()->GetActualWidth() / camera->w);
+
+	aux.y -= camera->y;
+	aux.y *= (ent->GetManager()->GetActualHeight() / camera->h);
+
+	aux.w *= (ent->GetManager()->GetActualWidth() / camera->w);
+	aux.h *= (ent->GetManager()->GetActualHeight() / camera->h);
 
 	if (ent->GetDir() >= 0) {
 		texture->render(recorteSheet, aux);

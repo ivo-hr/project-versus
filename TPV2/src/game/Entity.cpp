@@ -92,13 +92,36 @@ void Entity::draw()
 	{
 		ent->draw();
 	}
+
+	for (int i = 0; i < hitboxes.size(); i++)
+	{
+		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
+		SDL_RenderDrawRect(sdl->renderer(), &hitboxes[i]->box);
+	}
 }
 
-void Entity::draw(int x, int y)
+void Entity::draw(SDL_Rect* camera)
 {
 	for (Particle* ent : particulas)
 	{
-		ent->draw(x, y);
+		ent->draw(camera);
+	}
+
+	for (int i = 0; i < hitboxes.size(); i++)
+	{
+		SDL_Rect aux = hitboxes[i]->box;
+
+		aux.x -= camera->x;
+		aux.x *= (manager->GetActualWidth() / camera->w);
+
+		aux.y -= camera->y;
+		aux.y *= (manager->GetActualHeight() / camera->h);
+
+		aux.w *= (manager->GetActualWidth() / camera->w);
+		aux.h *= (manager->GetActualHeight() / camera->h);
+
+		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
+		SDL_RenderDrawRect(sdl->renderer(), &aux);
 	}
 }
 
@@ -160,8 +183,6 @@ void Entity::CheckHits()
 {
 	for (int i = 0; i < hitboxes.size(); i++)
 	{
-		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-		SDL_RenderDrawRect(sdl->renderer(), &hitboxes[i]->box);
 
 		for (int j = 0; j < oponents.size(); j++)
 		{

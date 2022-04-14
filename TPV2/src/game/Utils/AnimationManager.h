@@ -33,7 +33,7 @@ public:
 
 	void update();
 	void render();
-	void render(int x, int y);
+	void render(SDL_Rect* camera);
 
 	void StartAnimation(std::string index);
 	std::string CurrentAnimation() { return currentAnimIndex; };

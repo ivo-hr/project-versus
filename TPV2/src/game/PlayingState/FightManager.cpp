@@ -8,6 +8,11 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 {
 	listener = new MyListener();
 	stage = new Stage(sdl, listener, screenAdjust, step, "resources/config/stage1.json");
+
+	camera = { 100, 100, (int)(sdl->width()), (int)(sdl->height()) };
+
+	this->screenAdjust = screenAdjust;
+
 	setState(new MenuState(this));
 	while (!exit_) {
 		ih.refresh();
@@ -39,14 +44,14 @@ void FightManager::Update()
 		}
 	}
 
-	stage->Update();
+	stage->Update(&camera);
 
 	stage->GetWorld()->Step(step, 1, 1);
 
 
 	for (Particle* part : particulas)
 	{
-		part->draw();
+		part->draw(&camera);
 		part->update();
 	}
 	for (auto i = 0u; i < entities.size(); i++)
@@ -59,7 +64,7 @@ void FightManager::Update()
 	}
 	for (int i = entities.size() - 1; i >= 0; i--)
 	{
-		entities[i]->draw();
+		entities[i]->draw(&camera);
 	}
 
 	while (addedDelay > 0)
@@ -72,11 +77,11 @@ void FightManager::Update()
 		shake.normalize();
 		shake = shake * (addedDelay / 8) * 2;
 
-		stage->Update(shake.getX(), shake.getY());
+		stage->Update(&camera);
 
 		for (Particle* part : particulas)
 		{
-			part->draw(shake.getX(), shake.getY());
+			part->draw(&camera);
 			part->update();
 		}
 		for (Entity* ent : entities)
@@ -85,7 +90,7 @@ void FightManager::Update()
 		}
 		for (int i = entities.size() - 1; i >= 0; i--)
 		{
-			entities[i]->draw(shake.getX(), shake.getY());
+			entities[i]->draw(&camera);
 		}
 		// present new frame
 		sdl->presentRenderer();
@@ -266,6 +271,16 @@ int FightManager::b2ToSDLY(b2Body* body, float height)
 int FightManager::ToSDL(float x)
 {
 	return x * stage->getb2ToSDL();
+}
+
+int FightManager::GetActualWidth()
+{
+	return sdl->width() * screenAdjust;
+}
+
+int FightManager::GetActualHeight()
+{
+	return sdl->height() * screenAdjust;
 }
 
 double FightManager::GetScreenRatio()

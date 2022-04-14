@@ -366,14 +366,14 @@ void Character::draw()
 	SDL_RenderDrawRect(sdl->renderer(), &hurtbox);
 }
 
-void Character::draw(int x, int y)
+void Character::draw(SDL_Rect* camera)
 {
 	//xd
 
 	if (!alive) return;
 
-	Entity::draw(x, y);
-	anim->render(x, y);
+	Entity::draw(camera);
+	anim->render(camera);
 
 	//if (debug)
 
@@ -391,8 +391,15 @@ void Character::draw(int x, int y)
 	}
 
 	SDL_Rect aux = hurtbox;
-	aux.x += x;
-	aux.y += y;
+
+	aux.x -= camera->x;
+	aux.x *= (manager->GetActualWidth() / camera->w);
+
+	aux.y -= camera->y;
+	aux.y *= (manager->GetActualHeight() / camera->h);
+
+	aux.w *= (manager->GetActualWidth() / camera->w);
+	aux.h *= (manager->GetActualHeight() / camera->h);
 
 	SDL_RenderDrawRect(sdl->renderer(), &aux);
 }
