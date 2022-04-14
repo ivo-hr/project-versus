@@ -129,6 +129,9 @@ public:
 	virtual float GetHeight() { return height; };
 	virtual SDL_Rect* GetHurtbox();
 	virtual b2Body* GetBody() { return body; };
+
+	Vector2D GetCenterSDL() { return Vector2D(hurtbox.x + (hurtbox.w / 2), hurtbox.y + (hurtbox.h / 2)); };
+
 	void SetGround(bool ground);
 	bool GetGround() { return onGround; };
 

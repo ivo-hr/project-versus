@@ -4,12 +4,68 @@
 #include "../Utils/MyListener.h"
 #include "../PlayingState/Stage.h"
 
+void FightManager::MoveCamera()
+{
+	SDL_Rect cameraEnd;
+	int maxX = INT32_MIN, minX = INT32_MAX;
+	int maxY = INT32_MIN, minY = INT32_MAX;
+
+	for (Entity* c : characters)
+	{
+		Vector2D pos = c->GetCenterSDL();
+
+		if (pos.getX() > maxX)
+		{
+			maxX = pos.getX();
+		}
+		if (pos.getX() < minX)
+		{
+			minX = pos.getX();
+		}
+
+		if (pos.getY() > maxY)
+		{
+			maxY = pos.getY();
+		}
+		if (pos.getY() < minY)
+		{
+			minY = pos.getY();
+		}
+	}
+
+	if (maxX - minX >= (maxY - minY) * ((float)(sdl->width()) / (float)(sdl->height())))
+	{
+		cameraEnd.x = minX - cameraOffset;
+		cameraEnd.w = (maxX - minX) + cameraOffset * 2;
+		cameraEnd.h = cameraEnd.w * ((float)((float)(sdl->height()) / (float)(sdl->width())));
+		cameraEnd.y = minY - (cameraEnd.h - (maxY - minY)) / 2;
+	}
+	else
+	{
+		cameraEnd.y = minY - cameraOffset * (float)((float)(sdl->height()) / (float)(sdl->width()));
+		cameraEnd.h = (maxY - minY) + cameraOffset * 2 * (float)((float)(sdl->height()) / (float)(sdl->width()));
+		cameraEnd.w = cameraEnd.h * ((float)((float)(sdl->width()) / (float)(sdl->height())));
+		cameraEnd.x = minX - (cameraEnd.w - (maxX - minX)) / 2;
+	}
+
+	camera.x += (cameraEnd.x - camera.x) * 0.3f;
+	camera.y += (cameraEnd.y - camera.y) * 0.3f;
+	camera.w += (cameraEnd.w - camera.w) * 0.3f;
+	camera.h = camera.w * ((float)(sdl->height()) / (float)(sdl->width()));
+
+	//camera.x = cameraEnd.x;
+	//camera.y = cameraEnd.y;
+	//camera.w = cameraEnd.w;
+	//camera.h = cameraEnd.h;
+
+}
+
 FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 {
 	listener = new MyListener();
 	stage = new Stage(sdl, listener, screenAdjust, step, "resources/config/stage1.json");
 
-	camera = { 100, 100, (int)(sdl->width()), (int)(sdl->height()) };
+	camera = { 100, 100, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
 
 	this->screenAdjust = screenAdjust;
 
@@ -44,10 +100,11 @@ void FightManager::Update()
 		}
 	}
 
+	MoveCamera();
+
 	stage->Update(&camera);
 
 	stage->GetWorld()->Step(step, 1, 1);
-
 
 	for (Particle* part : particulas)
 	{
@@ -73,15 +130,22 @@ void FightManager::Update()
 		Uint32 startTime = sdl->currRealTime();
 		addedDelay--;
 
-		Vector2D shake = Vector2D((rand() % 9) - 4, (rand() % 3) - 1);
-		shake.normalize();
-		shake = shake * (addedDelay / 8) * 2;
+		if (addedDelay % 3 == 0)
+		{
+			hitLagCam.x -= camera.x;
+			hitLagCam.x *= -0.9f;
+			hitLagCam.x += camera.x;
 
-		stage->Update(&camera);
+			hitLagCam.y -= camera.y;
+			hitLagCam.y *= -0.9f;
+			hitLagCam.y += camera.y;
+		}
+
+		stage->Update(&hitLagCam);
 
 		for (Particle* part : particulas)
 		{
-			part->draw(&camera);
+			part->draw(&hitLagCam);
 			part->update();
 		}
 		for (Entity* ent : entities)
@@ -90,7 +154,7 @@ void FightManager::Update()
 		}
 		for (int i = entities.size() - 1; i >= 0; i--)
 		{
-			entities[i]->draw(&camera);
+			entities[i]->draw(&hitLagCam);
 		}
 		// present new frame
 		sdl->presentRenderer();
@@ -112,14 +176,12 @@ void FightManager::Update()
 	{
 		SDL_Delay((step * 1000));
 	}
-
-	addedDelay = 0;
 }
 
 int FightManager::StartFight(std::vector<Entity*> ent)
 {
-	
 	entities = ent;
+	characters = ent;
 
 	for (auto e : entities) {
 		e->SetOponents(entities);
@@ -199,11 +261,17 @@ void FightManager::HitLag(int frames)
 {
 	if (addedDelay < frames)
 		addedDelay = frames;
+
+	hitLagCam = camera;
+
+	hitLagCam.x += addedDelay * 0.4f;
+
+	hitLagCam.y += addedDelay * 0.2f;
 }
 
 void FightManager::KillingBlow(Vector2D dead)
 {
-	addedDelay = 40;
+	HitLag(40);
 	AddParticle(new Particle(
 		&dead,
 		1, "killVfx", this));

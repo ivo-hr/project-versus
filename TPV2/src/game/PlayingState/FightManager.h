@@ -29,6 +29,7 @@ class Stage;
 class FightManager :public StateMachine
 {
 	std::vector<Entity*> entities;
+	std::vector<Entity*> characters;
 	std::vector<Particle*> particulas;
 
 	SDLUtils* sdl;
@@ -54,7 +55,12 @@ class FightManager :public StateMachine
 
 	Stage* stage;
 
-	SDL_Rect camera;
+	SDL_Rect camera; 
+	SDL_Rect hitLagCam;
+
+	int cameraOffset = 200;
+
+	void MoveCamera();
 
 public:
 	FightManager(SDLUtils* sdl, double screenAdjust);

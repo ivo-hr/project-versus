@@ -59,13 +59,13 @@ void Projectile::draw(SDL_Rect* camera)
 	//   hurtbox.x = camera w / 2 + camera x               aux.x = manager->GetActualWidth() / 2
 
 	aux.x -= camera->x;
-	aux.x *= (manager->GetActualWidth() / camera->w);
+	aux.x *= (manager->GetActualWidth() / (float)camera->w);
 
 	aux.y -= camera->y;
-	aux.y *= (manager->GetActualHeight() / camera->h);
+	aux.y *= (manager->GetActualHeight() / (float)camera->h);
 
-	aux.w *= (manager->GetActualWidth() / camera->w);
-	aux.h *= (manager->GetActualHeight() / camera->h);
+	aux.w *= (manager->GetActualWidth() / (float)camera->w);
+	aux.h *= (manager->GetActualHeight() / (float)camera->h);
 
 	texture->render(aux, ang);
 }

@@ -91,35 +91,35 @@ void Stage::Update(SDL_Rect* camera)
 	SDL_Rect auxDeath = deathZone;
 
 	auxDeath.x -= camera->x;
-	auxDeath.x *= (deathZone.w / camera->w);
+	auxDeath.x *= (deathZone.w / (float)camera->w);
 
 	auxDeath.y -= camera->y;
-	auxDeath.y *= (deathZone.h / camera->h);
+	auxDeath.y *= (deathZone.h / (float)camera->h);
 
-	auxDeath.w *= (deathZone.w / camera->w);
-	auxDeath.h *= (deathZone.h / camera->h);
+	auxDeath.w *= (deathZone.w / (float)camera->w);
+	auxDeath.h *= (deathZone.h / (float)camera->h);
 
 	SDL_Rect auxPlat = platformRect;
 
 	auxPlat.x -= camera->x;
-	auxPlat.x *= (deathZone.w / camera->w);
+	auxPlat.x *= (deathZone.w / (float)camera->w);
 
 	auxPlat.y -= camera->y;
-	auxPlat.y *= (deathZone.h / camera->h);
+	auxPlat.y *= (deathZone.h / (float)camera->h);
 
-	auxPlat.w *= (deathZone.w / camera->w);
-	auxPlat.h *= (deathZone.h / camera->h);
+	auxPlat.w *= (deathZone.w / (float)camera->w);
+	auxPlat.h *= (deathZone.h / (float)camera->h);
 
 	SDL_Rect auxStage = stageRect;
 
 	auxStage.x -= camera->x;
-	auxStage.x *= (deathZone.w / camera->w);
+	auxStage.x *= (deathZone.w / (float)camera->w);
 
 	auxStage.y -= camera->y;
-	auxStage.y *= (deathZone.h / camera->h);
+	auxStage.y *= (deathZone.h / (float)camera->h);
 
-	auxStage.w *= (deathZone.w / camera->w);
-	auxStage.h *= (deathZone.h / camera->h);
+	auxStage.w *= (deathZone.w / (float)camera->w);
+	auxStage.h *= (deathZone.h / (float)camera->h);
 
 	//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
 	background->render(auxDeath);
