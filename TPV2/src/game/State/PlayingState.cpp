@@ -37,7 +37,6 @@ PlayingState::PlayingState(FightManager* game, vector<int>player, vector<int>cha
 			entities.push_back(new CharacterZero(fmngr, new Vector2D(20+i * 10, 0), control));
 			break;
 		case 1://Gato espia
-
 			entities.push_back(new GatoEspia(fmngr, new Vector2D(20+i*10, 0), control));
 			break;
 		case 2://Togo

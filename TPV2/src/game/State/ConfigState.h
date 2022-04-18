@@ -3,7 +3,7 @@
 #include "State.h"
 
 class ConfigState : public State {
-    Texture* background;
+    Texture* background, *exp;
     int numOfplayer;
     Button* keyb, *nes, *xbox ,*play;
     vector<int> player;

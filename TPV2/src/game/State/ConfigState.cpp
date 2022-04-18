@@ -5,6 +5,7 @@
 
 ConfigState::ConfigState(FightManager* game) : State(game), numOfplayer(2) {
     background = &sdl->images().at("fondo");
+    exp = &sdl->images().at("exp");
     keyb = new Button(&sdl->images().at("fondo"), 0, 0, 100, 100);
     nes = new Button(&sdl->images().at("pause"), 0, 0, 100, 100);
     xbox = new Button(&sdl->images().at("star"), 0, 0, 100, 100);
@@ -56,7 +57,7 @@ void ConfigState::draw() {
     int h = fmngr->GetActualHeight();
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
-    
+    exp->render({w / 4,h - h / 4,400,300 });
     for (auto i = 0u; i < numOfplayer; i++) {
         
         showText(" Player "+ to_string(i+1) , 48 , 400, h/2-400+i*200, build_sdlcolor(0x112233ff));
