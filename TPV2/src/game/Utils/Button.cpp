@@ -3,13 +3,12 @@
 void Button::render()
 {
 	if (pressed && presstex != nullptr) {
-		presstex->render({ x,y,h,w });
+		presstex->render({ x,y,w,h });
 	}
 	else
 	{
 		tex->render({ x,y,w,h });
 	}
-	
 }
 
 bool Button::mouseClick()

@@ -23,6 +23,8 @@
     { "id" : "killHit", "file" : "resources/images/kill.png"},
     { "id" : "killVfx", "file" : "resources/images/kill2.png"},
     { "id" : "menu", "file" : "resources/images/menu.png"},
+    { "id" : "play", "file" : "resources/images/play.png"},
+    { "id" : "playP", "file" : "resources/images/playPress.png"},
     { "id" : "run", "file" : "resources/images/runSmoke.png"}
 
   ],
