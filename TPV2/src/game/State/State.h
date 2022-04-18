@@ -12,12 +12,14 @@ protected:
     FightManager* fmngr = nullptr;
     InputHandler& ih = *InputHandler::instance();
     SDLUtils* sdl = SDLUtils::instance();
+    void showText(string s, int size, int x,int y,SDL_Color c);
+    Texture* tex;
 public:
-    State(FightManager* fmngr) : fmngr(fmngr) {
+    State(FightManager* fmngr) : fmngr(fmngr) ,tex(nullptr) {
     };
 
     virtual ~State() {
-    
+        delete tex;
     };
     virtual void update() = 0;
     virtual void draw() = 0;

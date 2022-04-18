@@ -1,5 +1,6 @@
 #include "MenuState.h"
 #include "PlayingState.h"
+#include "ConfigState.h"
 #include "../PlayingState/FightManager.h"
 
 
@@ -18,17 +19,17 @@ void MenuState::update() {
 }
 
 void MenuState::draw() {
-  
+    int w = fmngr->GetActualWidth();
+    int h = fmngr->GetActualHeight();
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
     playBut->render();
-    sdl->presentRenderer();
-   
+    sdl->presentRenderer();  
 }
 
 void MenuState::next() {
     delete playBut;
     cout << "Next State " << endl;
-    fmngr->setState(new PlayingState(fmngr));
+    fmngr->setState(new ConfigState(fmngr));
     delete this;
 }
