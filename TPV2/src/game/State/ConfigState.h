@@ -5,7 +5,13 @@
 class ConfigState : public State {
     Texture* background;
     int numOfplayer;
-    Button* plus, minus;
+    Button* keyb, *nes, *xbox ,*play;
+    vector<int> player;
+    vector<int> charact;
+    int sel = 0;
+    int key = 0;
+    int nesn = 0;
+    int xboxn = 0;
 public:
 
     ConfigState(FightManager* game) ;

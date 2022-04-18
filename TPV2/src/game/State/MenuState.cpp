@@ -14,8 +14,8 @@ MenuState::MenuState(FightManager* game) : State(game) {
 }
 
 void MenuState::update() {
-    if(ih.isKeyDown(SDLK_SPACE))fmngr->getState()->next();
-    if(playBut->mouseClick())fmngr->getState()->next();
+    if(ih.isKeyDown(SDLK_SPACE) && ih.keyDownEvent())fmngr->getState()->next();
+    else if(playBut->mouseClick())fmngr->getState()->next();
 }
 
 void MenuState::draw() {

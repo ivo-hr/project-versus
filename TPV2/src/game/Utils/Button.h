@@ -9,6 +9,7 @@ class Button
 	Texture* tex;
 	Texture* presstex = nullptr;
 	bool pressed;
+	bool rendered = false;
 public:
 
 	Button():tex(nullptr),x(0),y(0),w(0),h(0),pressed(false) {};
@@ -22,6 +23,7 @@ public:
 	void setH(int h0) { h = h0; };
 	void render();
 	bool mouseClick();
+	void setUnrendered() { rendered = false; };
 	SDL_Rect getRect();
 };
 

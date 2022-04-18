@@ -6,7 +6,7 @@ class PlayingState : public State {
 
 public:
 
-    PlayingState(FightManager* fmngr);
+    PlayingState(FightManager* fmngr , vector<int>player, vector<int>characters);
     ~PlayingState() = default;
 
     void update() override;

@@ -29,6 +29,5 @@ void PauseState::draw() {
 
 void PauseState::next() {
     cout << "Next State " << endl;
-    fmngr->setState(new PlayingState(fmngr));
     delete this;
 }

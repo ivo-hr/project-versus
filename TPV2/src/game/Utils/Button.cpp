@@ -2,6 +2,7 @@
 
 void Button::render()
 {
+	rendered = true;
 	if (pressed && presstex != nullptr) {
 		presstex->render({ x,y,w,h });
 	}
@@ -13,19 +14,22 @@ void Button::render()
 
 bool Button::mouseClick()
 {
-   int mx = ih.getMousePos().first;
-   int my = ih.getMousePos().second;
+	if (rendered) {
+		int mx = ih.getMousePos().first;
+		int my = ih.getMousePos().second;
 
-   if ((mx > x) && (mx < x + w) && (my > y) && (my < y + h))
-   {
-	   if (ih.getMouseButtonState(ih.LEFT)) {
-		   pressed = true;
-	   }
-   }
-   if (!ih.mouseButtonEvent() && pressed) {
-	   pressed = false;
-	   return true;
-   }
+		if ((mx > x) && (mx < x + w) && (my > y) && (my < y + h))
+		{
+			if (ih.getMouseButtonState(ih.LEFT)) {
+				pressed = true;
+			}
+		}
+		if (!ih.mouseButtonEvent() && pressed) {
+			pressed = false;
+			return true;
+		}
+		return false;
+	}
 	return false;
 }
 
