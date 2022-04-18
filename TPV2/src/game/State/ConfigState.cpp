@@ -10,6 +10,8 @@ ConfigState::ConfigState(FightManager* game) : State(game), numOfplayer(2) {
     nes = new Button(&sdl->images().at("pause"), 0, 0, 100, 100);
     xbox = new Button(&sdl->images().at("star"), 0, 0, 100, 100);
     play = new Button(&sdl->images().at("play"), 1500, 900, 200, 100);
+    nextb = new Button(&sdl->images().at("next"), 1500, 900, 200, 100);
+    back = new Button(&sdl->images().at("back"), 200, 900, 200, 100);
     player.resize(2);
     charact.resize(2);
 }
@@ -31,23 +33,38 @@ void ConfigState::update() {
         play->setUnrendered();
     }
     if (keyb->mouseClick()) {
-        player[sel] = 0;
-        charact[sel] = 0;
+        if (!charsel)
+            player[sel] = 0;
+        else
+            charact[sel] = 0;
         if(sel<numOfplayer)
         sel++;
     }
     else if(nes->mouseClick())
     {
-        player[sel] = 1;
-        charact[sel] = 1;
+        if (!charsel)
+            player[sel] = 1;
+        else
+            charact[sel] = 1;
         if (sel < numOfplayer)
         sel++;
     }
     else if (xbox->mouseClick()) {
+        if(!charsel)
         player[sel] = 2;
+        else
         charact[sel] = 2;
         if (sel < numOfplayer)
         sel++;
+    }
+   
+    if (nextb->mouseClick()) {
+        charsel = true;
+        sel = 0;
+    }
+    if (back->mouseClick()){
+        charsel = false;
+        sel = 0;
     }
     if (play->mouseClick())fmngr->getState()->next();
 }
@@ -58,6 +75,10 @@ void ConfigState::draw() {
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
     exp->render({w / 4,h - h / 4,400,300 });
+    if(!charsel)
+    showText("InputConfig", 48, w / 2, 0, build_sdlcolor(0x112233ff),build_sdlcolor(0xffffffff));
+    else
+    showText("CharConfig", 48, w / 2, 0, build_sdlcolor(0x112233ff),build_sdlcolor(0xffffffff));
     for (auto i = 0u; i < numOfplayer; i++) {
         
         showText(" Player "+ to_string(i+1) , 48 , 400, h/2-400+i*200, build_sdlcolor(0x112233ff));
@@ -70,8 +91,13 @@ void ConfigState::draw() {
             xbox->render();
         }
     }
-    if(sel==numOfplayer)
-    play->render();
+    if (sel == numOfplayer) {
+        if(charsel)play->render();
+        else {
+            nextb->render();
+            back->render();
+        }
+    }
     sdl->presentRenderer();
 }
 

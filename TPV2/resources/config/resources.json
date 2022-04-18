@@ -26,6 +26,8 @@
     { "id" : "play", "file" : "resources/images/play.png"},
     { "id" : "playP", "file" : "resources/images/playPress.png"},
     { "id" : "exp", "file" : "resources/images/Exp.png"},
+    { "id" : "next", "file" : "resources/images/next.png"},
+    { "id" : "back", "file" : "resources/images/back.png"},
     { "id" : "run", "file" : "resources/images/runSmoke.png"}
 
   ],
