@@ -2,6 +2,7 @@
 #include <iostream>
 #include "../../sdlutils/InputHandler.h"
 #include "../../sdlutils/SDLUtils.h"
+#include "../Utils/Button.h"
 
 class FightManager;
 using namespace std;
