@@ -2,7 +2,14 @@
 
 void Button::render()
 {
-	tex->render({ x,y,w,h });
+	if (pressed && presstex != nullptr) {
+		presstex->render({ x,y,h,w });
+	}
+	else
+	{
+		tex->render({ x,y,w,h });
+	}
+	
 }
 
 bool Button::mouseClick()
@@ -12,15 +19,14 @@ bool Button::mouseClick()
 
    if ((mx > x) && (mx < x + w) && (my > y) && (my < y + h))
    {
-	   if (ih.getMouseButtonState(ih.LEFT)==1) {
+	   if (ih.getMouseButtonState(ih.LEFT)) {
 		   pressed = true;
-		   return true;
-		   
-		}
-	    pressed = false;
-	   
+	   }
    }
-	pressed = false;
+   if (!ih.mouseButtonEvent() && pressed) {
+	   pressed = false;
+	   return true;
+   }
 	return false;
 }
 

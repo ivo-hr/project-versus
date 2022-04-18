@@ -6,6 +6,7 @@
 MenuState::MenuState(FightManager* game) : State(game) {
     background = &sdl->images().at("menu");
     playBut = new Button(&sdl->images().at("star"), fmngr->GetActualWidth() / 2, fmngr->GetActualHeight() / 2, 100, 100);
+    playBut->setPressTexture(&sdl->images().at("menu"));
 }
 
 void MenuState::update() {
