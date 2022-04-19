@@ -14,6 +14,7 @@
     { "id" : "makt", "file" : "resources/images/Maketo.png"},
     { "id" : "zero", "file" : "resources/images/CharZeroSheet.png"},
     { "id" : "blinkMaster", "file" : "resources/images/CharBlinkSheet.png"},
+    { "id" : "dinoSouls", "file" : "resources/images/CharDinoSheet.png"},
     { "id" : "fondo", "file" : "resources/images/bckgrd.png"},
     { "id" : "testura", "file" : "resources/images/testura.png"},
     { "id" : "punchingBag", "file" : "resources/images/bag.png"},
@@ -110,7 +111,54 @@
     {
       "id": "catTaunt",
       "file": "resources/sound/CatChar/taunt.wav"
+    },
+
+
+    {
+      "id": "dinoAtk0",
+      "file": "resources/sound/CatChar/atk0.wav"
+    },
+    {
+      "id": "dinoAtk1",
+      "file": "resources/sound/CatChar/atk1.wav"
+    },
+    {
+      "id": "dinoAtk2",
+      "file": "resources/sound/CatChar/atk2.wav"
+    },
+    {
+      "id": "dinoAtk3",
+      "file": "resources/sound/CatChar/atk3.wav"
+    },
+    {
+      "id": "dinoAtk3",
+      "file": "resources/sound/CatChar/atk3.wav"
+    },
+    {
+      "id": "dinoSpecD",
+      "file": "resources/sound/CatChar/specD.wav"
+    },
+    {
+      "id": "dinoSpecN",
+      "file": "resources/sound/CatChar/specN.wav"
+    },
+    {
+      "id": "dinoSpecS",
+      "file": "resources/sound/CatChar/specS.wav"
+    },
+    {
+      "id": "dinoSpecU",
+      "file": "resources/sound/CatChar/specU.wav"
+    },
+    {
+      "id": "dinoSteps",
+      "file": "resources/sound/CatChar/steps.wav"
+    },
+    {
+      "id": "dinoTaunt",
+      "file": "resources/sound/CatChar/taunt.wav"
     }
+
 
   ],
 

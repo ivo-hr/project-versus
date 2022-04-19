@@ -1,6 +1,6 @@
 {
-  "codeName": "cat",
-  "weight": 10,
+  "codeName": "dino",
+  "weight": 20,
   "damageTaken": 0,
   "maxSpeed": 30,
   "speed":0,
@@ -62,14 +62,24 @@
       "totalFrames": 25
     },
     {
-      "id": "specialF",
+      "id": "specialL",
       "b2vecX": 1,
-      "b2vecY": 2,
-      "base": 20,
-      "damage": 30,
-      "multiplier": 1.3,
-      "startUp": 30,
-      "totalFrames": 50
+      "b2vecY": 1,
+      "base": 0,
+      "damage": 0,
+      "multiplier": 0,
+      "startUp": 15,
+      "totalFrames": 30
+    },
+    {
+      "id": "specialLHit",
+      "b2vecX": 1,
+      "b2vecY": 3,
+      "base": 15,
+      "damage": 18,
+      "multiplier": 1.6,
+      "startUp": 3,
+      "totalFrames": 60
     },
     {
       "id": "specialU",
@@ -94,18 +104,18 @@
   ],
 
   "spData": {
-    "leftOffset": 32,
-    "upOffset": 16,
-    "sizeXOffset": 72,
-    "sizeYOffset": 16,
-    "spritesInX": 6,
-    "spritesInY": 12
+    "leftOffset": 20,
+    "upOffset": 30,
+    "sizeXOffset": 150,
+    "sizeYOffset": 30,
+    "spritesInX": 8,
+    "spritesInY": 13
   },
   "animationData":{
     "anim":[
       {
         "id" : "idle",
-        "iniSprite" : 6,
+        "iniSprite" : 0,
         "totalSprites" : 2,
         "keySprite" : -1,
         "attack": "",
@@ -114,43 +124,43 @@
       },
       {
         "id" : "basicN",
-        "iniSprite" : 12,
-        "totalSprites" : 3,
+        "iniSprite" : 21,
+        "totalSprites" : 9,
         "keySprite" : 2,
         "attack": "basicN",
-        "totalFrames" : 15,
+        "totalFrames" : 30,
         "loop" :false
       },
       {
         "id" : "basicU",
-        "iniSprite" : 15,
-        "totalSprites" : 4,
-        "keySprite" : 3,
+        "iniSprite" : 45,
+        "totalSprites" : 14,
+        "keySprite" : 5,
         "attack": "basicU",
-        "totalFrames" : 20,
+        "totalFrames" : 30,
         "loop" :false
       },
       {
         "id" : "basicD",
-        "iniSprite" : 19,
-        "totalSprites" : 3,
-        "keySprite" : 2,
+        "iniSprite" : 37,
+        "totalSprites" : 8,
+        "keySprite" : 3,
         "attack": "basicD",
-        "totalFrames" : 35,
+        "totalFrames" : 20,
         "loop" :false
       },
       {
         "id" : "basicF",
-        "iniSprite" : 22,
-        "totalSprites" : 4,
-        "keySprite" : 2,
+        "iniSprite" : 30,
+        "totalSprites" : 5,
+        "keySprite" : -1,
         "attack": "basicF",
-        "totalFrames" : 40,
+        "totalFrames" : 20,
         "loop" :false
       },
       {
         "id" : "shield",
-        "iniSprite" : 26,
+        "iniSprite" : 6,
         "totalSprites" : 2,
         "keySprite" : -1,
         "attack": "",
@@ -159,8 +169,8 @@
       },
       {
         "id" : "run",
-        "iniSprite" : 0,
-        "totalSprites" : 6,
+        "iniSprite" : 2,
+        "totalSprites" : 4,
         "keySprite" : -1,
         "attack": "",
         "totalFrames" : 50,
@@ -168,8 +178,8 @@
       },
       {
         "id" : "airborne",
-        "iniSprite" : 10,
-        "totalSprites" : 1,
+        "iniSprite" : 11,
+        "totalSprites" : 2,
         "keySprite" : -1,
         "attack": "",
         "totalFrames" : 50,
@@ -177,7 +187,7 @@
       },
       {
         "id" : "dash",
-        "iniSprite" : 28,
+        "iniSprite" : 13,
         "totalSprites" : 2,
         "keySprite" : -1,
         "attack": "",
@@ -185,77 +195,48 @@
         "loop" : true
       },
       {
-        "id" : "especialNL",
-        "iniSprite" : 30,
-        "totalSprites" : 5,
-        "keySprite" : 2,
-        "attack": "specialN",
-        "totalFrames" : 40,
-        "loop" : false
-      },
-      {
-        "id" : "especialND",
-        "iniSprite" : 35,
-        "totalSprites" : 5,
-        "keySprite" : 2,
-        "attack": "specialN",
-        "totalFrames" : 40,
-        "loop" : false
-      }
-      ,
-      {
-        "id" : "especialNU",
-        "iniSprite" : 40,
-        "totalSprites" : 5,
-        "keySprite" : 2,
-        "attack": "specialN",
-        "totalFrames" : 40,
-        "loop" : false
-      }
-      ,
-      {
-        "id" : "salirTP",
-        "iniSprite" : 45,
+        "id" : "especialN",
+        "iniSprite" : 89,
         "totalSprites" : 3,
         "keySprite" : -1,
-        "attack": "",
+        "attack": "specialN",
         "totalFrames" : 15,
         "loop" : false
       },
       {
-        "id" : "entrarTP",
-        "iniSprite" : 64,
+        "id" : "especialNHold",
+        "iniSprite" : 92,
         "totalSprites" : 3,
         "keySprite" : -1,
-        "attack": "",
-        "totalFrames" : 15,
-        "loop" : false
+        "attack": "specialN",
+        "totalFrames" : 40,
+        "loop" : true
       },
       {
-        "id" : "especialDEntrada",
-        "iniSprite" : 48,
-        "totalSprites" : 3,
-        "keySprite" : 2,
-        "attack": "specialD",
-        "totalFrames" : 3,
-        "loop" : false
-      },
-      {
-        "id" : "especialDGolpe",
-        "iniSprite" : 51,
-        "totalSprites" : 5,
-        "keySprite" : 3,
-        "attack": "specialDHit",
-        "totalFrames" : 30,
-        "loop" : false
-      },
-      {
-        "id" : "especialDSalida",
+        "id" : "especialLEntrada",
         "iniSprite" : 67,
-        "totalSprites" : 3,
+        "totalSprites" : 10,
+        "keySprite" : 4,
+        "attack": "specialF",
+        "totalFrames" : 20,
+        "loop" : false
+      },
+      {
+        "id" : "especialLSalida",
+        "iniSprite" : 77,
+        "totalSprites" : 5,
         "keySprite" : -1,
         "attack": "",
         "totalFrames" : 30,
+        "loop" : false
+      },
+      {
+        "id" : "especialLGolpe",
+        "iniSprite" : 82,
+        "totalSprites" : 7,
+        "keySprite" : 3,
+        "attack": "specialLHit",
+        "totalFrames" : 15,
         "loop" : false
       },
       {
@@ -269,16 +250,25 @@
       },
       {
         "id" : "especialU",
-        "iniSprite" : 59,
+        "iniSprite" : 97,
         "totalSprites" : 4,
-        "keySprite" : 3,
+        "keySprite" : 0,
         "attack": "",
         "totalFrames" : 15,
         "loop" : false
       },
       {
+        "id" : "especialD",
+        "iniSprite" : 59,
+        "totalSprites" : 8,
+        "keySprite" : 2,
+        "attack": "specialD",
+        "totalFrames" : 40,
+        "loop" : false
+      },
+      {
         "id" : "stun",
-        "iniSprite" : 63,
+        "iniSprite" : 8,
         "totalSprites" : 1,
         "keySprite" : -1,
         "attack": "",
