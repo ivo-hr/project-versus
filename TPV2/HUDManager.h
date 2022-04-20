@@ -26,20 +26,17 @@ struct toDraw {
 	SDL_Rect dest;
 };
 
-class HUDManager {
+class HUDManager
+{
 public:
-	gameData prueba1;
+	gameData datos;
 
 	void RenderText(const std::string, SDL_Color fgColor) {
 		
 	}
 
-	virtual void init() {};
-protected:
 	HUDManager(float x, float y);
 	~HUDManager();
-	
-	// Font currentFont;
 
-	gameData prueba2;
+	void AddPlayer(std::vector<Entity*> ent);
 };

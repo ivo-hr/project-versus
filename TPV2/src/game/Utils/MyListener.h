@@ -1,8 +1,8 @@
 #include <string>
  #include "../../sdlutils/InputHandler.h"
-#include<box2d.h>
-#include"../Entity.h"
-#include<vector>
+#include <box2d.h>
+#include "../Entity.h"
+#include <vector>
 
 class MyListener : public b2ContactListener
 {

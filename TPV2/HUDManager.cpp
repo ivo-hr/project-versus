@@ -2,26 +2,31 @@
 #include <string>
 
 #include "HUDManager.h"
+#include "src/game/Entity.h"
 
 
-HUDManager::HUDManager(float x, float y) {
-	gameData datos;
+HUDManager::HUDManager(float x, float y)
+{
 
-	int a = datos.numJugadores;
+	datos.infoJugador.clear();
 
-	// datos.infoJugador.push_back(datos.numJugadores);
 
-	for (int i = 0; i < datos.numJugadores; ++i) {
-		datos.infoJugador[i].nombreJug = "a";
-		datos.infoJugador[i].danyoRecibido = 0;
-		datos.infoJugador[i].numVidas = 3;
-	}
-
-	
 }
 
 HUDManager::~HUDManager()
 {
 
+}
+
+void HUDManager::AddPlayer(std::vector<Entity*> ent)
+{
+	infoJugador aux;
+
+	for (int i = 0; i < ent.size(); ++i) {
+		// aux.danyoRecibido = ent[i]->;
+		aux.nombreJug = ent[i]->nombre;
+		// aux.numVidas = ent[i].hitboxes;
+		datos.infoJugador.push_back(aux);
+	}
 }
 

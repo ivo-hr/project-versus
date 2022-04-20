@@ -27,7 +27,6 @@
 *.lib
 
 # Executables
-*.exe
 *.out
 *.app
 
@@ -94,7 +93,6 @@ dlldata.c
 *.pidb
 *.svclog
 *.scc
-*.exe
 
 # Chutzpah Test files
 _Chutzpah*
@@ -291,20 +289,16 @@ IATETerminologyProvider/IATETerminologyProvider/pluginpackage.manifest_LOCAL_178
 /TMBackup/build/de/Microsoft.Win32.TaskScheduler.resources.dll
 *.tlog
 *.idb
-bin/PVersus21Debug.exe
-*.exe
 *.exp
 *.lib
 *.tlog
 *.lastbuildstate
 *.recipe
 *.idb
-*.exe
 *.exp
 *.lib
 *.tlog
 *.lastbuildstate
 *.recipe
 *.idb
-*.exe
 

@@ -102,7 +102,7 @@ protected:
 
 
 public:
-
+	string nombre;
 
 	Entity(FightManager* mngr, Vector2D* position, float w = 3.f, float h = 3.f);
 	~Entity();
