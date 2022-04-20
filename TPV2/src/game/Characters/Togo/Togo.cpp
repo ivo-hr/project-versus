@@ -240,7 +240,7 @@ void Togo::SpecialForward(int frameNumber)
 {
 	if (frameNumber == 0)
 	{
-		anim->StartAnimation("basicF");
+		anim->StartAnimation("especialLEntrada");
 
 		//sdl->soundEffects().at("catAtk1").play();
 		
@@ -323,7 +323,7 @@ void Togo::SpecialDownward(int frameNumber)
 	if (frameNumber == 0)
 	{
 		moving = false;
-		anim->StartAnimation("basicD");
+		anim->StartAnimation("especialD");
 		//sdl->soundEffects().at("catAtk2").play();
 	}
 	else if (frameNumber == attacks["specialD"].startUp)

@@ -217,7 +217,7 @@
         "iniSprite" : 67,
         "totalSprites" : 10,
         "keySprite" : 4,
-        "attack": "specialF",
+        "attack": "specialL",
         "totalFrames" : 20,
         "loop" : false
       },
@@ -240,20 +240,11 @@
         "loop" : false
       },
       {
-        "id" : "especialL",
-        "iniSprite" : 51,
-        "totalSprites" : 8,
-        "keySprite" : 3,
-        "attack": "specialLHit",
-        "totalFrames" : 60,
-        "loop" : false
-      },
-      {
         "id" : "especialU",
         "iniSprite" : 97,
         "totalSprites" : 4,
         "keySprite" : 0,
-        "attack": "",
+        "attack": "specialU",
         "totalFrames" : 15,
         "loop" : false
       },
@@ -261,7 +252,7 @@
         "id" : "especialD",
         "iniSprite" : 59,
         "totalSprites" : 8,
-        "keySprite" : 2,
+        "keySprite" : 3,
         "attack": "specialD",
         "totalFrames" : 40,
         "loop" : false
