@@ -48,9 +48,9 @@ void FightManager::MoveCamera()
 		cameraEnd.x = minX - (cameraEnd.w - (maxX - minX)) / 2;
 	}
 
-	camera.x += (cameraEnd.x - camera.x) * 0.3f;
-	camera.y += (cameraEnd.y - camera.y) * 0.3f;
-	camera.w += (cameraEnd.w - camera.w) * 0.3f;
+	camera.x += (cameraEnd.x - camera.x) * 0.2f;
+	camera.y += (cameraEnd.y - camera.y) * 0.2f;
+	camera.w += (cameraEnd.w - camera.w) * 0.2f;
 	camera.h = camera.w * ((float)(sdl->height()) / (float)(sdl->width()));
 
 	//camera.x = cameraEnd.x;
@@ -264,9 +264,9 @@ void FightManager::HitLag(int frames)
 
 	hitLagCam = camera;
 
-	hitLagCam.x += addedDelay * 0.4f;
+	hitLagCam.x += (addedDelay * 0.4f) * (camera.w * 0.005f);
 
-	hitLagCam.y += addedDelay * 0.2f;
+	hitLagCam.y += addedDelay * 0.2f * (camera.w * 0.005f);
 }
 
 void FightManager::KillingBlow(Vector2D dead)

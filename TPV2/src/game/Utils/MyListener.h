@@ -49,7 +49,7 @@ public:
 
 		// Mira si quiere subir a la plataforma (atravesándola)
 		if (one->GetFixtureList()->GetFilterData().categoryBits == 4 && 
-			!(two->GetFixtureList()->GetAABB(0).upperBound.y - 0.05f <= one->GetFixtureList()->GetAABB(0).upperBound.y))
+			!(two->GetFixtureList()->GetAABB(0).upperBound.y - 0.2f <= one->GetFixtureList()->GetAABB(0).upperBound.y))
 		{ 
 			contact->SetEnabled(false);
 		}

@@ -141,6 +141,40 @@ void Character::update()
 			body->ApplyLinearImpulseToCenter({ -5, 0 }, true);
 		}
 	}
+	else
+	{ 
+		if (currentMove == nullptr || (currentMove != nullptr && !onGround))
+		{
+			if (input->right() && input->left())
+			{
+				speed = 0;
+			}
+			else
+			{
+
+				if (input->right())
+				{
+					if (currentMove == nullptr)
+						dir = 1;
+
+					if (speed < 1)
+						AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", nullptr, this));
+
+					speed = maxSpeed;
+				}
+				if (input->left())
+				{
+					if (currentMove == nullptr)
+						dir = -1;
+
+					if (speed > -1)
+						AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", nullptr, this));
+
+					speed = -maxSpeed;
+				}
+			}
+		}
+	}
 
 	if (speed > 4)
 		speed -= 4;
@@ -151,35 +185,6 @@ void Character::update()
 
 	if (currentMove == nullptr && stun == 0)
 	{
-
-		if (input->right() && input->left())
-		{
-			speed = 0;
-		}
-		else
-		{
-
-			if (input->right())
-			{
-				dir = 1;
-
-				SDL_Rect a = manager->GetSDLCoors(body, width, height);
-				if (speed < 1)
-					AddParticle(new Particle(Vector2D(a.x + a.w / 2, a.y + a.h), dir, "run", nullptr, this));
-
-				speed = maxSpeed;
-			}
-			if (input->left())
-			{
-				dir = -1;
-
-				SDL_Rect a = manager->GetSDLCoors(body, width, height);
-				if (speed > -1)
-					AddParticle(new Particle(Vector2D(a.x + a.w / 2, a.y + a.h), dir, "run", nullptr, this));
-
-				speed = -maxSpeed;
-			}
-		}
 
 		// Ataque con A (provisional)
 		
@@ -321,8 +326,7 @@ void Character::update()
 		jumpCooldown = true;
 	}
 
-	//Que se mueva si no esta haciendo un ataque ya
-	if (currentMove == nullptr && stun == 0)
+	if (stun == 0)
 		body->SetLinearVelocity(b2Vec2(speed, body->GetLinearVelocity().y));
 
 
@@ -579,6 +583,7 @@ void Character::OnDeath()
 	shield = false;
 	dash = false;
 	stun = 0;
+	body->SetTransform({ respawnPos.getX(), respawnPos.getY() }, 0);
 }
 
 void Character::Respawn()
@@ -590,7 +595,6 @@ void Character::Respawn()
 
 	std::cout << "Vidas restantes: " << lives << "\n";
 
-	body->SetTransform({ respawnPos.getX(), respawnPos.getY() }, 0);
 	body->SetLinearVelocity({ 0, 0 }); // resetea la velocidad
 	speed = 0;
 
