@@ -11,7 +11,7 @@ Togo::Togo(FightManager* mngr, Vector2D* pos, char input) : Character(mngr, pos,
 
 	ReadJson("resources/config/dino.json");
 	//guardamos la textura
-	texture = &sdl->images().at("blinkMaster");
+	texture = &sdl->images().at("dinoSouls");
 
 	anim = new AnimationManager(this, texture, spData);
 }
@@ -71,7 +71,7 @@ void Togo::BasicForward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicF"].startUp)
 	{
-			auto spear = new Spear(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y), attacks["basicF"], b2Vec2(dir, 0), this);
+			auto spear = new Spear(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y-height/2), attacks["basicF"], b2Vec2(dir, 0), this);
 			manager->AddEntity(spear);
 			spear->SetOponents(oponents);
 			SetSpear(false);

@@ -68,6 +68,8 @@ void Projectile::draw(SDL_Rect* camera)
 	aux.h *= (manager->GetActualHeight() / (float)camera->h);
 
 	texture->render(aux, ang);
+
+	SDL_RenderDrawRect(sdl->renderer(), &aux);
 }
 
 void Projectile::CheckHits()

@@ -4,10 +4,10 @@
 #include "../../Utils/Particle.h"
 
 Spear::Spear(FightManager* manager, Vector2D* pos, attackData attack, b2Vec2 dir, Togo* togo) :
-	Projectile(manager, pos, dir, 2.f, 0.5f, 20)
+	Projectile(manager, pos, dir, 5.25f, 0.5f, 20)
 {
 	owner = togo;
-	texture = &sdl->images().at("bullet");
+	texture = &sdl->images().at("dinoSouls");
 	//funciona , but i dont know why
 	data = attack;
 
@@ -62,6 +62,26 @@ void Spear::CheckHits()
 void Spear::OnDeath() {
 	owner->SetSpear(true);
 	manager->RemoveEntity(this);
+}
+
+void Spear::draw(SDL_Rect* camera)
+{
+	SDL_Rect aux = hurtbox;
+
+	//si hurtbox.x = camera w + camera x                   aux.x = manager->GetActualWidth()
+	//   hurtbox.x = camera w / 2 + camera x               aux.x = manager->GetActualWidth() / 2
+
+	aux.x -= camera->x;
+	aux.x *= (manager->GetActualWidth() / (float)camera->w);
+
+	aux.y -= camera->y;
+	aux.y *= (manager->GetActualHeight() / (float)camera->h);
+
+	aux.w *= (manager->GetActualWidth() / (float)camera->w);
+	aux.h *= (manager->GetActualHeight() / (float)camera->h);
+
+	SDL_Rect src = { 384, 404, 75, 6};
+	texture->render(src, aux, ang, nullptr, SDL_FLIP_HORIZONTAL);
 }
 
 

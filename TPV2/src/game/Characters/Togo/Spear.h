@@ -27,6 +27,8 @@ public:
 
 	virtual void OnDeath() override;
 
+	virtual void draw(SDL_Rect* camera) override;
+
 private:
 	Togo* owner;
 };

@@ -9,8 +9,8 @@ ConfigState::ConfigState(FightManager* game) : State(game), numOfplayer(2) {
     keyb = new Button(&sdl->images().at("fondo"), 0, 0, 100, 100);
     nes = new Button(&sdl->images().at("pause"), 0, 0, 100, 100);
     xbox = new Button(&sdl->images().at("star"), 0, 0, 100, 100);
-    play = new Button(&sdl->images().at("play"), 1500, 900, 200, 100);
-    nextb = new Button(&sdl->images().at("next"), 1500, 900, 200, 100);
+    play = new Button(&sdl->images().at("play"), 900, 600, 200, 100);
+    nextb = new Button(&sdl->images().at("next"), 900, 600, 200, 100);
     back = new Button(&sdl->images().at("back"), 200, 900, 200, 100);
     player.resize(2);
     charact.resize(2);
