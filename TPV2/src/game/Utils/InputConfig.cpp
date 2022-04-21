@@ -2,10 +2,6 @@
 
 
 
-// valor de typeofInput (al menos de momento):
-// 0 y 1: teclado
-// 2 y 3: mando NES
-// 4 y 5: mando PS4 o Xbox One
 
 bool InputConfig::up()
 {
@@ -16,7 +12,7 @@ bool InputConfig::up()
 		return ih.isKeyDown(SDLK_UP);
 	}
 	else {
-		return ih.xboxGetAxesState(typeofInput, 1) == -1;
+		return ih.xboxGetAxesState(typeofInput, 1) == -1 || ih.xboxGetDpadState(typeofInput, 0);
 	}
 }
 
@@ -29,7 +25,7 @@ bool InputConfig::down()
 		return ih.isKeyDown(SDLK_DOWN);
 	}
 	else {
-		return ih.xboxGetAxesState(typeofInput, 1) == 1;
+		return ih.xboxGetAxesState(typeofInput, 1) == 1 || ih.xboxGetDpadState(typeofInput, 2);
 	}
 }
 
@@ -42,7 +38,7 @@ bool InputConfig::downReleased()
 		return ih.isKeyUp(SDLK_DOWN);
 	}
 	else {
-		return ih.xboxGetAxesState(typeofInput, 1) == 0;
+		return ih.xboxGetAxesState(typeofInput, 1) == 0 && !ih.xboxGetDpadState(typeofInput, 2);
 	}
 }
 
@@ -55,7 +51,7 @@ bool InputConfig::left()
 		return ih.isKeyDown(SDLK_LEFT);
 	}
 	else {
-		return ih.xboxGetAxesState(typeofInput, 0) == -1;
+		return ih.xboxGetAxesState(typeofInput, 0) == -1 || ih.xboxGetDpadState(typeofInput, 3);
 	}
 	
 	
@@ -70,7 +66,7 @@ bool InputConfig::right()
 		return ih.isKeyDown(SDLK_RIGHT);
 	}
 	else {
-		return ih.xboxGetAxesState(typeofInput, 0) == 1;
+		return ih.xboxGetAxesState(typeofInput, 0) == 1 || ih.xboxGetDpadState(typeofInput, 1);
 	}
 }
 
@@ -83,7 +79,7 @@ bool InputConfig::basic()
 		return ih.isKeyDown(SDLK_l);
 	}
 	else {
-		return ih.getButtonState(typeofInput, 1);
+		return ih.xboxGetButtonState(typeofInput, SDL_CONTROLLER_BUTTON_A);
 	}
 }
 
@@ -96,7 +92,7 @@ bool InputConfig::special()
 		return ih.isKeyDown(SDLK_k);
 	}
 	else {
-		return ih.getButtonState(typeofInput, 2);
+		return ih.xboxGetButtonState(typeofInput, SDL_CONTROLLER_BUTTON_B);
 	}
 }
 
@@ -109,6 +105,6 @@ bool InputConfig::stop()
 		return ih.isKeyUp(SDLK_LEFT) && ih.isKeyUp(SDLK_RIGHT);
 	}
 	else {
-		return  ih.xboxGetAxesState(typeofInput, 0) == 0;
+		return  ih.xboxGetAxesState(typeofInput, 0) == 0 && !ih.xboxGetDpadState(typeofInput, 1) && !ih.xboxGetDpadState(typeofInput, 3);
 	}
 }

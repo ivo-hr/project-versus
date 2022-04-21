@@ -119,7 +119,6 @@ public:
 	}
 
 	// NES controller
-	bool m_bJoysticksInitialised;
 
 	inline void initialiseJoysticks() {
 		if (SDL_WasInit(SDL_INIT_JOYSTICK) == 0)
@@ -140,7 +139,6 @@ public:
 					{
 						tempButtons.push_back(false);
 					}
-					//m_buttonStates.push_back(tempButtons);
 					m_buttonStates[SDL_JoystickInstanceID(joy)] = tempButtons;
 				}
 				else
@@ -149,15 +147,11 @@ public:
 				}
 			}
 			SDL_JoystickEventState(SDL_ENABLE);
-			m_bJoysticksInitialised = true;
-		}
-		else
-		{
-			m_bJoysticksInitialised = false;
 		}
 	}
 
 	std::vector<std::vector<bool>> m_buttonStates;
+	// buttonNumber: 1 = A / 2 = B (NES)
 	inline bool getButtonState(int joy, int buttonNumber)
 	{
 		if (SDL_NumJoysticks() > joy) return m_buttonStates[joy][buttonNumber];
@@ -175,7 +169,6 @@ public:
 			return value;
 		}
 		else return 0;
-	
 	}
 
 	// direction: 0=up / 1=right / 2=down / 3=left
@@ -210,14 +203,32 @@ public:
 		if (SDL_NumJoysticks() > joy) {
 			SDL_JoystickID id = joy;
 			SDL_Joystick* joystick = SDL_JoystickFromInstanceID(id);
-			int deathZone = 15000;
-			int value;
-			if (SDL_JoystickGetAxis(joystick, axesNumber) > deathZone)value = 1;
-			else if (SDL_JoystickGetAxis(joystick, axesNumber) < -deathZone)value = -1;
-			else value = 0;
-			return value;
+			int deathZoneMin, deathZoneMax;
+			
+			if (SDL_JoystickNumAxes(joystick) < 6) { // if NES controller
+				deathZoneMin = -300;
+				deathZoneMax = -100;
+				if (axesNumber == 0)axesNumber = 1;
+				else if (axesNumber == 1)axesNumber = 4;
+			}
+			else { // if any other controller
+				deathZoneMax = 15000;
+				deathZoneMin = -deathZoneMax;
+			}
+
+			if (SDL_JoystickGetAxis(joystick, axesNumber) > deathZoneMax)return 1;
+			else if (SDL_JoystickGetAxis(joystick, axesNumber) < deathZoneMin)return -1;
+			else return 0;
 		}
 		else return 0;
+	}
+
+	inline bool xboxGetButtonState(int joy, SDL_GameControllerButton button) {
+		if (SDL_NumJoysticks() > joy) {
+			SDL_GameController* gc = SDL_GameControllerOpen(SDL_NumJoysticks() - joy - 1);
+			return SDL_GameControllerGetButton(gc, button);
+		}
+		else return false;
 	}
 
 	// Para hacer pruebas con los mandos
