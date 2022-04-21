@@ -3,15 +3,20 @@
 #include "../PlayingState/FightManager.h"
 
 
+double ConfigState::ts(double i) //TO SCREEN
+{
+    return i * fmngr->GetScreeAdjust();
+}
+
 ConfigState::ConfigState(FightManager* game) : State(game), numOfplayer(2) {
     background = &sdl->images().at("fondo");
     exp = &sdl->images().at("exp");
-    keyb = new Button(&sdl->images().at("fondo"), 0, 0, 100, 100);
-    nes = new Button(&sdl->images().at("pause"), 0, 0, 100, 100);
-    xbox = new Button(&sdl->images().at("star"), 0, 0, 100, 100);
-    play = new Button(&sdl->images().at("play"), 900, 600, 200, 100);
-    nextb = new Button(&sdl->images().at("next"), 900, 600, 200, 100);
-    back = new Button(&sdl->images().at("back"), 200, 900, 200, 100);
+    keyb = new Button(&sdl->images().at("fondo"), 0, 0, ts(30), ts(30));
+    nes = new Button(&sdl->images().at("pause"), 0, 0, ts(30), ts(30));
+    xbox = new Button(&sdl->images().at("star"), 0, 0, ts(30), ts(30));
+    play = new Button(&sdl->images().at("play"),ts(400), ts(250), ts(60), ts(30));
+    nextb = new Button(&sdl->images().at("next"), ts(400), ts(250), ts(60), ts(30));
+    back = new Button(&sdl->images().at("back"), ts(20), ts(250), ts(60), ts(30));
     player.resize(2);
     charact.resize(2);
 }
@@ -74,18 +79,20 @@ void ConfigState::draw() {
     int h = fmngr->GetActualHeight();
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
-    exp->render({w / 4,h - h / 4,400,300 });
+    exp->render({w / 2 - (int)ts(100)/2 ,h- h / 4,(int) ts(100),(int)ts(50) });
+
     if(!charsel)
-    showText("InputConfig", 48, w / 2, 0, build_sdlcolor(0x112233ff),build_sdlcolor(0xffffffff));
+    showText("InputConfig", 48, w / 2 - ts(25), ts(5), build_sdlcolor(0x112233ff),build_sdlcolor(0xffffffff));
     else
-    showText("CharConfig", 48, w / 2, 0, build_sdlcolor(0x112233ff),build_sdlcolor(0xffffffff));
+    showText("CharConfig", 48, w / 2 - ts(25) , ts(5), build_sdlcolor(0x112233ff),build_sdlcolor(0xffffffff));
     for (auto i = 0u; i < numOfplayer; i++) {
-        
-        showText(" Player "+ to_string(i+1) , 48 , 400, h/2-400+i*200, build_sdlcolor(0x112233ff));
+        int wOFF = ts(100);
+        int hOFF = ts(50);
+        showText(" Player "+ to_string(i+1) , 48 , wOFF, h/2- wOFF +i* hOFF, build_sdlcolor(0x112233ff));
         if (i == sel) {
-            keyb->setX(400 + 200); keyb->setY(h / 2 - 400 + i * 200);
-            nes->setX(400 + 400); nes->setY(h / 2 - 400 + i * 200);
-            xbox->setX(400 + 600); xbox->setY(h / 2 - 400 + i * 200);
+            keyb->setX(wOFF + hOFF); keyb->setY(h / 2 - wOFF + i * hOFF);
+            nes->setX(wOFF + hOFF*2); nes->setY(h / 2 - wOFF + i * hOFF);
+            xbox->setX(wOFF + hOFF*3); xbox->setY(h / 2 - wOFF + i * hOFF);
             keyb->render();
             nes->render();
             xbox->render();

@@ -355,3 +355,8 @@ double FightManager::GetScreenRatio()
 {
 	return stage->GetScreenRatio();
 }
+
+double FightManager::GetScreeAdjust()
+{
+	return screenAdjust;
+}

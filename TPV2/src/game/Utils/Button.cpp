@@ -10,6 +10,7 @@ void Button::render()
 	{
 		tex->render({ x,y,w,h });
 	}
+	
 }
 
 bool Button::mouseClick()
@@ -22,10 +23,12 @@ bool Button::mouseClick()
 		{
 			if (ih.getMouseButtonState(ih.LEFT)) {
 				pressed = true;
+				rendered = false;
 			}
 		}
 		if (!ih.mouseButtonEvent() && pressed) {
 			pressed = false;
+			rendered = false;
 			return true;
 		}
 		return false;

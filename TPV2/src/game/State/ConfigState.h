@@ -13,6 +13,7 @@ class ConfigState : public State {
     int nesn = 0;
     int xboxn = 0;
     bool charsel = false;
+    double ts(double i);//TO SCREEN
 public:
 
     ConfigState(FightManager* game) ;

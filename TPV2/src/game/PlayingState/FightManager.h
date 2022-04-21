@@ -93,6 +93,7 @@ public:
 	int GetActualHeight();
 
 	double GetScreenRatio();
+	double GetScreeAdjust();
 
 	std::vector<Entity*> GetOponents(Entity* current);
 	SDL_Rect* GetDeathZone() ;
