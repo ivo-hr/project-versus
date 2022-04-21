@@ -82,17 +82,17 @@ void ConfigState::draw() {
     exp->render({w / 2 - (int)ts(100)/2 ,h- h / 4,(int) ts(100),(int)ts(50) });
 
     if(!charsel)
-    showText("InputConfig", 48, w / 2 - ts(25), ts(5), build_sdlcolor(0x112233ff),build_sdlcolor(0xffffffff));
+    showText("InputConfig", ts(8), w / 2 - ts(25), ts(5), build_sdlcolor(0x112233ff),build_sdlcolor(0xffffffff));
     else
-    showText("CharConfig", 48, w / 2 - ts(25) , ts(5), build_sdlcolor(0x112233ff),build_sdlcolor(0xffffffff));
+    showText("CharConfig", ts(8), w / 2 - ts(25) , ts(5), build_sdlcolor(0x112233ff),build_sdlcolor(0xffffffff));
     for (auto i = 0u; i < numOfplayer; i++) {
         int wOFF = ts(100);
         int hOFF = ts(50);
-        showText(" Player "+ to_string(i+1) , 48 , wOFF, h/2- wOFF +i* hOFF, build_sdlcolor(0x112233ff));
+        showText(" Player "+ to_string(i+1) , ts(8) , wOFF, h/2- wOFF +i* hOFF, build_sdlcolor(0x112233ff));
         if (i == sel) {
-            keyb->setX(wOFF + hOFF); keyb->setY(h / 2 - wOFF + i * hOFF);
-            nes->setX(wOFF + hOFF*2); nes->setY(h / 2 - wOFF + i * hOFF);
-            xbox->setX(wOFF + hOFF*3); xbox->setY(h / 2 - wOFF + i * hOFF);
+            keyb->setX(wOFF + hOFF+ts(5)); keyb->setY(h / 2 - wOFF + i * hOFF);
+            nes->setX(wOFF + hOFF*2 + ts(5)); nes->setY(h / 2 - wOFF + i * hOFF);
+            xbox->setX(wOFF + hOFF*3 + ts(5)); xbox->setY(h / 2 - wOFF + i * hOFF);
             keyb->render();
             nes->render();
             xbox->render();

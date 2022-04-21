@@ -7,16 +7,16 @@ bool State::doQuit() {
 
 void State::showText(string s, int size, int x, int y, SDL_Color c)
 {
-    if (size == 16) {
+    if (size <= 16) {
         auto& font = sdl->fonts().at("ARIAL16");
         tex = new Texture(sdl->renderer(), s, font, c);
     }
-    else if (size == 24) {
+    else if (size > 16 && size <= 24) {
         auto& font = sdl->fonts().at("ARIAL24");
         tex = new Texture(sdl->renderer(), s, font, c);
     }
 
-    else if (size == 48) { auto& font = sdl->fonts().at("ARIAL48"); 
+    else if (size > 24) { auto& font = sdl->fonts().at("ARIAL48");
     tex = new Texture(sdl->renderer(), s, font, c);
     }
     
@@ -26,16 +26,16 @@ void State::showText(string s, int size, int x, int y, SDL_Color c)
 
 void State::showText(string s, int size, int x, int y, SDL_Color c, SDL_Color b)
 {
-    if (size == 16) {
+    if (size <= 16) {
         auto& font = sdl->fonts().at("ARIAL16");
         tex = new Texture(sdl->renderer(), s, font, c,b);
     }
-    else if (size == 24) {
+    else if (size > 16 && size<=24) {
         auto& font = sdl->fonts().at("ARIAL24");
         tex = new Texture(sdl->renderer(), s, font, c,b);
     }
 
-    else if (size == 48) {
+    else if (size > 24) {
         auto& font = sdl->fonts().at("ARIAL48");
         tex = new Texture(sdl->renderer(), s, font, c,b);
     }
