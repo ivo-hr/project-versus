@@ -19,10 +19,24 @@ ConfigState::ConfigState(FightManager* game) : State(game), numOfplayer(2) {
     back = new Button(&sdl->images().at("back"), ts(20), ts(250), ts(60), ts(30));
     player.resize(2);
     charact.resize(2);
+    usedPad.resize(SDL_NumJoysticks());
 }
 
 void ConfigState::update() {
     
+    if (searchGamepad) {
+        for (auto i = 0u; i < SDL_NumJoysticks(); i++) {
+            if (ih.xboxGetAxesState(i, 1) == -1 && !usedPad[i]) {
+                std::cout << i << std::endl;
+                usedPad[i] = true;
+                player[sel] = i;
+                searchGamepad = false;
+                if (sel < numOfplayer && !searchGamepad)
+                    sel++;
+                return;
+            }
+        }
+    }
      if (ih.isKeyDown(SDLK_LEFT) && ih.keyDownEvent() && numOfplayer > 2) {
         sel = 0;
         numOfplayer--;
@@ -38,28 +52,35 @@ void ConfigState::update() {
         play->setUnrendered();
     }
     if (keyb->mouseClick()) {
-        if (!charsel)
-            player[sel] = 0;
+        if (!charsel && k >= -2) {
+            player[sel] = k;
+            k--;
+        }
         else
             charact[sel] = 0;
-        if(sel<numOfplayer)
-        sel++;
+        if (sel < numOfplayer)
+            sel++;
     }
     else if(nes->mouseClick())
     {
-        if (!charsel)
-            player[sel] = 1;
+       
+        if (!charsel) {
+            searchGamepad = true;
+        }
         else
             charact[sel] = 1;
-        if (sel < numOfplayer)
-        sel++;
+        if (sel < numOfplayer && !searchGamepad) {
+        std::cout << "  dsadadsadas" << std::endl;
+            sel++;
+        }
+        
     }
     else if (xbox->mouseClick()) {
         if(!charsel)
-        player[sel] = 2;
+            searchGamepad = true;
         else
         charact[sel] = 2;
-        if (sel < numOfplayer)
+        if (sel < numOfplayer && !searchGamepad)
         sel++;
     }
    
@@ -80,7 +101,7 @@ void ConfigState::draw() {
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
     exp->render({w / 2 - (int)ts(100)/2 ,h- h / 4,(int) ts(100),(int)ts(50) });
-
+    
     if(!charsel)
     showText("InputConfig", ts(8), w / 2 - ts(25), ts(5), build_sdlcolor(0x112233ff),build_sdlcolor(0xffffffff));
     else
@@ -105,6 +126,8 @@ void ConfigState::draw() {
             back->render();
         }
     }
+    if (searchGamepad)
+        showText("Pulsa Joystick arriba en el mando que vas a usar", ts(8), w / 4, ts(50), build_sdlcolor(0x112233ff), build_sdlcolor(0xffffffff));
     sdl->presentRenderer();
 }
 

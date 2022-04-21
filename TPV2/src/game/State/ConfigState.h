@@ -13,7 +13,10 @@ class ConfigState : public State {
     int nesn = 0;
     int xboxn = 0;
     bool charsel = false;
+    bool searchGamepad = false;
     double ts(double i);//TO SCREEN
+    int k = -1;
+    vector<bool> usedPad;
 public:
 
     ConfigState(FightManager* game) ;
