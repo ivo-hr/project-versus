@@ -201,8 +201,9 @@ void Togo::BasicDownward(int frameNumber)
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 4, OnHitData(5, false, false)));
 	}
-	else if (frameNumber == attacks["basicD"].startUp+5)
+	else if (frameNumber == attacks["basicD"].startUp+attacks["basicD"].totalFrames/4)
 	{
+		dir = -dir;
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
 
@@ -211,13 +212,13 @@ void Togo::BasicDownward(int frameNumber)
 
 		//hitbox.x += hitbox.w / 4;
 
-		hitbox.y += hitbox.h*3;
+		hitbox.y += hitbox.h * 3;
 
 		if (dir == -1) {
-			hitbox.x += 30;			
+			hitbox.x = hitbox.x - 2 - hitbox.w;
 		}
 		else if (dir == 1) {
-			hitbox.x = hitbox.x - 2 - hitbox.w;
+			hitbox.x += 30;
 		}
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 4, OnHitData(5, false, false)));
@@ -330,39 +331,35 @@ void Togo::SpecialDownward(int frameNumber)
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
-
-		hitbox.w += 10;
 		hitbox.h /= 2;
+		hitbox.w *= 4;
 
-
-		hitbox.y += hitbox.h;
+		hitbox.y += GetHeight()*10;
 
 		if (dir == -1) {
-			hitbox.x = hitbox.x - 32 - hitbox.w;
-		}
-		else if (dir == 1) {
-			hitbox.x += 60;
+			hitbox.x -= hitbox.w - GetWidth() * 14;
 		}
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["specialD"], 4, OnHitData(5, false, false)));
 
 	}
-	else if (frameNumber == attacks["specialD"].startUp + 15)
+	else if (frameNumber == attacks["specialD"].startUp + attacks["specialD"].totalFrames/4)
 	{
+		dir = -dir;
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
 
 		hitbox.w += 10;
 		hitbox.h /= 2;
 
+
 		hitbox.y += hitbox.h;
 
-
 		if (dir == -1) {
-			hitbox.x += 60;
+			hitbox.x = hitbox.x - 32 - hitbox.w;
 		}
 		else if (dir == 1) {
-			hitbox.x = hitbox.x - 32 - hitbox.w;
+			hitbox.x += 60;
 		}
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["specialD"], 4, OnHitData(5, false, false)));
