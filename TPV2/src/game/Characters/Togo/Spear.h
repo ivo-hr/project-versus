@@ -31,4 +31,6 @@ public:
 
 private:
 	Togo* owner;
+	int sprite = 0;
+	float anim = 0;
 };

@@ -423,6 +423,7 @@ bool Character::GetHit(attackData a, Entity* attacker)
 	}
 	else if (!shield && !dash)
 	{
+		body->SetGravityScale(10.0f);
 		currentMove = nullptr;
 		moveFrame = -1;
 		anim->StartAnimation("stun");

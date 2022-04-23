@@ -14,6 +14,8 @@ Spear::Spear(FightManager* manager, Vector2D* pos, attackData attack, b2Vec2 dir
 	range = 30.f;
 
 	lag = 1;
+
+	body->SetGravityScale(8.0f);
 }
 
 Spear::~Spear()
@@ -80,8 +82,19 @@ void Spear::draw(SDL_Rect* camera)
 	aux.w *= (manager->GetActualWidth() / (float)camera->w);
 	aux.h *= (manager->GetActualHeight() / (float)camera->h);
 
-	SDL_Rect src = { 384, 404, 75, 6};
+	SDL_Rect src = { 384 + sprite, 404, 75, 6};
 	texture->render(src, aux, ang, nullptr, SDL_FLIP_HORIZONTAL);
+	SDL_RenderDrawRect(sdl->renderer(), &aux);
+	if (anim >= 1) {
+		if (sprite == 0) {
+			sprite = 128;
+		}
+		else {
+			sprite = 0;
+		}
+		anim = 0;
+	}
+	anim += 0.1;
 }
 
 

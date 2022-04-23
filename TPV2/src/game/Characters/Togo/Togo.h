@@ -17,6 +17,7 @@ public:
 	virtual void SpecialDownward(int frameNumber) override;
 
 	virtual void SetSpear(bool spear);
+	void SpecialLHit(int frameNumber);
 
 private:
 	bool lanza = true;

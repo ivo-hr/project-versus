@@ -502,9 +502,7 @@ bool GatoEspia::GetHit(attackData a, Entity* attacker)
 		moveFrame = -1;
 		return false;
 	}
-	if (Character::GetHit(a, attacker)) {
-		body->SetGravityScale(10.f);
-	}
+	Character::GetHit(a, attacker);
 }
 
 void GatoEspia::Counter(int frameNumber)
@@ -512,7 +510,7 @@ void GatoEspia::Counter(int frameNumber)
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("salirTP");
-		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, 0 });
+		body->SetLinearVelocity({ 0.01, 0.01 });
 		dash = false;
 		counter = false;
 	}

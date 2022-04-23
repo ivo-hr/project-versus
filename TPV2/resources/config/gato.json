@@ -5,7 +5,7 @@
   "maxSpeed": 30,
   "speed":0,
   "maxJumps": 1 ,
-  "jumpStr": 800,
+  "jumpStr": 700,
   "onGround": true,
   "shield": false ,
   "maxShield": 360,
@@ -115,7 +115,7 @@
 
   "spData": {
     "leftOffset": 32,
-    "upOffset": 16,
+    "upOffset": 15,
     "sizeXOffset": 72,
     "sizeYOffset": 16,
     "spritesInX": 6,

@@ -2,10 +2,10 @@
   "codeName": "dino",
   "weight": 20,
   "damageTaken": 0,
-  "maxSpeed": 30,
+  "maxSpeed": 25,
   "speed":0,
   "maxJumps": 1 ,
-  "jumpStr": 800,
+  "jumpStr": 700,
   "onGround": true,
   "shield": false ,
   "maxShield": 360,
@@ -68,18 +68,18 @@
       "base": 0,
       "damage": 0,
       "multiplier": 0,
-      "startUp": 15,
-      "totalFrames": 30
+      "startUp": 10,
+      "totalFrames": 40
     },
     {
       "id": "specialLHit",
       "b2vecX": 1,
       "b2vecY": 3,
-      "base": 15,
-      "damage": 18,
-      "multiplier": 1.6,
+      "base": 5,
+      "damage": 30,
+      "multiplier": 0.5,
       "startUp": 3,
-      "totalFrames": 60
+      "totalFrames": 30
     },
     {
       "id": "specialU",
@@ -88,24 +88,24 @@
       "base": 12,
       "damage": 4,
       "multiplier": 0.3,
-      "startUp": 12,
-      "totalFrames": 25
+      "startUp": 1,
+      "totalFrames": 30
     },
     {
       "id": "specialD",
       "b2vecX": 1,
       "b2vecY": 1,
-      "base": 35,
-      "damage": 15,
+      "base": 20,
+      "damage": 10,
       "multiplier": 1.5,
       "startUp": 15,
-      "totalFrames": 50
+      "totalFrames": 60
     }
   ],
 
   "spData": {
     "leftOffset": 20,
-    "upOffset": 30,
+    "upOffset": 28,
     "sizeXOffset": 150,
     "sizeYOffset": 30,
     "spritesInX": 8,
@@ -182,7 +182,7 @@
         "totalSprites" : 2,
         "keySprite" : -1,
         "attack": "",
-        "totalFrames" : 50,
+        "totalFrames" : 15,
         "loop" : true
       },
       {
@@ -218,7 +218,7 @@
         "totalSprites" : 10,
         "keySprite" : 4,
         "attack": "specialL",
-        "totalFrames" : 20,
+        "totalFrames" : 25,
         "loop" : false
       },
       {
@@ -227,11 +227,11 @@
         "totalSprites" : 5,
         "keySprite" : -1,
         "attack": "",
-        "totalFrames" : 30,
+        "totalFrames" : 15,
         "loop" : false
       },
       {
-        "id" : "especialLGolpe",
+        "id" : "especialLHit",
         "iniSprite" : 82,
         "totalSprites" : 7,
         "keySprite" : 3,
@@ -243,10 +243,10 @@
         "id" : "especialU",
         "iniSprite" : 97,
         "totalSprites" : 4,
-        "keySprite" : 0,
+        "keySprite" : -1,
         "attack": "specialU",
-        "totalFrames" : 15,
-        "loop" : false
+        "totalFrames" : 10,
+        "loop" : true
       },
       {
         "id" : "especialD",
