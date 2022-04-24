@@ -23,7 +23,6 @@ DinoShield::~DinoShield()
 
 void DinoShield::update()
 {
-
 }
 
 
@@ -73,9 +72,19 @@ void DinoShield::CheckHits()
 	for (int j = 0; j < oponents.size(); j++)
 	{
 		SDL_Rect hitArea;
-		if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea))
+		if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea) && changable[j])
 		{
 			oponents[j]->changeDir();   //Devuelve el disparo
+			changable[j] = false;
 		}
+	}
+}
+
+void DinoShield::SetChangable()
+{
+	changable.clear();
+	for (int i = 0; i < oponents.size(); i++)
+	{
+		changable.push_back(true);
 	}
 }

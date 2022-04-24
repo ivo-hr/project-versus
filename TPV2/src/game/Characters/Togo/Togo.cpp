@@ -205,6 +205,8 @@ void Togo::SpecialNeutral(int frameNumber)
 		{
 			anim->StartAnimation("especialNHold");
 			dShield = new DinoShield(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y- GetHeight()/4.5));
+			dShield->SetOponents(oponents);
+			dShield->SetChangable();
 			manager->AddEntity(dShield);
 			manager->MoveToFront(dShield);
 
