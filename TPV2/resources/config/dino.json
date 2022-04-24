@@ -19,17 +19,17 @@
       "damage": 6,
       "multiplier": 0.6,
       "startUp": 4,
-      "totalFrames": 18
+      "totalFrames": 25
     },
     {
       "id": "basicF",
       "b2vecX": 1,
       "b2vecY": 2.5,
       "base": 1,
-      "damage": 2,
-      "multiplier": 0.5,
+      "damage": 1,
+      "multiplier": 0.1,
       "startUp": 12,
-      "totalFrames": 36
+      "totalFrames": 30
     },
     {
       "id": "basicD",
@@ -104,9 +104,9 @@
   ],
 
   "spData": {
-    "leftOffset": 20,
+    "leftOffset": 50,
     "upOffset": 28,
-    "sizeXOffset": 150,
+    "sizeXOffset": 250,
     "sizeYOffset": 30,
     "spritesInX": 8,
     "spritesInY": 13
@@ -191,7 +191,7 @@
         "totalSprites" : 2,
         "keySprite" : -1,
         "attack": "",
-        "totalFrames" : 40,
+        "totalFrames" : 15,
         "loop" : true
       },
       {
@@ -264,6 +264,24 @@
         "keySprite" : -1,
         "attack": "",
         "totalFrames" : 50,
+        "loop" : true
+      },
+      {
+        "id" : "jumpCharge",
+        "iniSprite" : 9,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames" : 10,
+        "loop" : false
+      },
+      {
+        "id" : "jump",
+        "iniSprite" : 10,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames" : 10,
         "loop" : true
       }
 

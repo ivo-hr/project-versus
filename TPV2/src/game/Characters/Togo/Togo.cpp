@@ -73,10 +73,11 @@ void Togo::BasicForward(int frameNumber)
 	{
 			auto spear = new Spear(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y-height/2), attacks["basicF"], b2Vec2(dir, 0), this);
 			manager->AddEntity(spear);
+			manager->MoveToFront(spear);
 			spear->SetOponents(oponents);
 			SetSpear(false);
 	}
-	else if (frameNumber == attacks["basicN"].totalFrames)
+	else if (frameNumber == attacks["basicF"].totalFrames)
 	{
 		currentMove = nullptr;
 		moveFrame = -1;
@@ -88,7 +89,14 @@ void Togo::BasicUpward(int frameNumber)
 
 	a.base = 0;
 	a.multiplier = 0;
+	SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
+	hitbox.w *= 2.4f;
+	hitbox.h *= 0.7f;
+	hitbox.x -= hitbox.w / 1.8;
+	hitbox.y -= 20;
+	hitbox.h = hitbox.h / 3;
+	hitbox.w *= 1.5;
 	 
 	if (frameNumber == 0)
 	{
@@ -102,66 +110,26 @@ void Togo::BasicUpward(int frameNumber)
 		if (!onGround) {
 			body->SetGravityScale(0.0f);
 		}
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.w *= 2.4f;
-		hitbox.h *= 0.7f;
-		hitbox.x -= hitbox.w / 1.8;
-		hitbox.y -= 20;
-		hitbox.h = hitbox.h / 3;
-		hitbox.w *= 1.5;
 
 		hitboxes.push_back(new Hitbox(hitbox, a, 3, OnHitData(3, false, false)));
 	}
 	else if (frameNumber == attacks["basicU"].startUp+3)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.w *= 2.4f;
-		hitbox.h *= 0.7f;
-		hitbox.x -= hitbox.w / 2;
-		hitbox.y -= 20;
-		hitbox.h = hitbox.h / 3;
-		hitbox.w *= 1.5;
 
 		hitboxes.push_back(new Hitbox(hitbox, a, 3, OnHitData(3, false, false)));
 	}
 	else if (frameNumber == attacks["basicU"].startUp+6)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.w *= 2.4f;
-		hitbox.h *= 0.7f;
-		hitbox.x -= hitbox.w / 2;
-		hitbox.y -= 20;
-		hitbox.h = hitbox.h / 3;
-		hitbox.w *= 1.5;
 
 		hitboxes.push_back(new Hitbox(hitbox, a, 3, OnHitData(3, false, false)));
 	}
 	else if (frameNumber == attacks["basicU"].startUp+9)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.w *= 2.4f;
-		hitbox.h *= 0.7f;
-		hitbox.x -= hitbox.w / 2;
-		hitbox.y -= 20;
-		hitbox.h = hitbox.h / 3;
-		hitbox.w *= 1.5;
 
 		hitboxes.push_back(new Hitbox(hitbox, a, 3, OnHitData(3, false, false)));
 	}
 	else if (frameNumber == attacks["basicU"].startUp+12)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.w *= 2.4f;
-		hitbox.h *= 0.7f;
-		hitbox.x -= hitbox.w / 2;
-		hitbox.y -= 20;
-		hitbox.h = hitbox.h / 3;
-		hitbox.w *= 1.5;
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 3, OnHitData(15, false, false)));
 		body->SetGravityScale(10.0f);
@@ -272,6 +240,7 @@ void Togo::SpecialForward(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialL"].totalFrames)
 	{
+		recovery = false;
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
@@ -295,13 +264,19 @@ void Togo::SpecialUpward(int frameNumber)
 			body->SetLinearVelocity(b2Vec2(0, body->GetLinearVelocity().y));
 		}
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 1, OnHitData(6, false, false)));
+		vector<Entity*> enemies = manager->GetOponents(this);
+		for (int i = 0; i < enemies.size(); i++) {
+			if (SDL_HasIntersection(&hitbox, enemies[i]->GetHurtbox())) {
+				hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 1, OnHitData(6, false, false)));
+			}
+		}
 	}
 	else if (frameNumber == attacks["specialU"].totalFrames)
 	{
 		body->SetGravityScale(10.0f);
 		currentMove = nullptr;
 		moveFrame = -1;
+		recovery = false;
 		//body->SetGravityScale(10);
 
 	}

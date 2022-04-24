@@ -304,6 +304,24 @@
         "attack": "",
         "totalFrames" : 50,
         "loop" : true
+      },
+      {
+        "id" : "jumpCharge",
+        "iniSprite" : 8,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames" : 50,
+        "loop" : false
+      },
+      {
+        "id" : "jump",
+        "iniSprite" : 9,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames" : 50,
+        "loop" : true
       }
 
     ]

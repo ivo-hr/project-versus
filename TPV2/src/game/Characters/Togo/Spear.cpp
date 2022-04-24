@@ -4,7 +4,7 @@
 #include "../../Utils/Particle.h"
 
 Spear::Spear(FightManager* manager, Vector2D* pos, attackData attack, b2Vec2 dir, Togo* togo) :
-	Projectile(manager, pos, dir, 5.25f, 0.5f, 20)
+	Projectile(manager, pos, dir, 5.25f, 0.7f, 20)
 {
 	owner = togo;
 	texture = &sdl->images().at("dinoSouls");
@@ -33,8 +33,6 @@ void Spear::update()
 		hurtbox.x = manager->b2ToSDLX(body, width);
 		hurtbox.y = manager->b2ToSDLY(body, height);
 
-		updateParticles();
-
 		if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()))
 		{
 			OnDeath();
@@ -50,10 +48,11 @@ void Spear::CheckHits()
 {
 	for (int j = 0; j < oponents.size(); j++)
 	{
-		if (SDL_HasIntersection(&hurtbox, oponents[j]->GetHurtbox()))
+		SDL_Rect hitArea;
+		if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea))
 		{
-			SDL_Rect hitArea;
-			if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea))
+			//Le hace dano xddd
+			if (oponents[j]->GetHit(data, this))
 			{
 				manager->HitLag(lag);
 			}
@@ -82,7 +81,7 @@ void Spear::draw(SDL_Rect* camera)
 	aux.w *= (manager->GetActualWidth() / (float)camera->w);
 	aux.h *= (manager->GetActualHeight() / (float)camera->h);
 
-	SDL_Rect src = { 384 + sprite, 404, 75, 6};
+	SDL_Rect src = { 393 + sprite, 395, 80, 9};
 	texture->render(src, aux, ang, nullptr, SDL_FLIP_HORIZONTAL);
 	SDL_RenderDrawRect(sdl->renderer(), &aux);
 	if (anim >= 1) {

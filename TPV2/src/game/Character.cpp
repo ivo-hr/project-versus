@@ -125,7 +125,10 @@ void Character::update()
 	}
 
 	if (stun > 0)
+	{
 		stun--;
+		if (!recovery) recovery = true;
+	}
 
 
 	if (stun > 0) {
@@ -174,6 +177,12 @@ void Character::update()
 				}
 			}
 		}
+
+	}
+	if (!recovery) {
+		if (anim->CurrentAnimation() != "dash")
+			anim->StartAnimation("dash");
+
 	}
 
 	if (speed > 4)
@@ -183,7 +192,7 @@ void Character::update()
 	else
 		speed = 0;
 
-	if (currentMove == nullptr && stun == 0)
+	if (currentMove == nullptr && stun == 0 && recovery)
 	{
 
 		// Ataque con A (provisional)
@@ -255,12 +264,12 @@ void Character::update()
 			currentMove = [this](int f) { StartJump(f); };
 		}
 
-		if (!GetGround() && (body->GetLinearVelocity().y < -0.01f || body->GetLinearVelocity().y > 0.01f))
+		if (!GetGround() && body->GetLinearVelocity().y > 0.01f)
 		{
 			if (anim->CurrentAnimation() != "airborne")
 				anim->StartAnimation("airborne");
 		}
-		else
+		else if (anim->CurrentAnimation() != "jump")
 		{
 			if (speed > 0.1f || speed < -0.1f)
 			{
@@ -464,6 +473,7 @@ void Character::StartJump(int frameNumber)
 	}
 	if (frameNumber < 4)
 	{
+		anim->StartAnimation("jumpCharge");
 		if (input->right())
 		{
 			speed = maxSpeed;
@@ -492,6 +502,7 @@ void Character::StartJump(int frameNumber)
 	}
 	else
 	{
+		anim->StartAnimation("jump");
 		if (!GetGround())
 		{
 			sdl->soundEffects().at("jump1").play();
