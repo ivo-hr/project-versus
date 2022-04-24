@@ -204,7 +204,7 @@ void Togo::SpecialNeutral(int frameNumber)
 		if (frameNumber == attacks["specialN"].startUp)
 		{
 			anim->StartAnimation("especialNHold");
-			dShield = new DinoShield(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y));
+			dShield = new DinoShield(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y- GetHeight()/4.5));
 			manager->AddEntity(dShield);
 			manager->MoveToFront(dShield);
 

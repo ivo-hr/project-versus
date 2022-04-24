@@ -5,11 +5,11 @@
 #include"../../PlayingState/FightManager.h"
 
 DinoShield::DinoShield(FightManager* manager, Vector2D* pos) :
-	Entity(manager, pos, 4, 4)
+	Entity(manager, pos, 7.5, 5)
 {
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
-	texture = &sdl->images().at("run");
+	texture = &sdl->images().at("dinoSouls");
 
 	SetOponents(oponents);
 	manager->SetOpponents();
@@ -36,6 +36,9 @@ void DinoShield::draw(SDL_Rect* camera)
 {
 	SDL_Rect aux = hurtbox;
 
+	//si hurtbox.x = camera w + camera x                   aux.x = manager->GetActualWidth()
+	//   hurtbox.x = camera w / 2 + camera x               aux.x = manager->GetActualWidth() / 2
+
 	aux.x -= camera->x;
 	aux.x *= (manager->GetActualWidth() / (float)camera->w);
 
@@ -45,9 +48,21 @@ void DinoShield::draw(SDL_Rect* camera)
 	aux.w *= (manager->GetActualWidth() / (float)camera->w);
 	aux.h *= (manager->GetActualHeight() / (float)camera->h);
 
-	texture->render(aux);
-
+	SDL_Rect src = { 896 - spriteX, 903 + spriteY, 128, 82};
+	texture->render(src, aux);
 	SDL_RenderDrawRect(sdl->renderer(), &aux);
+	if (anim >= 1) {
+		if (spriteX == 0) {
+			spriteX = 896;
+			spriteY = 82;
+		}
+		else {
+			spriteX = 0;
+			spriteY = 0;
+		}
+		anim = 0;
+	}
+	anim += 0.1;
 
 }
 

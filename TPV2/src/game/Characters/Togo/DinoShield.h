@@ -18,4 +18,7 @@ public:
 	virtual bool GetHit(attackData a, Entity* attacker) { return false; };
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox; };
 private:
+	int spriteX = 896;
+	int spriteY = 82;
+	float anim = 0;
 };
