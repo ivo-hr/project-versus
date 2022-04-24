@@ -19,7 +19,7 @@ Projectile::Projectile(FightManager* manager, Vector2D* pos, b2Vec2 dir, float w
 	ang = (acos(-vecDir.x) * 180) / M_PI;
 
 	vecDir *= speed;
-	
+
 	body->SetGravityScale(0);
 
 	SetOponents(oponents);
@@ -44,8 +44,6 @@ void Projectile::update()
 	{
 		manager->RemoveEntity(this);
 	}
-
-
 }
 
 

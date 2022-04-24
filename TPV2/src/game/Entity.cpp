@@ -181,13 +181,14 @@ void Entity::DeleteOponent(Entity* ent)
 
 void Entity::CheckHits()
 {
+	bool toResetHits = false;
+
 	for (int i = 0; i < hitboxes.size(); i++)
 	{
-
 		for (int j = 0; j < oponents.size(); j++)
 		{
 			SDL_Rect hitArea;
-			if (SDL_IntersectRect(&hitboxes[i]->box, oponents[j]->GetHurtbox(), &hitArea) & !isHit[j])
+			if (SDL_IntersectRect(&hitboxes[i]->box, oponents[j]->GetHurtbox(), &hitArea) && !isHit[j])
 			{
 				//Le hace daño xddd
 				if (oponents[j]->GetHit(hitboxes[i]->data, this))
@@ -220,8 +221,21 @@ void Entity::CheckHits()
 			}
 			hitboxes.pop_back();
 			delete aux;
-			resetHit();
+			i--;
+			toResetHits = true;
 		}
+		else
+		{
+			if (hitboxes[i]->follow)
+			{
+				hitboxes[i]->box.x = hurtbox.x + hitboxes[i]->charOffset.getX();
+				hitboxes[i]->box.y = hurtbox.y + hitboxes[i]->charOffset.getY();
+			}
+		}
+	}
+	if (toResetHits)
+	{
+		resetHit();
 	}
 }
 

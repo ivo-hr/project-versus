@@ -5,7 +5,7 @@
   "maxSpeed": 30,
   "speed":0,
   "maxJumps": 1 ,
-  "jumpStr": 700,
+  "jumpStr": 780,
   "onGround": true,
   "shield": false ,
   "maxShield": 360,

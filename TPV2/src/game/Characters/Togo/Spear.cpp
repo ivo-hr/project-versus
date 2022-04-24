@@ -16,6 +16,8 @@ Spear::Spear(FightManager* manager, Vector2D* pos, attackData attack, b2Vec2 dir
 	lag = 1;
 
 	body->SetGravityScale(8.0f);
+
+	hitDelay = 5;
 }
 
 Spear::~Spear()
@@ -46,18 +48,30 @@ void Spear::update()
 
 void Spear::CheckHits()
 {
-	for (int j = 0; j < oponents.size(); j++)
+	if (hitDelay < 5)
 	{
-		SDL_Rect hitArea;
-		if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea))
+		hitDelay++;
+	}
+	else
+	{
+		for (int j = 0; j < oponents.size(); j++)
 		{
-			//Le hace dano xddd
-			if (oponents[j]->GetHit(data, this))
+			SDL_Rect hitArea;
+			if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea))
 			{
-				manager->HitLag(lag);
+				if (oponents[j]->GetHit(data, this))
+				{
+					hitDelay = 0;
+					manager->HitLag(lag);
+
+					oponents[j]->AddParticle(new Particle(
+						new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+						1, "sHitParticle", nullptr, oponents[j]));
+				}
 			}
 		}
 	}
+	
 }
 
 void Spear::OnDeath() {

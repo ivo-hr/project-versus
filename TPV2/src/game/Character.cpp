@@ -2,13 +2,10 @@
 #include "Utils/AnimationManager.h"
 #include "Utils/InputConfig.h"
 #include "Utils/Particle.h"
-#include "../json/json.hpp"
-#include <fstream>
 #include <iostream>
-using json = nlohmann::json;
 
 
-void Character::ReadJson(std::string filename)
+json Character::ReadJson(std::string filename)
 {
 	std::ifstream file(filename);
 	json jsonFile;
@@ -89,6 +86,8 @@ void Character::ReadJson(std::string filename)
 
 		spData.animations.insert({ animData[i]["id"], auxAnim });
 	}
+
+	return jsonFile;
 }
 
 Character::Character(FightManager* manager, Vector2D* pos, char input, float w, float h) :
@@ -202,19 +201,19 @@ void Character::update()
 
 			if (input->up()) //básico arriba
 			{
-				currentMove = [this](int f) { BasicUpward(f); };
+				StartMove([this](int f) { BasicUpward(f); });
 			}
 			else if (input->down()) //básico abajo
 			{
-				currentMove = [this](int f) { BasicDownward(f); };
+				StartMove([this](int f) { BasicDownward(f); });
 			}
 			else if (input->right() || input->left()) //básico en movimiento
 			{
-				currentMove = [this](int f) { BasicForward(f); };
+				StartMove([this](int f) { BasicForward(f); });
 			}
 			else //básico estático
 			{
-				currentMove = [this](int f) { BasicNeutral(f); };
+				StartMove([this](int f) { BasicNeutral(f); });
 			}
 
 			manager->MoveToFront(this);
@@ -227,19 +226,19 @@ void Character::update()
 
 			if (input->up()) //especial arriba
 			{
-				currentMove = [this](int f) { SpecialUpward(f); };
+				StartMove([this](int f) { SpecialUpward(f); });
 			}
 			else if (input->down()) //especial abajo
 			{
-				currentMove = [this](int f) { SpecialDownward(f); };
+				StartMove([this](int f) { SpecialDownward(f); });
 			}
 			else if (input->right() || input->left()) //especial en movimiento
 			{
-				currentMove = [this](int f) { SpecialForward(f); };
+				StartMove([this](int f) { SpecialForward(f); });
 			}
 			else //especial estático
 			{
-				currentMove = [this](int f) { SpecialNeutral(f); };
+				StartMove([this](int f) { SpecialNeutral(f); });
 			}
 
 			manager->MoveToFront(this);
@@ -249,19 +248,19 @@ void Character::update()
 		//Escudo
 		if (input->down() && onGround && shieldCounter > (maxShield/3) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
 
-			currentMove = [this](int f) { StartShield(f); };
+			StartMove([this](int f) { StartShield(f); });
 			body->SetLinearVelocity(b2Vec2(0, 0));
 
 		}
 		else if (input->down() && !onGround)
 		{
-			currentMove = [this](int f) { Dash(f); };
+			StartMove([this](int f) { Dash(f); });
 		}
 
 		// salto
 		if (input->up() && !(jumpCounter <= 0 || !jumpCooldown))
 		{
-			currentMove = [this](int f) { StartJump(f); };
+			StartMove([this](int f) { StartJump(f); });
 		}
 
 		if (!GetGround() && body->GetLinearVelocity().y > 0.01f)
@@ -471,7 +470,7 @@ void Character::StartJump(int frameNumber)
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
-	if (frameNumber < 4)
+	if (frameNumber < 3)
 	{
 		anim->StartAnimation("jumpCharge");
 		if (input->right())
@@ -491,16 +490,16 @@ void Character::StartJump(int frameNumber)
 
 		if (input->special())
 		{
-			currentMove = [this](int f) { SpecialUpward(f); };
+			ChangeMove([this](int f) { SpecialUpward(f); });
 			moveFrame = -1;
 		}
 		else if (input->basic())
 		{
-			currentMove = [this](int f) { BasicUpward(f); };
+			ChangeMove([this](int f) { BasicUpward(f); });
 			moveFrame = -1;
 		}
 	}
-	else
+	else if (frameNumber >= 4)
 	{
 		anim->StartAnimation("jump");
 		if (!GetGround())
@@ -512,8 +511,63 @@ void Character::StartJump(int frameNumber)
 		else sdl->soundEffects().at("jump0").play();
 
 		jumpCooldown = false;
-		body->SetLinearVelocity(b2Vec2(speed, 0));
-		body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
+		body->SetLinearVelocity(b2Vec2(speed, 0)); 
+
+		if (input->basic())
+		{
+
+			if (input->up()) //básico arriba
+			{
+				ChangeMove([this](int f) { BasicUpward(f); });
+			}
+			else if (input->down()) //básico abajo
+			{
+				ChangeMove([this](int f) { BasicDownward(f); });
+			}
+			else if (input->right() || input->left()) //básico en movimiento
+			{
+				ChangeMove([this](int f) { BasicForward(f); });
+			}
+			else //básico estático
+			{
+				ChangeMove([this](int f) { BasicNeutral(f); });
+			}
+
+			manager->MoveToFront(this);
+			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
+
+		}
+		else if (input->special())
+		{
+
+			if (input->up()) //especial arriba
+			{
+				ChangeMove([this](int f) { SpecialUpward(f); });
+			}
+			else if (input->down()) //especial abajo
+			{
+				ChangeMove([this](int f) { SpecialDownward(f); });
+			}
+			else if (input->right() || input->left()) //especial en movimiento
+			{
+				ChangeMove([this](int f) { SpecialForward(f); });
+			}
+			else //especial estático
+			{
+				ChangeMove([this](int f) { SpecialNeutral(f); });
+			}
+
+			manager->MoveToFront(this);
+			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
+
+		}
+		else
+		{
+			if (input->up())
+				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
+			else
+				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
+		}
 
 		currentMove = nullptr;
 		moveFrame = -1;
@@ -530,19 +584,17 @@ void Character::StartShield(int frameNumber)
 	}
 	if (!input->down() || shieldCounter <= 0 )
 	{
-		currentMove = [this](int f) { EndShield(f); };
+		ChangeMove([this](int f) { EndShield(f); });
 	}
 	if (input->basic())
 	{
-		moveFrame = -1;
 		shield = false;
-		currentMove = [this](int f) { BasicDownward(f); };
+		ChangeMove([this](int f) { BasicDownward(f); });
 	}
 	else if (input->special())
 	{
-		moveFrame = -1;
 		shield = false;
-		currentMove = [this](int f) { SpecialDownward(f); };
+		ChangeMove([this](int f) { SpecialDownward(f); });
 	}
 }
 void Character::EndShield(int frameNumber)
@@ -566,17 +618,27 @@ void Character::Dash(int frameNumber)
 	case 60:
 		dash = false;
 		currentMove = nullptr;
-		moveFrame = -1;
-		anim->StartAnimation(0);
+		anim->StartAnimation("idle");
 		break;
 	}
 	if (onGround)
 	{
 		dash = false;
 		currentMove = nullptr;
-		moveFrame = -1;
 		anim->StartAnimation("idle");
 	}
+}
+
+void Character::StartMove(std::function<void(int)> newMove)
+{
+	currentMove = newMove;
+	moveFrame = 0;
+}
+
+void Character::ChangeMove(std::function<void(int)> newMove)
+{
+	currentMove = newMove;
+	moveFrame = -1;
 }
 
 SDL_Rect* Character::GetHurtbox()
@@ -586,6 +648,7 @@ SDL_Rect* Character::GetHurtbox()
 
 void Character::OnDeath()
 {
+	body->SetTransform({ respawnPos.getX(), respawnPos.getY() }, 0);
 	body->SetAwake(false);
 	alive = false;
 	lives--;
@@ -595,7 +658,6 @@ void Character::OnDeath()
 	shield = false;
 	dash = false;
 	stun = 0;
-	body->SetTransform({ respawnPos.getX(), respawnPos.getY() }, 0);
 }
 
 void Character::Respawn()

@@ -26,6 +26,8 @@
     <ClInclude Include="src\game\Characters\GatoEspia\Bullet.h" />
     <ClInclude Include="src\game\Characters\GatoEspia\GatoEspia.h" />
     <ClInclude Include="src\game\Characters\Togo\DinoShield.h" />
+    <ClInclude Include="src\game\Characters\MaktFange\Ball.h" />
+    <ClInclude Include="src\game\Characters\MaktFange\Makt.h" />
     <ClInclude Include="src\game\Characters\Togo\Spear.h" />
     <ClInclude Include="src\game\Characters\Togo\Togo.h" />
     <ClInclude Include="src\game\Entity.h" />
@@ -70,6 +72,8 @@
     <ClCompile Include="src\game\Characters\GatoEspia\Bullet.cpp" />
     <ClCompile Include="src\game\Characters\GatoEspia\GatoEspia.cpp" />
     <ClCompile Include="src\game\Characters\Togo\DinoShield.cpp" />
+    <ClCompile Include="src\game\Characters\MaktFange\Ball.cpp" />
+    <ClCompile Include="src\game\Characters\MaktFange\Makt.cpp" />
     <ClCompile Include="src\game\Characters\Togo\Spear.cpp" />
     <ClCompile Include="src\game\Characters\Togo\Togo.cpp" />
     <ClCompile Include="src\game\Entity.cpp" />

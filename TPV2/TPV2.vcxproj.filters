@@ -192,6 +192,12 @@
     <ClInclude Include="src\game\Characters\Togo\DinoShield.h">
       <Filter>Header Files\game\Characters</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\Characters\MaktFange\Makt.h">
+      <Filter>Header Files\game\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\Characters\MaktFange\Ball.h">
+      <Filter>Header Files\game\Characters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">
@@ -291,6 +297,12 @@
       <Filter>Source Files\game\State</Filter>
     </ClCompile>
     <ClCompile Include="src\game\Characters\Togo\DinoShield.cpp">
+      <Filter>Source Files\game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Characters\MaktFange\Makt.cpp">
+      <Filter>Source Files\game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Characters\MaktFange\Ball.cpp">
       <Filter>Source Files\game\Characters</Filter>
     </ClCompile>
   </ItemGroup>

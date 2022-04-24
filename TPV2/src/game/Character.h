@@ -3,6 +3,9 @@
 #include "Entity.h"
 #include "../sdlutils/InputHandler.h"
 #include "Utils/InputConfig.h"
+#include "../json/json.hpp"
+#include <fstream>
+using json = nlohmann::json;
 
 class Character : public Entity
 {
@@ -53,7 +56,7 @@ protected:
 	//Metodo del movimiento que este haciendo (esto es una variable que guarda metodos :v)
 	std::function<void(int)> currentMove;
 
-	void ReadJson(std::string file);
+	json ReadJson(std::string file);
 
 
 //	void (Character::* currentMove)(int);
@@ -111,4 +114,7 @@ public:
 	virtual void StartShield(int frameNumber);
 	virtual void EndShield(int frameNumber);
 	virtual void Dash(int frameNumber);
+
+	void StartMove(std::function<void(int)> newMove);
+	void ChangeMove(std::function<void(int)> newMove);
 };

@@ -61,9 +61,15 @@ struct Hitbox {
 	attackData data;
 	int duration;
 	OnHitData hit;
+	bool follow;
+	Vector2D charOffset;	//Offset que tiene con respecto a la entidad para que la siga
 
-	Hitbox(SDL_Rect a, attackData da, int frames, OnHitData b = OnHitData()) : 
-		box(a), data(da), duration(frames), hit(b)
+	Hitbox(SDL_Rect a, attackData da, int frames, OnHitData b = OnHitData()) :
+		box(a), data(da), duration(frames), hit(b), charOffset(NULL, NULL), follow(false)
+	{};
+
+	Hitbox(SDL_Rect a, attackData da, int frames, Vector2D follow, OnHitData b = OnHitData()) :
+		box(a), data(da), duration(frames), hit(b), charOffset(follow), follow(true)
 	{};
 };
 

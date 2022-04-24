@@ -1,0 +1,268 @@
+{
+    "codeName": "cat",
+    "weight": 19,
+    "ballWeight": 24,
+    "damageTaken": 0,
+    "maxSpeed": 25,
+    "ballSpeed": 20,
+    "speed":0,
+    "maxJumps": 1 ,
+    "jumpStr": 1000,
+    "ballJump": 900,
+    "onGround": true,
+    "shield": false ,
+    "maxShield": 360,
+  
+    "attacksData": [
+      {
+        "id": "basicN",
+        "b2vecX": 1,
+        "b2vecY": 1.4,
+        "base": 30,
+        "damage": 13,
+        "multiplier": 0.6,
+        "startUp": 16,
+        "totalFrames": 46
+      },
+      {
+        "id": "basicF",
+        "b2vecX": 1,
+        "b2vecY": 0.9,
+        "base": 40,
+        "damage": 18,
+        "multiplier": 0.3,
+        "startUp": 15,
+        "totalFrames": 36
+      },
+      {
+        "id": "basicD",
+        "b2vecX": 1,
+        "b2vecY": 1,
+        "base": 20,
+        "damage": 9,
+        "multiplier": 0.6,
+        "startUp": 28,
+        "totalFrames": 45
+      },
+      {
+        "id": "basicDS",
+        "b2vecX": 1,
+        "b2vecY": 1,
+        "base": 50,
+        "damage": 19,
+        "multiplier": 0.9,
+        "startUp": 28,
+        "totalFrames": 45
+      },
+      {
+        "id": "basicU",
+        "b2vecX": 1,
+        "b2vecY": 9,
+        "base": 50,
+        "damage": 19,
+        "multiplier": 0.3,
+        "startUp": 21,
+        "totalFrames": 48
+      },
+      {
+        "id": "specialN",
+        "b2vecX": 1,
+        "b2vecY": 1.4,
+        "base": 80,
+        "damage": 34,
+        "multiplier": 1.5,
+        "startUp": 80,
+        "totalFrames": 120
+      },
+      {
+        "id": "specialL",
+        "b2vecX": 1,
+        "b2vecY": 1.1,
+        "base": 40,
+        "damage": 12,
+        "multiplier": 1.1,
+        "startUp": 15,
+        "totalFrames": 20
+      },
+      {
+        "id": "specialU",
+        "b2vecX": 0.1,
+        "b2vecY": 1,
+        "base": 20,
+        "damage": 11,
+        "multiplier": 0.3,
+        "startUp": 9,
+        "totalFrames": 35
+      },
+      {
+        "id": "specialD",
+        "b2vecX": 0.1,
+        "b2vecY": 1,
+        "base": 60,
+        "damage": 9,
+        "multiplier": 0.05,
+        "startUp": 10,
+        "totalFrames": 30
+      },
+      {
+        "id": "pickBall",
+        "b2vecX": 0,
+        "b2vecY": 0,
+        "base": 0,
+        "damage": 0,
+        "multiplier": 0,
+        "startUp": 3,
+        "totalFrames": 10
+      }
+    ],
+  
+    "spData": {
+      "leftOffset": 32,
+      "upOffset": 16,
+      "sizeXOffset": 72,
+      "sizeYOffset": 16,
+      "spritesInX": 6,
+      "spritesInY": 12
+    },
+    "animationData":{
+      "anim":[
+        {
+          "id" : "idle",
+          "iniSprite" : 6,
+          "totalSprites" : 2,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 30,
+          "loop" :true
+        },
+        {
+          "id" : "basicN",
+          "iniSprite" : 12,
+          "totalSprites" : 3,
+          "keySprite" : 2,
+          "attack": "basicN",
+          "totalFrames" : 15,
+          "loop" :false
+        },
+        {
+          "id" : "basicU",
+          "iniSprite" : 15,
+          "totalSprites" : 4,
+          "keySprite" : 2,
+          "attack": "basicU",
+          "totalFrames" : 20,
+          "loop" :false
+        },
+        {
+          "id" : "basicD",
+          "iniSprite" : 19,
+          "totalSprites" : 3,
+          "keySprite" : 2,
+          "attack": "basicD",
+          "totalFrames" : 35,
+          "loop" :false
+        },
+        {
+          "id" : "basicF",
+          "iniSprite" : 22,
+          "totalSprites" : 4,
+          "keySprite" : 2,
+          "attack": "basicF",
+          "totalFrames" : 40,
+          "loop" :false
+        },
+        {
+          "id" : "shield",
+          "iniSprite" : 26,
+          "totalSprites" : 2,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 40,
+          "loop" : true
+        },
+        {
+          "id" : "run",
+          "iniSprite" : 0,
+          "totalSprites" : 6,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "airborne",
+          "iniSprite" : 10,
+          "totalSprites" : 1,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "dash",
+          "iniSprite" : 28,
+          "totalSprites" : 2,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 40,
+          "loop" : true
+        },
+        {
+          "id" : "especialN",
+          "iniSprite" : 30,
+          "totalSprites" : 5,
+          "keySprite" : 2,
+          "attack": "specialN",
+          "totalFrames" : 40,
+          "loop" : false
+        },
+        {
+          "id" : "especialD",
+          "iniSprite" : 51,
+          "totalSprites" : 5,
+          "keySprite" : 3,
+          "attack": "specialDHit",
+          "totalFrames" : 30,
+          "loop" : false
+        },
+        {
+          "id" : "especialL",
+          "iniSprite" : 51,
+          "totalSprites" : 8,
+          "keySprite" : 3,
+          "attack": "specialLHit",
+          "totalFrames" : 60,
+          "loop" : false
+        },
+        {
+          "id" : "especialU",
+          "iniSprite" : 59,
+          "totalSprites" : 4,
+          "keySprite" : 3,
+          "attack": "",
+          "totalFrames" : 15,
+          "loop" : false
+        },
+        {
+          "id" : "ballPick",
+          "iniSprite" : 59,
+          "totalSprites" : 4,
+          "keySprite" : 3,
+          "attack": "pickBall",
+          "totalFrames" : 15,
+          "loop" : false
+        },
+        {
+          "id" : "stun",
+          "iniSprite" : 63,
+          "totalSprites" : 1,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        }
+  
+      ]
+      
+    }
+  }
