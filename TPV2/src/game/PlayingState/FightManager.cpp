@@ -235,6 +235,17 @@ void FightManager::MoveToFront(Entity* ent)
 	}
 }
 
+void FightManager::AddOponnent(Entity* ent, Entity* ignore)
+{
+	for (auto i = 0u; i < entities.size(); i++)
+	{
+		if (entities[i] != ent && entities[i] != ignore)
+		{
+			entities[i]->AddOponent(ent);
+		}
+	}
+}
+
 void FightManager::AddParticle(Particle* par)
 {
 	particulas.push_back(par);
@@ -359,11 +370,4 @@ double FightManager::GetScreenRatio()
 double FightManager::GetScreeAdjust()
 {
 	return screenAdjust;
-}
-void FightManager::SetOpponents()
-{
-	for (int i = 0; i < entities.size(); i++)
-	{
-		entities[i]->SetOponents(entities);
-	}
 }

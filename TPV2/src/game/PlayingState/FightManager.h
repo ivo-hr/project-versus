@@ -74,6 +74,7 @@ public:
 	void AddEntity(Entity* ent);
 	bool RemoveEntity(Entity* ent);
 	void MoveToFront(Entity* ent);
+	void AddOponnent(Entity* ent, Entity* ignore = nullptr);
 
 	void AddParticle(Particle* par);
 	bool RemoveParticle(Particle* par);
@@ -94,8 +95,6 @@ public:
 
 	double GetScreenRatio();
 	double GetScreeAdjust();
-
-	void SetOpponents();
 
 	std::vector<Entity*> GetOponents(Entity* current);
 	SDL_Rect* GetDeathZone() ;

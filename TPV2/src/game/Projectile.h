@@ -14,6 +14,8 @@ protected:
 	attackData data;
 	float ang;
 
+	int reflected;
+
 public:
 	Projectile(FightManager* manager, Vector2D* pos, b2Vec2 dir, float width, float height, int speed);
 	~Projectile();
@@ -24,6 +26,6 @@ public:
 	virtual void CheckHits() override;
 	virtual bool GetHit(attackData a, Entity* attacker) { return(false);};
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox;};
-	virtual void changeDir() override;
+	virtual bool changeDir() override;
 
 };

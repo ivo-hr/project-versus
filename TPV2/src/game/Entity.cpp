@@ -162,6 +162,15 @@ void Entity::SetOponents(std::vector<Entity*> ents)
 	}
 }
 
+void Entity::AddOponent(Entity* ent)
+{
+	if (ent != this)
+	{
+		oponents.push_back(ent);
+		isHit.push_back(false);
+	}
+}
+
 void Entity::DeleteOponent(Entity* ent)
 {
 	for (int i = 0; i < oponents.size(); i++)

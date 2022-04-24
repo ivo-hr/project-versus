@@ -122,6 +122,7 @@ public:
 	bool RemoveParticle(Particle* par);
 
 	virtual void SetOponents(std::vector<Entity*> op);
+	virtual void AddOponent(Entity* ent);
 	virtual void DeleteOponent(Entity* ent);
 
 	virtual void CheckHits();
@@ -141,7 +142,7 @@ public:
 	void SetGround(bool ground);
 	bool GetGround() { return onGround; };
 
-	virtual void changeDir() {};
+	virtual bool changeDir() { return false; };
 
 	void resetHit();
 	//virtual void SendToHUD(Texture* tex);

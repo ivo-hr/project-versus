@@ -10,10 +10,6 @@ DinoShield::DinoShield(FightManager* manager, Vector2D* pos) :
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
 	texture = &sdl->images().at("dinoSouls");
-
-	SetOponents(oponents);
-	manager->SetOpponents();
-
 }
 
 DinoShield::~DinoShield()
@@ -48,7 +44,12 @@ void DinoShield::draw(SDL_Rect* camera)
 	aux.h *= (manager->GetActualHeight() / (float)camera->h);
 
 	SDL_Rect src = { 896 - spriteX, 903 + spriteY, 128, 82};
-	texture->render(src, aux);
+
+	if (dir < 0)
+		texture->render(src, aux);
+	else
+		texture->render(src, aux, 0, nullptr, SDL_FLIP_HORIZONTAL);
+
 	SDL_RenderDrawRect(sdl->renderer(), &aux);
 	if (anim >= 1) {
 		if (spriteX == 0) {
@@ -65,26 +66,9 @@ void DinoShield::draw(SDL_Rect* camera)
 
 }
 
-
-void DinoShield::CheckHits()
+bool DinoShield::GetHit(attackData a, Entity* attacker)
 {
-
-	for (int j = 0; j < oponents.size(); j++)
-	{
-		SDL_Rect hitArea;
-		if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea) && changable[j])
-		{
-			oponents[j]->changeDir();   //Devuelve el disparo
-			changable[j] = false;
-		}
-	}
-}
-
-void DinoShield::SetChangable()
-{
-	changable.clear();
-	for (int i = 0; i < oponents.size(); i++)
-	{
-		changable.push_back(true);
-	}
+	if (attacker->changeDir())
+		attacker->SetOponents(oponents);
+	return false;
 }

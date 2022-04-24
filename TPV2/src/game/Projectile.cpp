@@ -6,6 +6,8 @@ Projectile::Projectile(FightManager* manager, Vector2D* pos, b2Vec2 dir, float w
 {
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
+	reflected = 0;
+
 	iniPos = pos;
 
 	vecDir = dir;
@@ -21,9 +23,6 @@ Projectile::Projectile(FightManager* manager, Vector2D* pos, b2Vec2 dir, float w
 	vecDir *= speed;
 
 	body->SetGravityScale(0);
-
-	SetOponents(oponents);
-	manager->SetOpponents();
 }
 
 Projectile::~Projectile()
@@ -75,26 +74,36 @@ void Projectile::draw(SDL_Rect* camera)
 
 void Projectile::CheckHits()
 {
-	for (int j = 0; j < oponents.size(); j++)
+	if (reflected == 0)
 	{
-		SDL_Rect hitArea;
-		if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea))
+		for (int j = 0; j < oponents.size(); j++)
 		{
-			//Le hace da�o xddd
-			if (oponents[j]->GetHit(data, this))
+			SDL_Rect hitArea;
+			if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea))
 			{
-				manager->HitLag(lag);
+				//Le hace da�o xddd
+				if (oponents[j]->GetHit(data, this))
+				{
+					manager->HitLag(lag);
 
-				oponents[j]->AddParticle(new Particle(
-					new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-					1, "sHitParticle", nullptr, oponents[j]));
+					oponents[j]->AddParticle(new Particle(
+						new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+						1, "sHitParticle", nullptr, oponents[j]));
+				}
+				if (reflected == 0)
+					manager->RemoveEntity(this);
 			}
-			manager->RemoveEntity(this);
 		}
 	}
+	else
+		reflected--;
 }
-void Projectile::changeDir()
+bool Projectile::changeDir()
 {
 	vecDir = -vecDir;
+	data.damage *= 1.2f;
+	reflected = 3;
+	dir = -dir;
+	return true;
 }
 

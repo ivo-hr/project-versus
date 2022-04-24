@@ -204,10 +204,13 @@ void Togo::SpecialNeutral(int frameNumber)
 		if (frameNumber == attacks["specialN"].startUp)
 		{
 			anim->StartAnimation("especialNHold");
-			dShield = new DinoShield(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y- GetHeight()/4.5));
+			dShield = new DinoShield(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y - GetHeight() / 4.5));
 			dShield->SetOponents(oponents);
-			dShield->SetChangable();
+
 			manager->AddEntity(dShield);
+
+			manager->AddOponnent(dShield, this);
+
 			manager->MoveToFront(dShield);
 
 		}
@@ -334,7 +337,7 @@ void Togo::SpecialDownward(int frameNumber)
 			hitbox.x -= hitbox.w - GetWidth() * 19;
 		}
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialD"], 4, OnHitData(5, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, attacks["specialD"], 4, OnHitData(18, false, false)));
 
 	}
 	else if (frameNumber == attacks["specialD"].startUp + attacks["specialD"].totalFrames/4)
@@ -351,7 +354,7 @@ void Togo::SpecialDownward(int frameNumber)
 			hitbox.x -= hitbox.w - GetWidth() * 19;
 		}
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialD"], 4, OnHitData(5, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, attacks["specialD"], 4, OnHitData(18, false, false)));
 	}
 	else if (frameNumber == attacks["specialD"].totalFrames)
 	{
