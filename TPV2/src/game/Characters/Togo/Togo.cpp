@@ -75,6 +75,7 @@ void Togo::BasicForward(int frameNumber)
 			auto spear = new Spear(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y-height/2), attacks["basicF"], b2Vec2(dir, 0), this);
 			manager->AddEntity(spear);
 			manager->MoveToFront(spear);
+			spear->SetOponents(oponents);
 			SetSpear(false);
 	}
 	else if (frameNumber == attacks["basicF"].totalFrames)
@@ -252,9 +253,8 @@ void Togo::SpecialForward(int frameNumber)
 				hitbox.x += 20;
 
 			}
-			vector<Entity*> enemies = manager->GetOponents(this);
-			for (int i = 0; i < enemies.size(); i++) {
-				if (SDL_HasIntersection(&hitbox, enemies[i]->GetHurtbox())) {
+			for (int i = 0; i < oponents.size(); i++) {
+				if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox())) {
 					currentMove = [this](int f) { SpecialLHit(f); };
 					moveFrame = -1;
 				}
