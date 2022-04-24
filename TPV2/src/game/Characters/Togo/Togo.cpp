@@ -197,12 +197,13 @@ void Togo::SpecialNeutral(int frameNumber)
 	{
 		if (frameNumber == 0)
 		{
-			anim->StartAnimation("basicN");
+			anim->StartAnimation("especialN");
 			//sdl->soundEffects().at("catAtk1").play();
 			moving = false;
 		}
 		if (frameNumber == attacks["specialN"].startUp)
 		{
+			anim->StartAnimation("especialNHold");
 			dShield = new DinoShield(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y));
 			manager->AddEntity(dShield);
 			manager->MoveToFront(dShield);

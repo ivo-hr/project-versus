@@ -209,7 +209,7 @@
         "totalSprites" : 3,
         "keySprite" : -1,
         "attack": "specialN",
-        "totalFrames" : 40,
+        "totalFrames" : 15,
         "loop" : true
       },
       {
