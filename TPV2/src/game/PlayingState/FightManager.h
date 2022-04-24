@@ -95,6 +95,8 @@ public:
 	double GetScreenRatio();
 	double GetScreeAdjust();
 
+	void SetOpponents();
+
 	std::vector<Entity*> GetOponents(Entity* current);
 	SDL_Rect* GetDeathZone() ;
 	b2World* GetWorld();

@@ -135,6 +135,8 @@ public:
 	void SetGround(bool ground);
 	bool GetGround() { return onGround; };
 
+	virtual void changeDir() {};
+
 	void resetHit();
 	//virtual void SendToHUD(Texture* tex);
 };

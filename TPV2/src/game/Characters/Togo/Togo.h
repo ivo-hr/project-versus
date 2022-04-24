@@ -1,5 +1,7 @@
 #include "../../Character.h"
 
+class DinoShield;
+
 class Togo : public Character
 {
 public:
@@ -16,6 +18,7 @@ public:
 	virtual void SpecialUpward(int frameNumber) override;
 	virtual void SpecialDownward(int frameNumber) override;
 
+	virtual bool GetHit(attackData a, Entity* attacker);
 	virtual void SetSpear(bool spear);
 	void SpecialLHit(int frameNumber);
 
@@ -24,4 +27,5 @@ private:
 	float spearTime;
 	int attackBase;
 	float attackMul;
+	DinoShield* dShield = nullptr;
 };

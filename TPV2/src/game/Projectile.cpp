@@ -21,6 +21,9 @@ Projectile::Projectile(FightManager* manager, Vector2D* pos, b2Vec2 dir, float w
 	vecDir *= speed;
 	
 	body->SetGravityScale(0);
+
+	SetOponents(oponents);
+	manager->SetOpponents();
 }
 
 Projectile::~Projectile()
@@ -92,5 +95,8 @@ void Projectile::CheckHits()
 		}
 	}
 }
-
+void Projectile::changeDir()
+{
+	vecDir = -vecDir;
+}
 

@@ -1,7 +1,8 @@
-#include "Togo.h"
+﻿#include "Togo.h"
 #include "../../Utils/AnimationManager.h"
 #include "../../../json/json.hpp"
 #include "Spear.h"
+#include "DinoShield.h"
 #include <fstream>
 #include <iostream>
 using json = nlohmann::json;
@@ -74,7 +75,6 @@ void Togo::BasicForward(int frameNumber)
 			auto spear = new Spear(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y-height/2), attacks["basicF"], b2Vec2(dir, 0), this);
 			manager->AddEntity(spear);
 			manager->MoveToFront(spear);
-			spear->SetOponents(oponents);
 			SetSpear(false);
 	}
 	else if (frameNumber == attacks["basicF"].totalFrames)
@@ -192,7 +192,35 @@ void Togo::BasicDownward(int frameNumber)
 
 void Togo::SpecialNeutral(int frameNumber)
 {
+	if (onGround)
+	{
+		if (frameNumber == 0)
+		{
+			anim->StartAnimation("basicN");
+			//sdl->soundEffects().at("catAtk1").play();
+			moving = false;
+		}
+		if (frameNumber == attacks["specialN"].startUp)
+		{
+			dShield = new DinoShield(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y));
+			manager->AddEntity(dShield);
+			manager->MoveToFront(dShield);
 
+		}
+		if (/*frameNumber == attacks["specialN"].totalFrames || */ !input->special())
+		{
+			anim->StartAnimation("idle");
+			manager->RemoveEntity(dShield);
+			dShield = nullptr;
+			currentMove = nullptr;
+			moveFrame = -1;
+		}
+	}
+	else
+	{
+		currentMove = nullptr;
+		moveFrame = -1;
+	}
 }
 
 void Togo::SpecialForward(int frameNumber)
@@ -363,6 +391,55 @@ void Togo::SpecialLHit(int frameNumber)
 	else if (frameNumber == attacks["specialLHit"].totalFrames) {
 		currentMove = nullptr;
 		moveFrame = -1;
+	}
+}
+bool Togo::GetHit(attackData a, Entity* attacker)
+{
+	if (shield)
+	{
+		//Actualiza el da�o
+		damageTaken += (int)(a.damage * 0.4f);
+		return true;
+	}
+	if (dash)
+	{
+		return false;
+	}
+	else if (!shield && !dash)
+	{
+		if (dShield != nullptr)
+		{
+			manager->RemoveEntity(dShield);
+			dShield = nullptr;
+		}
+		currentMove = nullptr;
+		moveFrame = -1;
+		anim->StartAnimation("stun");
+		anim->update();
+		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
+
+		stun = (recoil / 1.8f) + 4;
+
+		//Actualiza el da�o
+		damageTaken += a.damage;
+
+		b2Vec2 aux = a.direction;
+
+		if (recoil > 100)
+		{
+			manager->KillingBlow(Vector2D(
+				manager->ToSDL(body->GetPosition().x),
+				manager->ToSDL(body->GetPosition().y)));
+		}
+
+		aux *= recoil;
+		aux.y *= -1;
+		aux.x *= attacker->GetDir();
+
+		//Produce el knoback..
+		body->SetLinearVelocity(aux);
+
+		return true;
 	}
 }
 

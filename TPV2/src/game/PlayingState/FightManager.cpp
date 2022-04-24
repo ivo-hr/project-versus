@@ -360,3 +360,10 @@ double FightManager::GetScreeAdjust()
 {
 	return screenAdjust;
 }
+void FightManager::SetOpponents()
+{
+	for (int i = 0; i < entities.size(); i++)
+	{
+		entities[i]->SetOponents(entities);
+	}
+}
