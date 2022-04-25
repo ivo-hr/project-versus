@@ -201,7 +201,7 @@ void Togo::SpecialNeutral(int frameNumber)
 			//sdl->soundEffects().at("catAtk1").play();
 			moving = false;
 		}
-		if (frameNumber == attacks["specialN"].startUp)
+		else if (frameNumber == attacks["specialN"].startUp)
 		{
 			anim->StartAnimation("especialNHold");
 			dShield = new DinoShield(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y - GetHeight() / 4.5));
@@ -241,7 +241,7 @@ void Togo::SpecialForward(int frameNumber)
 		//sdl->soundEffects().at("catAtk1").play();
 		moving = false;
 		body->SetLinearVelocity(b2Vec2(dir*30, 0));
-		body->ApplyLinearImpulseToCenter(b2Vec2(dir*50,0), true);
+		body->ApplyLinearImpulseToCenter(b2Vec2(dir*30,0), true);
 		if (frameNumber >= attacks["specialL"].startUp && frameNumber < attacks["specialL"].totalFrames / 2 +5)
 		{
 			SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);			

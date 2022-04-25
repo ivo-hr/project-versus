@@ -108,3 +108,16 @@ bool InputConfig::stop()
 		return  ih.xboxGetAxesState(typeofInput, 0) == 0 && !ih.xboxGetDpadState(typeofInput, 1) && !ih.xboxGetDpadState(typeofInput, 3);
 	}
 }
+
+bool InputConfig::taunt()
+{
+	if (typeofInput == -1) {
+		return ih.isKeyDown(SDLK_t);
+	}
+	else if (typeofInput == -2) {
+		return ih.isKeyDown(SDLK_j);
+	}
+	else {
+		return ih.xboxGetButtonState(typeofInput, SDL_CONTROLLER_BUTTON_START);
+	}
+}

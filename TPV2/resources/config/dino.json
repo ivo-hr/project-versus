@@ -283,6 +283,15 @@
         "attack": "",
         "totalFrames" : 10,
         "loop" : true
+      },
+      {
+        "id" : "taunt",
+        "iniSprite" :15,
+        "totalSprites" : 6,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames": 45,
+        "loop" :false
       }
 
     ]
