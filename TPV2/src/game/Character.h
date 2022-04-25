@@ -58,6 +58,10 @@ protected:
 
 	json ReadJson(std::string file);
 
+	// efectos de estado
+	enum state { none, fire, electric, water };
+
+	state estado = none;
 
 //	void (Character::* currentMove)(int);
 public:

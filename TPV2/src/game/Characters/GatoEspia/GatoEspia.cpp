@@ -51,7 +51,7 @@ void GatoEspia::BasicForward(int frameNumber)
 		anim->StartAnimation("basicF");
 		sdl->soundEffects().at("catAtk1").play();
 
-		body->SetLinearVelocity(b2Vec2(dir * 30, body->GetLinearVelocity().y));
+		body->SetLinearVelocity(b2Vec2(dir * 40, body->GetLinearVelocity().y));
 	}
 	else if (frameNumber == attacks["basicF"].startUp)
 	{
@@ -81,8 +81,8 @@ void GatoEspia::BasicDownward(int frameNumber)
 
 
 		hitbox.y += hitbox.h;
-		hitbox.w *= 2.5f;
-		hitbox.h *= 0.3f;
+		hitbox.w *= 3;
+		hitbox.h *= 0.4f;
 		hitbox.x -= hitbox.w / 3;
 		hitbox.y -= hitbox.h;
 

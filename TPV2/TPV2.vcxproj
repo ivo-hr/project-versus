@@ -25,6 +25,8 @@
     <ClInclude Include="src\game\Characters\CharacterZero\CharacterZero.h" />
     <ClInclude Include="src\game\Characters\GatoEspia\Bullet.h" />
     <ClInclude Include="src\game\Characters\GatoEspia\GatoEspia.h" />
+    <ClInclude Include="src\game\Characters\NasNas\NasNas.h" />
+    <ClInclude Include="src\game\Characters\NasNas\Spell.h" />
     <ClInclude Include="src\game\Characters\Togo\DinoShield.h" />
     <ClInclude Include="src\game\Characters\MaktFange\Ball.h" />
     <ClInclude Include="src\game\Characters\MaktFange\Makt.h" />
@@ -71,6 +73,8 @@
     <ClCompile Include="src\game\Characters\CharacterZero\CharacterZero.cpp" />
     <ClCompile Include="src\game\Characters\GatoEspia\Bullet.cpp" />
     <ClCompile Include="src\game\Characters\GatoEspia\GatoEspia.cpp" />
+    <ClCompile Include="src\game\Characters\NasNas\NasNas.cpp" />
+    <ClCompile Include="src\game\Characters\NasNas\Spell.cpp" />
     <ClCompile Include="src\game\Characters\Togo\DinoShield.cpp" />
     <ClCompile Include="src\game\Characters\MaktFange\Ball.cpp" />
     <ClCompile Include="src\game\Characters\MaktFange\Makt.cpp" />

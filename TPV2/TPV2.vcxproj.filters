@@ -198,6 +198,12 @@
     <ClInclude Include="src\game\Characters\MaktFange\Ball.h">
       <Filter>Header Files\game\Characters</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\Characters\NasNas\NasNas.h">
+      <Filter>Header Files\game\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\Characters\NasNas\Spell.h">
+      <Filter>Header Files\game\Characters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">
@@ -303,6 +309,12 @@
       <Filter>Source Files\game\Characters</Filter>
     </ClCompile>
     <ClCompile Include="src\game\Characters\MaktFange\Ball.cpp">
+      <Filter>Source Files\game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Characters\NasNas\NasNas.cpp">
+      <Filter>Source Files\game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Characters\NasNas\Spell.cpp">
       <Filter>Source Files\game\Characters</Filter>
     </ClCompile>
   </ItemGroup>
