@@ -260,6 +260,24 @@
           "attack": "",
           "totalFrames" : 50,
           "loop" : true
+        },
+        {
+          "id" : "jump",
+          "iniSprite" : 10,
+          "totalSprites" : 1,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "jumpCharge",
+          "iniSprite" : 10,
+          "totalSprites" : 1,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
         }
   
       ]
