@@ -19,8 +19,9 @@ public:
 	virtual void SpecialDownward(int frameNumber) override;
 
 	virtual bool GetHit(attackData a, Entity* attacker);
-
+	virtual void update() override;
 private:
-	int maxMana = 120;
-	int currentMana = maxMana;
+	int maxMana = 360;
+	int mana = maxMana;
+	state estado = fire;
 };

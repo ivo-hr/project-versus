@@ -48,6 +48,29 @@ void FightManager::MoveCamera()
 		cameraEnd.x = minX - (cameraEnd.w - (maxX - minX)) / 2;
 	}
 
+	if (cameraEnd.w > sdl->width() * screenAdjust)
+	{
+		cameraEnd.w = sdl->width() * screenAdjust;
+		cameraEnd.h = sdl->height() * screenAdjust;
+	}
+	if (cameraEnd.x < 0)
+	{
+		cameraEnd.x = 0;
+	}
+	else if (cameraEnd.x + cameraEnd.w > sdl->width() * screenAdjust)
+	{
+		cameraEnd.x = sdl->width() * screenAdjust - cameraEnd.w;
+	}
+
+	if (cameraEnd.y < 0)
+	{
+		cameraEnd.y = 0;
+	}
+	else if (cameraEnd.y + cameraEnd.h > sdl->height() * screenAdjust)
+	{
+		cameraEnd.y = sdl->height() * screenAdjust - cameraEnd.h;
+	}
+
 	camera.x += (cameraEnd.x - camera.x) * 0.2f;
 	camera.y += (cameraEnd.y - camera.y) * 0.2f;
 	camera.w += (cameraEnd.w - camera.w) * 0.2f;
@@ -216,6 +239,24 @@ bool FightManager::RemoveEntity(Entity* ent)
 		entities[i]->DeleteOponent(ent);
 	}
 	delete ent;
+	return false;
+}
+
+bool FightManager::RemoveCharacter(Entity* character)
+{
+	for (int i = 0; i < characters.size(); i++)
+	{
+		if (characters[i] == character)
+		{
+			for (int j = i + 1; j < characters.size(); j++)
+			{
+				characters[j - 1] = characters[j];
+			}
+			characters.pop_back();
+		}
+	}
+	listener->RemoveCharacter(character);
+	RemoveEntity(character);
 	return false;
 }
 

@@ -61,7 +61,7 @@ protected:
 	// efectos de estado
 	enum state { none, fire, electric, water };
 
-	state estado = none;
+	state efEstado = none;
 
 //	void (Character::* currentMove)(int);
 public:

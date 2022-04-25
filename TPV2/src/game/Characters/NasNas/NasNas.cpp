@@ -48,6 +48,7 @@ void NasNas::BasicNeutral(int frameNumber)
 		}
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["basicN"], 2, OnHitData(5, false, false)));
+
 	}
 	else if (frameNumber == attacks["basicN"].totalFrames)
 	{
@@ -62,8 +63,6 @@ void NasNas::BasicForward(int frameNumber)
 		moving = false;
 		anim->StartAnimation("basicF");
 		//sdl->soundEffects().at("catAtk1").play();
-
-		maxSpeed -= 7;
 	}
 	else if (frameNumber == attacks["basicF"].startUp)
 	{
@@ -79,9 +78,8 @@ void NasNas::BasicForward(int frameNumber)
 	{
 		currentMove = nullptr;
 		moveFrame = -1;
-		maxSpeed += 7;
 	}
-	if (input->right())
+	if (input->right() && dir == 1)
 	{
 		if (currentMove == nullptr)
 			dir = 1;
@@ -89,9 +87,9 @@ void NasNas::BasicForward(int frameNumber)
 		if (speed < 1)
 			AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", nullptr, this));
 
-		speed = maxSpeed-7;
+		speed = maxSpeed-10;
 	}
-	if (input->left())
+	if (input->left() && dir == -1)
 	{
 		if (currentMove == nullptr)
 			dir = -1;
@@ -99,7 +97,7 @@ void NasNas::BasicForward(int frameNumber)
 		if (speed > -1)
 			AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", nullptr, this));
 
-		speed = -maxSpeed+7;
+		speed = -maxSpeed+10;
 	}
 }
 void NasNas::BasicUpward(int frameNumber)
@@ -163,12 +161,12 @@ void NasNas::SpecialNeutral(int frameNumber)
 
 	if (frameNumber == 0)
 	{
-		if (currentMana < 20) {
+		if (mana < 60) {
 			currentMove = nullptr;
 			moveFrame = -1;
 			return;
 		}
-		else currentMana -= 20;
+		else mana -= 60;
 		anim->StartAnimation("basicF");
 		//sdl->soundEffects().at("catAtk0").play();
 	}
@@ -188,8 +186,57 @@ void NasNas::SpecialNeutral(int frameNumber)
 
 void NasNas::SpecialForward(int frameNumber)
 {
-	currentMove = nullptr;
-	moveFrame = -1;
+	if (frameNumber == 0)
+	{
+		if (mana < 10) {
+			currentMove = nullptr;
+			moveFrame = -1;
+			return;
+		}
+		mana -= 10;
+		moving = false;
+		anim->StartAnimation("basicF");
+		//sdl->soundEffects().at("catAtk1").play();
+
+	}
+	else if (frameNumber == attacks["specialF"].startUp)
+	{
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+
+		if (estado == fire)
+		{
+			hitbox.x += width;
+			hitbox.y += 20;
+			hitbox.h /= 1.5;
+			hitbox.w *= 6;
+		}
+		else if (estado == water)
+		{
+			hitbox.x += width;
+			hitbox.y += (hitbox.h / 2)-10;
+			hitbox.h /= 3;
+			hitbox.w *= 8;
+		}
+		else if (estado == electric)
+		{
+			hitbox.x += width;
+			hitbox.y += (hitbox.h / 2) - 10;
+			hitbox.h /= 8;
+			hitbox.w *= 10;
+		}
+		if (dir == -1)
+		{
+			hitbox.x -= hitbox.w;
+		}
+			hitboxes.push_back(new Hitbox(hitbox, attacks["specialF"], 10, OnHitData(20, false, false)));
+
+	
+	}
+	else if (frameNumber == attacks["specialF"].totalFrames)
+	{
+		currentMove = nullptr;
+		moveFrame = -1;
+	}
 }
 
 void NasNas::SpecialUpward(int frameNumber)
@@ -200,8 +247,27 @@ void NasNas::SpecialUpward(int frameNumber)
 
 void NasNas::SpecialDownward(int frameNumber)
 {
-	currentMove = nullptr;
-	moveFrame = -1;
+	if (frameNumber == 0)
+	{
+		moving = false;
+		anim->StartAnimation("basicD");
+		//sdl->soundEffects().at("catAtk2").play();
+	}
+	if (frameNumber == attacks["specialF"].startUp)
+	{
+		if (estado == fire)
+			estado = water;
+		else if (estado == water)
+			estado = electric;
+		else if (estado == electric)
+			estado = fire;
+	}
+	if (frameNumber == attacks["specialF"].totalFrames)
+	{
+		currentMove = nullptr;
+		moveFrame = -1;
+	}
+
 }
 
 bool NasNas::GetHit(attackData a, Entity* attacker)
@@ -246,6 +312,13 @@ bool NasNas::GetHit(attackData a, Entity* attacker)
 		body->SetLinearVelocity(aux);
 
 		return true;
+	}
+}
+void NasNas::update()
+{
+	Character::update();
+	if (mana < maxMana) {
+		mana ++;
 	}
 }
 

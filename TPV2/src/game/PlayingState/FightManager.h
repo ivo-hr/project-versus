@@ -30,6 +30,7 @@ class FightManager :public StateMachine
 {
 	std::vector<Entity*> entities;
 	std::vector<Entity*> characters;
+
 	std::vector<Particle*> particulas;
 
 	SDLUtils* sdl;
@@ -73,6 +74,7 @@ public:
 	int StartFight(std::vector<Entity*> ent);
 	void AddEntity(Entity* ent);
 	bool RemoveEntity(Entity* ent);
+	bool RemoveCharacter(Entity* character);
 	void MoveToFront(Entity* ent);
 	void AddOponnent(Entity* ent, Entity* ignore = nullptr);
 
