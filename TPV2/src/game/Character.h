@@ -31,7 +31,6 @@ protected:
 	bool shield;
 	int shieldCounter;
 	int maxShield;
-	int taunt = 45;
 	bool dash;
 	//Variables para el salto (fuerza, maximo numero permitido, y el contador)
 	int jumpStr;

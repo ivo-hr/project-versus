@@ -772,7 +772,7 @@ void Character::Taunt(int frameNumber) {
 		ChangeMove([this](int f) { StartJump(f); });
 	}
 
-	else if (frameNumber == taunt)
+	else if (frameNumber == spData.animations["taunt"].totalFrames)
 	{
 		anim->StartAnimation("idle");
 		currentMove = nullptr;
