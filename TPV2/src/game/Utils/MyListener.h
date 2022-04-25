@@ -62,5 +62,20 @@ public:
 	{
 		characters.push_back(character);
 	}
+	void RemoveCharacter(Entity* character)
+	{
+		for (int i = 0; i < characters.size(); i++)
+		{
+			if (characters[i] == character)
+			{
+				for (int j = i + 1; j < characters.size(); j++)
+				{
+					characters[j - 1] = characters[j];
+				}
+				characters.pop_back();
+				return;
+			}
+		}
+	}
 
 };

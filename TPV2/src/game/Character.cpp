@@ -658,13 +658,14 @@ void Character::OnDeath()
 	shield = false;
 	dash = false;
 	stun = 0;
+
+	if (lives <= 0) {
+		manager->RemoveCharacter(this);
+	}
 }
 
 void Character::Respawn()
 {
-	if (lives <= 0) {
-		return;
-	}
 	body->SetAwake(true);
 
 	std::cout << "Vidas restantes: " << lives << "\n";
