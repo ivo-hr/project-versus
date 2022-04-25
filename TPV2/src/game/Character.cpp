@@ -191,7 +191,7 @@ void Character::update()
 	else
 		speed = 0;
 
-	if (currentMove == nullptr && stun == 0 && recovery)
+	if (currentMove == nullptr /*|| currentMove == Taunt())*/ && stun == 0 && recovery)
 	{
 
 		// Ataque con A (provisional)
@@ -300,6 +300,9 @@ void Character::update()
 				body->GetFixtureList()->SetFilterData(f);
 				fall = 0;
 			}
+		}
+		if (input->taunt() && onGround) {
+			StartMove([this](int f) { Taunt(f); });
 		}
 	}
 
@@ -681,6 +684,100 @@ void Character::Respawn()
 	moveFrame = 0;
 
 	anim->StartAnimation("idle");
+}
+
+void Character::Taunt(int frameNumber) {
+	if (frameNumber == 1)
+	{
+		anim->StartAnimation("taunt");
+	}
+	if (input->right())
+	{
+		speed = maxSpeed;
+		dir = 1;
+		currentMove = nullptr;
+		moveFrame = -1;
+	}
+	if (input->left())
+	{
+		speed = -maxSpeed;
+		dir = -1;
+		currentMove = nullptr;
+		moveFrame = -1;
+	}
+	if (input->right() && input->left())
+	{
+		speed = 0;
+		currentMove = nullptr;
+		moveFrame = -1;
+	}
+	if (input->basic())
+	{
+
+		if (input->up()) //básico arriba
+		{
+			ChangeMove([this](int f) { BasicUpward(f); });
+		}
+		else if (input->down()) //básico abajo
+		{
+			ChangeMove([this](int f) { BasicDownward(f); });
+		}
+		else if (input->right() || input->left()) //básico en movimiento
+		{
+			ChangeMove([this](int f) { BasicForward(f); });
+		}
+		else //básico estático
+		{
+			ChangeMove([this](int f) { BasicNeutral(f); });
+		}
+
+		manager->MoveToFront(this);
+
+	}
+
+	// Ataque con B (provisional)
+	if (input->special())
+	{
+
+		if (input->up()) //especial arriba
+		{
+			ChangeMove([this](int f) { SpecialUpward(f); });
+		}
+		else if (input->down()) //especial abajo
+		{
+			ChangeMove([this](int f) { SpecialDownward(f); });
+		}
+		else if (input->right() || input->left()) //especial en movimiento
+		{
+			ChangeMove([this](int f) { SpecialForward(f); });
+		}
+		else //especial estático
+		{
+			ChangeMove([this](int f) { SpecialNeutral(f); });
+		}
+
+		manager->MoveToFront(this);
+
+	}
+
+	if (input->down() && onGround && shieldCounter > (maxShield / 3) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
+
+		ChangeMove([this](int f) { StartShield(f); });
+		body->SetLinearVelocity(b2Vec2(0, 0));
+
+	}
+	// salto
+	if (input->up() && !(jumpCounter <= 0 || !jumpCooldown))
+	{
+		ChangeMove([this](int f) { StartJump(f); });
+	}
+
+	else if (frameNumber == taunt)
+	{
+		anim->StartAnimation("idle");
+		currentMove = nullptr;
+		moveFrame = -1;
+	}
 }
 
 

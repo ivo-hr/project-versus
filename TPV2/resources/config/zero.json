@@ -111,8 +111,8 @@
         "totalSprites" : 1,
         "keySprite" : -1,
         "attack": "",
-        "totalFrames": 10,
-        "loop" :true
+        "totalFrames": 45,
+        "loop" : false
       },
       {
         "id" : "stun",

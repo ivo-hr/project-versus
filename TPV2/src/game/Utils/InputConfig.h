@@ -22,6 +22,7 @@ public:
 	bool basic();
 	bool special();
 	bool stop();
+	bool taunt();
 	void refresh() {
 		ih.refresh();
 	};

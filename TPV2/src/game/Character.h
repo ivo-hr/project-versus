@@ -31,6 +31,7 @@ protected:
 	bool shield;
 	int shieldCounter;
 	int maxShield;
+	int taunt = 45;
 	bool dash;
 	//Variables para el salto (fuerza, maximo numero permitido, y el contador)
 	int jumpStr;
@@ -114,6 +115,7 @@ public:
 	virtual void StartShield(int frameNumber);
 	virtual void EndShield(int frameNumber);
 	virtual void Dash(int frameNumber);
+	virtual void Taunt(int frameNumber);
 
 	void StartMove(std::function<void(int)> newMove);
 	void ChangeMove(std::function<void(int)> newMove);
