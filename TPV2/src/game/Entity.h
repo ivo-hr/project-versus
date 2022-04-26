@@ -98,6 +98,7 @@ protected:
 	std::vector<bool> isHit;
 
 	bool onGround;
+	bool projectile = false;
 
 	bool alive;
 	int respawnTimer = 0;
@@ -141,6 +142,7 @@ public:
 
 	void SetGround(bool ground);
 	bool GetGround() { return onGround; };
+	bool isProjectile() { return projectile; };
 
 	virtual bool changeDir() { return false; };
 

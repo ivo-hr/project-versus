@@ -19,10 +19,10 @@ PlayingState::PlayingState(FightManager* game, vector<int>player, vector<int>cha
 		switch (characters[i])
 		{
 		case 0: //zero
-			entities.push_back(new Makt(fmngr, new Vector2D(20+i * 10, 0), player[i]));
+			entities.push_back(new CharacterZero(fmngr, new Vector2D(20+i * 10, 0), player[i]));
 			break;
 		case 1://Gato espia
-			entities.push_back(new NasNas(fmngr, new Vector2D(20+i*10, 0), player[i]));
+			entities.push_back(new GatoEspia(fmngr, new Vector2D(20+i*10, 0), player[i]));
 			break;
 		case 2://Togo
 			entities.push_back(new Togo(fmngr, new Vector2D(20+i * 10, 0), player[i]));

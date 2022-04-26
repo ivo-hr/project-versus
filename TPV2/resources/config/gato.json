@@ -5,7 +5,7 @@
   "maxSpeed": 30,
   "speed":0,
   "maxJumps": 1 ,
-  "jumpStr": 780,
+  "jumpStr": 700,
   "onGround": true,
   "shield": false ,
   "maxShield": 360,
@@ -163,7 +163,7 @@
         "id" : "basicF",
         "iniSprite" : 22,
         "totalSprites" : 4,
-        "keySprite" : 2,
+        "keySprite" : 1,
         "attack": "basicF",
         "totalFrames" : 40,
         "loop" :false

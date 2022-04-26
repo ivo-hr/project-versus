@@ -19,7 +19,7 @@
       "damage": 6,
       "multiplier": 0.6,
       "startUp": 4,
-      "totalFrames": 25
+      "totalFrames": 40
     },
     {
       "id": "basicF",
@@ -68,7 +68,7 @@
       "base": 0,
       "damage": 0,
       "multiplier": 0,
-      "startUp": 10,
+      "startUp": 8,
       "totalFrames": 40
     },
     {

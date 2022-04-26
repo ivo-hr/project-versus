@@ -28,4 +28,5 @@ private:
 	int attackBase;
 	float attackMul;
 	DinoShield* dShield = nullptr;
+	SDL_Rect* bite = nullptr;
 };

@@ -34,7 +34,7 @@ void Togo::BasicNeutral(int frameNumber)
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
-		hitbox.h /= 6;
+		/*hitbox.h /= 6;
 		hitbox.w *= 4;
 		hitbox.y += hitbox.h / 2;
 		hitbox.y += (hitbox.h + 10);
@@ -45,6 +45,18 @@ void Togo::BasicNeutral(int frameNumber)
 		else 
 		{
 			hitbox.x += 15;
+
+		}*/
+
+		hitbox.w *= 3;
+		hitbox.y -= 30;
+		if (dir == -1)
+		{
+			hitbox.x += -hitbox.w/1.5 -20;
+		}
+		else
+		{
+			hitbox.x += 20;
 
 		}
 
@@ -242,20 +254,23 @@ void Togo::SpecialForward(int frameNumber)
 		moving = false;
 		body->SetLinearVelocity(b2Vec2(dir*30, 0));
 		body->ApplyLinearImpulseToCenter(b2Vec2(dir*30,0), true);
-		if (frameNumber >= attacks["specialL"].startUp && frameNumber < attacks["specialL"].totalFrames / 2 +5)
-		{
-			SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);			
-			hitbox.y -= 30;
-			hitbox.w *= 3;
-			hitbox.h = hitbox.h / 1.5;
-			hitbox.h += 10;
+		if (frameNumber >= attacks["specialL"].startUp && frameNumber < attacks["specialL"].totalFrames / 2 + 5) {
+			bite = &manager->GetSDLCoors(body, width, height);
+			bite->w *= 3;
+			if (dir == -1) {
+				bite->x = hurtbox.x - bite->w / 1.5 - 20;
+			}
+			else {
+				bite->x = hurtbox.x + 20;
+			}
+			bite->y = hurtbox.y -30;
 			for (int i = 0; i < oponents.size(); i++) {
-				if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox())) {
+				if (SDL_HasIntersection(bite, oponents[i]->GetHurtbox())) {
 					currentMove = [this](int f) { SpecialLHit(f); };
 					moveFrame = -1;
 				}
 			}
-			SDL_RenderDrawRect(sdl->renderer(), &hitbox);
+			SDL_RenderDrawRect(sdl->renderer(), bite);
 		}
 		else if (frameNumber == attacks["specialL"].totalFrames / 2 + 5)
 		{
@@ -264,6 +279,7 @@ void Togo::SpecialForward(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialL"].totalFrames)
 	{
+		bite = nullptr;
 		recovery = false;
 		currentMove = nullptr;
 		moveFrame = -1;
@@ -389,6 +405,9 @@ void Togo::SpecialLHit(int frameNumber)
 }
 bool Togo::GetHit(attackData a, Entity* attacker)
 {
+	if (bite != nullptr) {
+		bite = nullptr;
+	}
 	if (shield)
 	{
 		//Actualiza el da�o
