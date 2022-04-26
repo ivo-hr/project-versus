@@ -20,6 +20,8 @@ ConfigState::ConfigState(FightManager* game) : State(game), numOfplayer(2) {
     player.resize(2);
     charact.resize(2);
     usedPad.resize(SDL_NumJoysticks());
+
+    sdl->musics().at("sawtines").play();
 }
 
 void ConfigState::update() {

@@ -11,6 +11,8 @@ MenuState::MenuState(FightManager* game) : State(game) {
 
     playBut = new Button(&sdl->images().at("play"), w/2-200, h/ 2+100, 300, 200);
     playBut->setPressTexture(&sdl->images().at("playP"));
+
+    sdl->musics().at("main").play();
 }
 
 void MenuState::update() {

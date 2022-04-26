@@ -210,8 +210,8 @@ int FightManager::StartFight(std::vector<Entity*> ent)
 		e->SetOponents(entities);
 		listener->AddCharacter(e);
 	}
-	sdl->musics().at("running_grass").play();
-	Music::setMusicVolume(1);
+	sdl->musics().at("cube").play();
+	//Music::setMusicVolume(1);
 
 	return 1;
 }

@@ -36,6 +36,8 @@ Particle::Particle(Vector2D position, int dir, std::string id, FightManager* mng
 		numSpritesinY = 3;
 		numSprites = 5;
 		duration = 15;
+
+		mngr->GetSDLU()->soundEffects().at("hitMed").play();
 	}
 	else if (id == "bHitParticle")
 	{
@@ -50,6 +52,8 @@ Particle::Particle(Vector2D position, int dir, std::string id, FightManager* mng
 		numSpritesinY = 4;
 		numSprites = 7;
 		duration = 35;
+
+		mngr->GetSDLU()->soundEffects().at("hitStr").play();
 	}
 	else if (id == "run")
 	{
@@ -85,6 +89,8 @@ Particle::Particle(Vector2D position, int dir, std::string id, FightManager* mng
 		numSpritesinY = 6;
 		numSprites = 6;
 		duration = 40;
+
+		mngr->GetSDLU()->soundEffects().at("hitKill").play();
 	}
 	else if (id == "killVfx")
 	{
