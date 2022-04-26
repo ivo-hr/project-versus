@@ -93,10 +93,13 @@ void Entity::draw()
 		ent->draw();
 	}
 
-	for (int i = 0; i < hitboxes.size(); i++)
+	if (manager->debug)
 	{
-		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-		SDL_RenderDrawRect(sdl->renderer(), &hitboxes[i]->box);
+		for (int i = 0; i < hitboxes.size(); i++)
+		{
+			SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
+			SDL_RenderDrawRect(sdl->renderer(), &hitboxes[i]->box);
+		}
 	}
 }
 
@@ -107,21 +110,25 @@ void Entity::draw(SDL_Rect* camera)
 		ent->draw(camera);
 	}
 
-	for (int i = 0; i < hitboxes.size(); i++)
+
+	if (manager->debug)
 	{
-		SDL_Rect aux = hitboxes[i]->box;
+		for (int i = 0; i < hitboxes.size(); i++)
+		{
+			SDL_Rect aux = hitboxes[i]->box;
 
-		aux.x -= camera->x;
-		aux.x *= (manager->GetActualWidth() / (float)camera->w);
+			aux.x -= camera->x;
+			aux.x *= (manager->GetActualWidth() / (float)camera->w);
 
-		aux.y -= camera->y;
-		aux.y *= (manager->GetActualHeight() / (float)camera->h);
+			aux.y -= camera->y;
+			aux.y *= (manager->GetActualHeight() / (float)camera->h);
 
-		aux.w *= (manager->GetActualWidth() / (float)camera->w);
-		aux.h *= (manager->GetActualHeight() / (float)camera->h);
+			aux.w *= (manager->GetActualWidth() / (float)camera->w);
+			aux.h *= (manager->GetActualHeight() / (float)camera->h);
 
-		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-		SDL_RenderDrawRect(sdl->renderer(), &aux);
+			SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
+			SDL_RenderDrawRect(sdl->renderer(), &aux);
+		}
 	}
 }
 

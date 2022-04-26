@@ -96,8 +96,14 @@ void Spear::draw(SDL_Rect* camera)
 	aux.h *= (manager->GetActualHeight() / (float)camera->h);
 
 	SDL_Rect src = { 393 + sprite, 395, 80, 9};
-	texture->render(src, aux, ang, nullptr, SDL_FLIP_HORIZONTAL);
-	SDL_RenderDrawRect(sdl->renderer(), &aux);
+	if (dir < 0)
+		texture->render(src, aux, ang, nullptr, SDL_FLIP_HORIZONTAL);
+	else
+		texture->render(src, aux);
+
+	if (manager->debug)
+		SDL_RenderDrawRect(sdl->renderer(), &aux);
+
 	if (anim >= 1) {
 		if (sprite == 0) {
 			sprite = 128;

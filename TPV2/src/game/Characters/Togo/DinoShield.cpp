@@ -50,7 +50,9 @@ void DinoShield::draw(SDL_Rect* camera)
 	else
 		texture->render(src, aux, 0, nullptr, SDL_FLIP_HORIZONTAL);
 
-	SDL_RenderDrawRect(sdl->renderer(), &aux);
+	if (manager->debug)
+		SDL_RenderDrawRect(sdl->renderer(), &aux);
+
 	if (anim >= 1) {
 		if (spriteX == 0) {
 			spriteX = 896;

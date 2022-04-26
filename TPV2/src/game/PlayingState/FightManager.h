@@ -28,6 +28,7 @@ class Stage;
 
 class FightManager :public StateMachine
 {
+
 	std::vector<Entity*> entities;
 	std::vector<Entity*> characters;
 
@@ -64,9 +65,11 @@ class FightManager :public StateMachine
 	void MoveCamera();
 
 public:
+
+	bool debug = false;
+
 	FightManager(SDLUtils* sdl, double screenAdjust);
 	virtual ~FightManager();
-
 
 	bool isExit() { return exit_; };
 	bool isFinish() { return fightEnded; };
