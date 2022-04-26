@@ -2,12 +2,16 @@
     "codeName": "stage1",
     "background": "fondo",
     "platform": "testura",
+    "deathZoneSize": 75,
     "groundX": 37.5,
     "groundY": 50.0,
     "groundW": 40.0,
     "groundH": 30.0,
-    "platformX": 37.5,
-    "platformY": 27.0,
-    "platformW": 10.0,
-    "platformH": 0.5
+    "platformData": [
+        {
+        "platformX": 37.5,
+        "platformY": 27.0,
+        "platformW": 10.0,
+        "platformH": 0.5
+        }]
 }

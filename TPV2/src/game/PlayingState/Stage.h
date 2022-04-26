@@ -15,8 +15,9 @@ class Stage
 {
 	b2Body* stage;
 	SDL_Rect stageRect;
-	b2Body* platform;
-	SDL_Rect platformRect;
+
+	std::vector<b2Body*> platforms;
+	std::vector<SDL_Rect> platformRects;
 
 	SDLUtils* sdl;
 	b2World world;
@@ -28,7 +29,7 @@ class Stage
 	Texture* background;
 	Texture* platformTexture;
 
-	float deathzoneSize = 75.f;
+	float deathzoneSize;
 	float step;
 
 public:

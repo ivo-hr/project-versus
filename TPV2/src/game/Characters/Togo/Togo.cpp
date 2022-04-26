@@ -271,8 +271,12 @@ void Togo::SpecialForward(int frameNumber)
 				}
 			}
 
-			if (manager->debug)
-				SDL_RenderDrawRect(sdl->renderer(), &bite);
+#ifdef _DEBUG
+
+			SDL_RenderDrawRect(sdl->renderer(), &bite);
+
+#endif // _DEBUG
+
 		}
 		else if (frameNumber == attacks["specialL"].totalFrames / 2 + 5)
 		{

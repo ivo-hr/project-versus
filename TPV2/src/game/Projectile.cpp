@@ -71,8 +71,11 @@ void Projectile::draw(SDL_Rect* camera)
 
 	texture->render(aux, ang);
 
-	if (manager->debug)
-		SDL_RenderDrawRect(sdl->renderer(), &aux);
+#ifdef _DEBUG
+
+	SDL_RenderDrawRect(sdl->renderer(), &aux);
+
+#endif // _DEBUG
 }
 
 void Projectile::CheckHits()

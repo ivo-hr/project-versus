@@ -93,14 +93,15 @@ void Entity::draw()
 		ent->draw();
 	}
 
-	if (manager->debug)
+#ifdef _DEBUG
+
+	for (int i = 0; i < hitboxes.size(); i++)
 	{
-		for (int i = 0; i < hitboxes.size(); i++)
-		{
-			SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-			SDL_RenderDrawRect(sdl->renderer(), &hitboxes[i]->box);
-		}
+		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
+		SDL_RenderDrawRect(sdl->renderer(), &hitboxes[i]->box);
 	}
+
+#endif // _DEBUG
 }
 
 void Entity::draw(SDL_Rect* camera)
@@ -110,26 +111,26 @@ void Entity::draw(SDL_Rect* camera)
 		ent->draw(camera);
 	}
 
+#ifdef _DEBUG
 
-	if (manager->debug)
+	for (int i = 0; i < hitboxes.size(); i++)
 	{
-		for (int i = 0; i < hitboxes.size(); i++)
-		{
-			SDL_Rect aux = hitboxes[i]->box;
+		SDL_Rect aux = hitboxes[i]->box;
 
-			aux.x -= camera->x;
-			aux.x *= (manager->GetActualWidth() / (float)camera->w);
+		aux.x -= camera->x;
+		aux.x *= (manager->GetActualWidth() / (float)camera->w);
 
-			aux.y -= camera->y;
-			aux.y *= (manager->GetActualHeight() / (float)camera->h);
+		aux.y -= camera->y;
+		aux.y *= (manager->GetActualHeight() / (float)camera->h);
 
-			aux.w *= (manager->GetActualWidth() / (float)camera->w);
-			aux.h *= (manager->GetActualHeight() / (float)camera->h);
+		aux.w *= (manager->GetActualWidth() / (float)camera->w);
+		aux.h *= (manager->GetActualHeight() / (float)camera->h);
 
-			SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-			SDL_RenderDrawRect(sdl->renderer(), &aux);
-		}
+		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
+		SDL_RenderDrawRect(sdl->renderer(), &aux);
 	}
+
+#endif // _DEBUG
 }
 
 void Entity::AddParticle(Particle* par)

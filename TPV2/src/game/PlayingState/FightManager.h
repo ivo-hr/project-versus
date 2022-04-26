@@ -66,8 +66,6 @@ class FightManager :public StateMachine
 
 public:
 
-	bool debug = false;
-
 	FightManager(SDLUtils* sdl, double screenAdjust);
 	virtual ~FightManager();
 

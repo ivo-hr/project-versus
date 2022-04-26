@@ -50,8 +50,11 @@ void DinoShield::draw(SDL_Rect* camera)
 	else
 		texture->render(src, aux, 0, nullptr, SDL_FLIP_HORIZONTAL);
 
-	if (manager->debug)
-		SDL_RenderDrawRect(sdl->renderer(), &aux);
+#ifdef _DEBUG
+
+	SDL_RenderDrawRect(sdl->renderer(), &aux);
+
+#endif // _DEBUG
 
 	if (anim >= 1) {
 		if (spriteX == 0) {

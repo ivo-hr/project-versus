@@ -101,8 +101,11 @@ void Spear::draw(SDL_Rect* camera)
 	else
 		texture->render(src, aux);
 
-	if (manager->debug)
-		SDL_RenderDrawRect(sdl->renderer(), &aux);
+#ifdef _DEBUG
+
+	SDL_RenderDrawRect(sdl->renderer(), &aux);
+
+#endif // _DEBUG
 
 	if (anim >= 1) {
 		if (sprite == 0) {

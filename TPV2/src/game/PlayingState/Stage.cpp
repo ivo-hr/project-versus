@@ -8,9 +8,14 @@ using json = nlohmann::json;
 
 Stage::Stage(SDLUtils* sdl, MyListener* _listener, double screenAdjust, float step, std::string filename):world(b2World(b2Vec2(0.f, 15.f))), sdl(sdl), step(step)
 {
+
 	std::ifstream file(filename);
 	json jsonFile;
 	file >> jsonFile;
+
+	deathzoneSize = jsonFile["deathZoneSize"];
+
+	b2ToSDL = (sdl->width() * screenAdjust) / deathzoneSize;
 
 	background = &sdl->images().at(jsonFile["background"]);
 	platformTexture = &sdl->images().at(jsonFile["platform"]);
@@ -37,26 +42,34 @@ Stage::Stage(SDLUtils* sdl, MyListener* _listener, double screenAdjust, float st
 
 	stage->CreateFixture(&fixt);
 
-	b2BodyDef gDef;
-	gDef.position.Set(jsonFile["platformX"], jsonFile["platformY"]);
-	gDef.type = b2_staticBody;
-	platform = world.CreateBody(&gDef);
-	b2PolygonShape plat;
-	float platW = jsonFile["platformW"], platH = jsonFile["platformH"];
-	plat.SetAsBox(platW / 2, platH / 2);
-	b2FixtureDef fi;
-	fi.shape = &plat;
-	fi.density = 10.0f;;
-	fi.friction = 0.5f;
-	fi.filter.categoryBits = 4; // 4 para las plataformas que puedes atravesar desde abajo
-	fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
-	platform->CreateFixture(&fi);
+	auto aData = jsonFile["platformData"];
+	assert(aData.is_array());
 
-	b2ToSDL = (sdl->width() * screenAdjust) / deathzoneSize;
+	for (uint16 i = 0u; i < aData.size(); i++) {
+
+		b2BodyDef gDef;
+		gDef.position.Set(aData[i]["platformX"], aData[i]["platformY"]);
+		gDef.type = b2_staticBody;
+
+		b2PolygonShape plat;
+		float platW = aData[i]["platformW"], platH = aData[i]["platformH"];
+		plat.SetAsBox(platW / 2, platH / 2);
+
+		b2FixtureDef fi;
+		fi.shape = &plat;
+		fi.density = 10.0f;;
+		fi.friction = 0.5f;
+		fi.filter.categoryBits = 4; // 4 para las plataformas que puedes atravesar desde abajo
+		fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
+
+		platforms.push_back(world.CreateBody(&gDef));
+		platforms[i]->CreateFixture(&fi);
+
+		platformRects.push_back(GetSDLCoors(platforms[i], platW, platH));
+	}
 
 	//Creo las cajas que representaran a los objetos
 	stageRect = GetSDLCoors(stage, floorW, floorH);
-	platformRect = GetSDLCoors(platform, platW, platH);
 
 	listener = _listener;
 	world.SetContactListener(listener);
@@ -75,13 +88,24 @@ void Stage::Update()
 
 	//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
 	background->render(deathZone);
-	platformTexture->render(platformRect);
+
+	for (SDL_Rect aaa : platformRects)
+	{
+		platformTexture->render(aaa);
+	}
 	platformTexture->render(stageRect);
-	//Dibujamos las cajas
+
+#ifdef _DEBUG
 	SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 	SDL_RenderDrawRect(sdl->renderer(), &stageRect);
-	SDL_RenderDrawRect(sdl->renderer(), &platformRect);
+
+	for (SDL_Rect aaa : platformRects)
+	{
+		SDL_RenderDrawRect(sdl->renderer(), &aaa);
+	}
+
 	SDL_RenderDrawRect(sdl->renderer(), &deathZone);
+#endif
 }
 
 void Stage::Update(SDL_Rect* camera)
@@ -99,16 +123,23 @@ void Stage::Update(SDL_Rect* camera)
 	auxDeath.w *= (deathZone.w / (float)camera->w);
 	auxDeath.h *= (deathZone.h / (float)camera->h);
 
-	SDL_Rect auxPlat = platformRect;
+	background->render(auxDeath);
 
-	auxPlat.x -= camera->x;
-	auxPlat.x *= (deathZone.w / (float)camera->w);
+	for (SDL_Rect aaa : platformRects)
+	{
+		SDL_Rect auxPlat = aaa;
 
-	auxPlat.y -= camera->y;
-	auxPlat.y *= (deathZone.h / (float)camera->h);
+		auxPlat.x -= camera->x;
+		auxPlat.x *= (deathZone.w / (float)camera->w);
 
-	auxPlat.w *= (deathZone.w / (float)camera->w);
-	auxPlat.h *= (deathZone.h / (float)camera->h);
+		auxPlat.y -= camera->y;
+		auxPlat.y *= (deathZone.h / (float)camera->h);
+
+		auxPlat.w *= (deathZone.w / (float)camera->w);
+		auxPlat.h *= (deathZone.h / (float)camera->h);
+
+		platformTexture->render(auxPlat);
+	}
 
 	SDL_Rect auxStage = stageRect;
 
@@ -121,16 +152,32 @@ void Stage::Update(SDL_Rect* camera)
 	auxStage.w *= (deathZone.w / (float)camera->w);
 	auxStage.h *= (deathZone.h / (float)camera->h);
 
-	//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
-	background->render(auxDeath);
-	platformTexture->render(auxPlat);
 	platformTexture->render(auxStage);
+
+#ifdef _DEBUG
 
 	//Dibujamos las cajas
 	SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 	SDL_RenderDrawRect(sdl->renderer(), &auxStage);
-	SDL_RenderDrawRect(sdl->renderer(), &auxPlat);
+
+	for (SDL_Rect aaa : platformRects)
+	{
+		SDL_Rect auxPlat = aaa;
+
+		auxPlat.x -= camera->x;
+		auxPlat.x *= (deathZone.w / (float)camera->w);
+
+		auxPlat.y -= camera->y;
+		auxPlat.y *= (deathZone.h / (float)camera->h);
+
+		auxPlat.w *= (deathZone.w / (float)camera->w);
+		auxPlat.h *= (deathZone.h / (float)camera->h);
+
+		SDL_RenderDrawRect(sdl->renderer(), &auxPlat);
+	}
 	SDL_RenderDrawRect(sdl->renderer(), &auxDeath);
+
+#endif // _DEBUG
 }
 
 SDL_Rect Stage::GetSDLCoors(b2Body* body, float width, float height) 
