@@ -255,22 +255,24 @@ void Togo::SpecialForward(int frameNumber)
 		body->SetLinearVelocity(b2Vec2(dir*30, 0));
 		body->ApplyLinearImpulseToCenter(b2Vec2(dir*30,0), true);
 		if (frameNumber >= attacks["specialL"].startUp && frameNumber < attacks["specialL"].totalFrames / 2 + 5) {
-			bite = &manager->GetSDLCoors(body, width, height);
-			bite->w *= 3;
+			bite = hurtbox;
+			bite.w *= 3;
 			if (dir == -1) {
-				bite->x = hurtbox.x - bite->w / 1.5 - 20;
+				bite.x = hurtbox.x - bite.w / 1.5 - 20;
 			}
 			else {
-				bite->x = hurtbox.x + 20;
+				bite.x = hurtbox.x + 20;
 			}
-			bite->y = hurtbox.y -30;
+			bite.y = hurtbox.y -30;
 			for (int i = 0; i < oponents.size(); i++) {
-				if (SDL_HasIntersection(bite, oponents[i]->GetHurtbox())) {
+				if (SDL_HasIntersection(&bite, oponents[i]->GetHurtbox())) {
 					currentMove = [this](int f) { SpecialLHit(f); };
 					moveFrame = -1;
 				}
 			}
-			SDL_RenderDrawRect(sdl->renderer(), bite);
+
+			if (manager->debug)
+				SDL_RenderDrawRect(sdl->renderer(), &bite);
 		}
 		else if (frameNumber == attacks["specialL"].totalFrames / 2 + 5)
 		{
@@ -279,7 +281,7 @@ void Togo::SpecialForward(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialL"].totalFrames)
 	{
-		bite = nullptr;
+		bite = { 0, 0, 0, 0 };
 		recovery = false;
 		currentMove = nullptr;
 		moveFrame = -1;
@@ -405,12 +407,10 @@ void Togo::SpecialLHit(int frameNumber)
 }
 bool Togo::GetHit(attackData a, Entity* attacker)
 {
-	if (bite != nullptr) {
-		bite = nullptr;
-	}
+	bite = SDL_Rect({ 0, 0, 0, 0 });
+
 	if (shield)
 	{
-		//Actualiza el da�o
 		damageTaken += (int)(a.damage * 0.4f);
 		return true;
 	}

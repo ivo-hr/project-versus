@@ -390,33 +390,34 @@ void Character::draw(SDL_Rect* camera)
 	Entity::draw(camera);
 	anim->render(camera);
 
-	//if (debug)
-
-	if (shield)
+	if (manager->debug)
 	{
-		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 255, 255);
+		if (shield)
+		{
+			SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 255, 255);
+		}
+		else if (dash)
+		{
+			SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 255, 255);
+		}
+		else
+		{
+			SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 0, 255);
+		}
+
+		SDL_Rect aux = hurtbox;
+
+		aux.x -= camera->x;
+		aux.x *= (manager->GetActualWidth() / (float)camera->w);
+
+		aux.y -= camera->y;
+		aux.y *= (manager->GetActualHeight() / (float)camera->h);
+
+		aux.w *= (manager->GetActualWidth() / (float)camera->w);
+		aux.h *= (manager->GetActualHeight() / (float)camera->h);
+
+		SDL_RenderDrawRect(sdl->renderer(), &aux);
 	}
-	else if (dash)
-	{
-		SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 255, 255);
-	}
-	else
-	{
-		SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 0, 255);
-	}
-
-	SDL_Rect aux = hurtbox;
-
-	aux.x -= camera->x;
-	aux.x *= (manager->GetActualWidth() / (float)camera->w);
-
-	aux.y -= camera->y;
-	aux.y *= (manager->GetActualHeight() / (float)camera->h);
-
-	aux.w *= (manager->GetActualWidth() / (float)camera->w);
-	aux.h *= (manager->GetActualHeight() / (float)camera->h);
-
-	SDL_RenderDrawRect(sdl->renderer(), &aux);
 }
 
 bool Character::GetHit(attackData a, Entity* attacker)

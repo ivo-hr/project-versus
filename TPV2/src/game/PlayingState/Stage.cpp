@@ -91,13 +91,13 @@ void Stage::Update(SDL_Rect* camera)
 	SDL_Rect auxDeath = deathZone;
 
 	auxDeath.x -= camera->x;
-	auxDeath.x *= (deathZone.w / (float)camera->w) * 0.7f;
+	auxDeath.x *= (deathZone.w / (float)camera->w) * 0.6f;
 
 	auxDeath.y -= camera->y;
-	auxDeath.y *= (deathZone.h / (float)camera->h) * 0.2f;
+	auxDeath.y *= (deathZone.h / (float)camera->h);
 
-	auxDeath.w *= (deathZone.w * 1.5f);
-	auxDeath.h *= (deathZone.h * 1.5f);
+	auxDeath.w *= (deathZone.w / (float)camera->w);
+	auxDeath.h *= (deathZone.h / (float)camera->h);
 
 	SDL_Rect auxPlat = platformRect;
 
