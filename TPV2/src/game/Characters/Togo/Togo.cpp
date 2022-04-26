@@ -249,16 +249,6 @@ void Togo::SpecialForward(int frameNumber)
 			hitbox.w *= 3;
 			hitbox.h = hitbox.h / 1.5;
 			hitbox.h += 10;
-
-			if (dir == -1)
-			{
-				hitbox.x -= hitbox.w - 20;
-			}
-			else
-			{
-				hitbox.x += 20;
-
-			}
 			for (int i = 0; i < oponents.size(); i++) {
 				if (SDL_HasIntersection(&hitbox, oponents[i]->GetHurtbox())) {
 					currentMove = [this](int f) { SpecialLHit(f); };
@@ -290,20 +280,18 @@ void Togo::SpecialUpward(int frameNumber)
 	else if (frameNumber < attacks["specialU"].totalFrames) {
 		if (frameNumber == attacks["specialU"].startUp)
 		{
+			SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+			hitbox.w *= 2;
+			hitbox.h += 10;
+			hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 20, Vector2D(-hitbox.w / 4, 0), OnHitData(6, false, false)));
 			body->SetGravityScale(0.0f);
 			body->SetLinearVelocity(b2Vec2(0, -25));
 
 		}
-		if (body->GetLinearVelocity().x > 0) {
+		if (body->GetLinearVelocity().x > 0 || body->GetLinearVelocity().x < 0) {
 			body->SetLinearVelocity(b2Vec2(0, body->GetLinearVelocity().y));
 		}
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-		vector<Entity*> enemies = manager->GetOponents(this);
-		for (int i = 0; i < enemies.size(); i++) {
-			if (SDL_HasIntersection(&hitbox, enemies[i]->GetHurtbox())) {
-				hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 1, OnHitData(6, false, false)));
-			}
-		}
+		
 	}
 	else if (frameNumber == attacks["specialU"].totalFrames)
 	{
