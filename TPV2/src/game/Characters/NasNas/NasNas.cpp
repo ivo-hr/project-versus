@@ -172,6 +172,25 @@ void NasNas::SpecialNeutral(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
+		attackData aaa = attacks["specialN"];
+		if (estado == fire)
+		{
+			aaa.damage = 30;
+			aaa.base = 10;
+			aaa.estado = fire;
+		}
+		else if (estado == water)
+		{
+			aaa.damage = 10;
+			aaa.base = 30;
+			aaa.estado = water;
+		}
+		else if (estado == electric)
+		{
+			aaa.damage = 15;
+			aaa.base = 15;
+			aaa.estado = electric;
+		}
 		auto spell = new Spell(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y), attacks["specialN"], b2Vec2(dir, 0));
 		manager->AddEntity(spell);
 		manager->MoveToFront(spell);
@@ -202,13 +221,16 @@ void NasNas::SpecialForward(int frameNumber)
 	else if (frameNumber == attacks["specialF"].startUp)
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
+		attackData aaa = attacks["specialF"];
 		if (estado == fire)
 		{
 			hitbox.x += width;
 			hitbox.y += 20;
 			hitbox.h /= 1.5;
 			hitbox.w *= 6;
+			aaa.damage = 45;
+			aaa.base = 25;
+			aaa.estado = fire;
 		}
 		else if (estado == water)
 		{
@@ -216,6 +238,9 @@ void NasNas::SpecialForward(int frameNumber)
 			hitbox.y += (hitbox.h / 2)-10;
 			hitbox.h /= 3;
 			hitbox.w *= 8;
+			aaa.damage = 30;
+			aaa.base = 45;
+			aaa.estado = water;
 		}
 		else if (estado == electric)
 		{
@@ -223,12 +248,15 @@ void NasNas::SpecialForward(int frameNumber)
 			hitbox.y += (hitbox.h / 2) - 10;
 			hitbox.h /= 8;
 			hitbox.w *= 10;
+			aaa.damage = 25;
+			aaa.base = 25;
+			aaa.estado = electric;
 		}
 		if (dir == -1)
 		{
 			hitbox.x -= hitbox.w;
 		}
-			hitboxes.push_back(new Hitbox(hitbox, attacks["specialF"], 10, OnHitData(20, false, false)));
+			hitboxes.push_back(new Hitbox(hitbox, aaa, 10, OnHitData(20, false, false)));
 
 	
 	}

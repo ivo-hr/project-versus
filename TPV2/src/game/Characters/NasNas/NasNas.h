@@ -23,5 +23,5 @@ public:
 private:
 	int maxMana = 360;
 	int mana = maxMana;
-	state estado = fire;
+	enum state estado = fire;
 };

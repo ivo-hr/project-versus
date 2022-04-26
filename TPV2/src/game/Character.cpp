@@ -301,9 +301,10 @@ void Character::update()
 				fall = 0;
 			}
 		}
-		if (input->taunt() && onGround) {
-			StartMove([this](int f) { Taunt(f); });
-		}
+		//if (input->taunt() && onGround) 
+		//{
+		//	StartMove([this](int f) { Taunt(f); });
+		//}
 	}
 
 	if (input->down() && body->GetFixtureList()->GetFilterData().maskBits != 2) down = true; // Marca que se ha pulsado abajo (para el tema de bajar plataformas)
@@ -349,6 +350,18 @@ void Character::update()
 		//Actualiza el frame actual del movimiento
 		moveFrame++;
 	}
+
+	if (efEstado != none)
+	{
+		stateCont++;
+		if (stateCont / 60 == 0)
+		{
+			Elements(efEstado);
+		}
+	}
+	else stateCont == 0;
+
+
 
 	anim->update();
 	Entity::update();
@@ -458,6 +471,11 @@ bool Character::GetHit(attackData a, Entity* attacker)
 		aux *= recoil;
 		aux.y *= -1;
 		aux.x *= attacker->GetDir();
+
+		if (a.estado != none)
+		{
+			Elements(a.estado);
+		}
 
 		//Produce el knoback..
 		body->SetLinearVelocity(aux);
@@ -779,5 +797,44 @@ void Character::Taunt(int frameNumber) {
 		moveFrame = -1;
 	}
 }
-
+void Character::Elements(state s)
+{
+	if (efEstado == none || efEstado == s)
+	{
+		efEstado = s;
+		if (efEstado == fire)
+		{
+			damageTaken += 5;
+		}
+		else if (efEstado == water)
+		{
+			maxSpeed -= 7;
+		}
+		else if (efEstado == electric)
+		{
+			stun = 15;
+		}
+	}
+	else if (efEstado != none)
+	{
+		//efEstado = s;
+		if ((efEstado == fire && s == water)|| (efEstado == water && s == fire))
+		{
+			//Explosión
+			damageTaken += 120;
+		}
+		else if ((efEstado == fire && s == electric) || (efEstado == electric && s == fire))
+		{
+			//knockback
+		}
+		else if ((efEstado == water && s == electric) || (efEstado == electric && s == water))
+		{
+			stun = 150;
+		}
+	}
+	if (efEstado == water && s == none)
+	{
+		speed += 7;
+	}
+}
 

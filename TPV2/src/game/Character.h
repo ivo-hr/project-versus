@@ -59,10 +59,8 @@ protected:
 	json ReadJson(std::string file);
 
 	// efectos de estado
-	enum state { none, fire, electric, water };
-
-	state efEstado = none;
-
+	enum state efEstado = none;
+	int stateCont = 0;
 //	void (Character::* currentMove)(int);
 public:
 
@@ -119,6 +117,7 @@ public:
 	virtual void EndShield(int frameNumber);
 	virtual void Dash(int frameNumber);
 	virtual void Taunt(int frameNumber);
+	virtual void Elements(state s);
 
 	void StartMove(std::function<void(int)> newMove);
 	void ChangeMove(std::function<void(int)> newMove);
