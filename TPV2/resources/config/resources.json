@@ -38,7 +38,8 @@
     { "id" : "k2", "file" : "resources/images/tFlecha.png"},
     { "id" : "Mando", "file" : "resources/images/mando.png"},
     { "id" : "pB", "file" : "resources/images/pB.png"},
-    { "id" : "mB", "file" : "resources/images/mB.png"}
+    { "id" : "mB", "file" : "resources/images/mB.png"},
+    { "id" : "arrows", "file" : "resources/images/pArrows.png"}
 
   ],
   

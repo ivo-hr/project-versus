@@ -52,13 +52,6 @@ Entity::~Entity()
 	manager->GetWorld()->DestroyBody(body);
 }
 
-void Entity::SetSpawn(b2Vec2 spawn, int dir)
-{
-	body->SetTransform(spawn, 0);
-	this->dir = dir;
-	respawnPos = new Vector2D(spawn.x, 5);
-}
-
 void Entity::updateParticles()
 {
 	for (Particle* ent : particulas)
@@ -69,6 +62,7 @@ void Entity::updateParticles()
 
 void Entity::update()
 {
+	updateParticles();
 	//Actualizamos la posicion del rect
 	hurtbox.x = manager->b2ToSDLX(body, width);
 	hurtbox.y = manager->b2ToSDLY(body, height);

@@ -18,6 +18,7 @@
 
 
 class Entity;
+class Character;
 class Particle;
 
 class HUDManager;
@@ -30,7 +31,7 @@ class FightManager :public StateMachine
 {
 
 	std::vector<Entity*> entities;
-	std::vector<Entity*> characters;
+	std::vector<Character*> characters;
 
 	SDLUtils* sdl;
 
@@ -70,10 +71,10 @@ public:
 	bool isExit() { return exit_; };
 	bool isFinish() { return fightEnded; };
 	void Update();
-	int StartFight(std::vector<Entity*> ent);
+	int StartFight(std::vector<Character*> ent);
 	void AddEntity(Entity* ent);
 	bool RemoveEntity(Entity* ent);
-	bool RemoveCharacter(Entity* character);
+	bool RemoveCharacter(Character* character);
 	void MoveToFront(Entity* ent);
 	void AddOponnent(Entity* ent, Entity* ignore = nullptr);
 
@@ -81,7 +82,7 @@ public:
 
 	void KillingBlow();
 
-	void FighterLost(Entity* loser);
+	void FighterLost(Character* loser);
 
 	SDL_Rect GetSDLCoors(b2Body* body, float width, float height);
 	SDL_Rect GetSDLCoors(float x, float y, float width, float height);

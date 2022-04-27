@@ -10,6 +10,7 @@ using json = nlohmann::json;
 class Character : public Entity
 {
 protected:
+	uint16 playerNumber;
 
 	//InputHandler& ih = *InputHandler::instance();
 	InputConfig *input = nullptr;
@@ -20,6 +21,9 @@ protected:
 
 	//Datos de los ataques (Deberian salir de jsons en un futuro)
 	std::unordered_map<std::string, attackData> attacks;
+
+	Texture* arrowsTex;
+	SDL_Rect arrowSrc;
 
 	int stun;
 	int lives;
@@ -66,6 +70,9 @@ public:
 
 	Character(FightManager* manager, Vector2D* pos, char input, float w = 3.f, float h = 3.f);
 	~Character();
+
+	void SetSpawn(b2Vec2 spawn, int dir);
+	void SetPNumber(uint16 num);
 
 	virtual void update() override;
 	virtual void draw() override;

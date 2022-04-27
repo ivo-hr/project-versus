@@ -7,7 +7,7 @@
 #include "../../../CharInclude.h"
 
 PlayingState::PlayingState(FightManager* game, vector<int>player, vector<int>characters) : State(game) {
-	std::vector<Entity*> entities;
+	std::vector<Character*> entities;
 
 	// input del character (al menos de momento):
 	// 0 y 1: teclado

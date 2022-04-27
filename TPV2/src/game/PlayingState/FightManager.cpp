@@ -1,5 +1,6 @@
 #include "FightManager.h"
 #include "../Entity.h"
+#include "../Character.h"
 #include "../Utils/Particle.h"
 #include "../Utils/MyListener.h"
 #include "../PlayingState/Stage.h"
@@ -10,7 +11,7 @@ void FightManager::MoveCamera()
 	int maxX = INT32_MIN, minX = INT32_MAX;
 	int maxY = INT32_MIN, minY = INT32_MAX;
 
-	for (Entity* c : characters)
+	for (Character* c : characters)
 	{
 		Vector2D pos = c->GetCenterSDL();
 
@@ -188,15 +189,20 @@ void FightManager::Update()
 	}
 }
 
-int FightManager::StartFight(std::vector<Entity*> ent)
+int FightManager::StartFight(std::vector<Character*> ent)
 {
-	entities = ent;
+	for (Entity* a : ent)
+	{
+		entities.push_back(a);
+	}
 	characters = ent;
 
-	for (auto i = 0u; i < entities.size(); i++) {
-		entities[i]->SetOponents(entities);
-		listener->AddCharacter(entities[i]);
-		entities[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
+	for (auto i = 0u; i < characters.size(); i++) {
+		numPlayers++;
+		characters[i]->SetOponents(entities);
+		listener->AddCharacter(characters[i]);
+		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i)); 
+		characters[i]->SetPNumber(i);
 	}
 	sdl->musics().at("cube").play();
 	//Music::setMusicVolume(1);
@@ -230,7 +236,7 @@ bool FightManager::RemoveEntity(Entity* ent)
 	return false;
 }
 
-bool FightManager::RemoveCharacter(Entity* character)
+bool FightManager::RemoveCharacter(Character* character)
 {
 	for (int i = 0; i < characters.size(); i++)
 	{
@@ -294,9 +300,9 @@ void FightManager::KillingBlow()
 	sdl->soundEffects().at("hitKill").play();
 }
 
-void FightManager::FighterLost(Entity* loser)
+void FightManager::FighterLost(Character* loser)
 {
-	RemoveEntity(loser);
+	RemoveCharacter(loser);
 	numPlayers--;
 
 	if (numPlayers == 1)
