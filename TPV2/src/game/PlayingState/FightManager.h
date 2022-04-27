@@ -32,8 +32,6 @@ class FightManager :public StateMachine
 	std::vector<Entity*> entities;
 	std::vector<Entity*> characters;
 
-	std::vector<Particle*> particulas;
-
 	SDLUtils* sdl;
 
 	InputHandler& ih = *InputHandler::instance();
@@ -79,11 +77,9 @@ public:
 	void MoveToFront(Entity* ent);
 	void AddOponnent(Entity* ent, Entity* ignore = nullptr);
 
-	void AddParticle(Particle* par);
-	bool RemoveParticle(Particle* par);
 	void HitLag(int frames);
 
-	void KillingBlow(Vector2D dead);
+	void KillingBlow();
 
 	void FighterLost(Entity* loser);
 

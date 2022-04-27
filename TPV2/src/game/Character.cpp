@@ -112,6 +112,8 @@ void Character::update()
 	// Para probar mandos
 	//input->controllerTest();
 
+	updateParticles();
+
 	if (!alive)
 	{
 		respawnFrames--;
@@ -160,7 +162,7 @@ void Character::update()
 						dir = 1;
 
 					if (speed < 1)
-						AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", nullptr, this));
+						AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
 
 					speed = maxSpeed;
 				}
@@ -170,7 +172,7 @@ void Character::update()
 						dir = -1;
 
 					if (speed > -1)
-						AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", nullptr, this));
+						AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
 
 					speed = -maxSpeed;
 				}
@@ -467,11 +469,20 @@ bool Character::GetHit(attackData a, Entity* attacker)
 		
 		b2Vec2 aux = a.direction;
 
-		if (recoil > 100)
+		if (recoil > 90)
 		{
-			manager->KillingBlow(Vector2D(
-				manager->ToSDL(body->GetPosition().x),
-				manager->ToSDL(body->GetPosition().y)));
+			manager->KillingBlow();
+
+			AddParticle(new Particle(
+				Vector2D(
+					manager->ToSDL(body->GetPosition().x),
+					manager->ToSDL(body->GetPosition().y)),
+				1, "killVfx", this));
+			AddParticle(new Particle(
+				Vector2D(
+					manager->ToSDL(body->GetPosition().x),
+					manager->ToSDL(body->GetPosition().y)),
+				1, "killHit", this));
 		}
 
 		aux *= recoil;
@@ -490,6 +501,8 @@ bool Character::GetHit(attackData a, Entity* attacker)
 	}
 
 }
+
+
 void Character::StartJump(int frameNumber)
 {
 	if (jumpCounter <= 0 || !jumpCooldown)
@@ -600,6 +613,7 @@ void Character::StartJump(int frameNumber)
 		moveFrame = -1;
 	}
 }
+
 void Character::StartShield(int frameNumber)
 {
 	if (frameNumber == 1)
@@ -661,7 +675,6 @@ void Character::StartMove(std::function<void(int)> newMove)
 	currentMove = newMove;
 	moveFrame = 0;
 }
-
 void Character::ChangeMove(std::function<void(int)> newMove)
 {
 	currentMove = newMove;

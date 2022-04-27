@@ -75,7 +75,7 @@ void MaktBall::CheckHits()
 
 					oponents[j]->AddParticle(new Particle(
 						new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-						1, "bHitParticle", nullptr, oponents[j]));
+						1, "bHitParticle", oponents[j]));
 
 					physic = true;
 					body->SetGravityScale(10.f);

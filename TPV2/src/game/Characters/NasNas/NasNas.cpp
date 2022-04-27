@@ -85,7 +85,7 @@ void NasNas::BasicForward(int frameNumber)
 			dir = 1;
 
 		if (speed < 1)
-			AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", nullptr, this));
+			AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
 
 		speed = maxSpeed-10;
 	}
@@ -95,7 +95,7 @@ void NasNas::BasicForward(int frameNumber)
 			dir = -1;
 
 		if (speed > -1)
-			AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", nullptr, this));
+			AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
 
 		speed = -maxSpeed+10;
 	}
@@ -327,9 +327,18 @@ bool NasNas::GetHit(attackData a, Entity* attacker)
 
 		if (recoil > 100)
 		{
-			manager->KillingBlow(Vector2D(
-				manager->ToSDL(body->GetPosition().x),
-				manager->ToSDL(body->GetPosition().y)));
+			manager->KillingBlow();
+
+			AddParticle(new Particle(
+				Vector2D(
+					manager->ToSDL(body->GetPosition().x),
+					manager->ToSDL(body->GetPosition().y)),
+				1, "killVfx", this));
+			AddParticle(new Particle(
+				Vector2D(
+					manager->ToSDL(body->GetPosition().x),
+					manager->ToSDL(body->GetPosition().y)),
+				1, "killHit", this));
 		}
 
 		aux *= recoil;

@@ -13,15 +13,9 @@ void Particle::CalcularResto()
 	src.h = texture->height() / numSpritesinY;
 }
 
-Particle::Particle(Vector2D position, int dir, std::string id, FightManager* mngr, Entity* ent): manager(mngr), ent(ent), dir(dir)
+Particle::Particle(Vector2D position, int dir, std::string id, Entity* ent): ent(ent), dir(dir)
 {
-
-	if (mngr == nullptr)
-	{
-		mngr = ent->GetManager();
-	}
-
-	manager = mngr;
+	manager = ent->GetManager();
 
 	if (id == "sHitParticle")
 	{
@@ -30,14 +24,12 @@ Particle::Particle(Vector2D position, int dir, std::string id, FightManager* mng
 
 		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
-		texture = &mngr->GetSDLU()->images().at("sHitParticle");
+		texture = &manager->GetSDLU()->images().at("sHitParticle");
 
 		numSpritesinX = 2;
 		numSpritesinY = 3;
 		numSprites = 5;
 		duration = 15;
-
-		mngr->GetSDLU()->soundEffects().at("hitMed").play();
 	}
 	else if (id == "bHitParticle")
 	{
@@ -46,14 +38,12 @@ Particle::Particle(Vector2D position, int dir, std::string id, FightManager* mng
 
 		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
-		texture = &mngr->GetSDLU()->images().at("bHitParticle");
+		texture = &manager->GetSDLU()->images().at("bHitParticle");
 
 		numSpritesinX = 2;
 		numSpritesinY = 4;
 		numSprites = 7;
 		duration = 35;
-
-		mngr->GetSDLU()->soundEffects().at("hitStr").play();
 	}
 	else if (id == "run")
 	{
@@ -69,7 +59,7 @@ Particle::Particle(Vector2D position, int dir, std::string id, FightManager* mng
 			dest = { (int)(position.getX()), (int)(position.getY() - h), (int)w, (int)h };
 		}
 
-		texture = &mngr->GetSDLU()->images().at("run");
+		texture = &manager->GetSDLU()->images().at("run");
 
 		numSpritesinX = 1;
 		numSpritesinY = 3;
@@ -83,14 +73,12 @@ Particle::Particle(Vector2D position, int dir, std::string id, FightManager* mng
 
 		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
-		texture = &mngr->GetSDLU()->images().at("killHit");
+		texture = &manager->GetSDLU()->images().at("killHit");
 
 		numSpritesinX = 1;
 		numSpritesinY = 6;
 		numSprites = 6;
 		duration = 40;
-
-		mngr->GetSDLU()->soundEffects().at("hitKill").play();
 	}
 	else if (id == "killVfx")
 	{
@@ -99,12 +87,26 @@ Particle::Particle(Vector2D position, int dir, std::string id, FightManager* mng
 
 		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
-		texture = &mngr->GetSDLU()->images().at("killVfx");
+		texture = &manager->GetSDLU()->images().at("killVfx");
 
 		numSpritesinX = 3;
 		numSpritesinY = 3;
 		numSprites = 7;
 		duration = 30;
+	}
+	else
+	{
+		int w = 0;
+		int h = 0;
+
+		dest = { 0, 0, 0, 0 };
+
+		texture = &manager->GetSDLU()->images().at("killVfx");
+
+		numSpritesinX = 0;
+		numSpritesinY = 0;
+		numSprites = 1;
+		duration = 0;
 	}
 
 	CalcularResto();
@@ -132,14 +134,7 @@ void Particle::update()
 			}
 			else
 			{
-				if (ent == nullptr)
-				{
-					manager->RemoveParticle(this);
-				}
-				else
-				{
-					ent->RemoveParticle(this);
-				}
+				ent->RemoveParticle(this);
 			}
 		}
 	}

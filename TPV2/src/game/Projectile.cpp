@@ -94,7 +94,7 @@ void Projectile::CheckHits()
 
 					oponents[j]->AddParticle(new Particle(
 						new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-						1, "sHitParticle", nullptr, oponents[j]));
+						1, "sHitParticle", oponents[j]));
 				}
 				if (reflected == 0)
 					manager->RemoveEntity(this);

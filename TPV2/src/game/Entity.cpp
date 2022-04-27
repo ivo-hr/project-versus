@@ -52,6 +52,13 @@ Entity::~Entity()
 	manager->GetWorld()->DestroyBody(body);
 }
 
+void Entity::SetSpawn(b2Vec2 spawn, int dir)
+{
+	body->SetTransform(spawn, 0);
+	this->dir = dir;
+	respawnPos = new Vector2D(spawn.x, 5);
+}
+
 void Entity::updateParticles()
 {
 	for (Particle* ent : particulas)
@@ -65,8 +72,6 @@ void Entity::update()
 	//Actualizamos la posicion del rect
 	hurtbox.x = manager->b2ToSDLX(body, width);
 	hurtbox.y = manager->b2ToSDLY(body, height);
-
-	updateParticles();
 
 	if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()))
 	{
@@ -216,13 +221,17 @@ void Entity::CheckHits()
 					{
 						AddParticle(new Particle(
 							new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-							1, "bHitParticle", nullptr, this));
+							1, "bHitParticle", this));
+
+						manager->GetSDLU()->soundEffects().at("hitStr").play();
 					}
 					else
 					{
 						AddParticle(new Particle(
 							new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-							1, "sHitParticle", nullptr, this));
+							1, "sHitParticle", this));
+
+						manager->GetSDLU()->soundEffects().at("hitMed").play();
 					}
 				}
 				isHit[j] = true;

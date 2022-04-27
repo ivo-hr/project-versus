@@ -37,8 +37,6 @@ void CharacterZero::BasicNeutral(int frameNumber)
 		//Empieza el ataque :v
 		anim->StartAnimation("big");
 		break;
-		//No hace nada, esto es el cargar el puño
-		break;
 	case 56:
 	{
 		//Al frame 90, crea un rect y si el oponente colisiona con ello...

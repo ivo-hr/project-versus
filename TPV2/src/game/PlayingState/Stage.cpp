@@ -76,13 +76,26 @@ Stage::Stage(SDLUtils* sdl, MyListener* _listener, double screenAdjust, float st
 
 	deathZone = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
 
+	auto player = jsonFile["playerSpawns"];
+	assert(player.is_array());
+
+	for (uint16 i = 0u; i < 4; i++)
+	{
+		playerSpawns.push_back(b2Vec2(player[i % 4]["X"], player[i % 4]["Y"]));
+	}
+
 }
 Stage::~Stage() 
 {
 	
 }
 
-void Stage::Update() 
+int Stage::GetPlayerDir(int index)
+{
+	return playerSpawns[index].x < deathzoneSize / 2 ?1: -1 ;
+}
+
+void Stage::Update()
 {
 	sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
 

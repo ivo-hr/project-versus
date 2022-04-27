@@ -19,6 +19,8 @@ class Stage
 	std::vector<b2Body*> platforms;
 	std::vector<SDL_Rect> platformRects;
 
+	std::vector<b2Vec2> playerSpawns;
+
 	SDLUtils* sdl;
 	b2World world;
 
@@ -35,6 +37,9 @@ class Stage
 public:
 	Stage(SDLUtils* sdl, MyListener* _listener, double screenAdjust, float step, std::string filename);
 	~Stage();
+
+	b2Vec2 GetPlayerSpawns(int index) { return playerSpawns[index]; };
+	int GetPlayerDir(int index);
 
 	void Update();
 	void Update(SDL_Rect* camera);
