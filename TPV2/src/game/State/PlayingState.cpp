@@ -14,22 +14,24 @@ PlayingState::PlayingState(FightManager* game, vector<int>player, vector<int>cha
 	// 0 y 1: teclado
 	// 2 y 3: mando NES
 	// 4 y 5: mando PS4 o Xbox One
+
+	fmngr->LoadStage("resources/config/stage2.json");
 	
 
 	for (auto i = 0u; i < player.size(); i++) {
 		switch (characters[i])
 		{
 		case 0: //zero
-			team1.push_back(new CharacterZero(fmngr, new Vector2D(20+i * 10, 0), player[i]));
+			entities.push_back(new CharacterZero(fmngr, new Vector2D(20+i * 10, 0), player[i]));
 			break;
 		case 1://Gato espia
-			team1.push_back(new GatoEspia(fmngr, new Vector2D(20+i*10, 0), player[i]));
+			entities.push_back(new GatoEspia(fmngr, new Vector2D(20+i*10, 0), player[i]));
 			break;
 		case 2://Togo
-			team2.push_back(new Togo(fmngr, new Vector2D(20+i * 10, 0), player[i]));
+			entities.push_back(new Togo(fmngr, new Vector2D(20+i * 10, 0), player[i]));
 			break;
 		case 3: //Maketo
-			team2.push_back(new Makt(fmngr, new Vector2D(20 + i * 10, 0), player[i]));
+			entities.push_back(new Makt(fmngr, new Vector2D(20 + i * 10, 0), player[i]));
 			break;
 		case 4://Nasnas
 			//entities.push_back(new GatoEspia(fmngr, new Vector2D(20 + i * 10, 0), player[i]));
@@ -41,7 +43,7 @@ PlayingState::PlayingState(FightManager* game, vector<int>player, vector<int>cha
 	}
 
 	//fmngr->StartFight(entities);
-	fmngr->StartFight(team1,team2);
+	fmngr->StartFight(entities);
 
 }
 

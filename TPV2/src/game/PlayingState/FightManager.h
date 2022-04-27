@@ -71,6 +71,8 @@ public:
 	bool isExit() { return exit_; };
 	bool isFinish() { return fightEnded; };
 	void Update();
+
+	void LoadStage(std::string file);
 	int StartFight(std::vector<Character*> ent);
 	int StartFight(std::vector<Character*> team1, std::vector<Character*> team2);
 	int StartFight(std::vector<Character*> team1, std::vector<Character*> team2, std::vector<Character*> team3);

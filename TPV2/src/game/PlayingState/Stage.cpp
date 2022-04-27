@@ -6,10 +6,18 @@
 
 using json = nlohmann::json;
 
-Stage::Stage(SDLUtils* sdl, MyListener* _listener, double screenAdjust, float step, std::string filename):world(b2World(b2Vec2(0.f, 15.f))), sdl(sdl), step(step)
+Stage::Stage(SDLUtils* sdl, MyListener* _listener, float step) :
+	world(b2World(b2Vec2(0.f, 15.f))), sdl(sdl), step(step)
 {
+	listener = _listener;
+}
+Stage::~Stage() 
+{
+}
 
-	std::ifstream file(filename);
+void Stage::LoadJsonStage(std::string fileName, double screenAdjust)
+{
+	std::ifstream file(fileName);
 	json jsonFile;
 	file >> jsonFile;
 
@@ -71,7 +79,6 @@ Stage::Stage(SDLUtils* sdl, MyListener* _listener, double screenAdjust, float st
 	//Creo las cajas que representaran a los objetos
 	stageRect = GetSDLCoors(stage, floorW, floorH);
 
-	listener = _listener;
 	world.SetContactListener(listener);
 
 	deathZone = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
@@ -83,11 +90,6 @@ Stage::Stage(SDLUtils* sdl, MyListener* _listener, double screenAdjust, float st
 	{
 		playerSpawns.push_back(b2Vec2(player[i % 4]["X"], player[i % 4]["Y"]));
 	}
-
-}
-Stage::~Stage() 
-{
-	
 }
 
 int Stage::GetPlayerDir(int index)

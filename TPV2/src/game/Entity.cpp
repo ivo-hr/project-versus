@@ -1,5 +1,4 @@
 #include "Entity.h"
-#include "Utils/AnimationManager.h"
 #include "Utils/Particle.h"
 
 Entity::Entity(FightManager* mngr, Vector2D* position, float w, float h) : manager(mngr), width(w), height(h)

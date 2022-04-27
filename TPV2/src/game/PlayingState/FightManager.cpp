@@ -87,7 +87,7 @@ void FightManager::MoveCamera()
 FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 {
 	listener = new MyListener();
-	stage = new Stage(sdl, listener, screenAdjust, step, "resources/config/stage1.json");
+	stage = new Stage(sdl, listener, step);
 
 	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
 
@@ -189,8 +189,14 @@ void FightManager::Update()
 	}
 }
 
+void FightManager::LoadStage(std::string file)
+{
+	stage->LoadJsonStage(file, screenAdjust);
+}
+
 int FightManager::StartFight(std::vector<Character*> ent)
 {
+
 	for (Character* a : ent)
 	{
 		entities.push_back(a);
@@ -201,7 +207,7 @@ int FightManager::StartFight(std::vector<Character*> ent)
 	for (auto i = 0u; i < characters.size(); i++) {
 		numPlayers++;
 		characters[i]->SetOponents(entities);
-		listener->AddCharacter(characters[i]);
+		listener->AddCharacter(entities[i]);
 		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i)); 
 		characters[i]->SetPNumber(i);
 	}
@@ -323,6 +329,8 @@ bool FightManager::RemoveCharacter(Character* character)
 	listener->RemoveCharacter(character);
 	RemoveEntity(character);
 	if (characters.size() == 1) {
+		entities.clear();
+		characters.clear();
 		getState()->next();
 	}
 	return false;
