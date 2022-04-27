@@ -72,6 +72,8 @@ public:
 	bool isFinish() { return fightEnded; };
 	void Update();
 	int StartFight(std::vector<Character*> ent);
+	int StartFight(std::vector<Character*> team1, std::vector<Character*> team2);
+	int StartFight(std::vector<Character*> team1, std::vector<Character*> team2, std::vector<Character*> team3);
 	void AddEntity(Entity* ent);
 	bool RemoveEntity(Entity* ent);
 	bool RemoveCharacter(Character* character);

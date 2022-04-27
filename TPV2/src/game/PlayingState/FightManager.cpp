@@ -191,17 +191,88 @@ void FightManager::Update()
 
 int FightManager::StartFight(std::vector<Character*> ent)
 {
-	for (Entity* a : ent)
+	for (Character* a : ent)
 	{
 		entities.push_back(a);
+		characters.push_back(a);
 	}
-	characters = ent;
+	//characters = ent;
 
 	for (auto i = 0u; i < characters.size(); i++) {
 		numPlayers++;
 		characters[i]->SetOponents(entities);
 		listener->AddCharacter(characters[i]);
 		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i)); 
+		characters[i]->SetPNumber(i);
+	}
+	sdl->musics().at("cube").play();
+	//Music::setMusicVolume(1);
+
+	return 1;
+}
+int FightManager::StartFight(std::vector<Character*> team1 , std::vector<Character*> team2)
+{
+	std::vector<Entity*> aux1;
+	std::vector<Entity*> aux2;
+	for (Character* a : team1)
+	{
+		entities.push_back(a);
+		characters.push_back(a);
+		aux1.push_back(a);
+	}
+
+	for (Character* a : team2)
+	{
+		entities.push_back(a);
+		characters.push_back(a);
+		aux2.push_back(a);
+	}
+	//characters = team1;
+
+
+	for (auto i = 0u; i < team1.size(); i++) {
+		numPlayers++;
+		characters[i]->SetOponents(aux2);
+		listener->AddCharacter(characters[i]);
+		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
+		characters[i]->SetPNumber(0);
+	}
+	for (auto i = team1.size(); i < team2.size()+team1.size() ; i++) {
+		numPlayers++;
+		characters[i]->SetOponents(aux1);
+		listener->AddCharacter(characters[i]);
+		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
+		characters[i]->SetPNumber(1);
+	}
+	sdl->musics().at("cube").play();
+	//Music::setMusicVolume(1);
+
+	return 1;
+}
+int FightManager::StartFight(std::vector<Character*> team1, std::vector<Character*> team2, std::vector<Character*> team3)
+{
+	for (Character* a : team1)
+	{
+		entities.push_back(a);
+		characters.push_back(a);
+	}
+
+	for (Character* a : team2)
+	{
+		entities.push_back(a);
+		characters.push_back(a);
+	}
+	for (Character* a : team3)
+	{
+		entities.push_back(a);
+		characters.push_back(a);
+	}
+
+	for (auto i = 0u; i < characters.size(); i++) {
+		numPlayers++;
+		characters[i]->SetOponents(entities);
+		listener->AddCharacter(characters[i]);
+		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
 		characters[i]->SetPNumber(i);
 	}
 	sdl->musics().at("cube").play();
