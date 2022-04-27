@@ -10,8 +10,8 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     aleatorio = nullptr;
     nasnas = nullptr;
     zero = new Button(&sdl->images().at("zero"), ts(30), ts(50), ts(30), ts(30));
-    gatoespia = new Button(&sdl->images().at("blinkMaster"), ts(90), ts(50), ts(30), ts(30));
-    maketo = new Button(&sdl->images().at("makt"), ts(150), ts(50), ts(30), ts(30));
+    gatoespia = new Button(&sdl->images().at("blinkMasterSelect"), ts(90), ts(50), ts(30), ts(30));
+    maketo = new Button(&sdl->images().at("maktSelect"), ts(150), ts(50), ts(30), ts(30));
     togo = new Button(&sdl->images().at("dinoSouls"), ts(210), ts(50), ts(30), ts(30));
     plusB = new Button(&sdl->images().at("pB"), ts(480), ts(210), ts(30), ts(30));
     minusB = new Button(&sdl->images().at("mB"), ts(480), ts(240), ts(30), ts(30));
@@ -37,10 +37,13 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     }
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P1P"), 0, 0, ts(10), ts(10),w,h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P2P"), 0, 0, ts(10), ts(10),w,h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P3P"), 0, 0, ts(10), ts(10), w, h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P4P"), 0, 0, ts(10), ts(10), w, h));
+    int pointerSize = 15;
+    int dist = (w - ts(50)) / numOfplayer;
+    int offset = dist - ts(50);
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P1P"), 0u * dist + offset, 676, ts(pointerSize), ts(pointerSize),w,h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P2P"), 1u * dist + offset, 676, ts(pointerSize), ts(pointerSize),w,h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P3P"), 2u * dist + offset, 676, ts(pointerSize), ts(pointerSize), w, h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P4P"), 3u * dist + offset, 676, ts(pointerSize), ts(pointerSize), w, h));
     playerPointers[0]->setActive(true);
     sdl->musics().at("sawtines").play();
 }
@@ -138,7 +141,7 @@ void ConfigState::update() {
             selected[i] = true;
         }
         else if (gatoespia->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
-            playerTexture[i]->setFront(&sdl->images().at("blinkMaster"));
+            playerTexture[i]->setFront(&sdl->images().at("blinkMasterSelect"));
             charactersSelect[i] = 1;
             keyRelease = false;
             lastPointerClick = playerInput[i];
@@ -152,7 +155,7 @@ void ConfigState::update() {
             selected[i] = true;
         }
         else if (maketo->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
-            playerTexture[i]->setFront(&sdl->images().at("makt"));
+            playerTexture[i]->setFront(&sdl->images().at("maktSelect"));
             charactersSelect[i] = 3;
             keyRelease = false;
             lastPointerClick = playerInput[i];

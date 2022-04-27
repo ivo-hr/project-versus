@@ -5,7 +5,7 @@
 class GameOverState : public State {
 
 public:
-
+    Texture* background;
     GameOverState(FightManager* fmngr);
     ~GameOverState() = default;
 

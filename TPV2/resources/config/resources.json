@@ -41,7 +41,9 @@
     { "id" : "Mando", "file" : "resources/images/mando.png"},
     { "id" : "pB", "file" : "resources/images/pB.png"},
     { "id" : "mB", "file" : "resources/images/mB.png"},
-    { "id" : "arrows", "file" : "resources/images/pArrows.png"}
+    { "id" : "arrows", "file" : "resources/images/pArrows.png"},
+    { "id" : "blinkMasterSelect", "file" : "resources/images/blinkMasterSelect.png"},
+    { "id" : "maktSelect", "file" : "resources/images/MaketoSelect.png"}
 
   ],
   

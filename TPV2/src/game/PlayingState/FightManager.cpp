@@ -322,6 +322,9 @@ bool FightManager::RemoveCharacter(Character* character)
 	}
 	listener->RemoveCharacter(character);
 	RemoveEntity(character);
+	if (characters.size() == 1) {
+		getState()->next();
+	}
 	return false;
 }
 
