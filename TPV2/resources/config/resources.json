@@ -25,6 +25,7 @@
     { "id" : "run", "file" : "resources/images/runSmoke.png"},
     { "id" : "play", "file" : "resources/images/Play.png"},
     { "id" : "selectbg", "file" : "resources/images/SelectMenu.png"},
+    { "id" : "P0","file" : "resources/images/P0.png"},
     { "id" : "P1", "file" : "resources/images/P1.png"},
     { "id" : "P2", "file" : "resources/images/P2.png"},
     { "id" : "P3", "file" : "resources/images/P3.png"},

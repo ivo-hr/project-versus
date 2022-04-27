@@ -15,6 +15,7 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     togo = new Button(&sdl->images().at("dinoSouls"), ts(210), ts(50), ts(30), ts(30));
     plusB = new Button(&sdl->images().at("pB"), ts(490), ts(210), ts(20), ts(30));
     minusB = new Button(&sdl->images().at("mB"), ts(490), ts(240), ts(20), ts(30));
+    play = new Button(&sdl->images().at("play"), ts(150), ts(40), ts(200), ts(150));
    
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P1")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P2")));
@@ -27,7 +28,7 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     playerTexture[0]->setgotInput(true);
     charactersSelect.resize(2);
     usedPad.resize(SDL_NumJoysticks());
-
+    selected.resize(4);
 
     if (fInput >= 0) { usedPad[fInput] = true; playerTexture[0]->setFront(&sdl->images().at("Mando")); }
     else if (fInput == -1) { usedKeyboard[0] = true; playerTexture[0]->setFront(&sdl->images().at("k1"));
@@ -54,6 +55,7 @@ ConfigState::~ConfigState()
     delete aleatorio;
     delete plusB;
     delete minusB;
+    delete play;
     for (auto e : playerPointers)delete e;
     for (auto e : playerTexture)delete e;
     for (auto e : charactTexture)delete e;
@@ -125,32 +127,36 @@ void ConfigState::update() {
             if (ih.isKeyDown(SDLK_l))enter = true;
             break;
         default:
-            if( ih.xboxGetButtonState(playerInput[i], SDL_CONTROLLER_BUTTON_A))enter = true;
+            if( ih.xboxGetButtonState(playerInput[i], SDL_CONTROLLER_BUTTON_B))enter = true;
             break;
         }
-        if (zero->pointerClick(playerPointers[i]->getRect())&&enter && keyRelease) {
+        if (zero->pointerClick(playerPointers[i]->getRect())&&enter && keyRelease && !selected[i]) {
             playerTexture[i]->setFront(&sdl->images().at("zero"));
             charactersSelect[i] = 0;
             keyRelease = false;
             lastPointerClick = playerInput[i];
+            selected[i] = true;
         }
-        else if (gatoespia->pointerClick(playerPointers[i]->getRect()) && enter) {
+        else if (gatoespia->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
             playerTexture[i]->setFront(&sdl->images().at("blinkMaster"));
             charactersSelect[i] = 1;
             keyRelease = false;
             lastPointerClick = playerInput[i];
+            selected[i] = true;
         }
-        else if (togo->pointerClick(playerPointers[i]->getRect()) && enter) {
+        else if (togo->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
             playerTexture[i]->setFront(&sdl->images().at("dinoSouls"));
             charactersSelect[i] = 2;
             keyRelease = false;
             lastPointerClick = playerInput[i];
+            selected[i] = true;
         }
-        else if (maketo->pointerClick(playerPointers[i]->getRect()) && enter) {
+        else if (maketo->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
             playerTexture[i]->setFront(&sdl->images().at("makt"));
             charactersSelect[i] = 3;
             keyRelease = false;
             lastPointerClick = playerInput[i];
+            selected[i] = true;
         }
         else if (minusB->pointerClick(playerPointers[i]->getRect()) && enter && numOfplayer > 2 && keyRelease) {
             numOfplayer--;
@@ -193,7 +199,21 @@ void ConfigState::update() {
         case -3:
             break;
         default:
-            if (!ih.xboxGetButtonState(lastPointerClick, SDL_CONTROLLER_BUTTON_A))keyRelease = true;
+            if (!ih.xboxGetButtonState(lastPointerClick, SDL_CONTROLLER_BUTTON_B))keyRelease = true;
+            break;
+        }
+    }
+    for (auto i = 0; i < playerInput.size(); i++) {
+        switch (playerInput[i])
+        {
+        case -1:
+            if (ih.isKeyDown(SDLK_r))selected[i] = false;
+            break;
+        case -2:
+            if (ih.isKeyDown(SDLK_k))selected[i] = false;
+            break;
+        default:
+            if (ih.xboxGetButtonState(playerInput[i], SDL_CONTROLLER_BUTTON_A))selected[i] = false;
             break;
         }
     }
@@ -224,8 +244,38 @@ void ConfigState::update() {
         numOfplayer++;
         charactersSelect.resize(playerInput.size());
     }
+    for (auto i = 0u; i < numOfplayer; i++) {
+        if (!selected[i]) {
+            ready = false;
+            return;
+        }
+        ready = true;
+    }
     //Empezar la partida
-    if (ih.isKeyDown(SDLK_RETURN))fmngr->getState()->next();
+    if (ready) {
+        if (play->mouseClick())fmngr->getState()->next();
+        for (auto i = 0; i < playerInput.size(); i++) {
+            bool enter = false;
+            switch (playerInput[i])
+            {
+            case -1:
+                if (ih.isKeyDown(SDLK_e))enter = true;
+                break;
+            case -2:
+                if (ih.isKeyDown(SDLK_l))enter = true;
+                break;
+            default:
+                if (ih.xboxGetButtonState(playerInput[i], SDL_CONTROLLER_BUTTON_B))enter = true;
+                break;
+            }
+            if (play->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
+                fmngr->getState()->next();
+            }
+        }
+    }
+ 
+  
+    //if (ih.isKeyDown(SDLK_RETURN))fmngr->getState()->next();
 }
 
 void ConfigState::draw() {
@@ -238,6 +288,8 @@ void ConfigState::draw() {
         int dist = (w-ts(50)) / numOfplayer;
         int offset = dist - ts(110);
         playerTexture[i]->render((int)(i*dist + offset), (int)ts(200), (int)ts(110), (int)ts(80));
+        if(selected[i])
+        showText("Selected", ts(8), (int)(i * dist + offset + ts(30)), (int)ts(265), build_sdlcolor(0x00FF0000));
     }
     zero->render();
     gatoespia->render();
@@ -245,6 +297,8 @@ void ConfigState::draw() {
     maketo->render();
     plusB->render();
     minusB->render();
+    if(ready)
+    play->render();
     for (auto e : playerPointers)e->render();
     sdl->presentRenderer();
 }
