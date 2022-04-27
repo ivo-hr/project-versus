@@ -12,7 +12,7 @@ class ConfigState : public State {
     bool charsel = false;
     bool searchGamepad = false;
     bool keyRelease = true;
-
+    int lastPointerClick = -3;
 
     vector<int> playerInput;
     vector<int> charactersSelect;

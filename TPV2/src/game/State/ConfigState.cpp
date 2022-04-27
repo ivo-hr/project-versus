@@ -132,21 +132,25 @@ void ConfigState::update() {
             playerTexture[i]->setFront(&sdl->images().at("zero"));
             charactersSelect[i] = 0;
             keyRelease = false;
+            lastPointerClick = playerInput[i];
         }
         else if (gatoespia->pointerClick(playerPointers[i]->getRect()) && enter) {
             playerTexture[i]->setFront(&sdl->images().at("blinkMaster"));
             charactersSelect[i] = 1;
             keyRelease = false;
+            lastPointerClick = playerInput[i];
         }
         else if (togo->pointerClick(playerPointers[i]->getRect()) && enter) {
             playerTexture[i]->setFront(&sdl->images().at("dinoSouls"));
             charactersSelect[i] = 2;
             keyRelease = false;
+            lastPointerClick = playerInput[i];
         }
         else if (maketo->pointerClick(playerPointers[i]->getRect()) && enter) {
             playerTexture[i]->setFront(&sdl->images().at("makt"));
             charactersSelect[i] = 3;
             keyRelease = false;
+            lastPointerClick = playerInput[i];
         }
         else if (minusB->pointerClick(playerPointers[i]->getRect()) && enter && numOfplayer > 2 && keyRelease) {
             numOfplayer--;
@@ -170,13 +174,15 @@ void ConfigState::update() {
             }
             charactersSelect.resize(playerInput.size());
             keyRelease = false;
+            lastPointerClick = playerInput[i];
         }
         else if (plusB->pointerClick(playerPointers[i]->getRect()) && enter && numOfplayer < 4 && keyRelease) {
             numOfplayer++;
             charactersSelect.resize(playerInput.size());
             keyRelease = false;
+            lastPointerClick = playerInput[i];
         }
-        switch (playerInput[i])
+        switch (lastPointerClick)
         {
         case -1:
             if (!ih.isKeyDown(SDLK_e))keyRelease = true;
@@ -184,8 +190,10 @@ void ConfigState::update() {
         case -2:
             if (!ih.isKeyDown(SDLK_l))keyRelease = true;
             break;
+        case -3:
+            break;
         default:
-            if (!ih.xboxGetButtonState(playerInput[i], SDL_CONTROLLER_BUTTON_A))keyRelease = true;
+            if (!ih.xboxGetButtonState(lastPointerClick, SDL_CONTROLLER_BUTTON_A))keyRelease = true;
             break;
         }
     }
