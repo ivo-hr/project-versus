@@ -27,7 +27,15 @@ PlayingState::PlayingState(FightManager* game, vector<int>player, vector<int>cha
 		case 2://Togo
 			entities.push_back(new Togo(fmngr, new Vector2D(20+i * 10, 0), player[i]));
 			break;
-
+		case 3: //Maketo
+			//entities.push_back(new CharacterZero(fmngr, new Vector2D(20 + i * 10, 0), player[i]));
+			break;
+		case 4://Nasnas
+			//entities.push_back(new GatoEspia(fmngr, new Vector2D(20 + i * 10, 0), player[i]));
+			break;
+		case 5://Aleatorio
+			//entities.push_back(new Togo(fmngr, new Vector2D(20 + i * 10, 0), player[i]));
+			break;
 		}
 	}
 

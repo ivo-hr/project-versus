@@ -9,15 +9,33 @@ MenuState::MenuState(FightManager* game) : State(game) {
     int h = fmngr->GetActualHeight();
     background = &sdl->images().at("menu");
 
-    playBut = new Button(&sdl->images().at("play"), w/2-200, h/ 2+100, 300, 200);
-    playBut->setPressTexture(&sdl->images().at("playP"));
-
     sdl->musics().at("main").play();
 }
 
 void MenuState::update() {
-    if(ih.isKeyDown(SDLK_SPACE) && ih.keyDownEvent())fmngr->getState()->next();
-    else if(playBut->mouseClick())fmngr->getState()->next();
+    for (auto i = 0u; i < SDL_NumJoysticks(); i++) {
+        if (ih.xboxGetAxesState(i, 1) == -1) {
+            std::cout << i << std::endl;
+            Finput = i;
+            fmngr->getState()->next();
+            return;
+        }
+    }
+    if (ih.isKeyDown(SDLK_w) && ih.keyDownEvent()) {
+        Finput = -1;
+        fmngr->getState()->next();
+        return;
+    }
+    if (ih.isKeyDown(SDLK_UP) && ih.keyDownEvent()) {
+        Finput = -2;
+        fmngr->getState()->next();
+        return;
+    }
+    
+    if (textTimer + 800 < SDL_GetTicks() ) {
+        textTimer = SDL_GetTicks();
+        drawText = !drawText;
+    }
 }
 
 void MenuState::draw() {
@@ -25,13 +43,14 @@ void MenuState::draw() {
     int h = fmngr->GetActualHeight();
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
-    playBut->render();
+    if (drawText)
+        showText(" Pulse Flecha Arriba o la Tecla W o Joystick Arriba en su mando", ts(8), ts(80), ts(220), build_sdlcolor(0x112233ff));
     sdl->presentRenderer();  
 }
 
 void MenuState::next() {
     delete playBut;
     cout << "Next State " << endl;
-    fmngr->setState(new ConfigState(fmngr));
+    fmngr->setState(new ConfigState(fmngr,Finput));
     delete this;
 }

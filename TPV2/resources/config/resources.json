@@ -7,9 +7,7 @@
   ],
   
   "images" : [
-    { "id" : "sdl_logo", "file" : "resources/images/SDL_logo.png" },
     { "id" : "pause", "file" : "resources/images/Pause.png" },
-    { "id" : "tennis_ball", "file" : "resources/images/tennis_ball.png" },
     { "id" : "star", "file" : "resources/images/star.png"},
     { "id" : "makt", "file" : "resources/images/Maketo.png"},
     { "id" : "zero", "file" : "resources/images/CharZeroSheet.png"},
@@ -24,12 +22,21 @@
     { "id" : "killHit", "file" : "resources/images/kill.png"},
     { "id" : "killVfx", "file" : "resources/images/kill2.png"},
     { "id" : "menu", "file" : "resources/images/menu.png"},
-    { "id" : "play", "file" : "resources/images/play.png"},
-    { "id" : "playP", "file" : "resources/images/playPress.png"},
-    { "id" : "exp", "file" : "resources/images/Exp.png"},
-    { "id" : "next", "file" : "resources/images/next.png"},
-    { "id" : "back", "file" : "resources/images/back.png"},
-    { "id" : "run", "file" : "resources/images/runSmoke.png"}
+    { "id" : "run", "file" : "resources/images/runSmoke.png"},
+    { "id" : "play", "file" : "resources/images/Play.png"},
+    { "id" : "selectbg", "file" : "resources/images/SelectMenu.png"},
+    { "id" : "P1", "file" : "resources/images/P1.png"},
+    { "id" : "P2", "file" : "resources/images/P2.png"},
+    { "id" : "P3", "file" : "resources/images/P3.png"},
+    { "id" : "P4", "file" : "resources/images/P4.png"},
+    { "id" : "P1P", "file" : "resources/images/P1P.png"},
+    { "id" : "P2P", "file" : "resources/images/P2P.png"},
+    { "id" : "P3P", "file" : "resources/images/P3P.png"},
+    { "id" : "P4P", "file" : "resources/images/P4P.png"},
+    { "id" : "k1", "file" : "resources/images/tWASD.png"},
+    { "id" : "k2", "file" : "resources/images/tFlecha.png"},
+    { "id" : "Mando", "file" : "resources/images/mando.png"}
+
 
   ],
   

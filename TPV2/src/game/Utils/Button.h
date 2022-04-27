@@ -24,6 +24,7 @@ public:
 	void render();
 	bool mouseClick();
 	void setUnrendered() { rendered = false; };
+	bool pointerClick(SDL_Rect rect);
 	SDL_Rect getRect();
 };
 

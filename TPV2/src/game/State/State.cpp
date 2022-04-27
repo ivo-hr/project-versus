@@ -43,6 +43,11 @@ void State::showText(string s, int size, int x, int y, SDL_Color c, SDL_Color b)
     tex->render(x, y);
 }
 
+double State::ts(double i)
+{
+    return i * fmngr->GetScreeAdjust();
+}
+
 void State::jump(State* state) {
     fmngr->setState(state);
     delete tex;

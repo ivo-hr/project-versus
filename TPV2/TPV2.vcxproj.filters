@@ -204,6 +204,12 @@
     <ClInclude Include="src\game\Characters\NasNas\Spell.h">
       <Filter>Header Files\game\Characters</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\Utils\PlayerPointer.h">
+      <Filter>Header Files\game\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\Utils\PlayerSelectRect.h">
+      <Filter>Header Files\game\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">
@@ -316,6 +322,12 @@
     </ClCompile>
     <ClCompile Include="src\game\Characters\NasNas\Spell.cpp">
       <Filter>Source Files\game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Utils\PlayerPointer.cpp">
+      <Filter>Source Files\game\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Utils\PlayerSelectRect.cpp">
+      <Filter>Source Files\game\Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

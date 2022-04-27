@@ -5,6 +5,9 @@
 class MenuState : public State {
     Texture* background;
     Button* playBut;
+    int Finput = -3;
+    Uint32 textTimer = 0;
+    bool drawText = false;
 public:
 
     MenuState(FightManager* game);

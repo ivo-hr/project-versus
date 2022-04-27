@@ -41,3 +41,9 @@ SDL_Rect Button::getRect()
 	SDL_Rect r = build_sdlrect(x, y, w, h);
 	return r;
 }
+
+bool Button::pointerClick(SDL_Rect rect)
+{
+	SDL_Rect r = build_sdlrect(x, y, w, h);
+	return SDL_HasIntersection(&r, &rect);
+}
