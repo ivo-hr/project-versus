@@ -88,7 +88,7 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 	listener = new MyListener();
 	stage = new Stage(sdl, listener, screenAdjust, step, "resources/config/stage1.json");
 
-	camera = { 100, 100, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
+	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
 
 	this->screenAdjust = screenAdjust;
 
@@ -129,22 +129,17 @@ void FightManager::Update()
 
 	stage->GetWorld()->Step(step, 1, 1);
 
-	for (Particle* part : particulas)
-	{
-		part->draw(&camera);
-		part->update();
-	}
 	for (auto i = 0u; i < entities.size(); i++)
 	{
 		entities[i]->update();
 	}
-	for (Entity* ent : entities)
-	{
-		ent->CheckHits();
-	}
 	for (int i = entities.size() - 1; i >= 0; i--)
 	{
 		entities[i]->draw(&camera);
+	}
+	for (Entity* ent : entities)
+	{
+		ent->CheckHits();
 	}
 
 	while (addedDelay > 0)
@@ -166,17 +161,9 @@ void FightManager::Update()
 
 		stage->Update(&hitLagCam);
 
-		for (Particle* part : particulas)
-		{
-			part->draw(&hitLagCam);
-			part->update();
-		}
-		for (Entity* ent : entities)
-		{
-			ent->updateParticles();
-		}
 		for (int i = entities.size() - 1; i >= 0; i--)
 		{
+			entities[i]->updateParticles();
 			entities[i]->draw(&hitLagCam);
 		}
 		// present new frame
@@ -206,9 +193,10 @@ int FightManager::StartFight(std::vector<Entity*> ent)
 	entities = ent;
 	characters = ent;
 
-	for (auto e : entities) {
-		e->SetOponents(entities);
-		listener->AddCharacter(e);
+	for (auto i = 0u; i < entities.size(); i++) {
+		entities[i]->SetOponents(entities);
+		listener->AddCharacter(entities[i]);
+		entities[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
 	}
 	sdl->musics().at("cube").play();
 	//Music::setMusicVolume(1);
@@ -287,28 +275,6 @@ void FightManager::AddOponnent(Entity* ent, Entity* ignore)
 	}
 }
 
-void FightManager::AddParticle(Particle* par)
-{
-	particulas.push_back(par);
-}
-
-bool FightManager::RemoveParticle(Particle* par)
-{
-	for (int i = 0; i < particulas.size(); i++)
-	{
-		if (particulas[i] == par)
-		{
-			for (int j = i + 1; j < particulas.size(); j++)
-			{
-				particulas[j - 1] = particulas[j];
-			}
-			particulas.pop_back();
-		}
-	}
-	delete par;
-	return false;
-}
-
 void FightManager::HitLag(int frames)
 {
 	if (addedDelay < frames)
@@ -321,15 +287,11 @@ void FightManager::HitLag(int frames)
 	hitLagCam.y += addedDelay * 0.2f * (camera.w * 0.005f);
 }
 
-void FightManager::KillingBlow(Vector2D dead)
+void FightManager::KillingBlow()
 {
 	HitLag(40);
-	AddParticle(new Particle(
-		&dead,
-		1, "killVfx", this));
-	AddParticle(new Particle(
-		&dead,
-		1, "killHit", this));
+
+	sdl->soundEffects().at("hitKill").play();
 }
 
 void FightManager::FighterLost(Entity* loser)

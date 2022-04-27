@@ -1,6 +1,7 @@
 ﻿#include "Togo.h"
 #include "../../Utils/AnimationManager.h"
 #include "../../../json/json.hpp"
+#include "../../Utils/Particle.h"
 #include "Spear.h"
 #include "DinoShield.h"
 #include <fstream>
@@ -444,9 +445,18 @@ bool Togo::GetHit(attackData a, Entity* attacker)
 
 		if (recoil > 100)
 		{
-			manager->KillingBlow(Vector2D(
-				manager->ToSDL(body->GetPosition().x),
-				manager->ToSDL(body->GetPosition().y)));
+			manager->KillingBlow();
+
+			AddParticle(new Particle(
+				Vector2D(
+					manager->ToSDL(body->GetPosition().x),
+					manager->ToSDL(body->GetPosition().y)),
+				1, "killVfx", this));
+			AddParticle(new Particle(
+				Vector2D(
+					manager->ToSDL(body->GetPosition().x),
+					manager->ToSDL(body->GetPosition().y)),
+				1, "killHit", this));
 		}
 
 		aux *= recoil;

@@ -28,7 +28,7 @@ PlayingState::PlayingState(FightManager* game, vector<int>player, vector<int>cha
 			entities.push_back(new Togo(fmngr, new Vector2D(20+i * 10, 0), player[i]));
 			break;
 		case 3: //Maketo
-			//entities.push_back(new CharacterZero(fmngr, new Vector2D(20 + i * 10, 0), player[i]));
+			entities.push_back(new Makt(fmngr, new Vector2D(20 + i * 10, 0), player[i]));
 			break;
 		case 4://Nasnas
 			//entities.push_back(new GatoEspia(fmngr, new Vector2D(20 + i * 10, 0), player[i]));
@@ -38,9 +38,6 @@ PlayingState::PlayingState(FightManager* game, vector<int>player, vector<int>cha
 			break;
 		}
 	}
-
-	//entities.push_back(new Togo(fmngr, new Vector2D(20, 0), 2));
-	//entities.push_back(new GatoEspia(fmngr, new Vector2D(30, 0), 1));
 
 	fmngr->StartFight(entities);
 
