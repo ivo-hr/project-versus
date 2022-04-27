@@ -35,8 +35,9 @@
     { "id" : "P4P", "file" : "resources/images/P4P.png"},
     { "id" : "k1", "file" : "resources/images/tWASD.png"},
     { "id" : "k2", "file" : "resources/images/tFlecha.png"},
-    { "id" : "Mando", "file" : "resources/images/mando.png"}
-
+    { "id" : "Mando", "file" : "resources/images/mando.png"},
+    { "id" : "pB", "file" : "resources/images/pB.png"},
+    { "id" : "mB", "file" : "resources/images/mB.png"}
 
   ],
   

@@ -14,7 +14,7 @@ public:
 
 	Button():tex(nullptr),x(0),y(0),w(0),h(0),pressed(false) {};
 	Button(Texture* t,int x,int y,int width,int height) :tex(t), x(x),y(y),w(width),h(height),pressed(false){};
-
+	
 	void setPressTexture(Texture* t) { presstex = t; };
 	void setTexture(Texture* t) { tex = t; };
 	void setX(int x0) { x = x0; };

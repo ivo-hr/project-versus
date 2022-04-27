@@ -5,18 +5,15 @@
 #include "../Utils/PlayerSelectRect.h"
 
 class ConfigState : public State {
-    Texture* background, *exp;
+    Texture* background;
     int numOfplayer;
-    Button *zero, *gatoespia, *maketo ,*togo , *nasnas ,*aleatorio;
+    Button *zero, *gatoespia, *maketo ,*togo , *nasnas ,*aleatorio , *plusB, *minusB;
 
-    int sel = 0;
-    int key = 0;
-    int nesn = 0;
-    int xboxn = 0;
     bool charsel = false;
     bool searchGamepad = false;
- 
-    int k = -1;
+    bool keyRelease = true;
+
+
     vector<int> playerInput;
     vector<int> charactersSelect;
     vector<bool> usedPad;
@@ -28,7 +25,7 @@ class ConfigState : public State {
 public:
 
     ConfigState(FightManager* game , int fInput) ;
-    ~ConfigState() = default;
+    ~ConfigState();
 
     void update() override;
     void draw() override;

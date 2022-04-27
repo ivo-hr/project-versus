@@ -49,7 +49,6 @@ void MenuState::draw() {
 }
 
 void MenuState::next() {
-    delete playBut;
     cout << "Next State " << endl;
     fmngr->setState(new ConfigState(fmngr,Finput));
     delete this;

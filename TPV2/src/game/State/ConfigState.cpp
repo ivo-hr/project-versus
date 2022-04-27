@@ -7,17 +7,14 @@
 
 ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfplayer(2) {
     background = &sdl->images().at("selectbg");
-    //keyb = new Button(&sdl->images().at("fondo"), 0, 0, ts(30), ts(30));
-    //nes = new Button(&sdl->images().at("pause"), 0, 0, ts(30), ts(30));
-    //xbox = new Button(&sdl->images().at("star"), 0, 0, ts(30), ts(30));
-    //play = new Button(&sdl->images().at("play"),ts(400), ts(250), ts(60), ts(30));
-    //nextb = new Button(&sdl->images().at("next"), ts(400), ts(250), ts(60), ts(30));
-    //back = new Button(&sdl->images().at("back"), ts(20), ts(250), ts(60), ts(30));
+    aleatorio = nullptr;
+    nasnas = nullptr;
     zero = new Button(&sdl->images().at("zero"), ts(30), ts(50), ts(30), ts(30));
     gatoespia = new Button(&sdl->images().at("blinkMaster"), ts(90), ts(50), ts(30), ts(30));
     maketo = new Button(&sdl->images().at("makt"), ts(150), ts(50), ts(30), ts(30));
     togo = new Button(&sdl->images().at("dinoSouls"), ts(210), ts(50), ts(30), ts(30));
-
+    plusB = new Button(&sdl->images().at("pB"), ts(490), ts(210), ts(20), ts(30));
+    minusB = new Button(&sdl->images().at("mB"), ts(490), ts(240), ts(20), ts(30));
    
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P1")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P2")));
@@ -47,8 +44,23 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     sdl->musics().at("sawtines").play();
 }
 
+ConfigState::~ConfigState()
+{
+    delete zero;
+    delete gatoespia;
+    delete maketo;
+    delete togo;
+    delete nasnas;
+    delete aleatorio;
+    delete plusB;
+    delete minusB;
+    for (auto e : playerPointers)delete e;
+    for (auto e : playerTexture)delete e;
+    for (auto e : charactTexture)delete e;
+}
+
 void ConfigState::update() {
-    
+    //Si hay algun input pendiente , buscarlo
     if (playerInput.size()<numOfplayer) {
         for (auto i = 0u; i < SDL_NumJoysticks(); i++) {
             if (ih.xboxGetAxesState(i, 1) == -1 && !usedPad[i]) {
@@ -57,10 +69,7 @@ void ConfigState::update() {
                 playerPointers[playerInput.size() - 1]->setActive(true);
                 playerTexture[playerInput.size() - 1]->setgotInput(true);
                 playerTexture[playerInput.size() - 1]->setFront(&sdl->images().at("Mando"));
-           /*     searchGamepad = false;
-                if (sel < numOfplayer && !searchGamepad)
-                    sel++;
-                return;*/
+                charactersSelect.resize(playerInput.size());
                 return;
             }
         }
@@ -78,8 +87,9 @@ void ConfigState::update() {
             playerTexture[playerInput.size() - 1]->setgotInput(true);
             playerTexture[playerInput.size() - 1]->setFront(&sdl->images().at("k1"));
         }
+        charactersSelect.resize(playerInput.size());
     }
-
+    //Movimiento de los punteros
     for (auto i = 0; i < playerInput.size(); i++) {
         switch (playerInput[i])
         {
@@ -103,7 +113,7 @@ void ConfigState::update() {
             break;
         }
     }
-    
+    //Comprobacion de punteros con los botones
     for (auto i = 0; i < playerInput.size(); i++) {
         bool enter = false;
         switch (playerInput[i])
@@ -115,101 +125,99 @@ void ConfigState::update() {
             if (ih.isKeyDown(SDLK_l))enter = true;
             break;
         default:
-            if( ih.xboxGetButtonState(i, SDL_CONTROLLER_BUTTON_A))enter = true;
+            if( ih.xboxGetButtonState(playerInput[i], SDL_CONTROLLER_BUTTON_A))enter = true;
             break;
         }
-        if (zero->pointerClick(playerPointers[i]->getRect())&&enter) {
+        if (zero->pointerClick(playerPointers[i]->getRect())&&enter && keyRelease) {
             playerTexture[i]->setFront(&sdl->images().at("zero"));
             charactersSelect[i] = 0;
+            keyRelease = false;
         }
-        if (gatoespia->pointerClick(playerPointers[i]->getRect()) && enter) {
+        else if (gatoespia->pointerClick(playerPointers[i]->getRect()) && enter) {
             playerTexture[i]->setFront(&sdl->images().at("blinkMaster"));
             charactersSelect[i] = 1;
+            keyRelease = false;
         }
-        if (togo->pointerClick(playerPointers[i]->getRect()) && enter) {
+        else if (togo->pointerClick(playerPointers[i]->getRect()) && enter) {
             playerTexture[i]->setFront(&sdl->images().at("dinoSouls"));
             charactersSelect[i] = 2;
+            keyRelease = false;
         }
-        if (maketo->pointerClick(playerPointers[i]->getRect()) && enter) {
+        else if (maketo->pointerClick(playerPointers[i]->getRect()) && enter) {
             playerTexture[i]->setFront(&sdl->images().at("makt"));
             charactersSelect[i] = 3;
+            keyRelease = false;
+        }
+        else if (minusB->pointerClick(playerPointers[i]->getRect()) && enter && numOfplayer > 2 && keyRelease) {
+            numOfplayer--;
+
+            if (playerInput.size() > numOfplayer) {
+                switch (playerInput[playerInput.size() - 1])
+                {
+                case -1:
+                    usedKeyboard[0] = false;
+                    break;
+                case -2:
+                    usedKeyboard[1] = false;
+                    break;
+                default:
+                    usedPad[playerInput[playerInput.size() - 1]] = false;
+                    break;
+                }
+                playerInput.resize(numOfplayer);
+                playerPointers[playerInput.size()]->setActive(false);
+                playerTexture[playerInput.size()]->setgotInput(false);
+            }
+            charactersSelect.resize(playerInput.size());
+            keyRelease = false;
+        }
+        else if (plusB->pointerClick(playerPointers[i]->getRect()) && enter && numOfplayer < 4 && keyRelease) {
+            numOfplayer++;
+            charactersSelect.resize(playerInput.size());
+            keyRelease = false;
+        }
+        switch (playerInput[i])
+        {
+        case -1:
+            if (!ih.isKeyDown(SDLK_e))keyRelease = true;
+            break;
+        case -2:
+            if (!ih.isKeyDown(SDLK_l))keyRelease = true;
+            break;
+        default:
+            if (!ih.xboxGetButtonState(playerInput[i], SDL_CONTROLLER_BUTTON_A))keyRelease = true;
+            break;
         }
     }
-    if(ih.isKeyDown(SDLK_RETURN))fmngr->getState()->next();
+    //Para +- numPlayer con el raton
+    if (minusB->mouseClick()  && numOfplayer > 2) {
+        numOfplayer--;
 
-    //if (ih.isKeyDown(SDLK_LEFT) && ih.keyDownEvent() && numOfplayer > 2) {
-    //    sel = 0;
-    //    numOfplayer--;
-
-    //    if(numOfplayer > playerInput.size())
-    //    switch (playerInput[playerInput.size()-1])
-    //    {
-    //    case -1:
-    //        usedKeyboard[0] = false;
-    //        break;
-    //    case -2:
-    //        usedKeyboard[1] = false;
-    //        break;
-    //    default:
-    //        usedPad[playerInput[playerInput.size()-1]] = false;
-    //        break;
-    //    }
-    //   
-    //    playerInput.resize(numOfplayer);
-    //    playerPointers[playerInput.size()]->setActive(false);
-
-    //    //usedPad.clear();
-    //    //usedPad.resize(SDL_NumJoysticks());
-
-    //    charactersSelect.resize(numOfplayer);
-    //}
-    //else if (ih.isKeyDown(SDLK_RIGHT) && ih.keyDownEvent() && numOfplayer < 4) {
-    //    sel = 0;
-    //    numOfplayer++;
-    //    charactersSelect.resize(numOfplayer);
-    //}
-
-
-
-    //if (keyb->mouseClick()) {
-    //    if (!charsel && k >= -2) {
-    //        player[sel] = k;
-    //        k--;
-    //    }
-    //    else
-    //        charact[sel] = 0;
-    //    if (sel < numOfplayer)
-    //        sel++;
-    //}
-    //else if(nes->mouseClick())
-    //{
-    //    if (!charsel) {
-    //        searchGamepad = true;
-    //    }
-    //    else
-    //        charact[sel] = 1;
-    //    if (sel < numOfplayer && !searchGamepad) {
-    //        sel++;
-    //    }
-    //}
-    //else if (xbox->mouseClick()) {
-    //    if(!charsel)
-    //        searchGamepad = true;
-    //    else
-    //    charact[sel] = 2;
-    //    if (sel < numOfplayer && !searchGamepad)
-    //    sel++;
-    //}
-   
-    //if (nextb->mouseClick()) {
-    //    charsel = true;
-    //    sel = 0;
-    //}
-    //if (back->mouseClick()){
-    //    charsel = false;
-    //    sel = 0;
-    //}
-    //if (play->mouseClick())fmngr->getState()->next();
+        if (playerInput.size()>numOfplayer) {
+            switch (playerInput[playerInput.size() - 1])
+            {
+            case -1:
+                usedKeyboard[0] = false;
+                break;
+            case -2:
+                usedKeyboard[1] = false;
+                break;
+            default:
+                usedPad[playerInput[playerInput.size() - 1]] = false;
+                break;
+            }
+            playerInput.resize(numOfplayer);
+            playerPointers[playerInput.size()]->setActive(false);
+            playerTexture[playerInput.size()]->setgotInput(false);
+        }
+        charactersSelect.resize(playerInput.size());
+    }
+    else if (plusB->mouseClick()  && numOfplayer < 4) {
+        numOfplayer++;
+        charactersSelect.resize(playerInput.size());
+    }
+    //Empezar la partida
+    if (ih.isKeyDown(SDLK_RETURN))fmngr->getState()->next();
 }
 
 void ConfigState::draw() {
@@ -222,31 +230,13 @@ void ConfigState::draw() {
         int dist = (w-ts(50)) / numOfplayer;
         int offset = dist - ts(110);
         playerTexture[i]->render((int)(i*dist + offset), (int)ts(200), (int)ts(110), (int)ts(80));
-        //int wOFF = ts(100);
-        //int hOFF = ts(50);
-        //showText(" Player "+ to_string(i+1) , ts(8) , wOFF, h/2- wOFF +i* hOFF, build_sdlcolor(0x112233ff));
-        //if (i == sel) {
-        //    keyb->setX(wOFF + hOFF+ts(5)); keyb->setY(h / 2 - wOFF + i * hOFF);
-        //    nes->setX(wOFF + hOFF*2 + ts(5)); nes->setY(h / 2 - wOFF + i * hOFF);
-        //    xbox->setX(wOFF + hOFF*3 + ts(5)); xbox->setY(h / 2 - wOFF + i * hOFF);
-        //    keyb->render();
-        //    nes->render();
-        //    xbox->render();
-        //}
     }
     zero->render();
     gatoespia->render();
     togo->render();
     maketo->render();
-    //if (sel == numOfplayer) {
-    //    if(charsel)play->render();
-    //    else {
-    //      /*  nextb->render();
-    //        back->render();*/
-    //    }
-    //}
-    if (searchGamepad)
-        showText("Pulsa Joystick arriba en el mando que vas a usar", ts(8), w / 4, ts(50), build_sdlcolor(0x112233ff), build_sdlcolor(0xffffffff));
+    plusB->render();
+    minusB->render();
     for (auto e : playerPointers)e->render();
     sdl->presentRenderer();
 }
