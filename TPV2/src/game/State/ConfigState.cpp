@@ -13,8 +13,8 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     gatoespia = new Button(&sdl->images().at("blinkMaster"), ts(90), ts(50), ts(30), ts(30));
     maketo = new Button(&sdl->images().at("makt"), ts(150), ts(50), ts(30), ts(30));
     togo = new Button(&sdl->images().at("dinoSouls"), ts(210), ts(50), ts(30), ts(30));
-    plusB = new Button(&sdl->images().at("pB"), ts(490), ts(210), ts(20), ts(30));
-    minusB = new Button(&sdl->images().at("mB"), ts(490), ts(240), ts(20), ts(30));
+    plusB = new Button(&sdl->images().at("pB"), ts(480), ts(210), ts(30), ts(30));
+    minusB = new Button(&sdl->images().at("mB"), ts(480), ts(240), ts(30), ts(30));
     play = new Button(&sdl->images().at("play"), ts(150), ts(40), ts(200), ts(150));
    
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P1")));
