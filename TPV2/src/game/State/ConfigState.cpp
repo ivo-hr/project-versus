@@ -289,7 +289,7 @@ void ConfigState::draw() {
         int offset = dist - ts(110);
         playerTexture[i]->render((int)(i*dist + offset), (int)ts(200), (int)ts(110), (int)ts(80));
         if(selected[i])
-        showText("Selected", ts(8), (int)(i * dist + offset + ts(30)), (int)ts(265), build_sdlcolor(0x00FF0000));
+        showText("Selected", ts(8), (int)(i * dist + offset + ts(30)), (int)ts(270), build_sdlcolor(0x00FF0000));
     }
     zero->render();
     gatoespia->render();
