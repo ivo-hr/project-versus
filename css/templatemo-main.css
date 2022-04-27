@@ -12,6 +12,11 @@ p {
   font-family: Bal;
 }
 
+mini{
+  font-size: 10px;
+  font-family: Bal;
+}
+
 section {
   padding: 25px 0 35px;
   background: rgb(179, 68, 68);
