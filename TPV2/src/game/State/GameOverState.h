@@ -10,10 +10,10 @@ class GameOverState : public State {
     vector<Texture*>winnersTextures_;
     Button* playAgain;
     PlayerPointer* pointer;
-    vector<int>playersInput_;
+    int playersInput_;
 
 public:
-    GameOverState(FightManager* fmngr, vector<Texture*>winnersTextures, vector<int>playersInput);
+    GameOverState(FightManager* fmngr, vector<Texture*>winnersTextures, int playersInput);
     ~GameOverState();
 
     void update() override;

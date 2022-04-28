@@ -104,6 +104,7 @@ Character::Character(FightManager* manager, Vector2D* pos, char input, float w, 
 	dash = false;
 	lives = 3;
 	this->input = new InputConfig(input);
+	input_ = input;
 }
 
 Character::~Character()

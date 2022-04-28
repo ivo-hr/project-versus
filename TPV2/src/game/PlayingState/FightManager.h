@@ -65,6 +65,8 @@ class FightManager :public StateMachine
 
 	vector<Texture*>winnersTextures;
 
+	int winnerInput;
+
 public:
 
 	FightManager(SDLUtils* sdl, double screenAdjust);
@@ -108,4 +110,6 @@ public:
 	SDL_Rect* GetDeathZone() ;
 	b2World* GetWorld();
 	SDLUtils* GetSDLU() { return sdl; };
+
+	int getWinnerInput() { return winnerInput; }
 };

@@ -330,6 +330,7 @@ bool FightManager::RemoveCharacter(Character* character)
 	RemoveEntity(character);
 	if (characters.size() == 1) {
 		winnersTextures.push_back(characters[0]->getTexture());
+		winnerInput = characters[0]->getInput();
 		entities.clear();
 		characters.clear();
 		getState()->next();
@@ -418,6 +419,8 @@ b2World* FightManager::GetWorld()
 {
 	return stage->GetWorld();
 }
+
+
 
 SDL_Rect FightManager::GetSDLCoors(b2Body* body, float width, float height)
 {

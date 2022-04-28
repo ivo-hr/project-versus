@@ -66,6 +66,7 @@ protected:
 	enum state efEstado = none;
 	int stateCont = 0;
 //	void (Character::* currentMove)(int);
+	int input_;
 public:
 
 	Character(FightManager* manager, Vector2D* pos, char input, float w = 3.f, float h = 3.f);
@@ -128,4 +129,6 @@ public:
 
 	void StartMove(std::function<void(int)> newMove);
 	void ChangeMove(std::function<void(int)> newMove);
+
+	int getInput() { return input_; }
 };
