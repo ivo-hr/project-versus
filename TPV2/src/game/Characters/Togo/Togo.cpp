@@ -14,6 +14,7 @@ Togo::Togo(FightManager* mngr, Vector2D* pos, char input) : Character(mngr, pos,
 	ReadJson("resources/config/dino.json");
 	//guardamos la textura
 	texture = &sdl->images().at("dinoSouls");
+	portrait = &sdl->images().at("dinoSoulsSelect");
 
 	anim = new AnimationManager(this, texture, spData);
 }

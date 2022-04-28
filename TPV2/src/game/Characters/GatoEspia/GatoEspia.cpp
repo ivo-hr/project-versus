@@ -11,6 +11,7 @@ GatoEspia::GatoEspia(FightManager* mngr, Vector2D* pos, char input) : Character(
 	ReadJson("resources/config/gato.json");
 	//guardamos la textura
 	texture = &sdl->images().at("blinkMaster");
+	portrait = &sdl->images().at("blinkMasterSelect");
 	//smolH = &sdl->soundEffects().at("zeroSmolHit");
 
 	anim = new AnimationManager(this, texture, spData);
