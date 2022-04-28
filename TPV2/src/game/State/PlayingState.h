@@ -9,6 +9,7 @@ class PlayingState : public State {
 public:
 
     PlayingState(FightManager* fmngr , vector<int>player, vector<int>characters);
+    PlayingState(FightManager* fmngr, vector<int>player, vector<int>characters, vector<int>teams);
     ~PlayingState() = default;
 
     void update() override;

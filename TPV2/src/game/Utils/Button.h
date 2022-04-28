@@ -12,13 +12,16 @@ protected:
 	InputHandler& ih = *InputHandler::instance();
 	int x,y,w,h;
 	Texture* tex;
+	Texture* destex = nullptr;
 	Texture* presstex = nullptr;
 	bool pressed;
 	bool rendered = false;
+	bool activated = false;
 public:
 
 	Button():tex(nullptr),x(0),y(0),w(0),h(0),pressed(false) {};
 	Button(Texture* t,int x,int y,int width,int height) :tex(t), x(x),y(y),w(width),h(height),pressed(false){};
+	Button(Texture* t,Texture*dt, int x, int y, int width, int height) :tex(t), x(x), y(y), w(width), h(height), pressed(false),destex(dt) {};
 	
 	void setPressTexture(Texture* t) { presstex = t; };
 	void setTexture(Texture* t) { tex = t; };
@@ -30,6 +33,7 @@ public:
 	bool mouseClick();
 	void setUnrendered() { rendered = false; };
 	bool pointerClick(SDL_Rect rect);
+	void active(bool b) { activated = b; };
 	SDL_Rect getRect();
 };
 

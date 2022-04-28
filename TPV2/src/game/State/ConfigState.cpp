@@ -2,6 +2,7 @@
 #include "PlayingState.h"
 #include "../PlayingState/FightManager.h"
 
+
 ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfplayer(2) {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
@@ -15,7 +16,11 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     plusB = new Button(&sdl->images().at("pB"), ts(480), ts(210), ts(30), ts(30));
     minusB = new Button(&sdl->images().at("mB"), ts(480), ts(240), ts(30), ts(30));
     play = new PlayButton(&sdl->images().at("play"), 0, 0, w, h);
+    normalmode = new Button(&sdl->images().at("MNormalC"), &sdl->images().at("MNormalB"), ts(350), ts(2), ts(40), ts(20));
+    normalmode->active(true);
+    teammode = new Button(&sdl->images().at("MTeamC"), &sdl->images().at("MTeamB"), ts(400), ts(2), ts(40), ts(20));
    // play = new PlayButton(&sdl->images().at("play"), ts(130), ts(40), ts(250), ts(150));
+    configTeamChoose();
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P1")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P2")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P3")));
@@ -57,6 +62,8 @@ ConfigState::~ConfigState()
     delete plusB;
     delete minusB;
     delete play;
+    delete teammode;
+    delete normalmode;
     for (auto e : playerPointers)delete e;
     for (auto e : playerTexture)delete e;
     for (auto e : charactTexture)delete e;
@@ -189,6 +196,32 @@ void ConfigState::update() {
             keyRelease = false;
             lastPointerClick = playerInput[i];
         }
+        else if (normalmode->pointerClick(playerPointers[i]->getRect()) && enter  && keyRelease) {
+            TeamModebool = false;
+            normalmode->active(true);
+            teammode->active(false);
+        }
+        else if (teammode->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
+            TeamModebool = true;
+            normalmode->active(false);
+            teammode->active(true);
+        }
+        for (auto j = 0u; j < 2; j++) {
+            if (p[i][j]->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
+                if (j == 0) {
+                    p[i][1]->active(false);
+                    p[i][0]->active(true);
+                    charactersTeam[i] = 0;
+                }
+                else
+                {
+                    p[i][1]->active(true);
+                    p[i][0]->active(false);
+                    charactersTeam[i] = 1;
+                }
+            }
+        }
+        
         switch (lastPointerClick)
         {
         case -1:
@@ -245,6 +278,36 @@ void ConfigState::update() {
         numOfplayer++;
         charactersSelect.resize(playerInput.size());
     }
+    else if (normalmode->mouseClick() ) {
+        TeamModebool = false;
+        normalmode->active(true);
+        teammode->active(false);
+    }
+    else if (teammode->mouseClick() ) {
+        TeamModebool = true;
+        normalmode->active(false);
+        teammode->active(true);
+    }
+    for (auto i = 0u; i < playerInput.size(); i++) {
+        for (auto j = 0u; j < 2; j++) {
+            if (p[i][j]->mouseClick()) {
+                if (j == 0) {
+                    p[i][1]->active(false);
+                    p[i][0]->active(true);
+                    charactersTeam[i] = 0;
+                }
+                else
+                {
+                    p[i][1]->active(true);
+                    p[i][0]->active(false);
+                    charactersTeam[i] = 1;
+                }
+            }
+        }
+    }
+
+
+    //Empezar la partida
     for (auto i = 0u; i < numOfplayer; i++) {
         if (!selected[i]) {
             ready = false;
@@ -252,7 +315,7 @@ void ConfigState::update() {
         }
         ready = true;
     }
-    //Empezar la partida
+
     if (ready) {
         if (play->mouseClick())fmngr->getState()->next();
         for (auto i = 0; i < playerInput.size(); i++) {
@@ -284,13 +347,25 @@ void ConfigState::draw() {
     int h = fmngr->GetActualHeight();
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
-
+    int dist = (w - ts(50)) / numOfplayer;
+    int offset = dist - ts(110);
     for (auto i = 0u; i < numOfplayer; i++) {
-        int dist = (w-ts(50)) / numOfplayer;
-        int offset = dist - ts(110);
+ 
         playerTexture[i]->render((int)(i*dist + offset), (int)ts(200), (int)ts(110), (int)ts(80));
         if(selected[i])
-        showText("Selected", ts(8), (int)(i * dist + offset + ts(30)), (int)ts(270), build_sdlcolor(0x00FF0000));
+        showText("Selected", ts(8), (int)(i * dist + offset + ts(30)), (int)ts(250), build_sdlcolor(0x00FF0000));  
+    }
+
+    if (TeamModebool) {
+        for (auto i = 0u; i < playerInput.size(); i++) {
+
+            for (int j = 0; j < 2; j++)
+            {
+                p[i][j]->setX((i * dist + offset + ts(30) + j * ts(30)));
+                p[i][j]->setY((int)ts(260));
+                p[i][j]->render();
+            }
+        }
     }
     zero->render();
     gatoespia->render();
@@ -298,6 +373,8 @@ void ConfigState::draw() {
     maketo->render();
     plusB->render();
     minusB->render();
+    normalmode->render();
+    teammode->render();
     if (ready)
         play->render();
     for (auto e : playerPointers)e->render();
@@ -306,7 +383,13 @@ void ConfigState::draw() {
 
 void ConfigState::next() {
     cout << "Next State " << endl;
-    fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect));
+    if (!TeamModebool) {
+        fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect));
+    }
+    else
+    {
+        fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,charactersTeam));
+    }
     delete this;
 }
 
@@ -317,4 +400,19 @@ void ConfigState::setPointer()
     int offset = dist - ts(60);
     playerPointers[playerInput.size() - 1]->setActive(true);
     playerPointers[playerInput.size() - 1]->setPosition((playerInput.size() - 1) * dist + offset, 676);
+}
+void ConfigState::configTeamChoose()
+{
+    charactersTeam.resize(4);
+    for (int i = 0; i < 4; i++)
+    {
+        vector<Button*> p1;
+        p1.push_back(new Button(&sdl->images().at("T1C"), &sdl->images().at("T1B"), ts(350), ts(2), ts(20), ts(20)));
+        p1.push_back(new Button(&sdl->images().at("T2C"), &sdl->images().at("T2B"), ts(350), ts(2), ts(20), ts(20)));
+        p.push_back(p1);
+    }
+    for (int i = 0; i < 4; i++) {
+        p[i][0]->active(true);
+        charactersTeam[i] = 0;
+    }
 }
