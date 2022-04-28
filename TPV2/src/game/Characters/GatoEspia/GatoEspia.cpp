@@ -510,6 +510,7 @@ void GatoEspia::Respawn()
 {
 	Character::Respawn();
 	blinks = maxBlinks;
+	body->SetGravityScale(10.f);
 }
 
 

@@ -129,14 +129,18 @@ void Stage::Update(SDL_Rect* camera)
 
 	SDL_Rect auxDeath = deathZone;
 
-	auxDeath.x -= camera->x;
-	auxDeath.x *= (deathZone.w / (float)camera->w) * 0.6f;
+	auxDeath.w += auxDeath.w * 0.5f;
+	auxDeath.h += auxDeath.h * 0.5f;
 
-	auxDeath.y -= camera->y;
-	auxDeath.y *= (deathZone.h / (float)camera->h);
+	Vector2D camCenter = Vector2D(camera->x + camera->w / 2, camera->y + camera->h / 2);
 
-	auxDeath.w *= (deathZone.w / (float)camera->w);
-	auxDeath.h *= (deathZone.h / (float)camera->h);
+	auxDeath.x = (camCenter.getX() - deathZone.w / 2) * 0.5f;
+	auxDeath.x += deathZone.w / 2;
+	auxDeath.x -= (auxDeath.w * 0.5f);
+
+	auxDeath.y = (camCenter.getY() - deathZone.h / 2) * -0.2f;
+	auxDeath.y += deathZone.h / 2;
+	auxDeath.y -= (auxDeath.h * 0.5f);
 
 	background->render(auxDeath);
 
@@ -190,6 +194,15 @@ void Stage::Update(SDL_Rect* camera)
 
 		SDL_RenderDrawRect(sdl->renderer(), &auxPlat);
 	}
+	auxDeath = deathZone;
+	auxDeath.x -= camera->x;
+	auxDeath.x *= (deathZone.w / (float)camera->w);
+
+	auxDeath.y -= camera->y;
+	auxDeath.y *= (deathZone.h / (float)camera->h);
+
+	auxDeath.w *= (deathZone.w / (float)camera->w);
+	auxDeath.h *= (deathZone.h / (float)camera->h);
 	SDL_RenderDrawRect(sdl->renderer(), &auxDeath);
 
 #endif // _DEBUG
