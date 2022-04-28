@@ -63,6 +63,8 @@ class FightManager :public StateMachine
 
 	void MoveCamera();
 
+	vector<Texture*>winnersTextures;
+
 public:
 
 	FightManager(SDLUtils* sdl, double screenAdjust);
@@ -99,6 +101,8 @@ public:
 
 	double GetScreenRatio();
 	double GetScreeAdjust();
+
+	vector<Texture*>getWinnersTextures() { return winnersTextures; }
 
 	std::vector<Entity*> GetOponents(Entity* current);
 	SDL_Rect* GetDeathZone() ;

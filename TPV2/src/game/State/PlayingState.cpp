@@ -6,7 +6,7 @@
 #include "../Utils/MyListener.h"
 #include "../../../CharInclude.h"
 
-PlayingState::PlayingState(FightManager* game, vector<int>player, vector<int>characters) : State(game) {
+PlayingState::PlayingState(FightManager* game, vector<int>playersInput, vector<int>characters) : State(game) {
 	std::vector<Character*> entities;
 	std::vector<Character*> team1;
 	std::vector<Character*> team2;
@@ -16,22 +16,22 @@ PlayingState::PlayingState(FightManager* game, vector<int>player, vector<int>cha
 	// 4 y 5: mando PS4 o Xbox One
 
 	fmngr->LoadStage("resources/config/stage2.json");
-	
 
-	for (auto i = 0u; i < player.size(); i++) {
+
+	for (auto i = 0u; i < playersInput.size(); i++) {
 		switch (characters[i])
 		{
 		case 0: //zero
-			entities.push_back(new CharacterZero(fmngr, new Vector2D(20+i * 10, 0), player[i]));
+			entities.push_back(new CharacterZero(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
 			break;
 		case 1://Gato espia
-			entities.push_back(new GatoEspia(fmngr, new Vector2D(20+i*10, 0), player[i]));
+			entities.push_back(new GatoEspia(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
 			break;
 		case 2://Togo
-			entities.push_back(new Togo(fmngr, new Vector2D(20+i * 10, 0), player[i]));
+			entities.push_back(new Togo(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
 			break;
 		case 3: //Maketo
-			entities.push_back(new Makt(fmngr, new Vector2D(20 + i * 10, 0), player[i]));
+			entities.push_back(new Makt(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
 			break;
 		case 4://Nasnas
 			//entities.push_back(new GatoEspia(fmngr, new Vector2D(20 + i * 10, 0), player[i]));
@@ -41,8 +41,9 @@ PlayingState::PlayingState(FightManager* game, vector<int>player, vector<int>cha
 			break;
 		}
 	}
+	playersInput_ = playersInput;
 
-	//fmngr->StartFight(entities);
+
 	fmngr->StartFight(entities);
 
 }
@@ -57,7 +58,8 @@ void PlayingState::draw() {
 }
 
 void PlayingState::next() {
-    cout << "Next State " << endl;
-    fmngr->setState(new GameOverState(fmngr));
-    delete this;
+	cout << "Next State " << endl;
+	vector<Texture*>winnersTextures = fmngr->getWinnersTextures();
+	fmngr->setState(new GameOverState(fmngr, winnersTextures, playersInput_));
+	delete this;
 }
