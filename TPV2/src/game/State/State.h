@@ -16,6 +16,7 @@ protected:
     void showText(string s, int size, int x, int y, SDL_Color c, SDL_Color b);
     double ts(double i);//TO SCREEN
     Texture* tex;
+    vector<int> globalplayerInput;
 public:
     State(FightManager* fmngr) : fmngr(fmngr) ,tex(nullptr) {
     };

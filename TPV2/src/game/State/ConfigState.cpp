@@ -3,6 +3,8 @@
 #include "../PlayingState/FightManager.h"
 
 ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfplayer(2) {
+    int w = fmngr->GetActualWidth();
+    int h = fmngr->GetActualHeight();
     background = &sdl->images().at("selectbg");
     aleatorio = nullptr;
     nasnas = nullptr;
@@ -12,8 +14,8 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     togo = new Button(&sdl->images().at("dinoSoulsSelect"), ts(210), ts(50), ts(30), ts(30));
     plusB = new Button(&sdl->images().at("pB"), ts(480), ts(210), ts(30), ts(30));
     minusB = new Button(&sdl->images().at("mB"), ts(480), ts(240), ts(30), ts(30));
-    play = new Button(&sdl->images().at("play"), ts(150), ts(40), ts(200), ts(150));
-   
+    play = new PlayButton(&sdl->images().at("play"), 0, 0, w, h);
+   // play = new PlayButton(&sdl->images().at("play"), ts(130), ts(40), ts(250), ts(150));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P1")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P2")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P3")));
@@ -32,8 +34,7 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     }
     else if (fInput == -2) { usedKeyboard[1] = true; playerTexture[0]->setFront(&sdl->images().at("k2"));
     }
-    int w = fmngr->GetActualWidth();
-    int h = fmngr->GetActualHeight();
+
     int pointerSize = 15;
     int dist = (w - ts(50)) / numOfplayer;
     int offset = dist - ts(60);
@@ -297,8 +298,8 @@ void ConfigState::draw() {
     maketo->render();
     plusB->render();
     minusB->render();
-    if(ready)
-    play->render();
+    if (ready)
+        play->render();
     for (auto e : playerPointers)e->render();
     sdl->presentRenderer();
 }

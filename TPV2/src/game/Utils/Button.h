@@ -1,9 +1,14 @@
 #pragma once
 #include "../../sdlutils/Texture.h"
 #include "../../sdlutils/InputHandler.h"
+#include "../../sdlutils/SDLUtils.h"
+#include <iostream>
+#include <string>
 
 class Button
 {
+protected:
+	SDLUtils* sdl = SDLUtils::instance();
 	InputHandler& ih = *InputHandler::instance();
 	int x,y,w,h;
 	Texture* tex;
@@ -21,10 +26,19 @@ public:
 	void setY(int y0) { y = y0; };
 	void setW(int w0) { w = w0; };
 	void setH(int h0) { h = h0; };
-	void render();
+	virtual void render();
 	bool mouseClick();
 	void setUnrendered() { rendered = false; };
 	bool pointerClick(SDL_Rect rect);
 	SDL_Rect getRect();
 };
 
+class PlayButton : public Button {
+	std::vector<Texture*> txV;
+	int cont = 0;
+	int frame = 0;
+public:
+	PlayButton() :Button() {};
+	PlayButton(Texture* t, int x, int y, int width, int height);
+	void render() override;
+};

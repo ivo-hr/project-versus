@@ -282,7 +282,6 @@ int FightManager::StartFight(std::vector<Character*> team1, std::vector<Characte
 	}
 	sdl->musics().at("cube").play();
 	//Music::setMusicVolume(1);
-
 	return 1;
 }
 

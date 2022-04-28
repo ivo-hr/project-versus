@@ -9,6 +9,16 @@
   ],
   
   "images" : [
+    { "id" : "C0", "file" : "resources/images/rompe_cristal/0.png" },
+    { "id" : "C1", "file" : "resources/images/rompe_cristal/1.png"},
+    { "id" : "C2", "file" : "resources/images/rompe_cristal/2.png"},
+    { "id" : "C3", "file" : "resources/images/rompe_cristal/3.png" },
+    { "id" : "C4", "file" : "resources/images/rompe_cristal/4.png"},
+    { "id" : "C5", "file" : "resources/images/rompe_cristal/5.png"},
+    { "id" : "C6", "file" : "resources/images/rompe_cristal/6.png" },
+    { "id" : "C7", "file" : "resources/images/rompe_cristal/7.png"},
+    { "id" : "C8", "file" : "resources/images/rompe_cristal/8.png"},
+    { "id" : "C9", "file" : "resources/images/rompe_cristal/9.png"},
     { "id" : "pause", "file" : "resources/images/Pause.png" },
     { "id" : "star", "file" : "resources/images/star.png"},
     { "id" : "makt", "file" : "resources/images/Maketo.png"},
@@ -199,7 +209,6 @@
 
 
   ],
-
   "musics" : [
     { "id" : "main", "file" : "resources/sound/00Music/8-Bit-Adventure_adhesiveWombat.mp3" },
     { "id" : "cube", "file" : "resources/sound/00Music/Cube_adhesiveWombat.mp3" },
