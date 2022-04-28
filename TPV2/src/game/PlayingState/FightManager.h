@@ -32,6 +32,8 @@ class FightManager
 
 	int numPlayers = 2;
 
+	vector<Texture*>winnersTextures;
+
 public:
 	FightManager(SDLUtils* sdl);
 	virtual ~FightManager();
@@ -42,6 +44,9 @@ public:
 	void HitLag(int mSecs);
 
 	void FighterLost(Entity* loser);
+
+	//vector<Character*>getWinners() { return characters; }
+	vector<Texture*>getWinnersTextures() { return winnersTextures; }
 
 	SDL_Rect GetSDLCoors(b2Body* body, float width, float height);
 	int b2ToSDLX(b2Body* body, float width);

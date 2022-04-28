@@ -117,6 +117,22 @@ public:
 	virtual float GetHeight() { return height; };
 	virtual void GetHit(atackData a, int dir) = 0;
 	virtual SDL_Rect* GetHurtbox();
+<<<<<<< Updated upstream
 	//bool GetGround() { return onGround; };
 	//void SetGround(bool ground);
+=======
+	virtual b2Body* GetBody() { return body; };
+
+	Vector2D GetCenterSDL() { return Vector2D(hurtbox.x + (hurtbox.w / 2), hurtbox.y + (hurtbox.h / 2)); };
+
+	void SetGround(bool ground);
+	bool GetGround() { return onGround; };
+	bool isProjectile() { return projectile; };
+
+	virtual bool changeDir() { return false; };
+
+	void resetHit();
+	Texture* getTexture() { return texture; }
+	//virtual void SendToHUD(Texture* tex);
+>>>>>>> Stashed changes
 };

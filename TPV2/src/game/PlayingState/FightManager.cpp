@@ -108,7 +108,74 @@ bool FightManager::RemoveEntity(Entity* ent)
 	return false;
 }
 
+<<<<<<< Updated upstream
 void FightManager::HitLag(int mSecs)
+=======
+bool FightManager::RemoveCharacter(Character* character)
+{
+	for (int i = 0; i < characters.size(); i++)
+	{
+		if (characters[i] == character)
+		{
+			for (int j = i + 1; j < characters.size(); j++)
+			{
+				characters[j - 1] = characters[j];
+			}
+			characters.pop_back();
+		}
+	}
+	listener->RemoveCharacter(character);
+	RemoveEntity(character);
+	if (characters.size() == 1) {
+		winnersTextures.push_back(characters[0]->getTexture());
+		entities.clear();
+		characters.clear();
+		getState()->next();
+	}
+	return false;
+}
+
+void FightManager::MoveToFront(Entity* ent)
+{
+	for (auto i = 0u; i < entities.size(); i++)
+	{
+		if (entities[i] == ent)
+		{
+			for (int j = i; j > 0; j--)
+			{
+				entities[j] = entities[j - 1];
+			}
+			entities[0] = ent;
+			return;
+		}
+	}
+}
+
+void FightManager::AddOponnent(Entity* ent, Entity* ignore)
+{
+	for (auto i = 0u; i < entities.size(); i++)
+	{
+		if (entities[i] != ent && entities[i] != ignore)
+		{
+			entities[i]->AddOponent(ent);
+		}
+	}
+}
+
+void FightManager::HitLag(int frames)
+{
+	if (addedDelay < frames)
+		addedDelay = frames;
+
+	hitLagCam = camera;
+
+	hitLagCam.x += (addedDelay * 0.4f) * (camera.w * 0.005f);
+
+	hitLagCam.y += addedDelay * 0.2f * (camera.w * 0.005f);
+}
+
+void FightManager::KillingBlow()
+>>>>>>> Stashed changes
 {
 	SDL_RenderPresent(sdl->renderer());
 	SDL_Delay(mSecs);
