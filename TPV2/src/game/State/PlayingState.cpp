@@ -43,7 +43,6 @@ PlayingState::PlayingState(FightManager* game, vector<int>playersInput, vector<i
 	}
 	playersInput_ = playersInput;
 
-
 	fmngr->StartFight(entities);
 
 }
@@ -60,6 +59,6 @@ void PlayingState::draw() {
 void PlayingState::next() {
 	cout << "Next State " << endl;
 	vector<Texture*>winnersTextures = fmngr->getWinnersTextures();
-	fmngr->setState(new GameOverState(fmngr, winnersTextures, fmngr->getWinnerInput()));
+	fmngr->setState(new GameOverState(fmngr, winnersTextures, fmngr->getWinnerInput() , playersInput_));
 	delete this;
 }

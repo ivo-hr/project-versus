@@ -3,7 +3,7 @@
 #include "../PlayingState/FightManager.h"
 
 
-GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures, int playersInput) : State(game) {
+GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures, int playersInput , vector<int>playersInputV) : State(game) {
 
     background = &sdl->images().at("selectbg");
     //fmngr = game;
@@ -12,7 +12,12 @@ GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures
 
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
-    pointer = new PlayerPointer(&sdl->images().at("P1P"), ts(200), ts(150), ts(15), ts(15), w, h);
+    int winnerInput=1;
+    for (auto i = 0u; i < playersInputV.size(); i++) {
+        if (playersInputV[i] == playersInput)winnerInput = i+1;
+    }
+    string inputString = "P" + to_string(winnerInput) + "P";
+    pointer = new PlayerPointer(&sdl->images().at(inputString), ts(200), ts(150), ts(15), ts(15), w, h);
     pointer->setActive(true);
     playersInput_ = playersInput;
 }

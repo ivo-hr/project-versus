@@ -13,7 +13,7 @@ class GameOverState : public State {
     int playersInput_;
 
 public:
-    GameOverState(FightManager* fmngr, vector<Texture*>winnersTextures, int playersInput);
+    GameOverState(FightManager* fmngr, vector<Texture*>winnersTextures, int playersInput, vector<int>playersInputV);
     ~GameOverState();
 
     void update() override;

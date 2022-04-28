@@ -273,7 +273,6 @@ int FightManager::StartFight(std::vector<Character*> team1, std::vector<Characte
 		entities.push_back(a);
 		characters.push_back(a);
 	}
-
 	for (auto i = 0u; i < characters.size(); i++) {
 		numPlayers++;
 		characters[i]->SetOponents(entities);
