@@ -328,8 +328,8 @@ bool FightManager::RemoveCharacter(Character* character)
 	listener->RemoveCharacter(character);
 	RemoveEntity(character);
 	if (characters.size() == 1) {
-		winnersTextures.push_back(characters[0]->getTexture());
 		winnerInput = characters[0]->getInput();
+		winnersTextures.push_back(characters[0]->getPortrait());
 		entities.clear();
 		characters.clear();
 		getState()->next();

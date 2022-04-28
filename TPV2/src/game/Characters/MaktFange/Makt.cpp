@@ -27,6 +27,7 @@ Makt::Makt(FightManager* mngr, Vector2D* pos, char input) :
 
 	//guardamos la textura
 	texture = &sdl->images().at("makt");
+	portrait = &sdl->images().at("maktSelect");
 
 	anim = new AnimationManager(this, texture, spData);
 }

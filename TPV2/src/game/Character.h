@@ -23,6 +23,7 @@ protected:
 	std::unordered_map<std::string, attackData> attacks;
 
 	Texture* arrowsTex;
+	Texture* portrait;
 	SDL_Rect arrowSrc;
 
 	int stun;
@@ -81,6 +82,7 @@ public:
 
 	virtual bool GetHit(attackData a, Entity* attacker);
 	virtual SDL_Rect* GetHurtbox();
+	Texture* getPortrait() { return portrait; };
 
 	virtual void OnDeath() override;
 	virtual void Respawn();
