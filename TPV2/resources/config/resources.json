@@ -44,6 +44,8 @@
     { "id" : "arrows", "file" : "resources/images/pArrows.png"},
     { "id" : "blinkMasterSelect", "file" : "resources/images/blinkMasterSelect.png"},
     { "id" : "maktSelect", "file" : "resources/images/MaketoSelect.png"},
+    { "id" : "zeroSelect", "file" : "resources/images/zeroSelect.png"},
+    { "id" : "dinoSoulsSelect", "file" : "resources/images/dinoSoulsSelect.png"},
     { "id" : "mazmorra", "file" : "resources/images/Mazmorra.png"},
     { "id" : "rockPlat", "file" : "resources/images/rock plataform.png"}
 

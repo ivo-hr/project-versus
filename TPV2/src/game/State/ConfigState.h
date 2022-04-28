@@ -36,4 +36,6 @@ public:
     string getStateName() const override {
         return "Config state";
     };
+private:
+    void setPointer();
 };
