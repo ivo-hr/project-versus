@@ -150,5 +150,6 @@ public:
 	virtual bool changeDir() { return false; };
 
 	void resetHit();
+	Texture* getTexture() { return texture; }
 	//virtual void SendToHUD(Texture* tex);
 };

@@ -3,6 +3,8 @@
 #include "State.h"
 
 class PlayingState : public State {
+    
+    vector<int>playersInput_;
 
 public:
 
