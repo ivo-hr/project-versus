@@ -15,5 +15,6 @@ public:
 	void move(int dir);
 	void setActive(bool b) { active = b; };
 	bool getActive() { return active; };
+	void setPosition(int newX, int newY);
 	SDL_Rect getRect();
 };

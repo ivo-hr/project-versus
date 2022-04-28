@@ -36,3 +36,9 @@ SDL_Rect PlayerPointer::getRect()
 	SDL_Rect r = build_sdlrect(x, y, w, h);
 	return r;
 }
+
+void PlayerPointer::setPosition(int newX, int newY)
+{
+	x = newX;
+	y = newY;
+}

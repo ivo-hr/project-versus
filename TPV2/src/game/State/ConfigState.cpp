@@ -2,17 +2,14 @@
 #include "PlayingState.h"
 #include "../PlayingState/FightManager.h"
 
-
-
-
 ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfplayer(2) {
     background = &sdl->images().at("selectbg");
     aleatorio = nullptr;
     nasnas = nullptr;
-    zero = new Button(&sdl->images().at("zero"), ts(30), ts(50), ts(30), ts(30));
+    zero = new Button(&sdl->images().at("zeroSelect"), ts(30), ts(50), ts(30), ts(30));
     gatoespia = new Button(&sdl->images().at("blinkMasterSelect"), ts(90), ts(50), ts(30), ts(30));
     maketo = new Button(&sdl->images().at("maktSelect"), ts(150), ts(50), ts(30), ts(30));
-    togo = new Button(&sdl->images().at("dinoSouls"), ts(210), ts(50), ts(30), ts(30));
+    togo = new Button(&sdl->images().at("dinoSoulsSelect"), ts(210), ts(50), ts(30), ts(30));
     plusB = new Button(&sdl->images().at("pB"), ts(480), ts(210), ts(30), ts(30));
     minusB = new Button(&sdl->images().at("mB"), ts(480), ts(240), ts(30), ts(30));
     play = new Button(&sdl->images().at("play"), ts(150), ts(40), ts(200), ts(150));
@@ -39,11 +36,11 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     int h = fmngr->GetActualHeight();
     int pointerSize = 15;
     int dist = (w - ts(50)) / numOfplayer;
-    int offset = dist - ts(50);
+    int offset = dist - ts(60);
     playerPointers.push_back(new PlayerPointer(&sdl->images().at("P1P"), 0u * dist + offset, 676, ts(pointerSize), ts(pointerSize),w,h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P2P"), 1u * dist + offset, 676, ts(pointerSize), ts(pointerSize),w,h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P3P"), 2u * dist + offset, 676, ts(pointerSize), ts(pointerSize), w, h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P4P"), 3u * dist + offset, 676, ts(pointerSize), ts(pointerSize), w, h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P2P"), 1u, 676, ts(pointerSize), ts(pointerSize), w, h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P3P"), 2u, 676, ts(pointerSize), ts(pointerSize), w, h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P4P"), 3u, 676, ts(pointerSize), ts(pointerSize), w, h));
     playerPointers[0]->setActive(true);
     sdl->musics().at("sawtines").play();
 }
@@ -71,7 +68,7 @@ void ConfigState::update() {
             if (ih.xboxGetAxesState(i, 1) == -1 && !usedPad[i]) {
                 usedPad[i] = true;
                 playerInput.push_back(i);
-                playerPointers[playerInput.size() - 1]->setActive(true);
+                setPointer();
                 playerTexture[playerInput.size() - 1]->setgotInput(true);
                 playerTexture[playerInput.size() - 1]->setFront(&sdl->images().at("Mando"));
                 charactersSelect.resize(playerInput.size());
@@ -81,14 +78,14 @@ void ConfigState::update() {
         if (ih.isKeyDown(SDLK_UP) && !usedKeyboard[1]) {
             usedKeyboard[1] = true;
             playerInput.push_back(-2);
-            playerPointers[playerInput.size() - 1]->setActive(true);
+            setPointer();
             playerTexture[playerInput.size() - 1]->setgotInput(true);
             playerTexture[playerInput.size() - 1]->setFront(&sdl->images().at("k2"));
         }
         if (ih.isKeyDown(SDLK_w)&& !usedKeyboard[0]) {
             usedKeyboard[0] = true;
             playerInput.push_back(-1);
-            playerPointers[playerInput.size() - 1]->setActive(true);
+            setPointer();
             playerTexture[playerInput.size() - 1]->setgotInput(true);
             playerTexture[playerInput.size() - 1]->setFront(&sdl->images().at("k1"));
         }
@@ -134,7 +131,7 @@ void ConfigState::update() {
             break;
         }
         if (zero->pointerClick(playerPointers[i]->getRect())&&enter && keyRelease && !selected[i]) {
-            playerTexture[i]->setFront(&sdl->images().at("zero"));
+            playerTexture[i]->setFront(&sdl->images().at("zeroSelect"));
             charactersSelect[i] = 0;
             keyRelease = false;
             lastPointerClick = playerInput[i];
@@ -148,7 +145,7 @@ void ConfigState::update() {
             selected[i] = true;
         }
         else if (togo->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
-            playerTexture[i]->setFront(&sdl->images().at("dinoSouls"));
+            playerTexture[i]->setFront(&sdl->images().at("dinoSoulsSelect"));
             charactersSelect[i] = 2;
             keyRelease = false;
             lastPointerClick = playerInput[i];
@@ -310,4 +307,13 @@ void ConfigState::next() {
     cout << "Next State " << endl;
     fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect));
     delete this;
+}
+
+void ConfigState::setPointer()
+{
+    int w = fmngr->GetActualWidth();
+    int dist = (w - ts(50)) / numOfplayer;
+    int offset = dist - ts(60);
+    playerPointers[playerInput.size() - 1]->setActive(true);
+    playerPointers[playerInput.size() - 1]->setPosition((playerInput.size() - 1) * dist + offset, 676);
 }
