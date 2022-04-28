@@ -48,8 +48,7 @@ public:
 		b2Body* two = contact->GetFixtureB()->GetBody();
 
 		// Mira si quiere subir a la plataforma (atravesándola)
-		if (one->GetFixtureList()->GetFilterData().categoryBits == 4 && !contact->GetFixtureB()->IsSensor() && two->GetLinearVelocity().y < 0 &&
-			two->GetFixtureList()->GetAABB(0).upperBound.y - 0.2f > one->GetFixtureList()->GetAABB(0).upperBound.y)
+		if (one->GetFixtureList()->GetFilterData().categoryBits == 4 && two->GetLinearVelocity().y < 0)
 		{ 
 			contact->SetEnabled(false);
 		}
