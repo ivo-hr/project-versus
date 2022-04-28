@@ -315,9 +315,11 @@ void Character::update()
 			fall--;
 			if (input->down()) { // Va a atravesar la plataforma
 				reactivateColl = maxFallCount; 
-				b2Filter f = body->GetFixtureList()->GetFilterData();
-				f.maskBits = 2; // Quita la colisión con la plataforma momentáneamente
-				body->GetFixtureList()->SetFilterData(f);
+				for (b2Fixture* f = body->GetFixtureList(); f; f = f->GetNext()) {
+					auto fix = f->GetFilterData();
+					fix.maskBits = 2; // Quita la colisión con la plataforma momentáneamente
+					f->SetFilterData(fix);
+				}
 				fall = 0;
 			}
 		}
@@ -331,9 +333,11 @@ void Character::update()
 
 	if (reactivateColl > 0) reactivateColl--;
 	if (reactivateColl == 0 && body->GetFixtureList()->GetFilterData().maskBits == 2) { // Tras medio segundo reactiva colisión jugador-plataformas
-		b2Filter f = body->GetFixtureList()->GetFilterData();
-		f.maskBits = 2 | 4;
-		body->GetFixtureList()->SetFilterData(f);
+		for (b2Fixture* f = body->GetFixtureList(); f; f = f->GetNext()) {
+			auto fix = f->GetFilterData();
+			fix.maskBits = 2 | 4;
+			f->SetFilterData(fix);
+		}
 	}
 	//para recuperar escudo
 	if (!shield && shieldCounter < maxShield)
