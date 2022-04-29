@@ -311,6 +311,7 @@ void ConfigState::update() {
     for (auto i = 0u; i < numOfplayer; i++) {
         if (!selected[i]) {
             ready = false;
+            play->reset();
             return;
         }
         ready = true;

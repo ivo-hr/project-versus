@@ -35,6 +35,7 @@ public:
 	bool pointerClick(SDL_Rect rect);
 	void active(bool b) { activated = b; };
 	SDL_Rect getRect();
+	virtual void reset() {};
 };
 
 class PlayButton : public Button {
@@ -45,4 +46,5 @@ public:
 	PlayButton() :Button() {};
 	PlayButton(Texture* t, int x, int y, int width, int height);
 	void render() override;
+	void reset() override { frame = 0; };
 };
