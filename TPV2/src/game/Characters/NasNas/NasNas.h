@@ -20,7 +20,7 @@ public:
 
 	virtual void update() override;
 private:
-	int maxMana = 360;
+	int maxMana = 600;
 	int mana = maxMana;
 	state estado = fire;
 };

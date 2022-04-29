@@ -386,13 +386,14 @@ void Character::update()
 		{
 			Elements();
 		}
-		if (stateCont >= stateDur && efEstado == water)
-		{
-			maxSpeed += statePower / (stateDur / 60);
-		}
 	}
 	else
 	{
+		if (efEstado == water)
+		{
+			maxSpeed += ralentizar;
+			ralentizar = 0;
+		}
 		stateCont = 0;
 		statePower = 0;
 		efEstado = none;
@@ -589,7 +590,7 @@ bool Character::GetHit(attackData a, Entity* attacker)
 				}
 				else if (efEstado == water)
 				{
-					ralentizar = maxSpeed * (statePower / 100);
+					ralentizar = maxSpeed * ((float)statePower / 100);
 					maxSpeed -= ralentizar;
 				}
 			}
@@ -797,7 +798,16 @@ void Character::OnDeath()
 	shield = false;
 	dash = false;
 	stun = 0;
-
+	if (efEstado != none)
+	{
+		if(efEstado == water)
+		{
+			maxSpeed += ralentizar;
+			ralentizar = 0;
+		}
+		efEstado = none;
+		statePower = 0;
+	}
 	if (lives <= 0) {
 		manager->RemoveCharacter(this);
 	}

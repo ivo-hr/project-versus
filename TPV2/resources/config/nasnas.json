@@ -55,51 +55,41 @@
       "id": "specialN",
       "b2vecX": 1,
       "b2vecY": 1,
-      "base": 20,
-      "damage": 20,
+      "base": 15,
+      "damage": 15,
       "multiplier": 0.3,
       "startUp": 9,
       "totalFrames": 25
     },
     {
       "id": "specialF",
-      "b2vecX": 1.25,
+      "b2vecX": 1.25, 
       "b2vecY": 1,
-      "base": 40,
-      "damage": 40,
-      "multiplier": 0.8,
+      "base": 20,
+      "damage": 20,
+      "multiplier": 0.4,
       "startUp": 25,
       "totalFrames": 40
     },
     {
-      "id": "specialLHit",
-      "b2vecX": 1,
-      "b2vecY": 3,
-      "base": 5,
-      "damage": 30,
-      "multiplier": 0.5,
-      "startUp": 3,
-      "totalFrames": 30
-    },
-    {
       "id": "specialU",
-      "b2vecX": 2,
-      "b2vecY": 1,
-      "base": 12,
-      "damage": 4,
-      "multiplier": 0.3,
-      "startUp": 1,
+      "b2vecX": 1,
+      "b2vecY": 2,
+      "base": 30,
+      "damage": 30,
+      "multiplier": 0.4,
+      "startUp": 10,
       "totalFrames": 30
     },
     {
       "id": "specialD",
       "b2vecX": 1,
       "b2vecY": 1,
-      "base": 15,
-      "damage": 10,
-      "multiplier": 1.5,
+      "base": 0,
+      "damage": 0,
+      "multiplier": 0,
       "startUp": 15,
-      "totalFrames": 60
+      "totalFrames": 40
     }
   ],
 

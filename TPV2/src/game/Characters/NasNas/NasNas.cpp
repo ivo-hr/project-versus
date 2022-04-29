@@ -13,7 +13,7 @@ NasNas::NasNas(FightManager* mngr, Vector2D* pos, char input) : Character(mngr, 
 	ReadJson("resources/config/nasnas.json");
 	//guardamos la textura
 	texture = &sdl->images().at("dinoSouls");
-	portrait = &sdl->images().at("nasNasSelect");
+	//portrait = &sdl->images().at("nasNasSelect");
 
 	anim = new AnimationManager(this, texture, spData);
 }
@@ -162,12 +162,12 @@ void NasNas::SpecialNeutral(int frameNumber)
 
 	if (frameNumber == 0)
 	{
-		if (mana < 60) {
+		if (mana < 150) {
 			currentMove = nullptr;
 			moveFrame = -1;
 			return;
 		}
-		else mana -= 60;
+		else mana -= 150;
 		anim->StartAnimation("basicF");
 		//sdl->soundEffects().at("catAtk0").play();
 	}
@@ -211,12 +211,12 @@ void NasNas::SpecialForward(int frameNumber)
 {
 	if (frameNumber == 0)
 	{
-		if (mana < 10) {
+		if (mana < 300) {
 			currentMove = nullptr;
 			moveFrame = -1;
 			return;
 		}
-		mana -= 10;
+		mana -= 300;
 		moving = false;
 		anim->StartAnimation("basicF");
 		//sdl->soundEffects().at("catAtk1").play();
@@ -244,7 +244,7 @@ void NasNas::SpecialForward(int frameNumber)
 			hitbox.h /= 3;
 			hitbox.w *= 6;
 			aaa.damage = 20;
-			aaa.base = 35;
+			aaa.base = 30;
 			aaa.estado = water;
 			aaa.power = 45;
 		}
@@ -276,8 +276,64 @@ void NasNas::SpecialForward(int frameNumber)
 
 void NasNas::SpecialUpward(int frameNumber)
 {
-	currentMove = nullptr;
-	moveFrame = -1;
+	if (frameNumber == 0)
+	{
+		if (mana < 10) {
+			currentMove = nullptr;
+			moveFrame = -1;
+			return;
+		}
+		mana -= 10;
+		moving = false;
+		anim->StartAnimation("basicF");
+		//sdl->soundEffects().at("catAtk1").play();
+
+	}
+	else if (frameNumber == attacks["specialU"].startUp)
+	{
+		body->SetLinearVelocity(b2Vec2(0, -70));
+	}
+	else if (frameNumber == attacks["specialU"].totalFrames)
+	{
+		body->SetLinearVelocity(b2Vec2(0, 70));
+	}
+	else if (frameNumber >= attacks["specialU"].totalFrames && onGround)
+	{
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+		attackData aaa = attacks["specialU"];
+		hitbox.h *= 1.5;
+		hitbox.w *= 2;
+		hitbox.x -= (hitbox.w / 4);
+		hitbox.y -= 25;
+		aaa.power = 70;
+
+		if (estado == fire)
+		{
+			aaa.damage = 45;
+			aaa.base = 25;
+			aaa.estado = fire;
+		}
+		else if (estado == water)
+		{
+			aaa.damage = 30;
+			aaa.base = 40;
+			aaa.estado = water;
+		}
+		else if (estado == electric)
+		{
+			aaa.damage = 20;
+			aaa.base = 20;
+			aaa.estado = electric;
+		}
+		hitboxes.push_back(new Hitbox(hitbox, aaa, 10, OnHitData(20, false, false)));
+
+		currentMove = nullptr;
+		moveFrame = -1;
+	}
+	if (body->GetLinearVelocity().x > 0 || body->GetLinearVelocity().x < 0)
+	{
+		body->SetLinearVelocity(b2Vec2(0, body->GetLinearVelocity().y));
+	}
 }
 
 void NasNas::SpecialDownward(int frameNumber)
