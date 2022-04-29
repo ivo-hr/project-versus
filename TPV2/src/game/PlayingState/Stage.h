@@ -35,8 +35,10 @@ class Stage
 	float step;
 
 public:
-	Stage(SDLUtils* sdl, MyListener* _listener, double screenAdjust, float step, std::string filename);
+	Stage(SDLUtils* sdl, MyListener* _listener, float step);
 	~Stage();
+
+	void LoadJsonStage(std::string file, double screenAdjust);
 
 	b2Vec2 GetPlayerSpawns(int index) { return playerSpawns[index]; };
 	int GetPlayerDir(int index);

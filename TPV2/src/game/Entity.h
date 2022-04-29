@@ -118,8 +118,6 @@ public:
 	Entity(FightManager* mngr, Vector2D* position, float w = 3.f, float h = 3.f);
 	~Entity();
 
-	void SetSpawn(b2Vec2 spawn, int dir);
-
 	virtual void updateParticles();
 	virtual void update();
 	virtual void draw();
@@ -153,5 +151,6 @@ public:
 	virtual bool changeDir() { return false; };
 
 	void resetHit();
+	Texture* getTexture() { return texture; }
 	//virtual void SendToHUD(Texture* tex);
 };

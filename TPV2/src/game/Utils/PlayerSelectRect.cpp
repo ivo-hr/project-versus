@@ -5,11 +5,15 @@ PlayerSelectRect::PlayerSelectRect(Texture* b) :back(b), front(nullptr), gotInpu
 	m = &sdl->images().at("Mando");
 	k1= &sdl->images().at("k1");
 	k2 = &sdl->images().at("k2");
+	noInputBackg= &sdl->images().at("P0");
 }
 
 void PlayerSelectRect::render(int x, int y, int w, int h)
 {
-	back->render({ x,y,w,h });
+	if (gotInput)
+		back->render({ x,y,w,h });
+	else
+		noInputBackg->render({ x,y,w,h });
 	if (!gotInput) {
 		if (tick + 1500 < SDL_GetTicks()) {	
 			tick = SDL_GetTicks();

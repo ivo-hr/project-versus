@@ -4,7 +4,7 @@
 
 class PlayerSelectRect
 {
-	Texture* back ,* front , *k1,*k2,*m;
+	Texture* back ,* front , *k1,*k2,*m , *noInputBackg;
 	SDLUtils* sdl = SDLUtils::instance();
 	bool gotInput;
 	int cont=0;

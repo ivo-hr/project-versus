@@ -40,7 +40,12 @@ int main(int ac, char **av) {
 	SDL_SetWindowPosition(sdl.window(), 0, 5);
 
 	//Ponemos en pantalla completa
-	//sdl.toggleFullScreen();
+
+#ifndef _DEBUG
+
+	sdl.toggleFullScreen();
+
+#endif // !_DEBUG
 
 	//show the cursor
 	sdl.showCursor();

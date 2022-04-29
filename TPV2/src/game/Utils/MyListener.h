@@ -19,7 +19,7 @@ public:
 		{
 			for (int i = 0; i < characters.size(); i++)
 			{
-				if (two == characters[i]->GetBody())
+				if (two == characters[i]->GetBody() && contact->GetFixtureB()->IsSensor())
 				{
 					characters[i]->SetGround(true);
 				}
@@ -35,7 +35,7 @@ public:
 		{
 			for (int i = 0; i < characters.size(); i++)
 			{
-				if (two == characters[i]->GetBody())
+				if (two == characters[i]->GetBody() && contact->GetFixtureB()->IsSensor())
 				{
 					characters[i]->SetGround(false);
 				}
@@ -48,8 +48,7 @@ public:
 		b2Body* two = contact->GetFixtureB()->GetBody();
 
 		// Mira si quiere subir a la plataforma (atravesándola)
-		if (one->GetFixtureList()->GetFilterData().categoryBits == 4 && 
-			!(two->GetFixtureList()->GetAABB(0).upperBound.y - 0.2f <= one->GetFixtureList()->GetAABB(0).upperBound.y))
+		if (one->GetFixtureList()->GetFilterData().categoryBits == 4 && two->GetLinearVelocity().y < 0)
 		{ 
 			contact->SetEnabled(false);
 		}

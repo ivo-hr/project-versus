@@ -93,18 +93,37 @@ json Character::ReadJson(std::string filename)
 Character::Character(FightManager* manager, Vector2D* pos, char input, float w, float h) :
 	Entity(manager, pos, w, h)
 {
-	hurtbox = manager->GetSDLCoors(body, width, height);
+	arrowsTex = &sdl->images().at("arrows");
+
+	arrowSrc.x = 0;
+	arrowSrc.y = 0;
+	arrowSrc.w = arrowsTex->width();
+	arrowSrc.h = arrowsTex->height() / 4;
 
 	stun = 0;
 	dash = false;
 	lives = 3;
 	this->input = new InputConfig(input);
+	input_ = input;
 }
 
 Character::~Character()
 {
 	delete input;
 	delete anim;
+}
+
+void Character::SetSpawn(b2Vec2 spawn, int dir)
+{
+	body->SetTransform(spawn, 0);
+	this->dir = dir;
+	respawnPos = new Vector2D(spawn.x, 5);
+}
+
+void Character::SetPNumber(uint16 num)
+{
+	playerNumber = num;
+	arrowSrc.y = arrowSrc.h * num;
 }
 
 void Character::update()
@@ -299,9 +318,11 @@ void Character::update()
 			fall--;
 			if (input->down()) { // Va a atravesar la plataforma
 				reactivateColl = maxFallCount; 
-				b2Filter f = body->GetFixtureList()->GetFilterData();
-				f.maskBits = 2; // Quita la colisión con la plataforma momentáneamente
-				body->GetFixtureList()->SetFilterData(f);
+				for (b2Fixture* f = body->GetFixtureList(); f; f = f->GetNext()) {
+					auto fix = f->GetFilterData();
+					fix.maskBits = 2; // Quita la colisión con la plataforma momentáneamente
+					f->SetFilterData(fix);
+				}
 				fall = 0;
 			}
 		}
@@ -315,9 +336,11 @@ void Character::update()
 
 	if (reactivateColl > 0) reactivateColl--;
 	if (reactivateColl == 0 && body->GetFixtureList()->GetFilterData().maskBits == 2) { // Tras medio segundo reactiva colisión jugador-plataformas
-		b2Filter f = body->GetFixtureList()->GetFilterData();
-		f.maskBits = 2 | 4;
-		body->GetFixtureList()->SetFilterData(f);
+		for (b2Fixture* f = body->GetFixtureList(); f; f = f->GetNext()) {
+			auto fix = f->GetFilterData();
+			fix.maskBits = 2 | 4;
+			f->SetFilterData(fix);
+		}
 	}
 	//para recuperar escudo
 	if (!shield && shieldCounter < maxShield)
@@ -375,10 +398,15 @@ void Character::update()
 		efEstado = none;
 	}
 
-
-
 	anim->update();
-	Entity::update();
+
+	hurtbox.x = manager->b2ToSDLX(body, width);
+	hurtbox.y = manager->b2ToSDLY(body, height);
+
+	if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()))
+	{
+		OnDeath();
+	}
 
 }
 
@@ -421,6 +449,21 @@ void Character::draw(SDL_Rect* camera)
 	Entity::draw(camera);
 	anim->render(camera);
 
+	SDL_Rect aux = hurtbox;
+
+	aux.x -= camera->x;
+	aux.x *= (manager->GetActualWidth() / (float)camera->w);
+
+	aux.y -= camera->y;
+	aux.y *= (manager->GetActualHeight() / (float)camera->h);
+
+	aux.w *= (manager->GetActualWidth() / (float)camera->w);
+	aux.h *= (manager->GetActualHeight() / (float)camera->h);
+
+	int xpos = aux.x + (aux.w / 2);
+
+	arrowsTex->render(arrowSrc, { xpos - 15, aux.y - 44, 30, 16 });
+
 #ifdef _DEBUG
 
 	if (shield)
@@ -436,16 +479,6 @@ void Character::draw(SDL_Rect* camera)
 		SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 0, 255);
 	}
 
-	SDL_Rect aux = hurtbox;
-
-	aux.x -= camera->x;
-	aux.x *= (manager->GetActualWidth() / (float)camera->w);
-
-	aux.y -= camera->y;
-	aux.y *= (manager->GetActualHeight() / (float)camera->h);
-
-	aux.w *= (manager->GetActualWidth() / (float)camera->w);
-	aux.h *= (manager->GetActualHeight() / (float)camera->h);
 
 	SDL_RenderDrawRect(sdl->renderer(), &aux);
 

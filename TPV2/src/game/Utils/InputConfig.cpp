@@ -79,7 +79,7 @@ bool InputConfig::basic()
 		return ih.isKeyDown(SDLK_l);
 	}
 	else {
-		return ih.xboxGetButtonState(typeofInput, SDL_CONTROLLER_BUTTON_A);
+		return ih.xboxGetButtonState(typeofInput, SDL_CONTROLLER_BUTTON_B);
 	}
 }
 
@@ -92,7 +92,7 @@ bool InputConfig::special()
 		return ih.isKeyDown(SDLK_k);
 	}
 	else {
-		return ih.xboxGetButtonState(typeofInput, SDL_CONTROLLER_BUTTON_B);
+		return ih.xboxGetButtonState(typeofInput, SDL_CONTROLLER_BUTTON_A);
 	}
 }
 

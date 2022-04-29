@@ -3,10 +3,30 @@
   "fonts" : [
     { "id" : "ARIAL16", "file" : "resources/fonts/ARIAL.ttf", "size": 16 },
     { "id" : "ARIAL24", "file" : "resources/fonts/ARIAL.ttf", "size": 24 },
-    { "id" : "ARIAL48", "file" : "resources/fonts/ARIAL.ttf", "size": 48 }
+    { "id" : "ARIAL48", "file" : "resources/fonts/ARIAL.ttf", "size": 48 } , { "id" : "nes16", "file" : "resources/fonts/NES-Chimera.ttf", "size": 8 },
+    { "id" : "nes24", "file" : "resources/fonts/NES-Chimera.ttf", "size": 16 },
+    { "id" : "nes48", "file" : "resources/fonts/NES-Chimera.ttF", "size": 24 }
   ],
   
   "images" : [
+    { "id" : "C0", "file" : "resources/images/rompe_cristal/0.png" },
+    { "id" : "C1", "file" : "resources/images/rompe_cristal/1.png"},
+    { "id" : "C2", "file" : "resources/images/rompe_cristal/2.png"},
+    { "id" : "C3", "file" : "resources/images/rompe_cristal/3.png" },
+    { "id" : "C4", "file" : "resources/images/rompe_cristal/4.png"},
+    { "id" : "C5", "file" : "resources/images/rompe_cristal/5.png"},
+    { "id" : "C6", "file" : "resources/images/rompe_cristal/6.png" },
+    { "id" : "C7", "file" : "resources/images/rompe_cristal/7.png"},
+    { "id" : "C8", "file" : "resources/images/rompe_cristal/8.png"},
+    { "id" : "C9", "file" : "resources/images/rompe_cristal/9.png"},
+    { "id" : "MNormalB", "file" : "resources/images/MNormalB.png"},
+    { "id" : "MNormalC", "file" : "resources/images/MNormalC.png"},
+    { "id" : "MTeamB", "file" : "resources/images/MTeamB.png"},
+    { "id" : "MTeamC", "file" : "resources/images/MTeamC.png"},
+    { "id" : "T1B", "file" : "resources/images/T1B.png"},
+    { "id" : "T1C", "file" : "resources/images/T1C.png"},
+    { "id" : "T2B", "file" : "resources/images/T2B.png"},
+    { "id" : "T2C", "file" : "resources/images/T2C.png"},
     { "id" : "pause", "file" : "resources/images/Pause.png" },
     { "id" : "star", "file" : "resources/images/star.png"},
     { "id" : "makt", "file" : "resources/images/Maketo.png"},
@@ -25,6 +45,7 @@
     { "id" : "run", "file" : "resources/images/runSmoke.png"},
     { "id" : "play", "file" : "resources/images/Play.png"},
     { "id" : "selectbg", "file" : "resources/images/SelectMenu.png"},
+    { "id" : "P0","file" : "resources/images/P0.png"},
     { "id" : "P1", "file" : "resources/images/P1.png"},
     { "id" : "P2", "file" : "resources/images/P2.png"},
     { "id" : "P3", "file" : "resources/images/P3.png"},
@@ -37,7 +58,14 @@
     { "id" : "k2", "file" : "resources/images/tFlecha.png"},
     { "id" : "Mando", "file" : "resources/images/mando.png"},
     { "id" : "pB", "file" : "resources/images/pB.png"},
-    { "id" : "mB", "file" : "resources/images/mB.png"}
+    { "id" : "mB", "file" : "resources/images/mB.png"},
+    { "id" : "arrows", "file" : "resources/images/pArrows.png"},
+    { "id" : "blinkMasterSelect", "file" : "resources/images/blinkMasterSelect.png"},
+    { "id" : "maktSelect", "file" : "resources/images/MaketoSelect.png"},
+    { "id" : "zeroSelect", "file" : "resources/images/zeroSelect.png"},
+    { "id" : "dinoSoulsSelect", "file" : "resources/images/dinoSoulsSelect.png"},
+    { "id" : "mazmorra", "file" : "resources/images/Mazmorra.png"},
+    { "id" : "rockPlat", "file" : "resources/images/rock plataform.png"}
 
   ],
   
@@ -189,7 +217,6 @@
 
 
   ],
-
   "musics" : [
     { "id" : "main", "file" : "resources/sound/00Music/8-Bit-Adventure_adhesiveWombat.mp3" },
     { "id" : "cube", "file" : "resources/sound/00Music/Cube_adhesiveWombat.mp3" },

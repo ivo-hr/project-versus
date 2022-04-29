@@ -9,6 +9,7 @@ CharacterZero::CharacterZero(FightManager* mngr, Vector2D* pos, char input) : Ch
 
 	//guardamos la textura
 	texture = &sdl->images().at("zero");
+	portrait = &sdl->images().at("zeroSelect");
 	//smolH = &sdl->soundEffects().at("zeroSmolHit");
 
 	anim = new AnimationManager(this, texture, spData);

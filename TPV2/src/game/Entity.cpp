@@ -1,5 +1,4 @@
 #include "Entity.h"
-#include "Utils/AnimationManager.h"
 #include "Utils/Particle.h"
 
 Entity::Entity(FightManager* mngr, Vector2D* position, float w, float h) : manager(mngr), width(w), height(h)
@@ -36,7 +35,11 @@ Entity::Entity(FightManager* mngr, Vector2D* position, float w, float h) : manag
 
 	body->SetLinearDamping(0.f);
 
-	onGround = true;
+	dynamicBox.SetAsBox(width / 3, height / 8, b2Vec2(0, + height / 2), 0);
+	fixtureDef.isSensor = true;
+	b2Fixture* footSensorFixture = body->CreateFixture(&fixtureDef);
+
+	onGround = false;
 
 	dir = 1;
 
@@ -52,13 +55,6 @@ Entity::~Entity()
 	manager->GetWorld()->DestroyBody(body);
 }
 
-void Entity::SetSpawn(b2Vec2 spawn, int dir)
-{
-	body->SetTransform(spawn, 0);
-	this->dir = dir;
-	respawnPos = new Vector2D(spawn.x, 5);
-}
-
 void Entity::updateParticles()
 {
 	for (Particle* ent : particulas)
@@ -69,6 +65,7 @@ void Entity::updateParticles()
 
 void Entity::update()
 {
+	updateParticles();
 	//Actualizamos la posicion del rect
 	hurtbox.x = manager->b2ToSDLX(body, width);
 	hurtbox.y = manager->b2ToSDLY(body, height);

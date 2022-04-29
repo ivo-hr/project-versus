@@ -1,0 +1,42 @@
+{
+    "codeName": "stage2",
+    "background": "mazmorra",
+    "platform": "rockPlat",
+    "deathZoneSize": 100,
+    "groundX": 50.0,
+    "groundY": 45.0,
+    "groundW": 35.0,
+    "groundH": 10.0,
+
+    "platformData": [
+        {
+        "platformX": 37.5,
+        "platformY": 32.0,
+        "platformW": 10.0,
+        "platformH": 0.5
+        },
+        {
+        "platformX": 62.5,
+        "platformY": 32.0,
+        "platformW": 10.0,
+        "platformH": 0.5
+        }],
+
+    "playerSpawns": [
+        {
+        "X": 38,
+        "Y": 34
+        },
+        {
+        "X": 62,
+        "Y": 34
+        },
+        {
+        "X": 34,
+        "Y": 20
+        },
+        {
+        "X": 66,
+        "Y": 20
+        }]
+}

@@ -2,12 +2,19 @@
 
 #include "State.h"
 
+#include "../Utils/PlayerPointer.h"
+
 class GameOverState : public State {
+    Texture* background;
+    //FightManager* fmngr;
+    vector<Texture*>winnersTextures_;
+    Button* playAgain;
+    PlayerPointer* pointer;
+    int playersInput_;
 
 public:
-
-    GameOverState(FightManager* fmngr);
-    ~GameOverState() = default;
+    GameOverState(FightManager* fmngr, vector<Texture*>winnersTextures, int playersInput, vector<int>playersInputV);
+    ~GameOverState();
 
     void update() override;
     void draw() override;

@@ -13,6 +13,7 @@ NasNas::NasNas(FightManager* mngr, Vector2D* pos, char input) : Character(mngr, 
 	ReadJson("resources/config/nasnas.json");
 	//guardamos la textura
 	texture = &sdl->images().at("dinoSouls");
+	portrait = &sdl->images().at("nasNasSelect");
 
 	anim = new AnimationManager(this, texture, spData);
 }

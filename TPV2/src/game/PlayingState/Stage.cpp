@@ -6,10 +6,18 @@
 
 using json = nlohmann::json;
 
-Stage::Stage(SDLUtils* sdl, MyListener* _listener, double screenAdjust, float step, std::string filename):world(b2World(b2Vec2(0.f, 15.f))), sdl(sdl), step(step)
+Stage::Stage(SDLUtils* sdl, MyListener* _listener, float step) :
+	world(b2World(b2Vec2(0.f, 15.f))), sdl(sdl), step(step)
 {
+	listener = _listener;
+}
+Stage::~Stage() 
+{
+}
 
-	std::ifstream file(filename);
+void Stage::LoadJsonStage(std::string fileName, double screenAdjust)
+{
+	std::ifstream file(fileName);
 	json jsonFile;
 	file >> jsonFile;
 
@@ -71,7 +79,6 @@ Stage::Stage(SDLUtils* sdl, MyListener* _listener, double screenAdjust, float st
 	//Creo las cajas que representaran a los objetos
 	stageRect = GetSDLCoors(stage, floorW, floorH);
 
-	listener = _listener;
 	world.SetContactListener(listener);
 
 	deathZone = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
@@ -83,11 +90,6 @@ Stage::Stage(SDLUtils* sdl, MyListener* _listener, double screenAdjust, float st
 	{
 		playerSpawns.push_back(b2Vec2(player[i % 4]["X"], player[i % 4]["Y"]));
 	}
-
-}
-Stage::~Stage() 
-{
-	
 }
 
 int Stage::GetPlayerDir(int index)
@@ -127,14 +129,18 @@ void Stage::Update(SDL_Rect* camera)
 
 	SDL_Rect auxDeath = deathZone;
 
-	auxDeath.x -= camera->x;
-	auxDeath.x *= (deathZone.w / (float)camera->w) * 0.6f;
+	auxDeath.w += auxDeath.w * 0.5f;
+	auxDeath.h += auxDeath.h * 0.5f;
 
-	auxDeath.y -= camera->y;
-	auxDeath.y *= (deathZone.h / (float)camera->h);
+	Vector2D camCenter = Vector2D(camera->x + camera->w / 2, camera->y + camera->h / 2);
 
-	auxDeath.w *= (deathZone.w / (float)camera->w);
-	auxDeath.h *= (deathZone.h / (float)camera->h);
+	auxDeath.x = (camCenter.getX() - deathZone.w / 2) * 0.5f;
+	auxDeath.x += deathZone.w / 2;
+	auxDeath.x -= (auxDeath.w * 0.5f);
+
+	auxDeath.y = (camCenter.getY() - deathZone.h / 2) * -0.2f;
+	auxDeath.y += deathZone.h / 2;
+	auxDeath.y -= (auxDeath.h * 0.5f);
 
 	background->render(auxDeath);
 
@@ -188,6 +194,15 @@ void Stage::Update(SDL_Rect* camera)
 
 		SDL_RenderDrawRect(sdl->renderer(), &auxPlat);
 	}
+	auxDeath = deathZone;
+	auxDeath.x -= camera->x;
+	auxDeath.x *= (deathZone.w / (float)camera->w);
+
+	auxDeath.y -= camera->y;
+	auxDeath.y *= (deathZone.h / (float)camera->h);
+
+	auxDeath.w *= (deathZone.w / (float)camera->w);
+	auxDeath.h *= (deathZone.h / (float)camera->h);
 	SDL_RenderDrawRect(sdl->renderer(), &auxDeath);
 
 #endif // _DEBUG

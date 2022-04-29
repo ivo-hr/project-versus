@@ -3,10 +3,13 @@
 #include "State.h"
 
 class PlayingState : public State {
+    
+    vector<int>playersInput_;
 
 public:
 
     PlayingState(FightManager* fmngr , vector<int>player, vector<int>characters);
+    PlayingState(FightManager* fmngr, vector<int>player, vector<int>characters, vector<int>teams);
     ~PlayingState() = default;
 
     void update() override;

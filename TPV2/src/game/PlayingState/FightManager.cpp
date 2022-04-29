@@ -1,5 +1,6 @@
 #include "FightManager.h"
 #include "../Entity.h"
+#include "../Character.h"
 #include "../Utils/Particle.h"
 #include "../Utils/MyListener.h"
 #include "../PlayingState/Stage.h"
@@ -10,7 +11,7 @@ void FightManager::MoveCamera()
 	int maxX = INT32_MIN, minX = INT32_MAX;
 	int maxY = INT32_MIN, minY = INT32_MAX;
 
-	for (Entity* c : characters)
+	for (Character* c : characters)
 	{
 		Vector2D pos = c->GetCenterSDL();
 
@@ -86,7 +87,7 @@ void FightManager::MoveCamera()
 FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 {
 	listener = new MyListener();
-	stage = new Stage(sdl, listener, screenAdjust, step, "resources/config/stage1.json");
+	stage = new Stage(sdl, listener, step);
 
 	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
 
@@ -188,19 +189,99 @@ void FightManager::Update()
 	}
 }
 
-int FightManager::StartFight(std::vector<Entity*> ent)
+void FightManager::LoadStage(std::string file)
 {
-	entities = ent;
-	characters = ent;
+	stage->LoadJsonStage(file, screenAdjust);
+}
 
-	for (auto i = 0u; i < entities.size(); i++) {
-		entities[i]->SetOponents(entities);
+int FightManager::StartFight(std::vector<Character*> ent)
+{
+
+	for (Character* a : ent)
+	{
+		entities.push_back(a);
+		characters.push_back(a);
+	}
+	//characters = ent;
+
+	for (auto i = 0u; i < characters.size(); i++) {
+		numPlayers++;
+		characters[i]->SetOponents(entities);
 		listener->AddCharacter(entities[i]);
-		entities[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
+		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i)); 
+		characters[i]->SetPNumber(i);
 	}
 	sdl->musics().at("cube").play();
 	//Music::setMusicVolume(1);
 
+	return 1;
+}
+int FightManager::StartFight(std::vector<Character*> team1 , std::vector<Character*> team2)
+{
+	std::vector<Entity*> aux1;
+	std::vector<Entity*> aux2;
+	for (Character* a : team1)
+	{
+		entities.push_back(a);
+		characters.push_back(a);
+		aux1.push_back(a);
+	}
+
+	for (Character* a : team2)
+	{
+		entities.push_back(a);
+		characters.push_back(a);
+		aux2.push_back(a);
+	}
+	//characters = team1;
+
+
+	for (auto i = 0u; i < team1.size(); i++) {
+		numPlayers++;
+		characters[i]->SetOponents(aux2);
+		listener->AddCharacter(characters[i]);
+		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
+		characters[i]->SetPNumber(0);
+	}
+	for (auto i = team1.size(); i < team2.size()+team1.size() ; i++) {
+		numPlayers++;
+		characters[i]->SetOponents(aux1);
+		listener->AddCharacter(characters[i]);
+		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
+		characters[i]->SetPNumber(1);
+	}
+	sdl->musics().at("cube").play();
+	//Music::setMusicVolume(1);
+
+	return 1;
+}
+int FightManager::StartFight(std::vector<Character*> team1, std::vector<Character*> team2, std::vector<Character*> team3)
+{
+	for (Character* a : team1)
+	{
+		entities.push_back(a);
+		characters.push_back(a);
+	}
+
+	for (Character* a : team2)
+	{
+		entities.push_back(a);
+		characters.push_back(a);
+	}
+	for (Character* a : team3)
+	{
+		entities.push_back(a);
+		characters.push_back(a);
+	}
+	for (auto i = 0u; i < characters.size(); i++) {
+		numPlayers++;
+		characters[i]->SetOponents(entities);
+		listener->AddCharacter(characters[i]);
+		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
+		characters[i]->SetPNumber(i);
+	}
+	sdl->musics().at("cube").play();
+	//Music::setMusicVolume(1);
 	return 1;
 }
 
@@ -230,7 +311,7 @@ bool FightManager::RemoveEntity(Entity* ent)
 	return false;
 }
 
-bool FightManager::RemoveCharacter(Entity* character)
+bool FightManager::RemoveCharacter(Character* character)
 {
 	for (int i = 0; i < characters.size(); i++)
 	{
@@ -245,6 +326,13 @@ bool FightManager::RemoveCharacter(Entity* character)
 	}
 	listener->RemoveCharacter(character);
 	RemoveEntity(character);
+	if (characters.size() == 1) {
+		winnerInput = characters[0]->getInput();
+		winnersTextures.push_back(characters[0]->getPortrait());
+		entities.clear();
+		characters.clear();
+		getState()->next();
+	}
 	return false;
 }
 
@@ -294,9 +382,9 @@ void FightManager::KillingBlow()
 	sdl->soundEffects().at("hitKill").play();
 }
 
-void FightManager::FighterLost(Entity* loser)
+void FightManager::FighterLost(Character* loser)
 {
-	RemoveEntity(loser);
+	RemoveCharacter(loser);
 	numPlayers--;
 
 	if (numPlayers == 1)
@@ -329,6 +417,8 @@ b2World* FightManager::GetWorld()
 {
 	return stage->GetWorld();
 }
+
+
 
 SDL_Rect FightManager::GetSDLCoors(b2Body* body, float width, float height)
 {
