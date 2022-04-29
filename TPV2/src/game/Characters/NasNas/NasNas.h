@@ -18,10 +18,9 @@ public:
 	virtual void SpecialUpward(int frameNumber) override;
 	virtual void SpecialDownward(int frameNumber) override;
 
-	virtual bool GetHit(attackData a, Entity* attacker);
 	virtual void update() override;
 private:
 	int maxMana = 360;
 	int mana = maxMana;
-	enum state estado = fire;
+	state estado = fire;
 };

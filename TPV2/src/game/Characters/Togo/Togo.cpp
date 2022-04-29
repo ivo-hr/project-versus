@@ -412,62 +412,23 @@ void Togo::SpecialLHit(int frameNumber)
 }
 bool Togo::GetHit(attackData a, Entity* attacker)
 {
-	bite = SDL_Rect({ 0, 0, 0, 0 });
-
-	if (shield)
+	if (dShield != nullptr)
 	{
-		damageTaken += (int)(a.damage * 0.4f);
-		return true;
+		manager->RemoveEntity(dShield);
+		dShield = nullptr;
 	}
-	if (dash)
+	Character::GetHit(a,attacker);
+	return true;
+}
+
+void Togo::update()
+{
+	if (dShield != nullptr && stun > 0)
 	{
-		return false;
+		manager->RemoveEntity(dShield);
+		dShield = nullptr;
 	}
-	else if (!shield && !dash)
-	{
-		if (dShield != nullptr)
-		{
-			manager->RemoveEntity(dShield);
-			dShield = nullptr;
-		}
-		currentMove = nullptr;
-		moveFrame = -1;
-		anim->StartAnimation("stun");
-		anim->update();
-		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
-
-		stun = (recoil / 1.8f) + 4;
-
-		//Actualiza el da�o
-		damageTaken += a.damage;
-
-		b2Vec2 aux = a.direction;
-
-		if (recoil > 100)
-		{
-			manager->KillingBlow();
-
-			AddParticle(new Particle(
-				Vector2D(
-					manager->ToSDL(body->GetPosition().x),
-					manager->ToSDL(body->GetPosition().y)),
-				1, "killVfx", this));
-			AddParticle(new Particle(
-				Vector2D(
-					manager->ToSDL(body->GetPosition().x),
-					manager->ToSDL(body->GetPosition().y)),
-				1, "killHit", this));
-		}
-
-		aux *= recoil;
-		aux.y *= -1;
-		aux.x *= attacker->GetDir();
-
-		//Produce el knoback..
-		body->SetLinearVelocity(aux);
-
-		return true;
-	}
+	Character::update();
 }
 
 

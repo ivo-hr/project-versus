@@ -175,23 +175,26 @@ void NasNas::SpecialNeutral(int frameNumber)
 		attackData aaa = attacks["specialN"];
 		if (estado == fire)
 		{
-			aaa.damage = 30;
+			aaa.damage = 20;
 			aaa.base = 10;
 			aaa.estado = fire;
+			aaa.power = 25;
 		}
 		else if (estado == water)
 		{
 			aaa.damage = 10;
-			aaa.base = 30;
+			aaa.base = 20;
 			aaa.estado = water;
+			aaa.power = 20;
 		}
 		else if (estado == electric)
 		{
-			aaa.damage = 15;
-			aaa.base = 15;
+			aaa.damage = 7;
+			aaa.base = 7;
 			aaa.estado = electric;
+			aaa.power = 25;
 		}
-		auto spell = new Spell(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y), attacks["specialN"], b2Vec2(dir, 0));
+		auto spell = new Spell(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y), aaa, b2Vec2(dir, 0));
 		manager->AddEntity(spell);
 		manager->MoveToFront(spell);
 		spell->SetOponents(oponents);
@@ -227,30 +230,33 @@ void NasNas::SpecialForward(int frameNumber)
 			hitbox.x += width;
 			hitbox.y += 20;
 			hitbox.h /= 1.5;
-			hitbox.w *= 6;
-			aaa.damage = 45;
-			aaa.base = 25;
+			hitbox.w *= 3;
+			aaa.damage = 35;
+			aaa.base = 15;
 			aaa.estado = fire;
+			aaa.power = 50;
 		}
 		else if (estado == water)
 		{
 			hitbox.x += width;
 			hitbox.y += (hitbox.h / 2)-10;
 			hitbox.h /= 3;
-			hitbox.w *= 8;
-			aaa.damage = 30;
-			aaa.base = 45;
+			hitbox.w *= 6;
+			aaa.damage = 20;
+			aaa.base = 35;
 			aaa.estado = water;
+			aaa.power = 45;
 		}
 		else if (estado == electric)
 		{
 			hitbox.x += width;
 			hitbox.y += (hitbox.h / 2) - 10;
 			hitbox.h /= 8;
-			hitbox.w *= 10;
-			aaa.damage = 25;
-			aaa.base = 25;
+			hitbox.w *= 8;
+			aaa.damage = 12;
+			aaa.base = 12;
 			aaa.estado = electric;
+			aaa.power = 50;
 		}
 		if (dir == -1)
 		{
@@ -298,59 +304,6 @@ void NasNas::SpecialDownward(int frameNumber)
 
 }
 
-bool NasNas::GetHit(attackData a, Entity* attacker)
-{
-	if (shield)
-	{
-		//Actualiza el da�o
-		damageTaken += (int)(a.damage * 0.4f);
-		return true;
-	}
-	if (dash)
-	{
-		return false;
-	}
-	else if (!shield && !dash)
-	{
-		currentMove = nullptr;
-		moveFrame = -1;
-		anim->StartAnimation("stun");
-		anim->update();
-		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
-
-		stun = (recoil / 1.8f) + 4;
-
-		//Actualiza el da�o
-		damageTaken += a.damage;
-
-		b2Vec2 aux = a.direction;
-
-		if (recoil > 100)
-		{
-			manager->KillingBlow();
-
-			AddParticle(new Particle(
-				Vector2D(
-					manager->ToSDL(body->GetPosition().x),
-					manager->ToSDL(body->GetPosition().y)),
-				1, "killVfx", this));
-			AddParticle(new Particle(
-				Vector2D(
-					manager->ToSDL(body->GetPosition().x),
-					manager->ToSDL(body->GetPosition().y)),
-				1, "killHit", this));
-		}
-
-		aux *= recoil;
-		aux.y *= -1;
-		aux.x *= attacker->GetDir();
-
-		//Produce el knoback..
-		body->SetLinearVelocity(aux);
-
-		return true;
-	}
-}
 void NasNas::update()
 {
 	Character::update();

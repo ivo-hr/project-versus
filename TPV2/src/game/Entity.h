@@ -6,7 +6,7 @@
 
 class AnimationManager;
 
-enum state { none, fire, electric, water };
+enum state { none, fire, electric, water, wElectric };
 
 struct animationData
 {
@@ -43,6 +43,7 @@ struct attackData
 	int totalFrames;
 
 	state estado = none;
+	int power = 0;
 };
 
 struct OnHitData {

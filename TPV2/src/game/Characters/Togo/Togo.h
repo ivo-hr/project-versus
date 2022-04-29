@@ -19,6 +19,7 @@ public:
 	virtual void SpecialDownward(int frameNumber) override;
 
 	virtual bool GetHit(attackData a, Entity* attacker);
+	virtual void update() override;
 	virtual void SetSpear(bool spear);
 	void SpecialLHit(int frameNumber);
 

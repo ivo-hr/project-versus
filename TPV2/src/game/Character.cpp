@@ -144,6 +144,8 @@ void Character::update()
 		{
 			body->ApplyLinearImpulseToCenter({ -5, 0 }, true);
 		}
+
+		currentMove = nullptr;
 	}
 	else
 	{ 
@@ -353,15 +355,25 @@ void Character::update()
 		moveFrame++;
 	}
 
-	if (efEstado != none)
+	// Efectos de estado
+	if (efEstado != none && stateCont < stateDur)
 	{
 		stateCont++;
-		if (stateCont / 60 == 0)
+		if ((efEstado == fire|| efEstado == wElectric) && stateCont % 60 == 0)
 		{
-			Elements(efEstado);
+			Elements();
+		}
+		if (stateCont >= stateDur && efEstado == water)
+		{
+			maxSpeed += statePower / (stateDur / 60);
 		}
 	}
-	else stateCont == 0;
+	else
+	{
+		stateCont = 0;
+		statePower = 0;
+		efEstado = none;
+	}
 
 
 
@@ -462,7 +474,7 @@ bool Character::GetHit(attackData a, Entity* attacker)
 		anim->update();
 		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
 
-		stun = (recoil / 1.8f) + 4;
+		stun = (recoil / 1.8f);
 
 		//Actualiza el da�o
 		damageTaken += a.damage;
@@ -491,13 +503,66 @@ bool Character::GetHit(attackData a, Entity* attacker)
 
 		if (a.estado != none)
 		{
-			Elements(a.estado);
+			if (efEstado != a.estado && efEstado != none)
+			{
+				if ((efEstado == fire && a.estado == electric) || (efEstado == electric && a.estado == fire))
+				{
+					efEstado = none;
+					statePower = 0;
+					stateCont = 0;
+					//explosión de fuego/rayo
+				}
+				else if((efEstado == fire && a.estado == water) || (efEstado == water && a.estado == fire))
+				{
+					if (efEstado == water)
+					{
+						maxSpeed += ralentizar;
+						ralentizar = 0;
+					}
+					efEstado = none;
+					statePower = 0;
+					stateCont = 0;
+					//explosión de fuego/agua
+				}
+				else if ((efEstado == water && a.estado == electric) || (efEstado == electric && a.estado == water))
+				{
+					if (efEstado == water)
+					{
+						maxSpeed += ralentizar;
+						ralentizar = 0;
+					}
+					efEstado = wElectric;
+					statePower += a.power;
+					stateCont = 0;
+
+				}
+			}
+			else if (efEstado == a.estado)
+			{
+				stateCont = 0;
+				statePower = a.power;
+				if (efEstado == electric)
+				{
+					stun += statePower * 1.5;
+				}
+			}
+			else if (efEstado == none)
+			{
+				efEstado = a.estado;
+				statePower = a.power;
+				if (efEstado == electric)
+				{
+					stun += statePower * 1.5;
+				}
+				else if (efEstado == water)
+				{
+					ralentizar = maxSpeed * (statePower / 100);
+					maxSpeed -= ralentizar;
+				}
+			}
 		}
-
 		//Produce el knoback..
-		body->SetLinearVelocity(aux);
-
-		return true;
+		body->SetLinearVelocity(aux);		
 	}
 
 }
@@ -681,6 +746,7 @@ void Character::ChangeMove(std::function<void(int)> newMove)
 	moveFrame = -1;
 }
 
+
 SDL_Rect* Character::GetHurtbox()
 {
 	return &hurtbox;
@@ -816,44 +882,15 @@ void Character::Taunt(int frameNumber) {
 		moveFrame = -1;
 	}
 }
-void Character::Elements(state s)
+void Character::Elements()
 {
-	if (efEstado == none || efEstado == s)
+	if (efEstado == fire)
 	{
-		efEstado = s;
-		if (efEstado == fire)
-		{
-			damageTaken += 5;
-		}
-		else if (efEstado == water)
-		{
-			maxSpeed -= 7;
-		}
-		else if (efEstado == electric)
-		{
-			stun = 15;
-		}
+		damageTaken += statePower/(stateDur/60);
 	}
-	else if (efEstado != none)
+	else if (efEstado == wElectric)
 	{
-		//efEstado = s;
-		if ((efEstado == fire && s == water)|| (efEstado == water && s == fire))
-		{
-			//Explosión
-			damageTaken += 120;
-		}
-		else if ((efEstado == fire && s == electric) || (efEstado == electric && s == fire))
-		{
-			//knockback
-		}
-		else if ((efEstado == water && s == electric) || (efEstado == electric && s == water))
-		{
-			stun = 150;
-		}
-	}
-	if (efEstado == water && s == none)
-	{
-		speed += 7;
+		stun += (statePower / (stateDur / 60))*1.5;
 	}
 }
 

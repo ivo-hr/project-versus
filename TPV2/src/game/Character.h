@@ -60,7 +60,10 @@ protected:
 
 	// efectos de estado
 	enum state efEstado = none;
+	int statePower = 0;
 	int stateCont = 0;
+	int stateDur = 300;
+	double ralentizar = 0;
 //	void (Character::* currentMove)(int);
 public:
 
@@ -117,7 +120,7 @@ public:
 	virtual void EndShield(int frameNumber);
 	virtual void Dash(int frameNumber);
 	virtual void Taunt(int frameNumber);
-	virtual void Elements(state s);
+	virtual void Elements();
 
 	void StartMove(std::function<void(int)> newMove);
 	void ChangeMove(std::function<void(int)> newMove);
