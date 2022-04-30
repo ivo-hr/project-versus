@@ -13,8 +13,6 @@
 #include "../State/MenuState.h"
 #include "../State/PlayingState.h"
 #include "../State/GameOverState.h"
-#include "../State/PauseState.h"
-
 #include "../Utils/PlayerSelectRect.h"
 #include "../State/ConfigurationState.h"
 

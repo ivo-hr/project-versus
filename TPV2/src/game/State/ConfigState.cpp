@@ -1,5 +1,6 @@
 #include "ConfigState.h"
 #include "PlayingState.h"
+#include "ExitState.h"
 #include "../PlayingState/FightManager.h"
 
 
@@ -133,8 +134,14 @@ void ConfigState::update() {
             fmngr->saveState(tmp);
         }
     }
-    if (ih.isKeyDown(SDLK_ESCAPE))
-        fmngr->userExit();
+    if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
+        if (fmngr->getExitState() == nullptr) {
+            //pause
+            fmngr->saveExitState(fmngr->getState());
+            fmngr->setState(new ExitState(fmngr));
+            return;
+        }
+    }
 }
 
 void ConfigState::draw() {

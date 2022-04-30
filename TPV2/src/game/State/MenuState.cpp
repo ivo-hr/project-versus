@@ -1,5 +1,6 @@
 #include "MenuState.h"
 #include "PlayingState.h"
+#include "ExitState.h"
 #include "ConfigState.h"
 #include "../PlayingState/FightManager.h"
 
@@ -54,8 +55,15 @@ void MenuState::update() {
         }
     }
     if (exit->mouseClick()) fmngr->userExit();
-    if (ih.isKeyDown(SDLK_ESCAPE))
-        fmngr->userExit();
+
+    if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
+        if (fmngr->getExitState() == nullptr) {
+            //pause
+            fmngr->saveExitState(fmngr->getState());
+            fmngr->setState(new ExitState(fmngr));
+            return;
+        }
+    }
 }
 
 void MenuState::draw() {
