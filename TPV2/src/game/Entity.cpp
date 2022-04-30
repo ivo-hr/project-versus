@@ -19,7 +19,7 @@ Entity::Entity(FightManager* mngr, b2Vec2 position, float w, float h) : manager(
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 3.f;
-	fixtureDef.friction = 0.9f;
+	fixtureDef.friction = 0.0f; // Para que no se pegue a las paredes
 	fixtureDef.filter.categoryBits = 1; // 1 para los personajes (se atraviesan entre sí)
 	fixtureDef.filter.maskBits = 2 | 4; // Colisiona con el suelo y plataforma (tiene este categoryBits en FightManager)
 

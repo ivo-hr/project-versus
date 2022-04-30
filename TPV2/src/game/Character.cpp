@@ -292,12 +292,12 @@ void Character::update()
 			StartMove([this](int f) { StartJump(f); });
 		}
 
-		if (!GetGround() && body->GetLinearVelocity().y > 0.01f)
+		if (!GetGround())
 		{
-			if (anim->CurrentAnimation() != "airborne")
+			if (body->GetLinearVelocity().y > 0.01f && anim->CurrentAnimation() != "airborne")
 				anim->StartAnimation("airborne");
 		}
-		else if (anim->CurrentAnimation() != "jump")
+		else
 		{
 			if (speed > 0.1f || speed < -0.1f)
 			{
