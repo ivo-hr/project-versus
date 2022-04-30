@@ -111,6 +111,8 @@ protected:
 	int lives = 3;
 	b2Vec2 respawnPos;
 
+	int kills;
+	Entity* lastCharacter; // El ultimo jugador que golpeo a este
 
 public:
 	string nombre;
@@ -151,6 +153,11 @@ public:
 	virtual bool changeDir() { return false; };
 
 	void resetHit();
+	void increaseKills() { kills++; }
+	int getKills() { return kills; }
+	void setLastCharacer(Entity* chrcter);
+	void resetLastCharacter() { lastCharacter = nullptr; }
+
 	Texture* getTexture() { return texture; }
 	//virtual void SendToHUD(Texture* tex);
 };

@@ -232,6 +232,7 @@ void FightManager::LoadStage(std::string file)
 
 int FightManager::StartFight(std::vector<Character*> ent)
 {
+	onNewGame();
 
 	for (Character* a : ent)
 	{
@@ -254,6 +255,8 @@ int FightManager::StartFight(std::vector<Character*> ent)
 }
 int FightManager::StartFight(std::vector<Character*> team1 , std::vector<Character*> team2)
 {
+	onNewGame();
+
 	std::vector<Entity*> aux1;
 	std::vector<Entity*> aux2;
 	for (Character* a : team1)
@@ -293,6 +296,8 @@ int FightManager::StartFight(std::vector<Character*> team1 , std::vector<Charact
 }
 int FightManager::StartFight(std::vector<Character*> team1, std::vector<Character*> team2, std::vector<Character*> team3)
 {
+	onNewGame();
+
 	for (Character* a : team1)
 	{
 		entities.push_back(a);
@@ -462,7 +467,17 @@ void FightManager::addCharacterStats(Character* character)
 	vector<int>stats;
 	stats.push_back(character->getDeaths());
 	stats.push_back(character->getDamageTaken());
+	stats.push_back(character->getKills());
 	gameStats.push_back(stats);
+}
+
+void FightManager::onNewGame()
+{
+	//for (auto e : winnersTextures)delete e;
+	winnersTextures.clear();
+
+	gameStats.clear();
+
 }
 
 

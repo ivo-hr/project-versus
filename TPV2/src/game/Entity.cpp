@@ -88,6 +88,11 @@ void Entity::resetHit()
 	}
 }
 
+void Entity::setLastCharacer(Entity* chrcter)
+{
+	lastCharacter = chrcter;
+}
+
 void Entity::draw()
 {
 	for (Particle* ent : particulas)
@@ -213,6 +218,8 @@ void Entity::CheckHits()
 				if (oponents[j]->GetHit(hitboxes[i]->data, this))
 				{
 					manager->HitLag(hitboxes[i]->hit.hitlag);
+
+					oponents[j]->setLastCharacer(this);
 
 					if (hitboxes[i]->hit.hitlag >= 15)
 					{

@@ -123,4 +123,6 @@ public:
 
 	void userExit() { exit_ = true; };
 
+	void onNewGame();
+
 };
