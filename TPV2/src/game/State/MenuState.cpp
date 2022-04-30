@@ -9,7 +9,7 @@ MenuState::MenuState(FightManager* game) : State(game) {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     background = &sdl->images().at("menu");
-    exit = new Button( &sdl->images().at("ExitBut"),0,h -ts(21),ts(40),ts(20));
+    exit = new Button( &sdl->images().at("ExitBut"),0,h -ts(20),ts(40),ts(20));
     sdl->musics().at("main").play();
     config = new Button(&sdl->images().at("ConfigBut"), w-ts(20), h - ts(21), ts(20), ts(20));
 }
