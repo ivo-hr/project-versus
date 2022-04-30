@@ -6,7 +6,7 @@
 #include "../Utils/MyListener.h"
 #include "../../../CharInclude.h"
 
-PlayingState::PlayingState(FightManager* game, vector<int>playersInput, vector<int>characters) : State(game) {
+PlayingState::PlayingState(FightManager* game, vector<int>playersInput, vector<int>characters , int map) : State(game) {
 	std::vector<Character*> entities;
 	std::vector<Character*> team1;
 	std::vector<Character*> team2;
@@ -14,8 +14,8 @@ PlayingState::PlayingState(FightManager* game, vector<int>playersInput, vector<i
 	// 0 y 1: teclado
 	// 2 y 3: mando NES
 	// 4 y 5: mando PS4 o Xbox One
-
-	fmngr->LoadStage("resources/config/stage2.json");
+	string s = "resources/config/stage" + to_string(map) + ".json";
+	fmngr->LoadStage(s);
 
 
 	for (auto i = 0u; i < playersInput.size(); i++) {
@@ -47,11 +47,13 @@ PlayingState::PlayingState(FightManager* game, vector<int>playersInput, vector<i
 
 }
 
-PlayingState::PlayingState(FightManager* game, vector<int> playersInput, vector<int> characters, vector<int> teams) : State(game)
+PlayingState::PlayingState(FightManager* game, vector<int> playersInput, vector<int> characters, vector<int> teams, int map) : State(game)
 {
 	std::vector<Character*> team1;
 	std::vector<Character*> team2;
-	fmngr->LoadStage("resources/config/stage2.json");
+	string s = "resources/config/stage" + to_string(map) + ".json";
+		fmngr->LoadStage(s);
+	//fmngr->LoadStage("resources/config/stage2.json");
 
 	for (auto i = 0u; i < playersInput.size(); i++) {
 		switch (characters[i])
