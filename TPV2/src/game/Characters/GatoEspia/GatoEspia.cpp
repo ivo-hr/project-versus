@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 using json = nlohmann::json;
-GatoEspia::GatoEspia(FightManager* mngr, Vector2D* pos, char input) : Character(mngr, pos, input, 1.5f, 3.f)
+GatoEspia::GatoEspia(FightManager* mngr, b2Vec2 pos, char input) : Character(mngr, pos, input, 1.5f, 3.f)
 {
 
 	ReadJson("resources/config/gato.json");
@@ -32,9 +32,11 @@ void GatoEspia::BasicNeutral(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicN"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.x += dir * 20;
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x + (dir * .8f), 
+			body->GetPosition().y, 
+			width * 1.8f, 
+			height);
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["basicN"], 2, OnHitData(5, false, false)));
 	}
@@ -44,6 +46,7 @@ void GatoEspia::BasicNeutral(int frameNumber)
 		moveFrame = -1;
 	}
 }
+
 void GatoEspia::BasicForward(int frameNumber)
 {
 	if (frameNumber == 0)
@@ -56,15 +59,11 @@ void GatoEspia::BasicForward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicF"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.w += 10;
-		if (dir == -1) {
-			hitbox.x += - hitbox.w;
-		}
-		else {
-			hitbox.x += 20;
-		}
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x + (dir),
+			body->GetPosition().y,
+			width * 2.f,
+			height * 0.8f);
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["basicF"], 5, OnHitData(20, false, false)));
 	}
@@ -74,6 +73,7 @@ void GatoEspia::BasicForward(int frameNumber)
 		moveFrame = -1;
 	}
 }
+
 void GatoEspia::BasicDownward(int frameNumber)
 {
 	if (frameNumber == 0)
@@ -84,28 +84,22 @@ void GatoEspia::BasicDownward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicD"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-		SDL_Rect hitbox2 = hitbox;
-
-		hitbox.y += hitbox.h/1.5;
-		hitbox.x += 20;
-		hitbox.h *= 0.4f;
-
-		hitbox2.y += hitbox2.h/1.5;
-		hitbox2.x -= 20;
-		hitbox2.h *= 0.4f;
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x + (dir * width * 0.7f),
+			body->GetPosition().y + height / 2,
+			width * 1.4f,
+			height / 2);
+		SDL_Rect hitbox2 = manager->GetSDLCoors(
+			body->GetPosition().x - (dir * width * 0.7f),
+			body->GetPosition().y + height / 2,
+			width * 1.4f,
+			height / 2);
 
 		attackData invert = attacks["basicD"];
 		invert.direction.x = -attacks["basicD"].direction.x;
 
-		if (dir == 1) {
-			hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 3, OnHitData(5, false, false)));
-			hitboxes.push_back(new Hitbox(hitbox2, invert, 3, OnHitData(5, false, false)));
-		}
-		else {
-			hitboxes.push_back(new Hitbox(hitbox2, attacks["basicD"], 3, OnHitData(5, false, false)));
-			hitboxes.push_back(new Hitbox(hitbox, invert, 3, OnHitData(5, false, false)));
-		}
+		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 3, OnHitData(5, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox2, invert, 3, OnHitData(5, false, false)));
 	}
 	else if (frameNumber == attacks["basicD"].totalFrames)
 	{
@@ -124,12 +118,11 @@ void GatoEspia::BasicUpward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicU"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.w *= 2.4f;
-		hitbox.h *= 0.7f;
-		hitbox.x -= hitbox.w / 3;
-		hitbox.y -= 25;
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x,
+			body->GetPosition().y - height * 0.6f,
+			width * 2.5f,
+			height * 0.7f);
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 4, OnHitData(5, false, false)));
 	}
@@ -152,7 +145,7 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
-		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x + dir * 2, body->GetPosition().y - height / 3),attacks["specialN"], b2Vec2(dir, 0));
+		auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x + dir * 2, body->GetPosition().y - height / 3), attacks["specialN"], b2Vec2(dir, 0));
 		manager->AddEntity(bullet);
 		bullet->SetOponents(oponents);
 	}
@@ -219,7 +212,7 @@ void GatoEspia::SpecialNeutralU(int frameNumber)
 		//hitbox.y -= 45;
 
 		//hitboxes.push_back(new Hitbox(hitbox, attacks["specialN"], 1, OnHitData(5, false, false)));
-		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["specialN"], b2Vec2(0,-1));
+		auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["specialN"], b2Vec2(0,-1));
 		manager->AddEntity(bullet);
 		bullet->SetOponents(oponents);
 
@@ -276,7 +269,7 @@ void GatoEspia::SpecialNeutralD(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
-		auto bullet = new Bullet(manager, new Vector2D(body->GetPosition().x + dir / 2, body->GetPosition().y - height / 2), attacks["specialN"], b2Vec2(dir, -1));
+		auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x + dir / 2, body->GetPosition().y - height / 2), attacks["specialN"], b2Vec2(dir, -1));
 		manager->AddEntity(bullet);
 		bullet->SetOponents(oponents);
 	}
@@ -485,11 +478,9 @@ void GatoEspia::TpAtack(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialLHit"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-		hitbox.w += 10;
-		hitbox.x += dir * 10;
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width * 1.8f, height * 0.6f);
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialLHit"], 3, OnHitData(20, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, attacks["specialLHit"], 2, OnHitData(20, false, false)));
 	}
 	else if (frameNumber == attacks["specialLHit"].totalFrames)
 	{
@@ -513,7 +504,6 @@ void GatoEspia::Respawn()
 	blinks = maxBlinks;
 	body->SetGravityScale(10.f);
 }
-
 
 bool GatoEspia::GetHit(attackData a, Entity* attacker)
 {
@@ -539,7 +529,7 @@ void GatoEspia::Counter(int frameNumber)
 	else if (frameNumber == attacks["specialLHit"].startUp)
 	{
 		anim->StartAnimation("especialL");
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+		SDL_Rect hitbox = manager->GetSDLCoors(body, width * 2, height);
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["specialLHit"], 1, OnHitData(20, false, false)));
 	}

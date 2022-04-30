@@ -77,6 +77,8 @@ public:
 	bool isFinish() { return fightEnded; };
 	void Update();
 
+	void HideOutOfBounds();
+
 	void LoadStage(std::string file);
 	int StartFight(std::vector<Character*> ent);
 	int StartFight(std::vector<Character*> team1, std::vector<Character*> team2);

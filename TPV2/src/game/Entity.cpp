@@ -1,14 +1,14 @@
 #include "Entity.h"
 #include "Utils/Particle.h"
 
-Entity::Entity(FightManager* mngr, Vector2D* position, float w, float h) : manager(mngr), width(w), height(h)
+Entity::Entity(FightManager* mngr, b2Vec2 position, float w, float h) : manager(mngr), width(w), height(h)
 {
 	this->sdl = mngr->GetSDLU();
 
 	//Definimos un objeto (dinámico)
 
 	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(position->getX(), position->getY());
+	groundBodyDef.position.Set(position.x, position.y);
 	groundBodyDef.type = b2_dynamicBody;
 
 	//Definimos un caja
