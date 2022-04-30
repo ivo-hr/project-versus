@@ -4,7 +4,7 @@
 #include "../Utils/PlayerPointer.h"
 
 class ConfigurationState : public State {
-    Texture* backgr , *sfx, *music , *c1,*c2;
+    Texture* backgr, * sfx, * music, * c1, * c2,*instru;
     Button* sfxp, * sfxm, * muscp, * muscm;
     Button* exit , *back;
     //PlayerPointer *p1;
