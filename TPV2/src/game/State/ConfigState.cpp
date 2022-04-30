@@ -96,7 +96,10 @@ void ConfigState::update() {
         checkPlayerReady();
     }
     if (ready) {
-        if (play->mouseClick())fmngr->getState()->next();
+        if (play->mouseClick()) {
+            fmngr->getState()->next();
+            return;
+        }
         for (auto i = 0; i < playerInput.size(); i++) {
             bool enter = false;
             switch (playerInput[i])
