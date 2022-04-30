@@ -58,9 +58,12 @@ bool Button::pointerClick(SDL_Rect rect)
 
 PlayButton::PlayButton(Texture* t, int x, int y, int width, int height) :Button(t, x, y, width, height)
 {
+
 	for (auto i = 0u; i < 22; i++) {
-		std::string c = "C" + std::to_string(i);
-		txV.push_back(&sdl->images().at(c));
+		std::string key = "C" + std::to_string(i);
+		std::string file = "resources/images/rompe_cristal/" + std::to_string(i) + ".png";
+		sdl->images().emplace(key, Texture(sdl->renderer(), file));
+		txV.push_back(&sdl->images().at(key));
 	}
 }
 
