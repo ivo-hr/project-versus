@@ -261,7 +261,10 @@ h4, .h4 {
 
 .projects-content {
   padding-top: 20vh;
-  background-image: url(../img/3rd-section.jpg);
+  background-color: #000000;
+  background-image: url(../img/logo.png);
+  background-size:auto;
+  
 }
 
 .projects-content .item img {
@@ -318,7 +321,8 @@ h4, .h4 {
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 8vh;
-  background-image: url(../img/4th-section.jpg);
+  background-color: #000000;
+  background-image: url(../img/lov.png);
   background-attachment: fixed;
   min-height: 100vh;
   background-size: cover;
