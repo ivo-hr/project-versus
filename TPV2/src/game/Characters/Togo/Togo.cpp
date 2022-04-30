@@ -30,7 +30,7 @@ void Togo::BasicNeutral(int frameNumber)
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("basicN");
-		//sdl->soundEffects().at("catAtk0").play();
+		sdl->soundEffects().at("dinoAtk0").play();
 	}
 	else if (frameNumber == attacks["basicN"].startUp)
 	{
@@ -83,7 +83,7 @@ void Togo::BasicForward(int frameNumber)
 			return;
 		}
 		anim->StartAnimation("basicF");
-		//sdl->soundEffects().at("catAtk0").play();
+		sdl->soundEffects().at("dinoAtk1").play();
 	}
 	else if (frameNumber == attacks["basicF"].startUp)
 	{
@@ -111,7 +111,7 @@ void Togo::BasicUpward(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("basicU");
-		sdl->soundEffects().at("catAtk3").play();
+		sdl->soundEffects().at("dinoAtk2").play();
 	}
 	else if (frameNumber == attacks["basicU"].startUp)
 	{
@@ -186,7 +186,7 @@ void Togo::BasicDownward(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("basicD");
-		sdl->soundEffects().at("catAtk2").play();
+		sdl->soundEffects().at("dinoAtk3").play();
 	}
 	else if (frameNumber == attacks["basicD"].startUp)
 	{
@@ -226,7 +226,7 @@ void Togo::SpecialNeutral(int frameNumber)
 		if (frameNumber == 0)
 		{
 			anim->StartAnimation("especialN");
-			//sdl->soundEffects().at("catAtk1").play();
+			sdl->soundEffects().at("dinoSpecN").play();
 			moving = false;
 		}
 		else if (frameNumber == attacks["specialN"].startUp)
@@ -260,13 +260,14 @@ void Togo::SpecialNeutral(int frameNumber)
 
 void Togo::SpecialForward(int frameNumber)
 {
-	if (frameNumber == 0) {
+	if (frameNumber <= 0) {
 		anim->StartAnimation("especialLEntrada");
+		sdl->soundEffects().at("dinoSpecS").play();
 	}
 	else if (frameNumber < attacks["specialL"].totalFrames)
 	{
 
-		//sdl->soundEffects().at("catAtk1").play();
+		
 		moving = false;
 		body->SetLinearVelocity(b2Vec2(dir*30, 0));
 		body->ApplyLinearImpulseToCenter(b2Vec2(dir*30,0), true);
@@ -311,6 +312,7 @@ void Togo::SpecialUpward(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("especialU");
+		sdl->soundEffects().at("dinoSpecU").play();
 	}
 	else if (frameNumber < attacks["specialU"].totalFrames) {
 		if (frameNumber == attacks["specialU"].startUp)
@@ -349,7 +351,7 @@ void Togo::SpecialDownward(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("especialD");
-		//sdl->soundEffects().at("catAtk2").play();
+		sdl->soundEffects().at("dinoSpecD").play();
 	}
 	else if (frameNumber == attacks["specialD"].startUp)
 	{
