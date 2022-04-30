@@ -2,7 +2,11 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
+<<<<<<< Updated upstream
       <FullPath>E:\2ºDV-2Sem\Proyectos 2\super-proj-melee\bin\PVersus21Debug.exe</FullPath>
+=======
+      <FullPath>F:\GAME_JAMS\super-proj-melee\bin\PVersus21Debug.exe</FullPath>
+>>>>>>> Stashed changes
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

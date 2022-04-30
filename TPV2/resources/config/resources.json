@@ -25,6 +25,10 @@
     { "id" : "T1C", "file" : "resources/images/T1C.png"},
     { "id" : "T2B", "file" : "resources/images/T2B.png"},
     { "id" : "T2C", "file" : "resources/images/T2C.png"},
+<<<<<<< Updated upstream
+=======
+    { "id" : "pause", "file" : "resources/images/Pause.png" },
+>>>>>>> Stashed changes
     { "id" : "makt", "file" : "resources/images/Maketo.png"},
     { "id" : "zero", "file" : "resources/images/CharZeroSheet.png"},
     { "id" : "blinkMaster", "file" : "resources/images/CharBlinkSheet.png"},
