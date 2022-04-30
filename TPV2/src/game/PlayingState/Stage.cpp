@@ -6,6 +6,11 @@
 
 using json = nlohmann::json;
 
+void Stage::reset()
+{
+
+}
+
 Stage::Stage(SDLUtils* sdl, MyListener* _listener, float step) :
 	world(b2World(b2Vec2(0.f, 15.f))), sdl(sdl), step(step)
 {

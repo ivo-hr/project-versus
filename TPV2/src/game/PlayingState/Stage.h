@@ -33,6 +33,7 @@ class Stage
 
 	float deathzoneSize;
 	float step;
+	void reset();
 
 public:
 	Stage(SDLUtils* sdl, MyListener* _listener, float step);
