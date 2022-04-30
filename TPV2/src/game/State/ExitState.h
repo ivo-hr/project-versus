@@ -2,12 +2,12 @@
 
 #include "State.h"
 
-class PauseState : public State {
-    Uint32 startTime;
+class ExitState : public State {
+    Button *yes, * no;
 public:
 
-    PauseState(FightManager* fmngr);
-    ~PauseState() = default;
+    ExitState(FightManager* fmngr);
+    ~ExitState() = default;
 
     void update() override;
     void draw() override;

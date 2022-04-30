@@ -65,6 +65,8 @@
     { "id" : "run", "file" : "resources/images/runSmoke.png"},
     { "id" : "play", "file" : "resources/images/Play.png"},
     { "id" : "selectbg", "file" : "resources/images/SelectMenu.png"},
+    { "id" : "mapbg", "file" : "resources/images/select_map.png"},
+    { "id" : "Exitbg", "file" : "resources/images/Exitbg.png"},
     { "id" : "P0","file" : "resources/images/P0.png"},
     { "id" : "P1", "file" : "resources/images/P1.png"},
     { "id" : "P2", "file" : "resources/images/P2.png"},
@@ -85,7 +87,8 @@
     { "id" : "zeroSelect", "file" : "resources/images/zeroSelect.png"},
     { "id" : "dinoSoulsSelect", "file" : "resources/images/dinoSoulsSelect.png"},
     { "id" : "mazmorra", "file" : "resources/images/Mazmorra.png"},
-    { "id" : "rockPlat", "file" : "resources/images/rock plataform.png"}
+    { "id" : "rockPlat", "file" : "resources/images/rock plataform.png"},
+    { "id" : "gameoverscreen1", "file" : "resources/images/V1.png"}
 
   ],
   

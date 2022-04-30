@@ -1,5 +1,6 @@
 #include "ConfigState.h"
 #include "PlayingState.h"
+#include "ExitState.h"
 #include "../PlayingState/FightManager.h"
 
 
@@ -26,7 +27,7 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P2")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P3")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P4")));
-
+    initMapBut();
     usedKeyboard.resize(2);
     playerInput.resize(1);
     playerInput[0] = fInput;
@@ -81,7 +82,10 @@ void ConfigState::update() {
    
     if (selectMap)
     {
-
+        movePointers();
+        mapcheckButtonMouseClick();
+        mapcheckButtonPointerClick();
+        if (map >= 0) selectMap = false;
     }
     else {
         searchInput();
@@ -130,8 +134,14 @@ void ConfigState::update() {
             fmngr->saveState(tmp);
         }
     }
-    if (ih.isKeyDown(SDLK_ESCAPE))
-        fmngr->userExit();
+    if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
+        if (fmngr->getExitState() == nullptr) {
+            //pause
+            fmngr->saveExitState(fmngr->getState());
+            fmngr->setState(new ExitState(fmngr));
+            return;
+        }
+    }
 }
 
 void ConfigState::draw() {
@@ -142,17 +152,18 @@ void ConfigState::draw() {
     else {
         playerMenuRender();
     }
+
     sdl->presentRenderer();
 }
 
 void ConfigState::next() {
     cout << "Next State " << endl;
     if (!TeamModebool) {
-        fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect));
+        fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,map+1));
     }
     else
     {
-        fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,charactersTeam));
+        fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,charactersTeam,map+1));
     }
     delete this;
 }
@@ -403,7 +414,6 @@ void ConfigState::checkButtonMouseClick()
         charactersSelect.resize(playerInput.size());
     }
     else if (plusB->mouseClick() && numOfplayer < 4) {
-
         numOfplayer++;
         charactersSelect.resize(playerInput.size());
     }
@@ -496,11 +506,71 @@ void ConfigState::playerMenuRender()
 void ConfigState::initMapBut()
 {
     int i = 0;
-    maps.push_back(new Button(&sdl->images().at("testura"), ts(480), ts(210), ts(40), ts(30)));
-    maps.push_back(new Button(&sdl->images().at("rockPlat"), ts(480), ts(210), ts(30), ts(30)));
+    maps.push_back(new Button(&sdl->images().at("fondo"), ts(50+i*150), ts(50), ts(100), ts(80)));
+    i++;
+    maps.push_back(new Button(&sdl->images().at("mazmorra"), ts(50 + i * 150), ts(50), ts(100), ts(80)));
+    i++;
 }
 
 
 void ConfigState::mapMenuRender()
 {
+    background = &sdl->images().at("mapbg");
+    int w = fmngr->GetActualWidth();
+    int h = fmngr->GetActualHeight();
+    sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
+    background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
+    int dist = (w - ts(50)) / numOfplayer;
+    int offset = dist - ts(110);
+    for(auto e: maps)
+    {
+        e->render();
+    }
+    playerPointers[0]->render();
+}
+
+void ConfigState::mapcheckButtonPointerClick()
+{
+    for (int i = 0u; i < maps.size(); i++) {
+        bool enter = false;
+        //Pulsacion de A
+        switch (playerInput[0])
+        {
+        case -1:
+            if (ih.isKeyDown(SDLK_e))enter = true;
+            break;
+        case -2:
+            if (ih.isKeyDown(SDLK_l))enter = true;
+            break;
+        default:
+            if (ih.xboxGetButtonState(playerInput[0], SDL_CONTROLLER_BUTTON_B))enter = true;
+            break;
+        }
+        if (maps[i]->pointerClick(playerPointers[0]->getRect())&&enter) {
+            map = i;
+        }
+        switch (playerInput[0])
+        {
+        case -1:
+            if (!ih.isKeyDown(SDLK_e))keyRelease = true;
+            break;
+        case -2:
+            if (!ih.isKeyDown(SDLK_l))keyRelease = true;
+            break;
+        case -3:
+            break;
+        default:
+            if (!ih.xboxGetButtonState(lastPointerClick, SDL_CONTROLLER_BUTTON_B))keyRelease = true;
+            break;
+        }
+    }
+}
+
+void ConfigState::mapcheckButtonMouseClick()
+{
+    for (int i = 0u; i < maps.size(); i++) {
+        if (maps[i]->mouseClick()) {
+            map = i;
+        }
+    }
 }
