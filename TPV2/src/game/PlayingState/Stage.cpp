@@ -7,12 +7,25 @@
 using json = nlohmann::json;
 
 Stage::Stage(SDLUtils* sdl, MyListener* _listener, float step) :
-	world(b2World(b2Vec2(0.f, 15.f))), sdl(sdl), step(step)
+	world(new b2World(b2Vec2(0.f, 15.f))), sdl(sdl), step(step)
 {
 	listener = _listener;
 }
 Stage::~Stage() 
 {
+	UnLoadStage();
+}
+
+void Stage::UnLoadStage()
+{
+	world->DestroyBody(stage);
+	for (uint16 i = 0; i < platforms.size(); i++)
+	{
+		world->DestroyBody(platforms[i]);
+	}
+	platforms.clear();
+	platformRects.clear();
+	playerSpawns.clear();
 }
 
 void Stage::LoadJsonStage(std::string fileName, double screenAdjust)
@@ -34,7 +47,7 @@ void Stage::LoadJsonStage(std::string fileName, double screenAdjust)
 	groundDef.type = b2_staticBody;
 
 	//Anadimos al mundo
-	stage = world.CreateBody(&groundDef);;
+	stage = world->CreateBody(&groundDef);;
 	//Le damos forma...
 	b2PolygonShape floor;
 	float floorW = jsonFile["groundW"], floorH = jsonFile["groundH"];
@@ -70,7 +83,7 @@ void Stage::LoadJsonStage(std::string fileName, double screenAdjust)
 		fi.filter.categoryBits = 4; // 4 para las plataformas que puedes atravesar desde abajo
 		fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
 
-		platforms.push_back(world.CreateBody(&gDef));
+		platforms.push_back(world->CreateBody(&gDef));
 		platforms[i]->CreateFixture(&fi);
 
 		platformRects.push_back(GetSDLCoors(platforms[i], platW, platH));
@@ -79,7 +92,7 @@ void Stage::LoadJsonStage(std::string fileName, double screenAdjust)
 	//Creo las cajas que representaran a los objetos
 	stageRect = GetSDLCoors(stage, floorW, floorH);
 
-	world.SetContactListener(listener);
+	world->SetContactListener(listener);
 
 	deathZone = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
 
