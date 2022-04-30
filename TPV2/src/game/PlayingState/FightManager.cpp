@@ -95,6 +95,12 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 
 	cameraOffset *= screenAdjust;
 
+	
+	for (auto i = 0u; i < 100; i++) {
+		string s = "nes" + to_string(i);
+		sdl->fonts().emplace(s, Font("resources/fonts/NES-Chimera.ttf", i));
+	}
+
 	setState(new MenuState(this));
 	while (!exit_) {
 		ih.refresh();
