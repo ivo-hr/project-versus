@@ -14,7 +14,8 @@ ExitState::ExitState(FightManager* game) : State(game) {
 
 
 void ExitState::update() {
-
+    int w = fmngr->GetActualWidth();
+    int h = fmngr->GetActualHeight();
     if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent() || no->mouseClick()) {
         std::cout << "unpause" << std::endl;
         State* tmp = fmngr->getState();
@@ -24,6 +25,33 @@ void ExitState::update() {
         delete tmp;
         return;
     }
+    if (ih.getMousePos().first < (w / 2 - ts(125)) || ih.getMousePos().first >(w / 2 - ts(125))) {
+        if (ih.getMousePos().second < (h / 2 - ts(50)) || ih.getMousePos().second >(h / 2 + ts(50))) {
+            if (ih.getMouseButtonState(ih.LEFT)) {
+                State* tmp = fmngr->getState();
+                State* saved = fmngr->getExitState();
+                fmngr->setState(saved);
+                fmngr->clearExitState();
+                delete tmp;
+                return;
+            }
+        }
+    }
+    int i1 = (w / 2 - ts(125));
+    int i2 = (w / 2 + ts(125));
+    if (ih.getMousePos().first < i1 || ih.getMousePos().first > i2) {
+        if (ih.getMouseButtonState(ih.LEFT)) {
+            State* tmp = fmngr->getState();
+            State* saved = fmngr->getExitState();
+            fmngr->setState(saved);
+            fmngr->clearExitState();
+            delete tmp;
+            return;
+        }
+       
+    }
+    
+ 
     if (yes->mouseClick()) fmngr->userExit();
 }
 
