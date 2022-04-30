@@ -9,7 +9,7 @@ MenuState::MenuState(FightManager* game) : State(game) {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     background = &sdl->images().at("menu");
-    exit = new Button( &sdl->images().at("ExitBut"),0,h -ts(21),ts(40),ts(20));
+    exit = new Button( &sdl->images().at("ExitBut"),0,h -ts(20),ts(40),ts(20));
     sdl->musics().at("main").play();
     config = new Button(&sdl->images().at("ConfigBut"), w-ts(20), h - ts(21), ts(20), ts(20));
 }
@@ -72,7 +72,7 @@ void MenuState::draw() {
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
     if (drawText)
-        showText(" Pulse Flecha Arriba o la Tecla W o Joystick Arriba en su mando", ts(7) , ts(40), ts(220), build_sdlcolor(0x112233ff));
+        showText("PRESS ARROW UP / JOYSTICK UP / W TO START", ts(7) , ts(120), ts(220), build_sdlcolor(0xFFFFFFff));
     exit->render();
     config->render();
     sdl->presentRenderer();  

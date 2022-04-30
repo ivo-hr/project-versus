@@ -334,6 +334,8 @@ void Character::update()
 		}
 		if (input->taunt() && onGround) 
 		{
+			sdl->soundEffects().at(codeName + "Taunt").play();
+
 			StartMove([this](int f) { Taunt(f); });
 		}
 	}
