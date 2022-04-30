@@ -17,7 +17,7 @@ class Bullet : public Projectile
 //	float ang;
 
 public:
-	Bullet(FightManager* manager, Vector2D* pos, attackData attack, b2Vec2 dir);
+	Bullet(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir);
 	~Bullet();
 
 	virtual bool GetHit(attackData a, Entity* attacker) { return(false);};

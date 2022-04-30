@@ -73,7 +73,7 @@ protected:
 	int input_;
 public:
 
-	Character(FightManager* manager, Vector2D* pos, char input, float w = 3.f, float h = 3.f);
+	Character(FightManager* manager, b2Vec2 pos, char input, float w = 3.f, float h = 3.f);
 	~Character();
 
 	void SetSpawn(b2Vec2 spawn, int dir);

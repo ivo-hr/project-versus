@@ -1,7 +1,7 @@
 #include "CharacterZero.h"
 #include "../../Utils/AnimationManager.h"
 
-CharacterZero::CharacterZero(FightManager* mngr, Vector2D* pos, char input) : Character(mngr, pos, input)
+CharacterZero::CharacterZero(FightManager* mngr, b2Vec2 pos, char input) : Character(mngr, pos, input)
 {
 	//importamos json del personaje
 	

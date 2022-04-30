@@ -3,7 +3,7 @@
 class GatoEspia : public Character
 {
 public:
-	GatoEspia(FightManager* mngr, Vector2D* pos, char input);
+	GatoEspia(FightManager* mngr, b2Vec2 pos, char input);
 	~GatoEspia();
 
 

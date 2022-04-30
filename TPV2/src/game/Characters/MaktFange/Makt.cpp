@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-Makt::Makt(FightManager* mngr, Vector2D* pos, char input) : 
+Makt::Makt(FightManager* mngr, b2Vec2 pos, char input) :
 	Character(mngr, pos, input, 2.f, 3.5f)
 {
 
@@ -48,9 +48,11 @@ void Makt::BasicNeutral(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicN"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.x += dir * 30;
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x + (dir * .6f),
+			body->GetPosition().y,
+			width * 1.8f,
+			height);
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["basicN"], 3, OnHitData(12, false, false)));
 	}
@@ -73,9 +75,11 @@ void Makt::BasicForward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicF"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.x += dir * 50;
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x + (dir),
+			body->GetPosition().y,
+			width * 1.4f,
+			height);
 
 		attackData aaa = attacks["basicF"];
 
@@ -103,12 +107,11 @@ void Makt::BasicUpward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicU"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.w *= 2.4f;
-		hitbox.h *= 0.7f;
-		hitbox.x -= hitbox.w / 3;
-		hitbox.y -= 45;
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x + (dir * .2f),
+			body->GetPosition().y - height * .5f,
+			width * 1.8f,
+			height);
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 5, OnHitData(5, false, false)));
 	}
@@ -127,21 +130,19 @@ void Makt::BasicDownward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicD"].startUp)
 	{
-		SDL_Rect sweetspot = hurtbox;
-
-		sweetspot.y += hurtbox.h / 2;
-		sweetspot.h *= 0.5f;
-		sweetspot.w *= 0.5f;
-		sweetspot.x += sweetspot.w / 2;
-		sweetspot.x += 40 * dir;
+		SDL_Rect sweetspot = manager->GetSDLCoors(
+				body->GetPosition().x + (dir * width),
+				body->GetPosition().y + height * .4f,
+				width,
+				height * 0.5f);
 
 		hitboxes.push_back(new Hitbox(sweetspot, attacks["basicDS"], 3, OnHitData(16, false, false)));
 
-		SDL_Rect sourspot = hurtbox;
-		sourspot.y += hurtbox.h / 2;
-		sourspot.h *= 0.5f;
-		sourspot.w *= 2.4f;
-		sourspot.x -= (sourspot.w - hurtbox.w) / 2;
+		SDL_Rect sourspot = manager->GetSDLCoors(
+			body->GetPosition().x - (dir * width * 0.5f),
+			body->GetPosition().y + height * .4f,
+			width * 2,
+			height * 0.5f);
 
 		hitboxes.push_back(new Hitbox(sourspot, attacks["basicD"], 3, OnHitData(10, false, false)));
 
@@ -160,6 +161,7 @@ void Makt::SpecialNeutral(int frameNumber)
 		if (ball != nullptr)
 		{
 			ChangeMove([this](int f) { BallPickUp(f); });
+			return;
 		}
 		moving = false;
 		anim->StartAnimation("especialN");
@@ -167,12 +169,11 @@ void Makt::SpecialNeutral(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
-		SDL_Rect hitbox = hurtbox;
-
-		hitbox.w *= 2.4f;
-		hitbox.x -= (hitbox.w - hurtbox.w) / 2;
-		hitbox.x += 20 * dir;
-
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x + (dir * 1.2f),
+			body->GetPosition().y,
+			width * 1.7f,
+			height);
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["specialN"], 8, OnHitData(30, false, false)));
 	}
@@ -218,13 +219,10 @@ void Makt::SpecialUpward(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialU"].startUp)
 	{
-		SDL_Rect hitbox = hurtbox;
-
-		hitbox.y -= 10;
-		hitbox.h += 10;
-		hitbox.x -= 5;
-		hitbox.x += 5 * dir;
-		hitbox.w += 10;
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body,
+			width * 1.2f,
+			height * 1.2f);
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 20, Vector2D(-5 + (5*dir), -10), OnHitData(3, false, false)));
 
@@ -252,10 +250,11 @@ void Makt::SpecialDownward(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialD"].startUp)
 	{
-		SDL_Rect hitbox = hurtbox;
-
-		hitbox.w *= 3.f;
-		hitbox.x -= (hitbox.w - hurtbox.w) / 2;
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x,
+			body->GetPosition().y + height * 0.2f,
+			width * 3,
+			height * 0.7f);
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["specialD"], 4, OnHitData(3, false, false)));
 	}
@@ -306,6 +305,11 @@ void Makt::RecoveredBall()
 
 void Makt::ThrowBall(attackData force, int timeHeld)
 {
+	if (timeHeld > 200)
+	{
+		timeHeld = 200;
+	}
+
 	jumpStr = baseJump;
 	maxSpeed = baseSpeed;
 	weight = baseWeight;
@@ -315,7 +319,7 @@ void Makt::ThrowBall(attackData force, int timeHeld)
 	aux.damage += timeHeld / 6;
 	aux.base += timeHeld / 6;
 
-	ball = new MaktBall(manager, new Vector2D( body->GetPosition().x, body->GetPosition().y ), aux, b2Vec2(dir, 0), &respawnPos);
+	ball = new MaktBall(manager, b2Vec2( body->GetPosition().x + dir, body->GetPosition().y ), aux, b2Vec2(dir, 0), respawnPos);
 	manager->AddEntity(ball);
 	ball->SetOponents(oponents);
 }
