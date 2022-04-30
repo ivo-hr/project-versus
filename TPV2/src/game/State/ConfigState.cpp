@@ -536,7 +536,7 @@ void ConfigState::mapcheckButtonPointerClick()
             if (ih.isKeyDown(SDLK_l))enter = true;
             break;
         default:
-            if (ih.xboxGetButtonState(playerInput[i], SDL_CONTROLLER_BUTTON_B))enter = true;
+            if (ih.xboxGetButtonState(playerInput[0], SDL_CONTROLLER_BUTTON_B))enter = true;
             break;
         }
         if (maps[i]->pointerClick(playerPointers[0]->getRect())&&enter) {
