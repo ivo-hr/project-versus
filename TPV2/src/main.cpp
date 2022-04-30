@@ -73,7 +73,7 @@ int main(int ac, char **av) {
 	FightManager* fghtmngr = new FightManager(&sdl, ratioFin);
 
 
-	
+	SDL_Quit();
 
 	return 0;
 }

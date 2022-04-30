@@ -89,9 +89,11 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 	listener = new MyListener();
 	stage = new Stage(sdl, listener, step);
 
-	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
+	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust)};
 
 	this->screenAdjust = screenAdjust;
+
+	cameraOffset *= screenAdjust;
 
 	setState(new MenuState(this));
 	while (!exit_) {

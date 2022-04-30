@@ -59,7 +59,7 @@ class FightManager :public StateMachine
 	SDL_Rect camera; 
 	SDL_Rect hitLagCam;
 
-	int cameraOffset = 300;
+	int cameraOffset = 75;
 
 	void MoveCamera();
 
