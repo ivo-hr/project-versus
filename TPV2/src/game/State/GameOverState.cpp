@@ -3,7 +3,8 @@
 #include "../PlayingState/FightManager.h"
 
 
-GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures, int playersInput , vector<int>playersInputV) : State(game) {
+
+GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures, vector<vector<int>>gameStats, int playersInput, vector<int>playersInputV) : State(game) {
 
     background = &sdl->images().at("selectbg");
     //fmngr = game;
@@ -20,6 +21,7 @@ GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures
     pointer = new PlayerPointer(&sdl->images().at(inputString), ts(200), ts(150), ts(15), ts(15), w, h);
     pointer->setActive(true);
     playersInput_ = playersInput;
+    gameStats_ = gameStats;
 }
 
 GameOverState::~GameOverState()
@@ -78,13 +80,35 @@ void GameOverState::draw() {
     int h = fmngr->GetActualHeight();
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
     showText("GG EASY. Press E to return to Menu", ts(150), ts(100), ts(150), build_sdlcolor(0x112233ff));
+    drawGameStats();
     winnersTextures_[0]->render(ts(100), ts(100));
     playAgain->render();
     pointer->render();
     sdl->presentRenderer();
 }
+
 void GameOverState::next() {
     cout << "Next State " << endl;
     fmngr->setState(new MenuState(fmngr));
     delete this;
+}
+
+void GameOverState::drawGameStats()
+{
+    int w = fmngr->GetActualWidth();
+    int h = fmngr->GetActualHeight();
+    int numOfplayer = gameStats_.size();
+    int dist = (w - ts(50)) / numOfplayer;
+    int offset = dist - ts(110);
+    for (auto i = 0u; i < numOfplayer; i++) {
+
+        winnersTextures_[numOfplayer - i - 1]->render({ (int)(i * dist + offset), (int)ts(200), (int)ts(50), (int)ts(50) });
+        showText(to_string(i + 1), ts(16), (int)(i * dist + offset + ts(0)), (int)ts(200), build_sdlcolor(0xFFFF0000));
+
+        showText("Deaths: ", ts(16), (int)(i * dist + offset + ts(0)), (int)ts(265), build_sdlcolor(0xFFFF0000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][0]), ts(16), (int)(i * dist + offset + ts(40)), (int)ts(265), build_sdlcolor(0xFFFF0000));
+
+        showText("Damage taken: ", ts(16), (int)(i * dist + offset + ts(0)), (int)ts(275), build_sdlcolor(0xFFFF0000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][1]), ts(16), (int)(i * dist + offset + ts(70)), (int)ts(275), build_sdlcolor(0xFFFF0000));
+    }
 }

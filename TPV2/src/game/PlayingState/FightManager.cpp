@@ -353,6 +353,8 @@ bool FightManager::RemoveCharacter(Character* character)
 	{
 		if (characters[i] == character)
 		{
+			addCharacterStats(characters[i]);
+			winnersTextures.push_back(characters[i]->getPortrait());
 			for (int j = i + 1; j < characters.size(); j++)
 			{
 				characters[j - 1] = characters[j];
@@ -363,6 +365,7 @@ bool FightManager::RemoveCharacter(Character* character)
 	listener->RemoveCharacter(character);
 	RemoveEntity(character);
 	if (characters.size() == 1) {
+		addCharacterStats(characters[0]);
 		winnerInput = characters[0]->getInput();
 		winnersTextures.push_back(characters[0]->getPortrait());
 		entities.clear();
@@ -453,6 +456,15 @@ b2World* FightManager::GetWorld()
 {
 	return stage->GetWorld();
 }
+
+void FightManager::addCharacterStats(Character* character)
+{
+	vector<int>stats;
+	stats.push_back(character->getDeaths());
+	stats.push_back(character->getDamageTaken());
+	gameStats.push_back(stats);
+}
+
 
 
 

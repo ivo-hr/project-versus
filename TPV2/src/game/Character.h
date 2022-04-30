@@ -29,6 +29,8 @@ protected:
 	int stun;
 	int lives;
 
+	const int maxLives = 3;
+
 	string codeName;
 	bool moving;
 	int maxSpeed;
@@ -50,6 +52,8 @@ protected:
 	int weight;
 
 	int damageTaken;
+
+	int totalDamageTaken;
 
 	bool recovery = true;
 
@@ -136,4 +140,6 @@ public:
 	void ChangeMove(std::function<void(int)> newMove);
 
 	int getInput() { return input_; }
+	int getDamageTaken() { return totalDamageTaken; }
+	int getDeaths() { return maxLives - lives; }
 };
