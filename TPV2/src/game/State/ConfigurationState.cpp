@@ -9,14 +9,15 @@ ConfigurationState::ConfigurationState(FightManager* game) : State(game) {
     backgr = &sdl->images().at("ConfigBack");
     music = &sdl->images().at("BgmT");
     sfx = &sdl->images().at("SfxT");
+    instru = &sdl->images().at("instru");
     exit = new Button(&sdl->images().at("ExitBut"), 0, h - ts(20), ts(40), ts(20));
     back = new Button(&sdl->images().at("BackBut"), ts(15), ts(15), ts(15), ts(15));
 
-    muscm = new Button(&sdl->images().at("minusB"), ts(120), ts(55), ts(10), ts(10));
-    muscp = new Button(&sdl->images().at("plusB"), ts(180),ts(55), ts(10), ts(10));
+    muscm = new Button(&sdl->images().at("minusB"), ts(120), ts(105), ts(10), ts(10));
+    muscp = new Button(&sdl->images().at("plusB"), ts(180),ts(105), ts(10), ts(10));
   
-    sfxm = new Button(&sdl->images().at("minusB"), ts(120), ts(105), ts(10), ts(10));
-    sfxp = new Button(&sdl->images().at("plusB"), ts(180), ts(105), ts(10), ts(10));
+    sfxm = new Button(&sdl->images().at("minusB"), ts(120), ts(155), ts(10), ts(10));
+    sfxp = new Button(&sdl->images().at("plusB"), ts(180), ts(155), ts(10), ts(10));
 
     
     //p1 = new PlayerPointer(&sdl->images().at("P1P"), w/2, h/2, ts(15), ts(15), w, h);
@@ -97,16 +98,16 @@ void ConfigurationState::update() {
 void ConfigurationState::draw() {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
-    
+  
     backgr->render({ 0,0,w,h });
-    showText("BGM", ts(8), ts(80), ts(57), build_sdlcolor(0x33FFFC00));
-    music->render({ (int)ts(50),(int)ts(50),(int)ts(20),(int)ts(20) });
-    showText(to_string(musicV), ts(8), ts(145), ts(57), build_sdlcolor(0x33FFFC00));
+    showText("BGM", ts(8), ts(80), ts(107), build_sdlcolor(0x33FFFC00));
+    music->render({ (int)ts(50),(int)ts(100),(int)ts(20),(int)ts(20) });
+    showText(to_string(musicV), ts(8), ts(145), ts(107), build_sdlcolor(0x33FFFC00));
    
-    showText("SFX", ts(8), ts(80), ts(107), build_sdlcolor(0x33FFFC00));
-    sfx->render({ (int)ts(50),(int)ts(100),(int)ts(20),(int)ts(20) });
-    showText(to_string(sfxV), ts(8), ts(145), ts(107), build_sdlcolor(0x33FFFC00));
-
+    showText("SFX", ts(8), ts(80), ts(157), build_sdlcolor(0x33FFFC00));
+    sfx->render({ (int)ts(50),(int)ts(150),(int)ts(20),(int)ts(20) });
+    showText(to_string(sfxV), ts(8), ts(145), ts(157), build_sdlcolor(0x33FFFC00));
+    instru->render({ (int)ts(250),(int)ts(50),(int)ts(200),(int)ts(200) });
    
     sfxm->render();
     sfxp->render();
@@ -114,6 +115,7 @@ void ConfigurationState::draw() {
     muscp->render();
     exit->render();
     back->render();
+    
     //p1->render();
     sdl->presentRenderer();
 }

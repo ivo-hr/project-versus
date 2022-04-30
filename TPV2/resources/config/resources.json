@@ -66,8 +66,8 @@
     { "id" : "rockPlat", "file" : "resources/images/rock plataform.png"},
     { "id" : "gameoverscreen1", "file" : "resources/images/V1.png"},
     { "id" : "gameoverscreen2", "file" : "resources/images/V2.png"},
-    { "id" : "playagain", "file" : "resources/images/play_again.png"}
-
+    { "id" : "playagain", "file" : "resources/images/play_again.png"},
+    { "id" : "instru", "file" : "resources/images/instru.png"}
   ],
   
   "messages" : [
