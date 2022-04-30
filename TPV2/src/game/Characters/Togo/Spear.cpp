@@ -11,7 +11,7 @@ Spear::Spear(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir, T
 	//funciona , but i dont know why
 	data = attack;
 
-	range = 30.f;
+	duration = 240;
 
 	lag = 0;
 
@@ -27,8 +27,8 @@ Spear::~Spear()
 
 void Spear::update()
 {
-	float distance = abs(body->GetPosition().x - iniPos.x);
-	if (distance <= range)
+	outFor++;
+	if (outFor <= duration)
 	{
 		body->SetLinearVelocity(vecDir);
 

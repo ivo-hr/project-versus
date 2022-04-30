@@ -96,10 +96,7 @@ void ConfigState::update() {
         checkPlayerReady();
     }
     if (ready) {
-        if (play->mouseClick()) {
-            fmngr->getState()->next();
-            return;
-        }
+        if (play->mouseClick())fmngr->getState()->next();
         for (auto i = 0; i < playerInput.size(); i++) {
             bool enter = false;
             switch (playerInput[i])
@@ -162,7 +159,7 @@ void ConfigState::draw() {
 void ConfigState::next() {
     cout << "Next State " << endl;
     if (!TeamModebool) {
-        fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,map+1));
+        fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,map+1)); //3 para el de noche
     }
     else
     {

@@ -1,0 +1,48 @@
+{
+    "codeName": "stage3",
+    "background": "night",
+    "platform": "nubePlat",
+    "deathZoneSize": 90,
+    "groundX": 45.0,
+    "groundY": 35.0,
+    "groundW": 40.0,
+    "groundH": 10.0,
+
+    "platformData": [
+        {
+        "platformX": 32.5,
+        "platformY": 25.0,
+        "platformW": 8.0,
+        "platformH": 0.5
+        },
+        {
+        "platformX": 57.5,
+        "platformY": 25.0,
+        "platformW": 8.0,
+        "platformH": 0.5
+        },
+        {
+        "platformX": 45,
+        "platformY": 20.0,
+        "platformW": 8.0,
+        "platformH": 0.5
+        }],
+
+    "playerSpawns": [
+        {
+        "X": 32.5,
+        "Y": 23
+        },
+        {
+        "X": 57.5,
+        "Y": 23
+        },
+        {
+        "X": 45.01,
+        "Y": 18
+        },
+        {
+        "X": 44.99,
+        "Y": 28
+        }]
+}

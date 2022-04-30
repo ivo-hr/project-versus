@@ -94,6 +94,62 @@ Particle::Particle(Vector2D position, int dir, std::string id, Entity* ent): ent
 		numSprites = 7;
 		duration = 30;
 	}
+	else if (id == "died")
+	{
+		int w = 1024;
+		int h = w;
+
+		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h};
+
+		texture = &manager->GetSDLU()->images().at("died");
+
+		numSpritesinX = 3;
+		numSpritesinY = 3;
+		numSprites = 7;
+		duration = 40;
+	}
+	else if (id == "water")
+	{
+		int w = 16;
+		int h = w;
+
+		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
+
+		texture = &manager->GetSDLU()->images().at("water");
+
+		numSpritesinX = 2;
+		numSpritesinY = 2;
+		numSprites = 4;
+		duration = 30;
+	}
+	else if (id == "electric")
+	{
+		int w = 16;
+		int h = w;
+
+		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
+
+		texture = &manager->GetSDLU()->images().at("electric");
+
+		numSpritesinX = 2;
+		numSpritesinY = 2;
+		numSprites = 4;
+		duration = 30;
+	}
+	else if (id == "fire")
+	{
+		int w = 16;
+		int h = w;
+
+		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
+
+		texture = &manager->GetSDLU()->images().at("fire");
+
+		numSpritesinX = 2;
+		numSpritesinY = 2;
+		numSprites = 3;
+		duration = 30;
+	}
 	else
 	{
 		int w = 0;

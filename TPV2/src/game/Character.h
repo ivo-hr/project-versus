@@ -92,6 +92,7 @@ public:
 	Texture* getPortrait() { return portrait; };
 
 	virtual void OnDeath() override;
+	void AddDeathParticle();
 	virtual void Respawn();
 
 	virtual void BasicNeutral(int frameNumber) {

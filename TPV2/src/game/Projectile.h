@@ -7,9 +7,9 @@ class Projectile : public Entity
 {
 protected:
 	int damage;
-	float range;
+	int duration;
+	int outFor;
 	int lag = 6;
-	b2Vec2 iniPos;
 	b2Vec2 vecDir;
 	attackData data;
 	float ang;

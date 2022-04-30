@@ -8,7 +8,7 @@ Bullet::Bullet(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir)
 	//funciona , but i dont know why
 	data = attack;
 
-	range = 20.f;
+	duration = 140;
 }
 
 Bullet::~Bullet()

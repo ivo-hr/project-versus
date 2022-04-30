@@ -6,8 +6,6 @@ Projectile::Projectile(FightManager* manager, b2Vec2 pos, b2Vec2 dir, float widt
 {
 	reflected = 0;
 
-	iniPos = pos;
-
 	vecDir = dir;
 
 	vecDir.Normalize();
@@ -23,6 +21,8 @@ Projectile::Projectile(FightManager* manager, b2Vec2 pos, b2Vec2 dir, float widt
 	body->SetGravityScale(0);
 
 	projectile = true;
+
+	outFor = 0;
 }
 
 Projectile::~Projectile()
@@ -32,8 +32,8 @@ Projectile::~Projectile()
 
 void Projectile::update()
 {
-	float distance = abs(body->GetPosition().x - iniPos.x);
-	if (distance <= range)
+	outFor++;
+	if (outFor <= duration)
 	{
 		body->SetLinearVelocity(vecDir);
 
@@ -104,6 +104,7 @@ void Projectile::CheckHits()
 }
 bool Projectile::changeDir()
 {
+	outFor = 0;
 	vecDir = -vecDir;
 	data.damage *= 1.2f;
 	reflected = 3;

@@ -12,7 +12,7 @@ MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 
 
 	vecDir *= attack.damage * 1.1f;
 
-	range = attack.damage * 1.2f;
+	duration = attack.damage * 2.2f;
 
 	physic = false;
 
@@ -35,8 +35,8 @@ void MaktBall::update()
 	{
 		if (!physic)
 		{
-			float distance = abs(body->GetPosition().x - iniPos.x);
-			if (distance <= range)
+			outFor++;
+			if (outFor <= duration)
 			{
 				body->SetLinearVelocity(vecDir);
 			}

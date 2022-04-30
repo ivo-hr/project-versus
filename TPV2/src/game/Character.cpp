@@ -422,10 +422,10 @@ void Character::update()
 void Character::draw()
 {
 	//xd
+	Entity::draw();
 
 	if (!alive) return;
 
-	Entity::draw();
 	anim->render();
 
 	//if (debug)
@@ -452,10 +452,10 @@ void Character::draw()
 void Character::draw(SDL_Rect* camera)
 {
 	//xd
+	Entity::draw(camera);
 
 	if (!alive) return;
 
-	Entity::draw(camera);
 	anim->render(camera);
 
 	SDL_Rect aux = hurtbox;
@@ -798,6 +798,8 @@ SDL_Rect* Character::GetHurtbox()
 
 void Character::OnDeath()
 {
+	AddDeathParticle();
+
 	body->SetTransform(respawnPos, 0);
 	body->SetAwake(false);
 	alive = false;
@@ -825,6 +827,22 @@ void Character::OnDeath()
 	if (lives <= 0) {
 		manager->RemoveCharacter(this);
 	}
+
+}
+
+void Character::AddDeathParticle()
+{
+	//O dios mio que he creado
+	AddParticle(new Particle(
+		Vector2D(
+			( manager->ToSDL(body->GetPosition().x) < 0 ?
+				0 : manager->ToSDL(body->GetPosition().x )) > manager->GetDeathZone()->w?
+				manager->GetDeathZone()->w : manager->ToSDL(body->GetPosition().x),
+
+			( manager->ToSDL(body->GetPosition().y) < 0 ? 
+				0 : manager->ToSDL(body->GetPosition().y )) > manager->GetDeathZone()->h ?
+				manager->GetDeathZone()->h : manager->ToSDL(body->GetPosition().y)),
+		1, "died", this));
 }
 
 void Character::Respawn()
