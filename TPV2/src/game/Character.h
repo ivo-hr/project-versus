@@ -52,9 +52,9 @@ protected:
 	int weight;
 
 	int damageTaken;
-
 	int totalDamageTaken;
 
+	
 	bool recovery = true;
 
 	//frame actual del movimiento que este haciendo

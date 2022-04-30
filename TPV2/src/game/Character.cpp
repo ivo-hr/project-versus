@@ -106,6 +106,8 @@ Character::Character(FightManager* manager, b2Vec2 pos, char input, float w, flo
 	this->input = new InputConfig(input);
 	input_ = input;
 	totalDamageTaken = 0;
+	kills = 0;
+	resetLastCharacter();
 }
 
 Character::~Character()
@@ -786,6 +788,7 @@ void Character::ChangeMove(std::function<void(int)> newMove)
 }
 
 
+
 SDL_Rect* Character::GetHurtbox()
 {
 	return &hurtbox;
@@ -813,6 +816,10 @@ void Character::OnDeath()
 		efEstado = none;
 		statePower = 0;
 	}
+	if (lastCharacter != nullptr) {
+		lastCharacter->increaseKills();
+	}
+
 	if (lives <= 0) {
 		manager->RemoveCharacter(this);
 	}
@@ -834,6 +841,8 @@ void Character::Respawn()
 
 	currentMove = nullptr;
 	moveFrame = 0;
+
+	resetLastCharacter();
 
 	anim->StartAnimation("idle");
 }

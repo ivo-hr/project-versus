@@ -23,6 +23,8 @@ GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures
     pointer->setActive(true);
     playersInput_ = playersInput;
     gameStats_ = gameStats;
+
+    sdl->musics().at("win").play();
 }
 
 GameOverState::~GameOverState()
@@ -114,10 +116,14 @@ void GameOverState::drawGameStats()
         winnersTextures_[numOfplayer - i - 1]->render({ (int)(i * dist + offset), (int)ts(200), (int)ts(50), (int)ts(50) });
         showText(to_string(i + 1), ts(16), (int)(i * dist + offset + ts(-10)), (int)ts(190), build_sdlcolor(0xFFFF0000));
 
+        showText("Kills: ", ts(8), (int)(i * dist + offset + ts(0)), (int)ts(255), build_sdlcolor(0xFFFF0000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][2]), ts(8), (int)(i * dist + offset + ts(120)), (int)ts(255), build_sdlcolor(0xFFFF0000));
+
         showText("Deaths: ", ts(8), (int)(i * dist + offset + ts(0)), (int)ts(265), build_sdlcolor(0xFFFF0000));
-        showText(to_string(gameStats_[numOfplayer - i - 1][0]), ts(8), (int)(i * dist + offset + ts(80)), (int)ts(265), build_sdlcolor(0xFFFF0000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][0]), ts(8), (int)(i * dist + offset + ts(120)), (int)ts(265), build_sdlcolor(0xFFFF0000));
 
         showText("Damage taken: ", ts(8), (int)(i * dist + offset + ts(0)), (int)ts(275), build_sdlcolor(0xFFFF0000));
         showText(to_string(gameStats_[numOfplayer - i - 1][1]), ts(8), (int)(i * dist + offset + ts(120)), (int)ts(275), build_sdlcolor(0xFFFF0000));
+
     }
 }
