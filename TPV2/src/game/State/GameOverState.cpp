@@ -22,6 +22,8 @@ GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures
     pointer->setActive(true);
     playersInput_ = playersInput;
     gameStats_ = gameStats;
+
+    sdl->musics().at("win").play();
 }
 
 GameOverState::~GameOverState()

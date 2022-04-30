@@ -247,8 +247,23 @@ int FightManager::StartFight(std::vector<Character*> ent)
 		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i)); 
 		characters[i]->SetPNumber(i);
 	}
-	sdl->musics().at("cube").play();
-	//Music::setMusicVolume(1);
+
+	auto mus = RandomNumberGenerator().nextInt(0, 3);
+
+	switch (mus) {
+		case 0:
+			sdl->musics().at("cube").play();
+			break;
+		case 1:
+			sdl->musics().at("prep").play();
+			break;
+		case 2:
+			sdl->musics().at("decis").play();
+			break;
+
+	}
+
+	
 
 	return 1;
 }

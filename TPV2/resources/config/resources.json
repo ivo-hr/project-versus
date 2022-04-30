@@ -231,8 +231,11 @@
   ],
   "musics" : [
     { "id" : "main", "file" : "resources/sound/00Music/8-Bit-Adventure_adhesiveWombat.mp3" },
+    { "id" : "sawtines", "file" : "resources/sound/00Music/Sawtines_adhesiveWombat.mp3" },
     { "id" : "cube", "file" : "resources/sound/00Music/Cube_adhesiveWombat.mp3" },
-    { "id" : "sawtines", "file" : "resources/sound/00Music/Sawtines_adhesiveWombat.mp3" }
+    { "id" : "prep", "file" : "resources/sound/00Music/xDeviruchi-PrepareforBattle.wav"},
+    { "id" : "decis", "file" : "resources/sound/00Music/xDeviruchi-DecisiveBattle.wav" },
+    { "id" : "win", "file" : "resources/sound/00Music/8 Bit-WinHeatleyBros.mp3" }
   ] 
 
 }
