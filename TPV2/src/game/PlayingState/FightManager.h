@@ -112,4 +112,5 @@ public:
 	SDLUtils* GetSDLU() { return sdl; };
 
 	int getWinnerInput() { return winnerInput; }
+	void userExit() { exit_ = true; };
 };

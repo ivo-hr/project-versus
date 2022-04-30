@@ -8,7 +8,7 @@ MenuState::MenuState(FightManager* game) : State(game) {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     background = &sdl->images().at("menu");
-
+    exit = new Button( &sdl->images().at("ExitBut"),0,h -ts(30),ts(30),ts(30));
     sdl->musics().at("main").play();
 }
 
@@ -36,6 +36,7 @@ void MenuState::update() {
         textTimer = SDL_GetTicks();
         drawText = !drawText;
     }
+    if (exit->mouseClick()) fmngr->userExit();
 }
 
 void MenuState::draw() {
@@ -45,6 +46,7 @@ void MenuState::draw() {
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
     if (drawText)
         showText(" Pulse Flecha Arriba o la Tecla W o Joystick Arriba en su mando", ts(8), ts(40), ts(220), build_sdlcolor(0x112233ff));
+    exit->render();
     sdl->presentRenderer();  
 }
 

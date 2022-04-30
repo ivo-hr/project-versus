@@ -76,7 +76,7 @@ void FightManager::MoveCamera()
 	camera.y += (cameraEnd.y - camera.y) * 0.2f;
 	camera.w += (cameraEnd.w - camera.w) * 0.2f;
 	camera.h = camera.w * ((float)(sdl->height()) / (float)(sdl->width()));
-
+	
 	//camera.x = cameraEnd.x;
 	//camera.y = cameraEnd.y;
 	//camera.w = cameraEnd.w;
@@ -189,6 +189,7 @@ void FightManager::Update()
 	{
 		SDL_Delay((step * 1000));
 	}
+	
 }
 
 void FightManager::LoadStage(std::string file)

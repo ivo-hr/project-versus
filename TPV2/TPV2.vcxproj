@@ -39,6 +39,7 @@
     <ClInclude Include="src\game\PlayingState\Stage.h" />
     <ClInclude Include="src\game\Projectile.h" />
     <ClInclude Include="src\game\State\ConfigState.h" />
+    <ClInclude Include="src\game\State\ConfigurationState.h" />
     <ClInclude Include="src\game\State\GameOverState.h" />
     <ClInclude Include="src\game\State\MenuState.h" />
     <ClInclude Include="src\game\State\PauseState.h" />
@@ -89,6 +90,7 @@
     <ClCompile Include="src\game\PlayingState\Stage.cpp" />
     <ClCompile Include="src\game\Projectile.cpp" />
     <ClCompile Include="src\game\State\ConfigState.cpp" />
+    <ClCompile Include="src\game\State\ConfigurationState.cpp" />
     <ClCompile Include="src\game\State\GameOverState.cpp" />
     <ClCompile Include="src\game\State\MenuState.cpp" />
     <ClCompile Include="src\game\State\PauseState.cpp" />

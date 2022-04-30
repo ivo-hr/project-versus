@@ -216,6 +216,9 @@
     <ClInclude Include="resources\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\State\ConfigurationState.h">
+      <Filter>Header Files\game\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">
@@ -334,6 +337,9 @@
     </ClCompile>
     <ClCompile Include="src\game\Utils\PlayerSelectRect.cpp">
       <Filter>Source Files\game\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\State\ConfigurationState.cpp">
+      <Filter>Source Files\game\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

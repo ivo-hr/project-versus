@@ -275,6 +275,7 @@ void ConfigState::update() {
         charactersSelect.resize(playerInput.size());
     }
     else if (plusB->mouseClick()  && numOfplayer < 4) {
+ 
         numOfplayer++;
         charactersSelect.resize(playerInput.size());
     }

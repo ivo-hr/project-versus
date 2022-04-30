@@ -31,6 +31,8 @@
     { "id" : "C19", "file" : "resources/images/rompe_cristal/19.png"},
     { "id" : "C20", "file" : "resources/images/rompe_cristal/20.png"},
     { "id" : "C21", "file" : "resources/images/rompe_cristal/21.png"},
+    { "id" : "ExitBut", "file" : "resources/images/configuracion/quit.png"},
+
     { "id" : "MNormalB", "file" : "resources/images/MNormalB.png"},
     { "id" : "MNormalC", "file" : "resources/images/MNormalC.png"},
     { "id" : "MTeamB", "file" : "resources/images/MTeamB.png"},

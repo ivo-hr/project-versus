@@ -10,7 +10,6 @@ void Button::render()
 	{
 		tex->render({ x,y,w,h });
 	}
-	
 }
 
 bool Button::mouseClick()
