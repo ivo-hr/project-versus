@@ -20,17 +20,22 @@ bool Button::mouseClick()
 
 		if ((mx > x) && (mx < x + w) && (my > y) && (my < y + h))
 		{
-			if (ih.getMouseButtonState(ih.LEFT)) {
+			if (!ih.mouseButtonEvent())
+			{
+				pressed = false;
+				return false;
+			}
+			if (pressed)
+			{
+				return true;
+			}
+			if (ih.getMouseButtonState(ih.LEFT) && !pressed) {
 				pressed = true;
 				rendered = false;
+				return true;
 			}
+			
 		}
-		if (!ih.mouseButtonEvent() && pressed) {
-			pressed = false;
-			rendered = false;
-			return true;
-		}
-		return false;
 	}
 	return false;
 }

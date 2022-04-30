@@ -8,7 +8,7 @@ class ConfigState : public State {
     Texture* background;
     int numOfplayer;
     Button *zero, *gatoespia, *maketo ,*togo , *nasnas ,*aleatorio , *plusB, *minusB ,*play;
-    Button* teammode, * normalmode , *team1, *team2;
+    Button* teammode, * normalmode , *team1, *team2 ,*config;
     bool TeamModebool = false;
     bool charsel = false;
     bool ready = false;

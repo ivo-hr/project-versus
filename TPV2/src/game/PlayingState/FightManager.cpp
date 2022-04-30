@@ -119,10 +119,16 @@ void FightManager::Update()
 	if (ih.isKeyDown(SDLK_p) && ih.keyDownEvent()) {
 		if (getSavedState() == nullptr) {
 			//pause
-			std::cout << "pause" << std::endl;
 			saveState(getState());
-			setState(new PauseState(this));
-				return;
+			setState(new ConfigurationState(this));
+			return;
+		}
+		else
+		{
+			State* tmp = getState();
+			State* saved = getSavedState();
+			setState(saved);
+			saveState(tmp);
 		}
 	}
 

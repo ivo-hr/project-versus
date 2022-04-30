@@ -14,6 +14,7 @@
 #include "../State/PlayingState.h"
 #include "../State/GameOverState.h"
 #include "../State/PauseState.h"
+#include "../State/ConfigurationState.h"
 
 
 

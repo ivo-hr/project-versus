@@ -19,6 +19,7 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     normalmode = new Button(&sdl->images().at("MNormalC"), &sdl->images().at("MNormalB"), ts(350), ts(2), ts(40), ts(20));
     normalmode->active(true);
     teammode = new Button(&sdl->images().at("MTeamC"), &sdl->images().at("MTeamB"), ts(400), ts(2), ts(40), ts(20));
+    config = new Button(&sdl->images().at("ConfigBut"), w - ts(25), ts(3) , ts(20), ts(20));
    // play = new PlayButton(&sdl->images().at("play"), ts(130), ts(40), ts(250), ts(150));
     configTeamChoose();
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P1")));
@@ -289,6 +290,22 @@ void ConfigState::update() {
         normalmode->active(false);
         teammode->active(true);
     }
+    else if (config->mouseClick()) {
+        if (fmngr->getSavedState() == nullptr) {
+            //pause
+            std::cout << "pause" << std::endl;
+            fmngr->saveState(fmngr->getState());
+            fmngr->setState(new ConfigurationState(fmngr));
+            return;
+        }
+        else
+        {
+            State* tmp = fmngr->getState();
+            State* saved = fmngr->getSavedState();
+            fmngr->setState(saved);
+            fmngr->saveState(tmp);
+        }
+    }
     for (auto i = 0u; i < playerInput.size(); i++) {
         for (auto j = 0u; j < 2; j++) {
             if (p[i][j]->mouseClick()) {
@@ -377,6 +394,7 @@ void ConfigState::draw() {
     minusB->render();
     normalmode->render();
     teammode->render();
+    config->render();
     if (ready)
         play->render();
     for (auto e : playerPointers)e->render();
