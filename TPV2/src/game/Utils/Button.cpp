@@ -54,7 +54,7 @@ bool Button::pointerClick(SDL_Rect rect)
 
 PlayButton::PlayButton(Texture* t, int x, int y, int width, int height) :Button(t, x, y, width, height)
 {
-	for (auto i = 0u; i < 10; i++) {
+	for (auto i = 0u; i < 22; i++) {
 		std::string c = "C" + std::to_string(i);
 		txV.push_back(&sdl->images().at(c));
 	}
@@ -63,8 +63,8 @@ PlayButton::PlayButton(Texture* t, int x, int y, int width, int height) :Button(
 void PlayButton::render()
 {
 	rendered = true;
-	if (frame < 9) {
-		if (cont + 35 < SDL_GetTicks()) {
+	if (frame < 21) {
+		if (cont + 5 < SDL_GetTicks()) {
 			cont = SDL_GetTicks();
 			frame++;
 		}
