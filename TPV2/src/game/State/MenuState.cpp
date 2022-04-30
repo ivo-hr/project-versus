@@ -54,6 +54,8 @@ void MenuState::update() {
         }
     }
     if (exit->mouseClick()) fmngr->userExit();
+    if (ih.isKeyDown(SDLK_ESCAPE))
+        fmngr->userExit();
 }
 
 void MenuState::draw() {

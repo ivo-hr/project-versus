@@ -71,6 +71,8 @@ ConfigState::~ConfigState()
 }
 
 void ConfigState::update() {
+    if (ih.isKeyDown(SDLK_ESCAPE))
+        fmngr->userExit();
     //Si hay algun input pendiente , buscarlo
     if (playerInput.size()<numOfplayer) {
         for (auto i = 0u; i < SDL_NumJoysticks(); i++) {

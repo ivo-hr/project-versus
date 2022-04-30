@@ -98,8 +98,6 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 	setState(new MenuState(this));
 	while (!exit_) {
 		ih.refresh();
-		if (ih.isKeyDown(SDLK_ESCAPE))
-			exit_ = true;
 		getState()->update();
 		getState()->draw();
 	}
@@ -113,10 +111,7 @@ void FightManager::Update()
 {
 
 	Uint32 startTime = sdl->currRealTime();
-
-	if (ih.isKeyDown(SDLK_ESCAPE))
-		exit_ = true;
-	if (ih.isKeyDown(SDLK_p) && ih.keyDownEvent()) {
+	if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
 		if (getSavedState() == nullptr) {
 			//pause
 			saveState(getState());

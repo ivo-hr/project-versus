@@ -82,7 +82,7 @@ void ConfigurationState::update() {
     }
     //enter = false;
 
-    if (ih.isKeyDown(SDLK_p) && ih.keyDownEvent() || back->mouseClick()) {
+    if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent() || back->mouseClick() ) {
         std::cout << "unpause" << std::endl;
         State* tmp = fmngr->getState();
         State* saved = fmngr->getSavedState();
