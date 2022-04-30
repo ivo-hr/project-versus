@@ -2,7 +2,11 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
+<<<<<<< HEAD
       <FullPath>E:\2ºDV-2Sem\Proyectos 2\super-proj-melee\bin\PVersus21Debug.exe</FullPath>
+=======
+      <FullPath>F:\GAME_JAMS\super-proj-melee\bin\PVersus21Debug.exe</FullPath>
+>>>>>>> 1219d171257511d507f2f8d7ac448968ab126c38
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

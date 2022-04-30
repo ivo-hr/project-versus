@@ -222,6 +222,7 @@ void Character::update()
 		
 		if (input->basic())
 		{
+			sdl->soundEffects().at(codeName + "Steps").haltChannel();
 
 			if (input->up()) //básico arriba
 			{
@@ -247,6 +248,8 @@ void Character::update()
 		// Ataque con B (provisional)
 		if (input->special())
 		{
+			sdl->soundEffects().at(codeName + "Steps").haltChannel();
+
 
 			if (input->up()) //especial arriba
 			{
@@ -298,8 +301,8 @@ void Character::update()
 			{
 				if (anim->CurrentAnimation() != "run")
 					anim->StartAnimation("run");
-
 				sdl->soundEffects().at(codeName + "Steps").play();
+				
 			}
 			//frenarse
 			else

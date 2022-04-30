@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 PlatformToolSet=v142:VCToolArchitecture=Native32Bit:VCToolsVersion=14.29.30133:TargetPlatformVersion=10.0.19041.0:
 Debug|x64|E:\2ºDV-2Sem\Proyectos 2\super-proj-melee\|
+=======
+PlatformToolSet=v142:VCToolArchitecture=Native64Bit:VCToolsVersion=14.29.30133:VCServicingVersionCrtHeaders=14.29.30136:TargetPlatformVersion=10.0.19041.0:
+Debug|x64|F:\GAME_JAMS\super-proj-melee\|
+>>>>>>> 1219d171257511d507f2f8d7ac448968ab126c38
