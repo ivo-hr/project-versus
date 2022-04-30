@@ -546,8 +546,10 @@ void ConfigState::mapcheckButtonPointerClick()
             if (ih.xboxGetButtonState(playerInput[0], SDL_CONTROLLER_BUTTON_B))enter = true;
             break;
         }
-        if (maps[i]->pointerClick(playerPointers[0]->getRect())&&enter) {
+        if (maps[i]->pointerClick(playerPointers[0]->getRect())&&enter && keyRelease) {
             map = i;
+            keyRelease = false;
+            lastPointerClick = playerInput[0];
         }
         switch (playerInput[0])
         {
