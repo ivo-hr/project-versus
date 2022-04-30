@@ -1,0 +1,13 @@
+
+.vs/PVersus21/v17/.suo
+*.db
+*.ipch
+*.exe
+*.exp
+*.pdb
+*.lib
+*.user
+*.obj
+*.tlog
+*.ilk
+*.log
