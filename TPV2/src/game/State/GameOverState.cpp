@@ -1,5 +1,6 @@
 #include "GameOverState.h"
 #include "MenuState.h"
+#include "ExitState.h"
 #include "../PlayingState/FightManager.h"
 
 
@@ -71,7 +72,14 @@ void GameOverState::update() {
         fmngr->getState()->next();
         return;
     }
-    if (ih.isKeyDown(SDLK_ESCAPE))fmngr->userExit();
+    if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
+        if (fmngr->getExitState() == nullptr) {
+            //pause
+            fmngr->saveExitState(fmngr->getState());
+            fmngr->setState(new ExitState(fmngr));
+            return;
+        }
+    }
     //if (ih.isKeyDown(SDLK_e))fmngr->getState()->next();
 }
 

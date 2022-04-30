@@ -5,6 +5,7 @@ class StateMachine {
 protected:
     State* state = nullptr;
     State* savedState = nullptr;
+    State* exitState = nullptr;
 public:
     void setState(State* state) {
         this->state = state;
@@ -24,5 +25,17 @@ public:
 
     void clearSavedState() {
         savedState = nullptr;
+    }
+
+    void saveExitState(State* state) {
+        exitState = state;
+    }
+
+    State* getExitState() {
+        return exitState;
+    }
+
+    void clearExitState() {
+        exitState = nullptr;
     }
 };
