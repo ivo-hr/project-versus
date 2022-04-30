@@ -85,7 +85,8 @@
     { "id" : "zeroSelect", "file" : "resources/images/zeroSelect.png"},
     { "id" : "dinoSoulsSelect", "file" : "resources/images/dinoSoulsSelect.png"},
     { "id" : "mazmorra", "file" : "resources/images/Mazmorra.png"},
-    { "id" : "rockPlat", "file" : "resources/images/rock plataform.png"}
+    { "id" : "rockPlat", "file" : "resources/images/rock plataform.png"},
+    { "id" : "gameoverscreen1", "file" : "resources/images/V1.png"}
 
   ],
   

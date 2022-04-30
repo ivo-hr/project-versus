@@ -6,10 +6,10 @@
 
 GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures, vector<vector<int>>gameStats, int playersInput, vector<int>playersInputV) : State(game) {
 
-    background = &sdl->images().at("selectbg");
+    background = &sdl->images().at("gameoverscreen1");
     //fmngr = game;
     winnersTextures_ = winnersTextures;
-    playAgain = new Button(&sdl->images().at("play"), ts(150), ts(40), ts(200), ts(150));
+    playAgain = new Button(&sdl->images().at("play"), ts(150), ts(60), ts(180), ts(130));
 
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
@@ -69,8 +69,9 @@ void GameOverState::update() {
     }
     if (playAgain->pointerClick(pointer->getRect()) && enter) {
         fmngr->getState()->next();
+        return;
     }
-
+    if (ih.isKeyDown(SDLK_ESCAPE))fmngr->userExit();
     //if (ih.isKeyDown(SDLK_e))fmngr->getState()->next();
 }
 
@@ -79,9 +80,9 @@ void GameOverState::draw() {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
-    showText("GG EASY. Press E to return to Menu", ts(150), ts(100), ts(150), build_sdlcolor(0x112233ff));
+    //showText("GG EASY. Press E to return to Menu", ts(150), ts(100), ts(150), build_sdlcolor(0x112233ff));
     drawGameStats();
-    winnersTextures_[0]->render(ts(100), ts(100));
+    //winnersTextures_[0]->render(ts(100), ts(100));
     playAgain->render();
     pointer->render();
     sdl->presentRenderer();
@@ -103,12 +104,12 @@ void GameOverState::drawGameStats()
     for (auto i = 0u; i < numOfplayer; i++) {
 
         winnersTextures_[numOfplayer - i - 1]->render({ (int)(i * dist + offset), (int)ts(200), (int)ts(50), (int)ts(50) });
-        showText(to_string(i + 1), ts(16), (int)(i * dist + offset + ts(0)), (int)ts(200), build_sdlcolor(0xFFFF0000));
+        showText(to_string(i + 1), ts(16), (int)(i * dist + offset + ts(-10)), (int)ts(190), build_sdlcolor(0xFFFF0000));
 
-        showText("Deaths: ", ts(16), (int)(i * dist + offset + ts(0)), (int)ts(265), build_sdlcolor(0xFFFF0000));
-        showText(to_string(gameStats_[numOfplayer - i - 1][0]), ts(16), (int)(i * dist + offset + ts(40)), (int)ts(265), build_sdlcolor(0xFFFF0000));
+        showText("Deaths: ", ts(8), (int)(i * dist + offset + ts(0)), (int)ts(265), build_sdlcolor(0xFFFF0000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][0]), ts(8), (int)(i * dist + offset + ts(80)), (int)ts(265), build_sdlcolor(0xFFFF0000));
 
-        showText("Damage taken: ", ts(16), (int)(i * dist + offset + ts(0)), (int)ts(275), build_sdlcolor(0xFFFF0000));
-        showText(to_string(gameStats_[numOfplayer - i - 1][1]), ts(16), (int)(i * dist + offset + ts(70)), (int)ts(275), build_sdlcolor(0xFFFF0000));
+        showText("Damage taken: ", ts(8), (int)(i * dist + offset + ts(0)), (int)ts(275), build_sdlcolor(0xFFFF0000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][1]), ts(8), (int)(i * dist + offset + ts(120)), (int)ts(275), build_sdlcolor(0xFFFF0000));
     }
 }
