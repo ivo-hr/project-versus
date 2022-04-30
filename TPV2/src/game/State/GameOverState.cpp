@@ -10,7 +10,7 @@ GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures
     background = &sdl->images().at("gameoverscreen1");
     //fmngr = game;
     winnersTextures_ = winnersTextures;
-    playAgain = new Button(&sdl->images().at("play"), ts(150), ts(60), ts(180), ts(130));
+    playAgain = new Button(&sdl->images().at("playagain"), ts(170), ts(100), ts(150), ts(100));
 
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
@@ -90,9 +90,7 @@ void GameOverState::draw() {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
-    //showText("GG EASY. Press E to return to Menu", ts(150), ts(100), ts(150), build_sdlcolor(0x112233ff));
     drawGameStats();
-    //winnersTextures_[0]->render(ts(100), ts(100));
     playAgain->render();
     pointer->render();
     sdl->presentRenderer();

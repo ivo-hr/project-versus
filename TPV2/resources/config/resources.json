@@ -25,8 +25,6 @@
     { "id" : "T1C", "file" : "resources/images/T1C.png"},
     { "id" : "T2B", "file" : "resources/images/T2B.png"},
     { "id" : "T2C", "file" : "resources/images/T2C.png"},
-    { "id" : "pause", "file" : "resources/images/Pause.png" },
-    { "id" : "star", "file" : "resources/images/star.png"},
     { "id" : "makt", "file" : "resources/images/Maketo.png"},
     { "id" : "zero", "file" : "resources/images/CharZeroSheet.png"},
     { "id" : "blinkMaster", "file" : "resources/images/CharBlinkSheet.png"},
@@ -66,13 +64,14 @@
     { "id" : "dinoSoulsSelect", "file" : "resources/images/dinoSoulsSelect.png"},
     { "id" : "mazmorra", "file" : "resources/images/Mazmorra.png"},
     { "id" : "rockPlat", "file" : "resources/images/rock plataform.png"},
-    { "id" : "gameoverscreen1", "file" : "resources/images/V1.png"}
+    { "id" : "gameoverscreen1", "file" : "resources/images/V1.png"},
+    { "id" : "gameoverscreen2", "file" : "resources/images/V2.png"},
+    { "id" : "playagain", "file" : "resources/images/play_again.png"}
 
   ],
   
   "messages" : [
-    { "id" : "PressAnyKey", "text" : "Press Any Key", "font" : "ARIAL24", "color" : "0x112233ff", "bg" : "0xffffffff" },
-    { "id" : "HelloSDL", "text" : "Hello SDL!", "font" : "ARIAL48", "color" : "0x0000ffff" }
+    
   ],
 
   "sounds": [
