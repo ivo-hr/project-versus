@@ -86,7 +86,8 @@
     { "id" : "zeroSelect", "file" : "resources/images/zeroSelect.png"},
     { "id" : "dinoSoulsSelect", "file" : "resources/images/dinoSoulsSelect.png"},
     { "id" : "mazmorra", "file" : "resources/images/Mazmorra.png"},
-    { "id" : "rockPlat", "file" : "resources/images/rock plataform.png"}
+    { "id" : "rockPlat", "file" : "resources/images/rock plataform.png"},
+    { "id" : "gameoverscreen1", "file" : "resources/images/V1.png"}
 
   ],
   
@@ -162,10 +163,6 @@
       "file": "resources/sound/CatChar/atk3.wav"
     },
     {
-      "id": "catAtk3",
-      "file": "resources/sound/CatChar/atk3.wav"
-    },
-    {
       "id": "catSpecD",
       "file": "resources/sound/CatChar/specD.wav"
     },
@@ -193,47 +190,43 @@
 
     {
       "id": "dinoAtk0",
-      "file": "resources/sound/CatChar/atk0.wav"
+      "file": "resources/sound/DinoChar/atk0.wav"
     },
     {
       "id": "dinoAtk1",
-      "file": "resources/sound/CatChar/atk1.wav"
+      "file": "resources/sound/DinoChar/atk1.wav"
     },
     {
       "id": "dinoAtk2",
-      "file": "resources/sound/CatChar/atk2.wav"
+      "file": "resources/sound/DinoChar/atk2.wav"
     },
     {
       "id": "dinoAtk3",
-      "file": "resources/sound/CatChar/atk3.wav"
-    },
-    {
-      "id": "dinoAtk3",
-      "file": "resources/sound/CatChar/atk3.wav"
+      "file": "resources/sound/DinoChar/atk3.wav"
     },
     {
       "id": "dinoSpecD",
-      "file": "resources/sound/CatChar/specD.wav"
+      "file": "resources/sound/DinoChar/specD.wav"
     },
     {
       "id": "dinoSpecN",
-      "file": "resources/sound/CatChar/specN.wav"
+      "file": "resources/sound/DinoChar/specN.wav"
     },
     {
       "id": "dinoSpecS",
-      "file": "resources/sound/CatChar/specS.wav"
+      "file": "resources/sound/DinoChar/specS.wav"
     },
     {
       "id": "dinoSpecU",
-      "file": "resources/sound/CatChar/specU.wav"
+      "file": "resources/sound/DinoChar/specU.wav"
     },
     {
       "id": "dinoSteps",
-      "file": "resources/sound/CatChar/steps.wav"
+      "file": "resources/sound/DinoChar/steps.wav"
     },
     {
       "id": "dinoTaunt",
-      "file": "resources/sound/CatChar/taunt.wav"
+      "file": "resources/sound/DinoChar/taunt.wav"
     }
 
 
