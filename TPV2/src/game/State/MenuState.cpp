@@ -8,8 +8,9 @@ MenuState::MenuState(FightManager* game) : State(game) {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     background = &sdl->images().at("menu");
-    exit = new Button( &sdl->images().at("ExitBut"),0,h -ts(30),ts(30),ts(30));
+    exit = new Button( &sdl->images().at("ExitBut"),0,h -ts(21),ts(40),ts(20));
     sdl->musics().at("main").play();
+    config = new Button(&sdl->images().at("ConfigBut"), w-ts(20), h - ts(21), ts(20), ts(20));
 }
 
 void MenuState::update() {
@@ -36,7 +37,25 @@ void MenuState::update() {
         textTimer = SDL_GetTicks();
         drawText = !drawText;
     }
+    if (config->mouseClick()) {
+        if (fmngr->getSavedState() == nullptr) {
+            //pause
+            std::cout << "pause" << std::endl;
+            fmngr->saveState(fmngr->getState());
+            fmngr->setState(new ConfigurationState(fmngr));
+            return;
+        }
+        else
+        {
+            State* tmp = fmngr->getState();
+            State* saved = fmngr->getSavedState();
+            fmngr->setState(saved);
+            fmngr->saveState(tmp);
+        }
+    }
     if (exit->mouseClick()) fmngr->userExit();
+    if (ih.isKeyDown(SDLK_ESCAPE))
+        fmngr->userExit();
 }
 
 void MenuState::draw() {
@@ -45,8 +64,9 @@ void MenuState::draw() {
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
     if (drawText)
-        showText(" Pulse Flecha Arriba o la Tecla W o Joystick Arriba en su mando", ts(8), ts(40), ts(220), build_sdlcolor(0x112233ff));
+        showText(" Pulse Flecha Arriba o la Tecla W o Joystick Arriba en su mando", ts(7) , ts(40), ts(220), build_sdlcolor(0x112233ff));
     exit->render();
+    config->render();
     sdl->presentRenderer();  
 }
 

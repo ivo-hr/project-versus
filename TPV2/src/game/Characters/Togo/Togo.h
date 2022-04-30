@@ -5,7 +5,7 @@ class DinoShield;
 class Togo : public Character
 {
 public:
-	Togo(FightManager* mngr, Vector2D* pos, char input);
+	Togo(FightManager* mngr, b2Vec2 pos, char input);
 	~Togo();
 
 	virtual void BasicNeutral(int frameNumber) override;

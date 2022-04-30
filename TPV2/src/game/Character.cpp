@@ -90,7 +90,7 @@ json Character::ReadJson(std::string filename)
 	return jsonFile;
 }
 
-Character::Character(FightManager* manager, Vector2D* pos, char input, float w, float h) :
+Character::Character(FightManager* manager, b2Vec2 pos, char input, float w, float h) :
 	Entity(manager, pos, w, h)
 {
 	arrowsTex = &sdl->images().at("arrows");
@@ -118,7 +118,7 @@ void Character::SetSpawn(b2Vec2 spawn, int dir)
 {
 	body->SetTransform(spawn, 0);
 	this->dir = dir;
-	respawnPos = new Vector2D(spawn.x, 5);
+	respawnPos = b2Vec2(spawn.x, 5);
 }
 
 void Character::SetPNumber(uint16 num)
@@ -509,7 +509,7 @@ bool Character::GetHit(attackData a, Entity* attacker)
 		anim->update();
 		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
 
-		stun = (recoil / 1.8f);
+		stun = (recoil / 1.8f) + 4;
 
 		//Actualiza el da�o
 		damageTaken += a.damage;
@@ -597,7 +597,8 @@ bool Character::GetHit(attackData a, Entity* attacker)
 			}
 		}
 		//Produce el knoback..
-		body->SetLinearVelocity(aux);		
+		body->SetLinearVelocity(aux);
+		return true;
 	}
 
 }
@@ -789,7 +790,7 @@ SDL_Rect* Character::GetHurtbox()
 
 void Character::OnDeath()
 {
-	body->SetTransform({ respawnPos.getX(), respawnPos.getY() }, 0);
+	body->SetTransform(respawnPos, 0);
 	body->SetAwake(false);
 	alive = false;
 	lives--;

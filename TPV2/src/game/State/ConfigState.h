@@ -8,12 +8,14 @@ class ConfigState : public State {
     Texture* background;
     int numOfplayer;
     Button *zero, *gatoespia, *maketo ,*togo , *nasnas ,*aleatorio , *plusB, *minusB ,*play;
-    Button* teammode, * normalmode , *team1, *team2;
+    Button* teammode, * normalmode , *team1, *team2 ,*config;
     bool TeamModebool = false;
     bool charsel = false;
     bool ready = false;
     bool searchGamepad = false;
     bool keyRelease = true;
+    bool selectMap = false;
+    int map = 0;
     int lastPointerClick = -3;
 
     vector<int> playerInput;
@@ -25,9 +27,20 @@ class ConfigState : public State {
     vector<PlayerPointer*> playerPointers;
     vector<PlayerSelectRect*> playerTexture;
     vector<Texture*> charactTexture;
- 
-    void configTeamChoose();
     vector<vector<Button*>> p;
+    vector<Button*> maps;
+
+    void configTeamChoose();
+   
+    void searchInput();
+    void movePointers();
+    void checkButtonPointerClick();
+    void checkButtonMouseClick();
+    void setTeams();
+    void checkPlayerReady();
+    void initMapBut();
+    void playerMenuRender();
+    void mapMenuRender();
 public:
 
     ConfigState(FightManager* game , int fInput) ;

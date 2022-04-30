@@ -147,7 +147,7 @@ void AnimationManager::render(SDL_Rect* camera)
 	aux.x *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
 
 	aux.y -= camera->y;
-	aux.y *= (ent->GetManager()->GetActualHeight() / (float)camera->h);
+	aux.y *= (ent->GetManager()->GetActualHeight() / (float)camera->h);		//Se puede cambiar por width y sigue siendo la misma proporcion
 
 	aux.w *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
 	aux.h *= (ent->GetManager()->GetActualHeight() / (float)camera->h);

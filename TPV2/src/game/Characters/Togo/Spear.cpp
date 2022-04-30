@@ -3,7 +3,7 @@
 #include "Spear.h"
 #include "../../Utils/Particle.h"
 
-Spear::Spear(FightManager* manager, Vector2D* pos, attackData attack, b2Vec2 dir, Togo* togo) :
+Spear::Spear(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir, Togo* togo) :
 	Projectile(manager, pos, dir, 5.25f, 0.7f, 20)
 {
 	owner = togo;
@@ -13,7 +13,7 @@ Spear::Spear(FightManager* manager, Vector2D* pos, attackData attack, b2Vec2 dir
 
 	range = 30.f;
 
-	lag = 1;
+	lag = 0;
 
 	body->SetGravityScale(8.0f);
 
@@ -27,7 +27,7 @@ Spear::~Spear()
 
 void Spear::update()
 {
-	float distance = abs(body->GetPosition().x - iniPos->getX());
+	float distance = abs(body->GetPosition().x - iniPos.x);
 	if (distance <= range)
 	{
 		body->SetLinearVelocity(vecDir);

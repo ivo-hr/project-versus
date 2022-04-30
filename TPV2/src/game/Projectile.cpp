@@ -1,11 +1,9 @@
 #include "Projectile.h"
 #include "Utils/Particle.h"
 
-Projectile::Projectile(FightManager* manager, Vector2D* pos, b2Vec2 dir, float width, float height, int speed) :
+Projectile::Projectile(FightManager* manager, b2Vec2 pos, b2Vec2 dir, float width, float height, int speed) :
 	Entity(manager, pos, width, height)
 {
-	hurtbox = manager->GetSDLCoors(body, width, height);
-
 	reflected = 0;
 
 	iniPos = pos;
@@ -34,7 +32,7 @@ Projectile::~Projectile()
 
 void Projectile::update()
 {
-	float distance = abs(body->GetPosition().x - iniPos->getX());
+	float distance = abs(body->GetPosition().x - iniPos.x);
 	if (distance <= range)
 	{
 		body->SetLinearVelocity(vecDir);

@@ -95,11 +95,15 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 
 	cameraOffset *= screenAdjust;
 
+	
+	for (auto i = 0u; i < 100; i++) {
+		string s = "nes" + to_string(i);
+		sdl->fonts().emplace(s, Font("resources/fonts/NES-Chimera.ttf", i));
+	}
+
 	setState(new MenuState(this));
 	while (!exit_) {
 		ih.refresh();
-		if (ih.isKeyDown(SDLK_ESCAPE))
-			exit_ = true;
 		getState()->update();
 		getState()->draw();
 	}
@@ -113,16 +117,19 @@ void FightManager::Update()
 {
 
 	Uint32 startTime = sdl->currRealTime();
-
-	if (ih.isKeyDown(SDLK_ESCAPE))
-		exit_ = true;
-	if (ih.isKeyDown(SDLK_p) && ih.keyDownEvent()) {
+	if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
 		if (getSavedState() == nullptr) {
 			//pause
-			std::cout << "pause" << std::endl;
 			saveState(getState());
-			setState(new PauseState(this));
-				return;
+			setState(new ConfigurationState(this));
+			return;
+		}
+		else
+		{
+			State* tmp = getState();
+			State* saved = getSavedState();
+			setState(saved);
+			saveState(tmp);
 		}
 	}
 
@@ -136,13 +143,13 @@ void FightManager::Update()
 	{
 		entities[i]->update();
 	}
-	for (int i = entities.size() - 1; i >= 0; i--)
-	{
-		entities[i]->draw(&camera);
-	}
 	for (Entity* ent : entities)
 	{
 		ent->CheckHits();
+	}
+	for (int i = entities.size() - 1; i >= 0; i--)
+	{
+		entities[i]->draw(&camera);
 	}
 
 	while (addedDelay > 0)
@@ -169,6 +176,9 @@ void FightManager::Update()
 			entities[i]->updateParticles();
 			entities[i]->draw(&hitLagCam);
 		}
+
+		HideOutOfBounds();
+
 		// present new frame
 		sdl->presentRenderer();
 
@@ -179,6 +189,8 @@ void FightManager::Update()
 			SDL_Delay((step * 1000));
 		}
 	}
+	
+	HideOutOfBounds();
 
 	// present new frame
 	sdl->presentRenderer();
@@ -190,6 +202,27 @@ void FightManager::Update()
 		SDL_Delay((step * 1000));
 	}
 	
+}
+
+void FightManager::HideOutOfBounds()
+{
+	int w, h;
+	SDL_GetWindowSize(sdl->window(), &w, &h);
+
+	if (sdl->width() * screenAdjust < w)
+	{
+		SDL_Rect camOOBX = { sdl->width() * screenAdjust, 0, w - (sdl->width() * screenAdjust), h };
+
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 0, 255);
+		SDL_RenderFillRect(sdl->renderer(), &camOOBX);
+	}
+	else if (sdl->height() * screenAdjust < h)
+	{
+		SDL_Rect camOOBY = { 0, sdl->height() * screenAdjust, w, h - (sdl->height() * screenAdjust) };
+
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 0, 255);
+		SDL_RenderFillRect(sdl->renderer(), &camOOBY);
+	}
 }
 
 void FightManager::LoadStage(std::string file)

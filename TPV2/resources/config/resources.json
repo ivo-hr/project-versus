@@ -3,9 +3,8 @@
   "fonts" : [
     { "id" : "ARIAL16", "file" : "resources/fonts/ARIAL.ttf", "size": 16 },
     { "id" : "ARIAL24", "file" : "resources/fonts/ARIAL.ttf", "size": 24 },
-    { "id" : "ARIAL48", "file" : "resources/fonts/ARIAL.ttf", "size": 48 } , { "id" : "nes16", "file" : "resources/fonts/NES-Chimera.ttf", "size": 8 },
-    { "id" : "nes24", "file" : "resources/fonts/NES-Chimera.ttf", "size": 16 },
-    { "id" : "nes48", "file" : "resources/fonts/NES-Chimera.ttF", "size": 24 }
+    { "id" : "ARIAL48", "file" : "resources/fonts/ARIAL.ttf", "size": 48 }
+  
   ],
   
   "images" : [
@@ -32,7 +31,14 @@
     { "id" : "C20", "file" : "resources/images/rompe_cristal/20.png"},
     { "id" : "C21", "file" : "resources/images/rompe_cristal/21.png"},
     { "id" : "ExitBut", "file" : "resources/images/configuracion/quit.png"},
-
+    { "id" : "BackBut", "file" : "resources/images/configuracion/back.png"},
+    { "id" : "ConfigBut", "file" : "resources/images/configuracion/configuracion.png"},
+    { "id" : "ConfigBack", "file" : "resources/images/configuracion/Configuracionfondo.png"},
+    { "id" : "SfxT", "file" : "resources/images/configuracion/sfx.png"},
+    { "id" : "BgmT", "file" : "resources/images/configuracion/bgm.png"},
+    { "id" : "plusB", "file" : "resources/images/configuracion/mas.png"},
+    { "id" : "minusB", "file" : "resources/images/configuracion/menos.png"},
+    { "id" : "cuadro", "file" : "resources/images/configuracion/Cuadro.png"},
     { "id" : "MNormalB", "file" : "resources/images/MNormalB.png"},
     { "id" : "MNormalC", "file" : "resources/images/MNormalC.png"},
     { "id" : "MTeamB", "file" : "resources/images/MTeamB.png"},

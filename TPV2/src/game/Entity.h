@@ -109,13 +109,13 @@ protected:
 	int respawnFrames;
 
 	int lives = 3;
-	Vector2D respawnPos;
+	b2Vec2 respawnPos;
 
 
 public:
 	string nombre;
 
-	Entity(FightManager* mngr, Vector2D* position, float w = 3.f, float h = 3.f);
+	Entity(FightManager* mngr, b2Vec2 position, float w = 3.f, float h = 3.f);
 	~Entity();
 
 	virtual void updateParticles();

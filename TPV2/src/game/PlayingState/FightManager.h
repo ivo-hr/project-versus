@@ -14,7 +14,9 @@
 #include "../State/PlayingState.h"
 #include "../State/GameOverState.h"
 #include "../State/PauseState.h"
+
 #include "../Utils/PlayerSelectRect.h"
+#include "../State/ConfigurationState.h"
 
 
 
@@ -77,6 +79,8 @@ public:
 	bool isExit() { return exit_; };
 	bool isFinish() { return fightEnded; };
 	void Update();
+
+	void HideOutOfBounds();
 
 	void LoadStage(std::string file);
 	int StartFight(std::vector<Character*> ent);

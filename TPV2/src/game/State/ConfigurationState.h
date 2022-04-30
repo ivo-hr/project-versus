@@ -1,9 +1,17 @@
 #pragma once
 
 #include "State.h"
+#include "../Utils/PlayerPointer.h"
 
 class ConfigurationState : public State {
-    Uint32 startTime;
+    Texture* backgr , *sfx, *music , *c1,*c2;
+    Button* sfxp, * sfxm, * muscp, * muscm;
+    Button* exit , *back;
+    //PlayerPointer *p1;
+
+    int musicV = 10;
+    int sfxV = 10;
+    int pInput = -3;
 public:
 
     ConfigurationState(FightManager* fmngr);

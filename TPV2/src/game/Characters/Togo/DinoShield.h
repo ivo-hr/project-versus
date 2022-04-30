@@ -8,7 +8,7 @@ class DinoShield : public Entity
 protected:
 	attackData data;
 public:
-	DinoShield(FightManager* manager, Vector2D* pos);
+	DinoShield(FightManager* manager, b2Vec2 pos);
 	~DinoShield();
 
 	virtual void update() override;

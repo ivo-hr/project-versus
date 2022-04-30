@@ -17,7 +17,7 @@ class Spear : public Projectile
 //	float ang;
 
 public:
-	Spear(FightManager* manager, Vector2D* pos, attackData attack, b2Vec2 dir, Togo* togo);
+	Spear(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir, Togo* togo);
 	~Spear();
 
 	virtual void update() override;

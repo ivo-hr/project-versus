@@ -22,16 +22,16 @@ PlayingState::PlayingState(FightManager* game, vector<int>playersInput, vector<i
 		switch (characters[i])
 		{
 		case 0: //zero
-			entities.push_back(new NasNas(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
+			entities.push_back(new NasNas(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
 			break;
 		case 1://Gato espia
-			entities.push_back(new GatoEspia(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
+			entities.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
 			break;
 		case 2://Togo
-			entities.push_back(new Togo(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
+			entities.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
 			break;
 		case 3: //Maketo
-			entities.push_back(new Makt(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
+			entities.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
 			break;
 		case 4://Nasnas
 			//entities.push_back(new NasNas(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
@@ -58,34 +58,34 @@ PlayingState::PlayingState(FightManager* game, vector<int> playersInput, vector<
 		{
 		case 0: //zero
 			if(teams[i]==0)
-				team1.push_back(new CharacterZero(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
+				team1.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
 			else
 			{
-				team2.push_back(new CharacterZero(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
+				team2.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
 			}
 			break;
 		case 1://Gato espia
 			if (teams[i] == 0)
-				team1.push_back(new GatoEspia(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
+				team1.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
 			else
 			{
-				team2.push_back(new GatoEspia(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
+				team2.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
 			}	
 			break;
 		case 2://Togo
 			if (teams[i] == 0)
-				team1.push_back(new Togo(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
+				team1.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
 			else
 			{
-				team2.push_back(new Togo(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
+				team2.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
 			}
 			break;
 		case 3: //Maketo
 			if (teams[i] == 0)
-				team1.push_back(new Makt(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
+				team1.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
 			else
 			{
-				team2.push_back(new Makt(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
+				team2.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
 			}
 			break;
 		case 4://Nasnas		
