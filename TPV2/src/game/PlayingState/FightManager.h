@@ -14,6 +14,7 @@
 #include "../State/PlayingState.h"
 #include "../State/GameOverState.h"
 #include "../State/PauseState.h"
+#include "../Utils/PlayerSelectRect.h"
 
 
 
@@ -66,6 +67,7 @@ class FightManager :public StateMachine
 	vector<Texture*>winnersTextures;
 
 	int winnerInput;
+	vector<vector<int>>gameStats;
 
 public:
 
@@ -112,5 +114,9 @@ public:
 	SDLUtils* GetSDLU() { return sdl; };
 
 	int getWinnerInput() { return winnerInput; }
+	void addCharacterStats(Character* character);
+	vector<vector<int>>getGameStats() { return gameStats; }
+
 	void userExit() { exit_ = true; };
+
 };

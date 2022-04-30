@@ -102,9 +102,10 @@ Character::Character(FightManager* manager, Vector2D* pos, char input, float w, 
 
 	stun = 0;
 	dash = false;
-	lives = 3;
+	lives = maxLives;
 	this->input = new InputConfig(input);
 	input_ = input;
+	totalDamageTaken = 0;
 }
 
 Character::~Character()
@@ -326,10 +327,10 @@ void Character::update()
 				fall = 0;
 			}
 		}
-		//if (input->taunt() && onGround) 
-		//{
-		//	StartMove([this](int f) { Taunt(f); });
-		//}
+		if (input->taunt() && onGround) 
+		{
+			StartMove([this](int f) { Taunt(f); });
+		}
 	}
 
 	if (input->down() && body->GetFixtureList()->GetFilterData().maskBits != 2) down = true; // Marca que se ha pulsado abajo (para el tema de bajar plataformas)
@@ -823,6 +824,7 @@ void Character::Respawn()
 	speed = 0;
 
 	alive = true;
+	totalDamageTaken += damageTaken;
 	damageTaken = 0;
 	moving = false;
 
