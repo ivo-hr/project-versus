@@ -390,6 +390,7 @@ bool FightManager::RemoveCharacter(Character* character)
 		winnersTextures.push_back(characters[0]->getPortrait());
 		entities.clear();
 		characters.clear();
+		stage->UnLoadStage();
 		getState()->next();
 	}
 	return false;

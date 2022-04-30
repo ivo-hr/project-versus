@@ -22,7 +22,7 @@ class Stage
 	std::vector<b2Vec2> playerSpawns;
 
 	SDLUtils* sdl;
-	b2World world;
+	b2World* world;
 
 	SDL_Rect deathZone;
 	float b2ToSDL;
@@ -39,6 +39,8 @@ public:
 	Stage(SDLUtils* sdl, MyListener* _listener, float step);
 	~Stage();
 
+	void UnLoadStage();
+
 	void LoadJsonStage(std::string file, double screenAdjust);
 
 	b2Vec2 GetPlayerSpawns(int index) { return playerSpawns[index]; };
@@ -50,7 +52,7 @@ public:
 	double GetScreenRatio() { return (b2ToSDL * 50) / sdl->width(); }
 
 	SDL_Rect* GetDeathZone() { return &deathZone; };
-	b2World* GetWorld() { return &world; };
+	b2World* GetWorld() { return world; };
 	SDLUtils* GetSDLU() { return sdl; }
 
 	SDL_Rect GetSDLCoors(b2Body* body, float width, float height);
