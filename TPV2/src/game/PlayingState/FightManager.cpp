@@ -4,6 +4,7 @@
 #include "../Utils/Particle.h"
 #include "../Utils/MyListener.h"
 #include "../PlayingState/Stage.h"
+#include "../../../HUDManager.h"
 
 void FightManager::MoveCamera()
 {
@@ -88,6 +89,7 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 {
 	listener = new MyListener();
 	stage = new Stage(sdl, listener, step);
+	hud = new HUDManager(sdl);
 
 	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust)};
 
@@ -245,6 +247,7 @@ int FightManager::StartFight(std::vector<Character*> ent)
 		numPlayers++;
 		characters[i]->SetOponents(entities);
 		listener->AddCharacter(entities[i]);
+		hud->InitializePlayers(ent, hud->datos);
 		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i)); 
 		characters[i]->SetPNumber(i);
 	}
@@ -369,10 +372,13 @@ bool FightManager::RemoveEntity(Entity* ent)
 
 bool FightManager::RemoveCharacter(Character* character)
 {
+	int aux = -1;
+
 	for (int i = 0; i < characters.size(); i++)
 	{
 		if (characters[i] == character)
 		{
+			aux = i;
 			addCharacterStats(characters[i]);
 			winnersTextures.push_back(characters[i]->getPortrait());
 			for (int j = i + 1; j < characters.size(); j++)
@@ -383,6 +389,7 @@ bool FightManager::RemoveCharacter(Character* character)
 		}
 	}
 	listener->RemoveCharacter(character);
+	hud->DeletePlayer(hud->datos, aux);
 	RemoveEntity(character);
 	if (characters.size() == 1) {
 		addCharacterStats(characters[0]);

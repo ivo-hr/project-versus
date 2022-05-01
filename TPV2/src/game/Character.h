@@ -27,11 +27,7 @@ protected:
 	SDL_Rect arrowSrc;
 
 	int stun;
-	int lives;
-
 	const int maxLives = 3;
-
-	string codeName;
 	bool moving;
 	int maxSpeed;
 	int speed;
@@ -50,11 +46,8 @@ protected:
 	bool down = false; // El jugador pulsó abajo
 
 	int weight;
-
 	int damageTaken;
 	int totalDamageTaken;
-
-	
 	bool recovery = true;
 
 	//frame actual del movimiento que este haciendo
@@ -76,6 +69,9 @@ protected:
 //	void (Character::* currentMove)(int);
 	int input_;
 public:
+	int lives;
+
+	string codeName;
 
 	Character(FightManager* manager, b2Vec2 pos, char input, float w = 3.f, float h = 3.f);
 	~Character();
@@ -140,6 +136,7 @@ public:
 	void StartMove(std::function<void(int)> newMove);
 	void ChangeMove(std::function<void(int)> newMove);
 
+	int getCurrentLives() { return lives; }
 	int getInput() { return input_; }
 	int getDamageTaken() { return totalDamageTaken; }
 	int getDeaths() { return maxLives - lives; }

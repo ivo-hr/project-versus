@@ -115,7 +115,6 @@ protected:
 	Entity* lastCharacter; // El ultimo jugador que golpeo a este
 
 public:
-	string nombre;
 
 	Entity(FightManager* mngr, b2Vec2 position, float w = 3.f, float h = 3.f);
 	~Entity();
@@ -159,5 +158,4 @@ public:
 	void resetLastCharacter() { lastCharacter = nullptr; }
 
 	Texture* getTexture() { return texture; }
-	//virtual void SendToHUD(Texture* tex);
 };

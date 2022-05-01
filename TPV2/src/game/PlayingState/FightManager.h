@@ -28,7 +28,7 @@ class MyListener;
 
 class Stage;
 
-class FightManager :public StateMachine
+class FightManager : public StateMachine
 {
 
 	std::vector<Entity*> entities;
