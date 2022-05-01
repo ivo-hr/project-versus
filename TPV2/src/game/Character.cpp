@@ -498,8 +498,6 @@ void Character::draw(SDL_Rect* camera)
 
 bool Character::GetHit(attackData a, Entity* attacker)
 {
-	//sdl->soundEffects().at(codeName + "Steps").haltChannel();
-
 	if (shield)
 	{
 		//Actualiza el da�o
