@@ -35,7 +35,6 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     charactersSelect.resize(2);
     usedPad.resize(SDL_NumJoysticks());
     selected.resize(4);
-
     if (fInput >= 0) { usedPad[fInput] = true; playerTexture[0]->setFront(&sdl->images().at("Mando")); }
     else if (fInput == -1) { usedKeyboard[0] = true; playerTexture[0]->setFront(&sdl->images().at("k1"));
     }

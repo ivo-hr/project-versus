@@ -55,12 +55,12 @@ public:
 			onMouseButtonChange(event, false);
 			break;
 		case  SDL_JOYBUTTONDOWN:
-			whichOne = event.jaxis.which;
-			m_buttonStates[whichOne][event.jbutton.button] = true;
+	/*		whichOne = event.jaxis.which;
+			m_buttonStates[whichOne][event.jbutton.button] = true;*/
 			break;
 		case SDL_JOYBUTTONUP:
-			whichOne = event.jaxis.which;
-			m_buttonStates[whichOne][event.jbutton.button] = false;
+	/*		whichOne = event.jaxis.which;
+			m_buttonStates[whichOne][event.jbutton.button] = false;*/
 			break;
 		default:
 			break;
