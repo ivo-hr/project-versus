@@ -113,6 +113,7 @@ void ConfigState::update() {
             }
             if (play->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
                 fmngr->getState()->next();
+
                 return;
             }
         }
@@ -159,6 +160,7 @@ void ConfigState::draw() {
 
 void ConfigState::next() {
     cout << "Next State " << endl;
+
     if (!TeamModebool) {
         fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,map+1)); //3 para el de noche
     }
@@ -166,6 +168,7 @@ void ConfigState::next() {
     {
         fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,charactersTeam,map+1));
     }
+
     delete this;
 }
 
@@ -256,6 +259,8 @@ void ConfigState::movePointers()
 
 void ConfigState::checkButtonPointerClick()
 {
+    
+
     //Comprobacion de punteros con los botones
     for (auto i = 0; i < playerInput.size(); i++) {
         bool enter = false;
@@ -279,6 +284,8 @@ void ConfigState::checkButtonPointerClick()
             keyRelease = false;
             lastPointerClick = playerInput[i];
             selected[i] = true;
+
+            sdl->soundEffects().at("uiMov").play();
         }
         else if (gatoespia->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
             playerTexture[i]->setFront(&sdl->images().at("blinkMasterSelect"));
@@ -286,6 +293,8 @@ void ConfigState::checkButtonPointerClick()
             keyRelease = false;
             lastPointerClick = playerInput[i];
             selected[i] = true;
+
+            sdl->soundEffects().at("uiMov").play();
         }
         else if (togo->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
             playerTexture[i]->setFront(&sdl->images().at("dinoSoulsSelect"));
@@ -293,6 +302,8 @@ void ConfigState::checkButtonPointerClick()
             keyRelease = false;
             lastPointerClick = playerInput[i];
             selected[i] = true;
+
+            sdl->soundEffects().at("uiMov").play();
         }
         else if (maketo->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
             playerTexture[i]->setFront(&sdl->images().at("maktSelect"));
@@ -300,9 +311,13 @@ void ConfigState::checkButtonPointerClick()
             keyRelease = false;
             lastPointerClick = playerInput[i];
             selected[i] = true;
+
+            sdl->soundEffects().at("uiMov").play();
         }
         else if (minusB->pointerClick(playerPointers[i]->getRect()) && enter && numOfplayer > 2 && keyRelease) {
             numOfplayer--;
+
+            sdl->soundEffects().at("uiMov").play();
 
             if (playerInput.size() > numOfplayer) {
                 switch (playerInput[playerInput.size() - 1])
@@ -330,16 +345,22 @@ void ConfigState::checkButtonPointerClick()
             charactersSelect.resize(playerInput.size());
             keyRelease = false;
             lastPointerClick = playerInput[i];
+
+            sdl->soundEffects().at("uiMov").play();
         }
         else if (normalmode->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
             TeamModebool = false;
             normalmode->active(true);
             teammode->active(false);
+
+            sdl->soundEffects().at("uiMov").play();
         }
         else if (teammode->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
             TeamModebool = true;
             normalmode->active(false);
             teammode->active(true);
+
+            sdl->soundEffects().at("uiMov").play();
         }
         else if (config->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
             if (fmngr->getSavedState() == nullptr) {
@@ -417,8 +438,11 @@ void ConfigState::checkButtonPointerClick()
 
 void ConfigState::checkButtonMouseClick()
 {
+    
     if (minusB->mouseClick() && numOfplayer > 2) {
         numOfplayer--;
+
+        sdl->soundEffects().at("uiMov").play();
 
         if (playerInput.size() > numOfplayer) {
             switch (playerInput[playerInput.size() - 1])
@@ -442,16 +466,23 @@ void ConfigState::checkButtonMouseClick()
     else if (plusB->mouseClick() && numOfplayer < 4) {
         numOfplayer++;
         charactersSelect.resize(playerInput.size());
+
+        sdl->soundEffects().at("uiMov").play();
     }
     else if (normalmode->mouseClick()) {
         TeamModebool = false;
         normalmode->active(true);
         teammode->active(false);
+
+        sdl->soundEffects().at("uiMov").play();
+
     }
     else if (teammode->mouseClick()) {
         TeamModebool = true;
         normalmode->active(false);
         teammode->active(true);
+
+        sdl->soundEffects().at("uiMov").play();
     }
 }
 
@@ -485,7 +516,9 @@ void ConfigState::checkPlayerReady()
             play->reset();
             return;
         }
+
         ready = true;
+
     }
 }
 void ConfigState::playerMenuRender()
@@ -523,8 +556,11 @@ void ConfigState::playerMenuRender()
     normalmode->render();
     teammode->render();
     config->render();
-    if (ready)
+    if (ready) {
         play->render();
+        sdl->soundEffects().at("uiPlay").play();
+    }
+        
     for (auto e : playerPointers)e->render();
 }
 
@@ -578,6 +614,8 @@ void ConfigState::mapcheckButtonPointerClick()
             map = i;
             keyRelease = false;
             lastPointerClick = playerInput[0];
+
+            sdl->soundEffects().at("uiMov").play();
         }
     }
     if (config->pointerClick(playerPointers[0]->getRect()) && enter && keyRelease) {
@@ -622,6 +660,7 @@ void ConfigState::mapcheckButtonMouseClick()
     for (int i = 0u; i < maps.size(); i++) {
         if (maps[i]->mouseClick()) {
             map = i;
+            sdl->soundEffects().at("uiSelect").play();
         }
     }
 }

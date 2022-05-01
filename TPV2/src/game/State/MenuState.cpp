@@ -81,5 +81,7 @@ void MenuState::draw() {
 void MenuState::next() {
     cout << "Next State " << endl;
     fmngr->setState(new ConfigState(fmngr,Finput));
+
+    sdl->soundEffects().at("uiSelect").play();
     delete this;
 }

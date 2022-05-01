@@ -73,14 +73,22 @@ void ConfigurationState::update() {
         if (sfxV > 0) {
             sfxV--;
             SoundEffect::setChannelVolume((128 * sfxV) / 10);
+
             keyRelease = false;
+
+            sdl->soundEffects().at("uiSelect").play(1);
+
         }
     }
     else if (sfxp->mouseClick() || sfxp->pointerClick(p1->getRect()) && enter && keyRelease) {
         if (sfxV < 10) {
             sfxV++;
             SoundEffect::setChannelVolume((128 * sfxV) / 10);
+
             keyRelease = false;
+
+            sdl->soundEffects().at("uiSelect").play(1);
+
         }
     }
     if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent() || back->mouseClick() || back->pointerClick(p1->getRect()) && enter && keyRelease) {

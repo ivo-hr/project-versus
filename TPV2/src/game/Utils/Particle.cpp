@@ -158,7 +158,6 @@ Particle::Particle(Vector2D position, int dir, std::string id, Entity* ent): ent
 		dest = { 0, 0, 0, 0 };
 
 		texture = &manager->GetSDLU()->images().at("killVfx");
-
 		numSpritesinX = 0;
 		numSpritesinY = 0;
 		numSprites = 1;

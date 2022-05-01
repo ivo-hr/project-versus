@@ -649,6 +649,8 @@ void Character::StartJump(int frameNumber)
 	}
 	else if (frameNumber >= 4)
 	{
+		sdl->soundEffects().at(codeName + "Steps").haltChannel();
+
 		anim->StartAnimation("jump");
 		if (!GetGround())
 		{
@@ -799,6 +801,8 @@ SDL_Rect* Character::GetHurtbox()
 void Character::OnDeath()
 {
 	AddDeathParticle();
+
+	sdl->soundEffects().at("death").play();
 
 	body->SetTransform(respawnPos, 0);
 	body->SetAwake(false);
