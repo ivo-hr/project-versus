@@ -39,11 +39,14 @@ void MaktBall::update()
 			if (outFor <= duration)
 			{
 				body->SetLinearVelocity(vecDir);
+
 			}
 			else
 			{
 				physic = true;
 				body->SetGravityScale(10.f);
+
+				body->SetLinearDamping(3.);
 			}
 		}
 
