@@ -80,20 +80,21 @@ ConfigState::~ConfigState()
 
 void ConfigState::update() {
    
-    if (selectMap)
+    if (!selectMap)
     {
-        movePointers();
-        mapcheckButtonMouseClick();
-        mapcheckButtonPointerClick();
-        if (map >= 0) selectMap = false;
-    }
-    else {
         searchInput();
         movePointers();
         checkButtonPointerClick();
         checkButtonMouseClick();
         setTeams();
         checkPlayerReady();
+      
+    }
+    else {
+        movePointers();
+        mapcheckButtonPointerClick();
+        mapcheckButtonMouseClick();
+        if (map >= 0) selectMap = false;
     }
     if (ready) {
         if (play->mouseClick())fmngr->getState()->next();
@@ -123,7 +124,7 @@ void ConfigState::update() {
             //pause
             std::cout << "pause" << std::endl;
             fmngr->saveState(fmngr->getState());
-            fmngr->setState(new ConfigurationState(fmngr));
+            fmngr->setState(new ConfigurationState(fmngr,playerInput[0]));
             return;
         }
         else
@@ -132,6 +133,7 @@ void ConfigState::update() {
             State* saved = fmngr->getSavedState();
             fmngr->setState(saved);
             fmngr->saveState(tmp);
+            return;
         }
     }
     if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
@@ -340,6 +342,28 @@ void ConfigState::checkButtonPointerClick()
             normalmode->active(false);
             teammode->active(true);
         }
+        else if (config->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
+            if (fmngr->getSavedState() == nullptr) {
+                keyRelease = false;
+                lastPointerClick = playerInput[i];
+                //pause
+                std::cout << "pause" << std::endl;
+                fmngr->saveState(fmngr->getState());
+                fmngr->setState(new ConfigurationState(fmngr, playerInput[0]));
+
+                return;
+            }
+            else
+            {
+                keyRelease = false;
+                lastPointerClick = playerInput[i];
+                State* tmp = fmngr->getState();
+                State* saved = fmngr->getSavedState();
+                fmngr->setState(saved);
+                fmngr->saveState(tmp);
+                return;
+            }
+        }
         //Teams
         for (auto j = 0u; j < 2; j++) {
             if (p[i][j]->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
@@ -357,20 +381,23 @@ void ConfigState::checkButtonPointerClick()
             }
         }
         //Release del Key
-        switch (lastPointerClick)
-        {
-        case -1:
-            if (!ih.isKeyDown(SDLK_e))keyRelease = true;
-            break;
-        case -2:
-            if (!ih.isKeyDown(SDLK_l))keyRelease = true;
-            break;
-        case -3:
-            break;
-        default:
-            if (!ih.xboxGetButtonState(lastPointerClick, SDL_CONTROLLER_BUTTON_B))keyRelease = true;
-            break;
+        if (!keyRelease) {
+            switch (lastPointerClick)
+            {
+            case -1:
+                if (!ih.isKeyDown(SDLK_e))keyRelease = true;
+                break;
+            case -2:
+                if (!ih.isKeyDown(SDLK_l))keyRelease = true;
+                break;
+            case -3:
+                break;
+            default:
+                if (!ih.xboxGetButtonState(lastPointerClick, SDL_CONTROLLER_BUTTON_B))keyRelease = true;
+                break;
+            }
         }
+    
     }
     //Seleccion del personaje
     for (auto i = 0; i < playerInput.size(); i++) {
@@ -527,31 +554,52 @@ void ConfigState::mapMenuRender()
     {
         e->render();
     }
+    config->render();
     playerPointers[0]->render();
 }
 
 void ConfigState::mapcheckButtonPointerClick()
 {
-    for (int i = 0u; i < maps.size(); i++) {
-        bool enter = false;
-        //Pulsacion de A
-        switch (playerInput[0])
-        {
-        case -1:
-            if (ih.isKeyDown(SDLK_e))enter = true;
-            break;
-        case -2:
-            if (ih.isKeyDown(SDLK_l))enter = true;
-            break;
-        default:
-            if (ih.xboxGetButtonState(playerInput[0], SDL_CONTROLLER_BUTTON_B))enter = true;
-            break;
-        }
+    bool enter = false;
+    //Pulsacion de A
+    switch (playerInput[0])
+    {
+    case -1:
+        if (ih.isKeyDown(SDLK_e))enter = true;
+        break;
+    case -2:
+        if (ih.isKeyDown(SDLK_l))enter = true;
+        break;
+    default:
+        if (ih.xboxGetButtonState(playerInput[0], SDL_CONTROLLER_BUTTON_B))enter = true;
+        break;
+    }
+    for (int i = 0u; i < maps.size(); i++) {    
         if (maps[i]->pointerClick(playerPointers[0]->getRect())&&enter && keyRelease) {
             map = i;
             keyRelease = false;
             lastPointerClick = playerInput[0];
         }
+    }
+    if (config->pointerClick(playerPointers[0]->getRect()) && enter && keyRelease) {
+        keyRelease = false;
+        if (fmngr->getSavedState() == nullptr) {
+            //pause
+            std::cout << "pause" << std::endl;
+            fmngr->saveState(fmngr->getState());
+            fmngr->setState(new ConfigurationState(fmngr, playerInput[0]));
+            return;
+        }
+        else
+        {
+            State* tmp = fmngr->getState();
+            State* saved = fmngr->getSavedState();
+            fmngr->setState(saved);
+            fmngr->saveState(tmp);
+            return;
+        }
+    }
+    if (!keyRelease) {
         switch (playerInput[0])
         {
         case -1:
@@ -563,10 +611,11 @@ void ConfigState::mapcheckButtonPointerClick()
         case -3:
             break;
         default:
-            if (!ih.xboxGetButtonState(lastPointerClick, SDL_CONTROLLER_BUTTON_B))keyRelease = true;
+            if (!ih.xboxGetButtonState(playerInput[0], SDL_CONTROLLER_BUTTON_B))keyRelease = true;
             break;
         }
     }
+   
 }
 
 void ConfigState::mapcheckButtonMouseClick()

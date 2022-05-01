@@ -3,7 +3,7 @@
 #include "../PlayingState/FightManager.h"
 
 
-ConfigurationState::ConfigurationState(FightManager* game) : State(game) {
+ConfigurationState::ConfigurationState(FightManager* game ,int pI) : State(game) {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     backgr = &sdl->images().at("ConfigBack");
@@ -20,16 +20,16 @@ ConfigurationState::ConfigurationState(FightManager* game) : State(game) {
     sfxp = new Button(&sdl->images().at("plusB"), ts(180), ts(155), ts(10), ts(10));
 
     
-    //p1 = new PlayerPointer(&sdl->images().at("P1P"), w/2, h/2, ts(15), ts(15), w, h);
-    //p1->setActive(true);
-    //pInput = pI;
+    p1 = new PlayerPointer(&sdl->images().at("P1P"), w/2, h/2, ts(15), ts(15), w, h);
+    p1->setActive(true);
+    pInput = pI;
 }
 
 
 
 void ConfigurationState::update() {
 
- /*   bool enter = false;
+    bool enter = false;
     switch (pInput)
     {
     case -1:
@@ -53,37 +53,38 @@ void ConfigurationState::update() {
         if (ih.xboxGetAxesState(pInput, 0) == 1 || ih.xboxGetDpadState(pInput, 1))p1->move(3);
         if (ih.xboxGetButtonState(pInput, SDL_CONTROLLER_BUTTON_B))enter = true;
         break;
-    }*/
-    if (muscm->mouseClick()){//|| muscm->pointerClick(p1->getRect())&&enter ) {
+    }
+    if (muscm->mouseClick() || muscm->pointerClick(p1->getRect())&&enter && keyRelease ) {
         if (musicV > 0) {
             musicV--;
             Music::setMusicVolume((128 * musicV) / 10);
+            keyRelease = false;
         }
-       
     }
-    else if (muscp->mouseClick()  ){ //|| muscp->pointerClick(p1->getRect()) && enter) {
+    else if (muscp->mouseClick()  || muscp->pointerClick(p1->getRect()) && enter && keyRelease) {
         if (musicV < 10) {
             musicV++;
             Music::setMusicVolume((128 * musicV) / 10);
+            keyRelease = false;
         }
 
     }
-    else if (sfxm->mouseClick() ){//|| sfxm->pointerClick(p1->getRect()) && enter) {
+    else if (sfxm->mouseClick() || sfxm->pointerClick(p1->getRect()) && enter && keyRelease) {
         if (sfxV > 0) {
             sfxV--;
             SoundEffect::setChannelVolume((128 * sfxV) / 10);
-           
+            keyRelease = false;
         }
     }
-    else if (sfxp->mouseClick() ){//|| sfxp->pointerClick(p1->getRect()) && enter) {
+    else if (sfxp->mouseClick() || sfxp->pointerClick(p1->getRect()) && enter && keyRelease) {
         if (sfxV < 10) {
             sfxV++;
             SoundEffect::setChannelVolume((128 * sfxV) / 10);
+            keyRelease = false;
         }
     }
-    //enter = false;
-
-    if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent() || back->mouseClick() ) {
+    if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent() || back->mouseClick() || back->pointerClick(p1->getRect()) && enter && keyRelease) {
+        keyRelease = false;
         std::cout << "unpause" << std::endl;
         State* tmp = fmngr->getState();
         State* saved = fmngr->getSavedState();
@@ -93,7 +94,27 @@ void ConfigurationState::update() {
         //delete tmp;
         return;
     }
-    if (exit->mouseClick()) fmngr->userExit();
+    if (exit->mouseClick() || exit->pointerClick(p1->getRect()) && enter && keyRelease) {
+        keyRelease = false;
+        fmngr->userExit();
+        return;
+    }
+    enter = false;
+
+    switch (pInput)
+    {
+    case -1:
+        if (!ih.isKeyDown(SDLK_e))keyRelease = true;
+        break;
+    case -2:
+        if (!ih.isKeyDown(SDLK_l))keyRelease = true;
+        break;
+    case -3:
+        break;
+    default:
+        if (!ih.xboxGetButtonState(pInput, SDL_CONTROLLER_BUTTON_B))keyRelease = true;
+        break;
+    }
 }
 void ConfigurationState::draw() {
     int w = fmngr->GetActualWidth();
@@ -107,7 +128,7 @@ void ConfigurationState::draw() {
     showText("SFX", ts(8), ts(80), ts(157), build_sdlcolor(0x33FFFC00));
     sfx->render({ (int)ts(50),(int)ts(150),(int)ts(20),(int)ts(20) });
     showText(to_string(sfxV), ts(8), ts(145), ts(157), build_sdlcolor(0x33FFFC00));
-    instru->render({ (int)ts(250),(int)ts(50),(int)ts(200),(int)ts(200) });
+    instru->render({ (int)ts(250),(int)ts(50),(int)ts(200),(int)ts(250) });
    
     sfxm->render();
     sfxp->render();
@@ -116,7 +137,7 @@ void ConfigurationState::draw() {
     exit->render();
     back->render();
     
-    //p1->render();
+    p1->render();
     sdl->presentRenderer();
 }
 

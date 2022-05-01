@@ -121,7 +121,7 @@ void FightManager::Update()
 		if (getSavedState() == nullptr) {
 			//pause
 			saveState(getState());
-			setState(new ConfigurationState(this));
+			setState(new ConfigurationState(this,characters[0]->getInput()));
 			return;
 		}
 		else

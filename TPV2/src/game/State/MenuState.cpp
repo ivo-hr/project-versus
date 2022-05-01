@@ -43,7 +43,7 @@ void MenuState::update() {
             //pause
             std::cout << "pause" << std::endl;
             fmngr->saveState(fmngr->getState());
-            fmngr->setState(new ConfigurationState(fmngr));
+            fmngr->setState(new ConfigurationState(fmngr,-1));
             return;
         }
         else

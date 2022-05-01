@@ -14,6 +14,9 @@ class ConfigState : public State {
     bool ready = false;
     bool searchGamepad = false;
     bool keyRelease = true;
+
+    bool mapkeyRelease = true;
+
     bool selectMap = true;
     int map = -1;
     int lastPointerClick = -3;
@@ -43,7 +46,7 @@ class ConfigState : public State {
     void mapMenuRender();
     void mapcheckButtonPointerClick();
     void mapcheckButtonMouseClick();
-
+    int timerMapkeyRelease = 0;
 public:
 
     ConfigState(FightManager* game , int fInput) ;
