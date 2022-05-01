@@ -18,6 +18,8 @@ Spear::Spear(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir, T
 	body->SetGravityScale(8.0f);
 
 	hitDelay = 5;
+
+	body->GetUserData().pointer = 1; // Para atravesar el suelo
 }
 
 Spear::~Spear()
