@@ -20,6 +20,7 @@ class ConfigState : public State {
     bool selectMap = true;
     int map = -1;
     int lastPointerClick = -3;
+    int nMandos;
 
     vector<int> playerInput;
     vector<int> charactersSelect;
