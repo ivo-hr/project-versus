@@ -510,6 +510,7 @@ void ConfigState::initMapBut()
     i++;
     maps.push_back(new Button(&sdl->images().at("mazmorra"), ts(50 + i * 150), ts(50), ts(100), ts(80)));
     i++;
+    maps.push_back(new Button(&sdl->images().at("night"), ts(50 + i * 150), ts(50), ts(100), ts(80)));
 }
 
 
