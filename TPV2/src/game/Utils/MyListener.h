@@ -15,11 +15,11 @@ public:
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
 		// Mira si está en contacto con el suelo
-		if (one->GetType() == b2_staticBody && contact->IsEnabled())
+		if (one->GetType() == b2_staticBody && contact->GetFixtureB()->IsSensor())
 		{
 			for (int i = 0; i < characters.size(); i++)
 			{
-				if (two == characters[i]->GetBody() && contact->GetFixtureB()->IsSensor())
+				if (two == characters[i]->GetBody())
 				{
 					characters[i]->SetGround(true);
 				}
@@ -31,11 +31,11 @@ public:
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
 		// Mira si deja de contactar con el suelo
-		if (one->GetType() == b2_staticBody)
+		if (one->GetType() == b2_staticBody && contact->GetFixtureB()->IsSensor())
 		{
 			for (int i = 0; i < characters.size(); i++)
 			{
-				if (two == characters[i]->GetBody() && contact->GetFixtureB()->IsSensor())
+				if (two == characters[i]->GetBody())
 				{
 					characters[i]->SetGround(false);
 				}
@@ -47,8 +47,9 @@ public:
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
 
-		// Mira si quiere subir a la plataforma (atravesándola)
-		if (one->GetFixtureList()->GetFilterData().categoryBits == 4 && two->GetLinearVelocity().y < 0)
+		// Mira si es proyectil o personaje que quiere subir a la plataforma (atravesándola)
+		if ((one->GetType() == b2_staticBody && two->GetUserData().pointer == 1) || 
+			(one->GetFixtureList()->GetFilterData().categoryBits == 4 && two->GetLinearVelocity().y < 0))
 		{ 
 			contact->SetEnabled(false);
 		}

@@ -9,6 +9,8 @@ Bullet::Bullet(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir)
 	data = attack;
 
 	duration = 140;
+
+	body->GetUserData().pointer = 1; // Para atravesar el suelo
 }
 
 Bullet::~Bullet()
