@@ -203,7 +203,7 @@ public:
 		if (SDL_NumJoysticks() > joy) {
 			SDL_GameController* gc = SDL_GameControllerOpen(SDL_NumJoysticks() - joy - 1);
 			SDL_JoystickID id = joy;
-			SDL_Joystick* joystick = SDL_JoystickFromInstanceID(id);
+			SDL_Joystick* joystick = SDL_JoystickOpen(SDL_NumJoysticks() - joy - 1);
 			int deathZoneMin, deathZoneMax;
 			
 			if (SDL_JoystickNumAxes(joystick) < 6) { // if NES controller
