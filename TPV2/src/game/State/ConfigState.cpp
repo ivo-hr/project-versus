@@ -201,7 +201,8 @@ void ConfigState::searchInput()
 {
     //Si hay algun input pendiente , buscarlo
     if (playerInput.size() < numOfplayer) {
-       
+        if (SDL_NumJoysticks() == nMandos)
+        {
             for (auto i = 0u; i < SDL_NumJoysticks(); i++) {
                 if (ih.xboxGetAxesState(i, 1) == -1 && !usedPad[i]) {
                     usedPad[i] = true;
@@ -213,52 +214,41 @@ void ConfigState::searchInput()
                     return;
                 }
             }
-        
-        //else if (SDL_NumJoysticks() > nMandos) { //se ha enchufado nuevo mando
-        //    vector<int> aux = playerInput;
-        //   /* for (auto i = 0u; i < SDL_NumJoysticks(); i++) {
-        //        if (ih.xboxGetAxesState(i, 1) == -1 && !usedPad[i]) {
-        //            usedPad[i] = true;
-        //            playerInput.push_back(i);
-        //            setPointer();
-        //            playerTexture[playerInput.size() - 1]->setgotInput(true);
-        //            playerTexture[playerInput.size() - 1]->setFront(&sdl->images().at("Mando"));
-        //            charactersSelect.resize(playerInput.size());
-        //            return;
-        //        }
-        //    }*/
-        //    for (auto i = 0u; i < SDL_NumJoysticks(); i++) {
-        //        if (ih.xboxGetButtonState(i, SDL_CONTROLLER_BUTTON_B) == -1) {
-        //            bool nes = false;
-        //            for (auto j = 0; j < aux.size(); j++)
-        //            {
-        //                if (i == aux[j]) {
-        //                    nes = true;
-        //                    j = aux.size();
-        //                }
-        //            }
-        //            if (nes) {
-        //                for (auto x = 0; x < aux.size(); x++)
-        //                {
-        //                    if (aux[i]>=0)
-        //                    {
-        //                        aux[i] = aux[i] + 1;
-        //                        usedPad[aux[i]] = true;
-        //                    }           
-        //                }
-        //            }
-        //            usedPad[i] = true;
-        //            aux.push_back(i);
-        //            playerInput = aux;
-        //            setPointer();
-        //            playerTexture[playerInput.size() - 1]->setgotInput(true);
-        //            playerTexture[playerInput.size() - 1]->setFront(&sdl->images().at("Mando"));
-        //            charactersSelect.resize(playerInput.size());
-        //            nMandos++;
-        //            return;
-        //        }
-        //    }
-        //}
+        }
+        else if (SDL_NumJoysticks() > nMandos) { //se ha enchufado nuevo mando
+            vector<int> aux = playerInput;
+            for (auto i = 0u; i < SDL_NumJoysticks(); i++) {
+                if (ih.xboxGetAxesState(i, 1) == -1) {
+                    bool nes = false;
+                    for (auto j = 0; j < aux.size(); j++)
+                    {
+                        if (i == aux[j]) {
+                            nes = true;
+                            j = aux.size();
+                        }
+                    }
+                    if (nes) {
+                        for (auto x = 0; x < aux.size(); x++)
+                        {
+                            if (aux[x]>=0)
+                            {
+                                aux[x] = aux[x] + 1;
+                                usedPad[aux[x]] = true;
+                            }           
+                        }
+                    }
+                    usedPad[i] = true;
+                    aux.push_back(i);
+                    playerInput = aux;
+                    setPointer();
+                    playerTexture[playerInput.size() - 1]->setgotInput(true);
+                    playerTexture[playerInput.size() - 1]->setFront(&sdl->images().at("Mando"));
+                    charactersSelect.resize(playerInput.size());
+                    nMandos++;
+                    return;
+                }
+            }
+        }
         if (ih.isKeyDown(SDLK_UP) && !usedKeyboard[1]) {
             usedKeyboard[1] = true;
             playerInput.push_back(-2);
