@@ -340,7 +340,7 @@ void Character::update()
 		}
 	}
 
-	else sdl->soundEffects().at(codeName + "Steps").haltChannel();
+	//else sdl->soundEffects().at(codeName + "Steps").haltChannel();
 
 	if (input->down() && body->GetFixtureList()->GetFilterData().maskBits != 2) down = true; // Marca que se ha pulsado abajo (para el tema de bajar plataformas)
 
@@ -498,7 +498,7 @@ void Character::draw(SDL_Rect* camera)
 
 bool Character::GetHit(attackData a, Entity* attacker)
 {
-	sdl->soundEffects().at(codeName + "Steps").haltChannel();
+	//sdl->soundEffects().at(codeName + "Steps").haltChannel();
 
 	if (shield)
 	{
