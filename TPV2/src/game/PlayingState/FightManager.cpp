@@ -161,6 +161,7 @@ void FightManager::Update()
 			entities[i]->update();
 		}
 	}
+
 	for (Entity* ent : entities)
 	{
 		ent->CheckHits();
@@ -553,7 +554,6 @@ void FightManager::onNewGame()
 }
 void FightManager::startCount()
 {
-	
 	Texture* count;
 	string s;
 	int x = 0;
@@ -581,7 +581,6 @@ void FightManager::startCount()
 		y = 100 * screenAdjust;
 	}
 	count->render(x,y);
-	sdl->presentRenderer();
 }
 
 

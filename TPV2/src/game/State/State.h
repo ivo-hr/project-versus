@@ -21,8 +21,7 @@ public:
     State(FightManager* fmngr) : fmngr(fmngr) ,tex(nullptr) {
     };
 
-    virtual ~State() {
-        
+    virtual ~State() {    
     };
     virtual void update() = 0;
     virtual void draw() = 0;
