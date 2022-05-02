@@ -156,6 +156,11 @@ PlayingState::PlayingState(FightManager* game, vector<int> playersInput, vector<
 	fmngr->StartFight(team1,team2);
 }
 
+PlayingState::~PlayingState()
+{
+	fmngr->onNewGame();
+}
+
 
 void PlayingState::update() {
 	fmngr->Update();

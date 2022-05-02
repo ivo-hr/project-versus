@@ -10,7 +10,7 @@ ConfigurationState::ConfigurationState(FightManager* game ,int pI) : State(game)
     music = &sdl->images().at("BgmT");
     sfx = &sdl->images().at("SfxT");
     instru = &sdl->images().at("instru");
-    exit = new Button(&sdl->images().at("backToMenu"), 0, h - ts(20), ts(40), ts(20));
+    exit = new Button(&sdl->images().at("backToMenu"), ts(10), h - ts(40), ts(30), ts(40));
     back = new Button(&sdl->images().at("BackBut"), ts(15), ts(15), ts(15), ts(15));
 
     muscm = new Button(&sdl->images().at("minusB"), ts(120), ts(105), ts(10), ts(10));
