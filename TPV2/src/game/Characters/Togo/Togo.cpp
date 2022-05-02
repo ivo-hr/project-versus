@@ -410,6 +410,11 @@ void Togo::SpecialLHit(int frameNumber)
 	}
 }
 
+void Togo::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
+{
+	Character::drawHUD(w, h, numOfPlayer, screenadjust);
+}
+
 bool Togo::GetHit(attackData a, Entity* attacker)
 {
 	if (dShield != nullptr)

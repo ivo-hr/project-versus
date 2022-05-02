@@ -1062,6 +1062,12 @@ void Makt::Taunt(int frameNumber)
 	}
 }
 
+void Makt::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
+{
+	Character::drawHUD(w, h, numOfPlayer, screenadjust);
+
+}
+
 void Makt::RecoveredBall()
 {
 	if (ball->PickUp())

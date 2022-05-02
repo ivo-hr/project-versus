@@ -29,7 +29,7 @@ public:
 	virtual void EndShield(int frameNumber) override;
 	virtual void Dash(int frameNumber) override;
 	virtual void Taunt(int frameNumber) override;
-
+	virtual void drawHUD(int w, int h, int numOfPlayer, int screenadjust)override;
 private:
 
 	int baseWeight;
