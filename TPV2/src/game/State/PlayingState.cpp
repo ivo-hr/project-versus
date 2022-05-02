@@ -24,16 +24,16 @@ PlayingState::PlayingState(FightManager* game, vector<int>playersInput, vector<i
 		switch (characters[i])
 		{
 		case 0: //zero
-			entities.push_back(new NasNas(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+			entities.push_back(new NasNas(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i],i));
 			break;
 		case 1://Gato espia
-			entities.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+			entities.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i],i));
 			break;
 		case 2://Togo
-			entities.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+			entities.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i],i));
 			break;
 		case 3: //Maketo
-			entities.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+			entities.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i],i));
 			break;
 		case 4://Nasnas
 			//entities.push_back(new NasNas(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
@@ -43,16 +43,16 @@ PlayingState::PlayingState(FightManager* game, vector<int>playersInput, vector<i
 			switch (charac)
 			{
 			case 0: //zero
-				entities.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				entities.push_back(new NasNas(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				break;
 			case 1://Gato espia
-				entities.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				entities.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				break;
 			case 2://Togo
-				entities.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				entities.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				break;
 			case 3: //Maketo
-				entities.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				entities.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				break;
 			}
 		
@@ -70,90 +70,89 @@ PlayingState::PlayingState(FightManager* game, vector<int> playersInput, vector<
 	std::vector<Character*> team1;
 	std::vector<Character*> team2;
 	string s = "resources/config/stage" + to_string(map) + ".json";
-		fmngr->LoadStage(s);
+	fmngr->LoadStage(s);
 	//fmngr->LoadStage("resources/config/stage2.json");
 
 	for (auto i = 0u; i < playersInput.size(); i++) {
 		switch (characters[i])
 		{
 		case 0: //zero
-			if(teams[i]==0)
-				team1.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+			if (teams[i] == 0)
+				team1.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 			else
 			{
-				team2.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				team2.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 			}
 			break;
 		case 1://Gato espia
 			if (teams[i] == 0)
-				team1.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				team1.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 			else
 			{
-				team2.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
-			}	
+				team2.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+			}
 			break;
 		case 2://Togo
 			if (teams[i] == 0)
-				team1.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				team1.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 			else
 			{
-				team2.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				team2.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 			}
 			break;
 		case 3: //Maketo
 			if (teams[i] == 0)
-				team1.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				team1.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 			else
 			{
-				team2.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				team2.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 			}
 			break;
 		case 4://Nasnas		
 			break;
 		case -1://Aleatorio
-		
-			int charac = sdl->rand().nextInt(0,4);
+			int charac = sdl->rand().nextInt(0, 4);
 			switch (charac)
 			{
 			case 0: //zero
 				if (teams[i] == 0)
-					team1.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+					team1.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				else
 				{
-					team2.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+					team2.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				}
 				break;
 			case 1://Gato espia
 				if (teams[i] == 0)
-					team1.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+					team1.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				else
 				{
-					team2.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+					team2.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				}
 				break;
 			case 2://Togo
 				if (teams[i] == 0)
-					team1.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+					team1.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				else
 				{
-					team2.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+					team2.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				}
 				break;
 			case 3: //Maketo
 				if (teams[i] == 0)
-					team1.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+					team1.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				else
 				{
-					team2.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+					team2.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				}
 				break;
 			}
 			break;
 		}
-	}
-	playersInput_ = playersInput;
+		playersInput_ = playersInput;
 
-	fmngr->StartFight(team1,team2);
+		fmngr->StartFight(team1, team2);
+	}
 }
 
 PlayingState::~PlayingState()

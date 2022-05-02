@@ -5,7 +5,7 @@ class MaktBall;
 class Makt : public Character
 {
 public:
-	Makt(FightManager* mngr, b2Vec2 pos, char input);
+	Makt(FightManager* mngr, b2Vec2 pos, char input,int p);
 	~Makt();
 
 	virtual void BasicNeutral(int frameNumber) override;

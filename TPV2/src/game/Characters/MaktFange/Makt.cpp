@@ -5,8 +5,8 @@
 #include <fstream>
 #include <iostream>
 
-Makt::Makt(FightManager* mngr, b2Vec2 pos, char input) :
-	Character(mngr, pos, input, 2.f, 3.5f)
+Makt::Makt(FightManager* mngr, b2Vec2 pos, char input,int p) :
+	Character(mngr, pos, input,p, 2.f, 3.5f)
 {
 
 	json js = ReadJson("resources/config/maketo.json");

@@ -5,7 +5,7 @@ class DinoShield;
 class NasNas : public Character
 {
 public:
-	NasNas(FightManager* mngr, b2Vec2 pos, char input);
+	NasNas(FightManager* mngr, b2Vec2 pos, char input,int p);
 	~NasNas();
 
 	virtual void BasicNeutral(int frameNumber) override;

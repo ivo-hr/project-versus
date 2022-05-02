@@ -8,7 +8,7 @@
 #include <iostream>
 using json = nlohmann::json;
 
-Togo::Togo(FightManager* mngr, b2Vec2 pos, char input) : Character(mngr, pos, input, 1.5f, 3.5f)
+Togo::Togo(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p, 1.5f, 3.5f)
 {
 
 	ReadJson("resources/config/dino.json");

@@ -91,11 +91,11 @@ json Character::ReadJson(std::string filename)
 	return jsonFile;
 }
 
-Character::Character(FightManager* manager, b2Vec2 pos, char input, float w, float h) :
+Character::Character(FightManager* manager, b2Vec2 pos, char input,int playerPos, float w, float h) :
 	Entity(manager, pos, w, h)
 {
 	arrowsTex = &sdl->images().at("arrows");
-
+	playerPosition = playerPos;
 	arrowSrc.x = 0;
 	arrowSrc.y = 0;
 	arrowSrc.w = arrowsTex->width();

@@ -1,7 +1,7 @@
 #include "CharacterZero.h"
 #include "../../Utils/AnimationManager.h"
 
-CharacterZero::CharacterZero(FightManager* mngr, b2Vec2 pos, char input) : Character(mngr, pos, input)
+CharacterZero::CharacterZero(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p)
 {
 	//importamos json del personaje
 	
@@ -107,4 +107,10 @@ void CharacterZero::SpecialNeutral(int frameNumber)
 		moveFrame = -1;
 		break;
 	}
+}
+
+void CharacterZero::drawHUD(int w, int h, int numOfPlayer)
+{
+	int x = w / numOfPlayer *playerPosition;
+	portrait->render({});
 }

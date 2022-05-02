@@ -12,7 +12,7 @@ class Character : public Entity
 {
 protected:
 	uint16 playerNumber;
-
+	int playerPosition;//P1 ,P2 ,P3,P4..
 	//InputHandler& ih = *InputHandler::instance();
 	InputConfig *input = nullptr;
 
@@ -78,7 +78,7 @@ protected:
 	int input_;
 public:
 
-	Character(FightManager* manager, b2Vec2 pos, char input, float w = 3.f, float h = 3.f);
+	Character(FightManager* manager, b2Vec2 pos, char input,int player, float w = 3.f, float h = 3.f);
 	~Character();
 
 	void SetSpawn(b2Vec2 spawn, int dir);
@@ -87,6 +87,7 @@ public:
 	virtual void update() override;
 	virtual void draw() override;
 	virtual void draw(SDL_Rect* camera) override;
+	virtual void drawHUD(int w, int h, int numOfPlayer) {};
 
 	virtual bool GetHit(attackData a, Entity* attacker);
 	virtual SDL_Rect* GetHurtbox();

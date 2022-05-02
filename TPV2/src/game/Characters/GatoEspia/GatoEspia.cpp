@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 using json = nlohmann::json;
-GatoEspia::GatoEspia(FightManager* mngr, b2Vec2 pos, char input) : Character(mngr, pos, input, 1.5f, 3.f)
+GatoEspia::GatoEspia(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p, 1.5f, 3.f)
 {
 
 	ReadJson("resources/config/gato.json");
