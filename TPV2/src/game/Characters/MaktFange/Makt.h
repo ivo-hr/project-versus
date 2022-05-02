@@ -40,7 +40,8 @@ private:
 
 	int baseJump;
 	int ballJump;
-
+	bool release = false;
+	int frameRelease;
 	void RecoveredBall();
 	void ThrowBall(attackData force, int timeHeld);
 

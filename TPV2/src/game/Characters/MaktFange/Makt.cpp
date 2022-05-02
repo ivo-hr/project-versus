@@ -213,6 +213,7 @@ void Makt::SpecialForward(int frameNumber)
 		if (ball != nullptr)
 		{
 			ChangeMove([this](int f) { BallPickUp(f); });
+			return;
 		}
 		moving = false;
 		anim->StartAnimation("especialLEntrada");
@@ -224,10 +225,20 @@ void Makt::SpecialForward(int frameNumber)
 		if (frameNumber == attacks["specialL"].startUp) {
 			anim->StartAnimation("especialLHold");
 		}
-		if(!input->special()) {
-			anim->StartAnimation("especialLSalida");
-			ThrowBall(attacks["specialL"], frameNumber);
-			ChangeMove([this](int f) {ThrowRecover(f); });
+		if(!input->special() || release) {
+			if (!release) {		
+				frameRelease = frameNumber;
+			}
+			release = true;
+			if (frameNumber == frameRelease) {
+				anim->StartAnimation("especialLSalida");
+			}
+			else if (frameNumber == frameRelease + 5) {
+				release = false;
+				ThrowBall(attacks["specialL"], frameNumber);
+				ChangeMove([this](int f) {ThrowRecover(f); });
+			}
+			
 		}		
 	}
 }
@@ -239,6 +250,7 @@ void Makt::SpecialUpward(int frameNumber)
 		if (ball != nullptr)
 		{
 			ChangeMove([this](int f) { BallPickUp(f); });
+			return;
 		}
 		moving = false;
 		anim->StartAnimation("especialUEntrada");
@@ -252,12 +264,13 @@ void Makt::SpecialUpward(int frameNumber)
 			width * 1.2f,
 			height * 1.2f);
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 20, Vector2D(-5 + (5*dir), -10), OnHitData(3, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 20, Vector2D(-5 + (5*dir), -50), OnHitData(3, false, false)));
 
 		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, -60));
 	}
 	else if (frameNumber >= attacks["specialU"].totalFrames)
 	{
+		recovery = true;
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
@@ -271,6 +284,7 @@ void Makt::SpecialDownward(int frameNumber)
 		if (ball != nullptr)
 		{
 			ChangeMove([this](int f) { BallPickUp(f); });
+			return;
 		}
 		moving = false;
 		anim->StartAnimation("especialD");
@@ -1092,8 +1106,8 @@ void Makt::ThrowBall(attackData force, int timeHeld)
 
 	attackData aux = force;
 
-	aux.damage += timeHeld / 6;
-	aux.base += timeHeld / 6;
+	aux.damage += timeHeld / 10;
+	aux.base += timeHeld / 10;
 
 	ball = new MaktBall(manager, b2Vec2( body->GetPosition().x + dir, body->GetPosition().y ), aux, b2Vec2(dir, 0), respawnPos);
 	manager->AddEntity(ball);

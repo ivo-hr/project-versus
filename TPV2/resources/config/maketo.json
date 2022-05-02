@@ -38,11 +38,11 @@
         "id": "basicD",
         "b2vecX": 1,
         "b2vecY": 1,
-        "base": 20,
+        "base": 15,
         "damage": 9,
         "multiplier": 0.6,
-        "startUp": 28,
-        "totalFrames": 45
+        "startUp": 15,
+        "totalFrames": 30
       },
       {
         "id": "basicDS",
@@ -81,7 +81,7 @@
         "base": 40,
         "damage": 12,
         "multiplier": 1.1,
-        "startUp": 15,
+        "startUp": 10,
         "totalFrames": 20
       },
       {
@@ -101,8 +101,8 @@
         "base": 60,
         "damage": 9,
         "multiplier": 0.05,
-        "startUp": 10,
-        "totalFrames": 30
+        "startUp": 25,
+        "totalFrames": 60
       },
       {
         "id": "pickBall",
@@ -331,7 +331,7 @@
           "keySprite" : 3,
           "attack": "specialL",
           "totalFrames" : 60,
-          "loop" : true
+          "loop" : false
         },
         {
           "id" : "especialUEntrada",
@@ -346,9 +346,9 @@
           "id" : "especialU",
           "iniSprite" : 40,
           "totalSprites" : 2,
-          "keySprite" : 1,
-          "attack": "specialU",
-          "totalFrames" : 15,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 10,
           "loop" : true
         },
         {
