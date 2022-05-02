@@ -2,6 +2,7 @@
 #include "Utils/AnimationManager.h"
 #include "Utils/InputConfig.h"
 #include "Utils/Particle.h"
+#include "Characters/NasNas/Explosion.h"
 #include <iostream>
 
 
@@ -535,17 +536,29 @@ bool Character::GetHit(attackData a, Entity* attacker)
 		aux.y *= -1;
 		aux.x *= attacker->GetDir();
 
+		// Estados y combinaciones de estado
+
 		if (a.estado != none)
 		{
 			if (efEstado != a.estado && efEstado != none)
 			{
+				// fuego y rayo
 				if ((efEstado == fire && a.estado == electric) || (efEstado == electric && a.estado == fire))
 				{
+					//explosión de fuego/rayo
+					// 
+					//suma de efectos de estado para pasarselo a la explosion
+					int poder = (statePower + a.power) / 2;
+					auto plasma = new Explosion(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 1);
+					manager->AddEntity(plasma);
+					manager->AddOponnent(plasma);
+					plasma->SetOponents(oponents);
+					manager->MoveToFront(plasma);
 					efEstado = none;
 					statePower = 0;
 					stateCont = 0;
-					//explosión de fuego/rayo
 				}
+				//fuego y agua
 				else if((efEstado == fire && a.estado == water) || (efEstado == water && a.estado == fire))
 				{
 					if (efEstado == water)
@@ -553,11 +566,17 @@ bool Character::GetHit(attackData a, Entity* attacker)
 						maxSpeed += ralentizar;
 						ralentizar = 0;
 					}
+					int poder = (statePower + a.power) / 2;
+					auto vapor = new Explosion(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 0);
+					manager->AddEntity(vapor);
+					manager->AddOponnent(vapor);
+					vapor->SetOponents(oponents);
+					manager->MoveToFront(vapor);
 					efEstado = none;
 					statePower = 0;
 					stateCont = 0;
-					//explosión de fuego/agua
 				}
+				// agua y rayo
 				else if ((efEstado == water && a.estado == electric) || (efEstado == electric && a.estado == water))
 				{
 					if (efEstado == water)
@@ -571,6 +590,7 @@ bool Character::GetHit(attackData a, Entity* attacker)
 
 				}
 			}
+			//si se recibe un ataque con un estado del cual ya se veía afectado
 			else if (efEstado == a.estado)
 			{
 				stateCont = 0;
@@ -580,6 +600,7 @@ bool Character::GetHit(attackData a, Entity* attacker)
 					stun += statePower * 1.5;
 				}
 			}
+			//efecto de estado básico
 			else if (efEstado == none)
 			{
 				efEstado = a.estado;

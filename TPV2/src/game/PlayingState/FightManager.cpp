@@ -408,6 +408,21 @@ std::vector<Entity*> FightManager::GetOponents(Entity* current)
 	return a;
 }
 
+
+std::vector<Entity*> FightManager::GetEntities(Entity* current)
+{
+	std::vector<Entity*> a;
+
+	for (int i = 0; i < entities.size(); i++)
+	{
+		if (entities[i] != current)
+		{
+			a.push_back(entities[i]);
+		}
+	}
+	return a;
+}
+
 SDL_Rect* FightManager::GetDeathZone()
 {
 	return stage->GetDeathZone();

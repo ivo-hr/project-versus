@@ -107,6 +107,7 @@ public:
 	vector<Texture*>getWinnersTextures() { return winnersTextures; }
 
 	std::vector<Entity*> GetOponents(Entity* current);
+	std::vector<Entity*> GetEntities(Entity* current);
 	SDL_Rect* GetDeathZone() ;
 	b2World* GetWorld();
 	SDLUtils* GetSDLU() { return sdl; };

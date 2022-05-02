@@ -1,0 +1,291 @@
+{
+  "codeName": "nasnas",
+  "weight": 17,
+  "damageTaken": 0,
+  "maxSpeed": 25,
+  "speed":0,
+  "maxJumps": 1 ,
+  "jumpStr": 700,
+  "onGround": true,
+  "shield": false ,
+  "maxShield": 360,
+
+  "attacksData": [
+    {
+      "id": "basicN",
+      "b2vecX": 1,
+      "b2vecY": 1.8,
+      "base": 10,
+      "damage": 6,
+      "multiplier": 0.6,
+      "startUp": 4,
+      "totalFrames": 25
+    },
+    {
+      "id": "basicF",
+      "b2vecX": 1,
+      "b2vecY": 2.5,
+      "base": 1,
+      "damage": 1,
+      "multiplier": 0.1,
+      "startUp": 12,
+      "totalFrames": 30
+    },
+    {
+      "id": "basicD",
+      "b2vecX": 1.5,
+      "b2vecY": 1,
+      "base": 10,
+      "damage": 10,
+      "multiplier": 1.2,
+      "startUp": 7,
+      "totalFrames": 30
+    },
+    {
+      "id": "basicU",
+      "b2vecX": 1,
+      "b2vecY": 9,
+      "base": 5,
+      "damage": 5,
+      "multiplier": 0.5,
+      "startUp": 12,
+      "totalFrames": 30
+    },
+    {
+      "id": "specialN",
+      "b2vecX": 1,
+      "b2vecY": 1,
+      "base": 1,
+      "damage": 1,
+      "multiplier": 0.2,
+      "startUp": 9,
+      "totalFrames": 25
+    },
+    {
+      "id": "specialL",
+      "b2vecX": 1,
+      "b2vecY": 1,
+      "base": 0,
+      "damage": 0,
+      "multiplier": 0,
+      "startUp": 10,
+      "totalFrames": 40
+    },
+    {
+      "id": "specialLHit",
+      "b2vecX": 1,
+      "b2vecY": 3,
+      "base": 5,
+      "damage": 30,
+      "multiplier": 0.5,
+      "startUp": 3,
+      "totalFrames": 30
+    },
+    {
+      "id": "specialU",
+      "b2vecX": 2,
+      "b2vecY": 1,
+      "base": 12,
+      "damage": 4,
+      "multiplier": 0.3,
+      "startUp": 1,
+      "totalFrames": 30
+    },
+    {
+      "id": "specialD",
+      "b2vecX": 1,
+      "b2vecY": 1,
+      "base": 15,
+      "damage": 10,
+      "multiplier": 1.5,
+      "startUp": 15,
+      "totalFrames": 60
+    }
+  ],
+
+  "spData": {
+    "leftOffset": 50,
+    "upOffset": 28,
+    "sizeXOffset": 250,
+    "sizeYOffset": 30,
+    "spritesInX": 8,
+    "spritesInY": 13
+  },
+  "animationData":{
+    "anim":[
+      {
+        "id" : "idle",
+        "iniSprite" : 0,
+        "totalSprites" : 2,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames" : 30,
+        "loop" :true
+      },
+      {
+        "id" : "basicN",
+        "iniSprite" : 21,
+        "totalSprites" : 9,
+        "keySprite" : 2,
+        "attack": "basicN",
+        "totalFrames" : 30,
+        "loop" :false
+      },
+      {
+        "id" : "basicU",
+        "iniSprite" : 45,
+        "totalSprites" : 14,
+        "keySprite" : 5,
+        "attack": "basicU",
+        "totalFrames" : 30,
+        "loop" :false
+      },
+      {
+        "id" : "basicD",
+        "iniSprite" : 37,
+        "totalSprites" : 8,
+        "keySprite" : 3,
+        "attack": "basicD",
+        "totalFrames" : 30,
+        "loop" :false
+      },
+      {
+        "id" : "basicF",
+        "iniSprite" : 30,
+        "totalSprites" : 5,
+        "keySprite" : -1,
+        "attack": "basicF",
+        "totalFrames" : 20,
+        "loop" :false
+      },
+      {
+        "id" : "shield",
+        "iniSprite" : 6,
+        "totalSprites" : 2,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames" : 40,
+        "loop" : true
+      },
+      {
+        "id" : "run",
+        "iniSprite" : 2,
+        "totalSprites" : 4,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames" : 50,
+        "loop" : true
+      },
+      {
+        "id" : "airborne",
+        "iniSprite" : 11,
+        "totalSprites" : 2,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames" : 15,
+        "loop" : true
+      },
+      {
+        "id" : "dash",
+        "iniSprite" : 13,
+        "totalSprites" : 2,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames" : 15,
+        "loop" : true
+      },
+      {
+        "id" : "especialN",
+        "iniSprite" : 89,
+        "totalSprites" : 3,
+        "keySprite" : -1,
+        "attack": "specialN",
+        "totalFrames" : 15,
+        "loop" : false
+      },
+      {
+        "id" : "especialNHold",
+        "iniSprite" : 92,
+        "totalSprites" : 3,
+        "keySprite" : -1,
+        "attack": "specialN",
+        "totalFrames" : 15,
+        "loop" : true
+      },
+      {
+        "id" : "especialLEntrada",
+        "iniSprite" : 67,
+        "totalSprites" : 10,
+        "keySprite" : 4,
+        "attack": "specialL",
+        "totalFrames" : 25,
+        "loop" : false
+      },
+      {
+        "id" : "especialLSalida",
+        "iniSprite" : 77,
+        "totalSprites" : 5,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames" : 15,
+        "loop" : false
+      },
+      {
+        "id" : "especialLHit",
+        "iniSprite" : 82,
+        "totalSprites" : 7,
+        "keySprite" : 3,
+        "attack": "specialLHit",
+        "totalFrames" : 15,
+        "loop" : false
+      },
+      {
+        "id" : "especialU",
+        "iniSprite" : 97,
+        "totalSprites" : 4,
+        "keySprite" : -1,
+        "attack": "specialU",
+        "totalFrames" : 10,
+        "loop" : true
+      },
+      {
+        "id" : "especialD",
+        "iniSprite" : 59,
+        "totalSprites" : 8,
+        "keySprite" : 3,
+        "attack": "specialD",
+        "totalFrames" : 40,
+        "loop" : false
+      },
+      {
+        "id" : "stun",
+        "iniSprite" : 8,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames" : 50,
+        "loop" : true
+      },
+      {
+        "id" : "jumpCharge",
+        "iniSprite" : 9,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames" : 10,
+        "loop" : false
+      },
+      {
+        "id" : "jump",
+        "iniSprite" : 10,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames" : 10,
+        "loop" : true
+      }
+
+    ]
+    
+  }
+}
