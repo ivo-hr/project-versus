@@ -73,6 +73,10 @@ class FightManager :public StateMachine
 	bool endGame=false;
 	int endGameTimer=0;
 	bool teammode = false;
+
+	void startCount();
+	int scount = 4;
+	int startticks=0;
 public:
 
 	FightManager(SDLUtils* sdl, double screenAdjust);

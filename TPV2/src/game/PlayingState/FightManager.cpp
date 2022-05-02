@@ -84,6 +84,8 @@ void FightManager::MoveCamera()
 
 }
 
+
+
 FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 {
 	listener = new MyListener();
@@ -96,7 +98,7 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 	cameraOffset *= screenAdjust;
 
 	
-	for (auto i = 0u; i < 100; i++) {
+	for (auto i = 0u; i < 600; i++) {
 		string s = "nes" + to_string(i);
 		sdl->fonts().emplace(s, Font("resources/fonts/NES-Chimera.ttf", i));
 	}
@@ -121,7 +123,7 @@ FightManager::~FightManager()
 
 void FightManager::Update()
 {
-	
+
 	Uint32 startTime = sdl->currRealTime();
 	if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
 		if (getSavedState() == nullptr) {
@@ -144,14 +146,20 @@ void FightManager::Update()
 	stage->Update(&camera);
 
 	stage->GetWorld()->Step(step, 1, 1);
+	
 	for (Character* c : characters)
 	{
 		c->drawHUD(GetActualWidth(), GetActualHeight(), numPlayers, screenAdjust);
 	}
-
-	for (auto i = 0u; i < entities.size(); i++)
+	if (scount > -1) {
+		startCount();
+	}
+	else
 	{
-		entities[i]->update();
+		for (auto i = 0u; i < entities.size(); i++)
+		{
+			entities[i]->update();
+		}
 	}
 	for (Entity* ent : entities)
 	{
@@ -247,8 +255,9 @@ void FightManager::LoadStage(std::string file)
 
 int FightManager::StartFight(std::vector<Character*> ent)
 {
+	
 	//onNewGame();
-
+	teammode = false;
 	for (Character* a : ent)
 	{
 		entities.push_back(a);
@@ -280,7 +289,8 @@ int FightManager::StartFight(std::vector<Character*> ent)
 	}
 	numPlayers = characters.size();
 	
-
+	scount = 4;
+	startticks = 0;
 	return 1;
 }
 int FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Character*> ateam2)
@@ -324,6 +334,8 @@ int FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Charac
 	sdl->musics().at("cube").play();
 	//Music::setMusicVolume(1);
 	numPlayers = characters.size();
+	scount = 4;
+	startticks = 0;
 	return 1;
 }
 
@@ -528,14 +540,49 @@ void FightManager::onNewGame()
 {
 	entities.clear();
 	characters.clear();
+	team1.clear();
+	team2.clear();
 	stage->UnLoadStage();
 	winnersTextures.clear();
 	endGame = false;
 	endGameTimer = 0;
 	gameStats.clear();
+	int scount = 4;
+	int startticks = 0;
 
 }
-
+void FightManager::startCount()
+{
+	
+	Texture* count;
+	string s;
+	int x = 0;
+	int y = 0;
+	if (startticks + 1000 < SDL_GetTicks()) {
+		startticks = SDL_GetTicks();
+		scount--;
+	}
+	if (scount > 0)
+	{
+		s = to_string(scount);
+		string fontstring = "nes" + to_string((int)(120 * screenAdjust));
+		auto& font = sdl->fonts().at(fontstring);
+		count = new Texture(sdl->renderer(), s, font, build_sdlcolor(0x00F7FF00));
+		x = 200 * screenAdjust;
+		y = 100 * screenAdjust;
+	}
+	else
+	{
+		s = "FIGHT!";
+		string fontstring = "nes" + to_string((int)(80 * screenAdjust));
+		auto& font = sdl->fonts().at(fontstring);
+		count = new Texture(sdl->renderer(), s, font, build_sdlcolor(0xFF000000));
+		x = 20 * screenAdjust;
+		y = 100 * screenAdjust;
+	}
+	count->render(x,y);
+	sdl->presentRenderer();
+}
 
 
 
