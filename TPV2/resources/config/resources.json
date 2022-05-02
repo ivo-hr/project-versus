@@ -25,7 +25,7 @@
     { "id" : "T1C", "file" : "resources/images/T1C.png"},
     { "id" : "T2B", "file" : "resources/images/T2B.png"},
     { "id" : "T2C", "file" : "resources/images/T2C.png"},
-    { "id" : "makt", "file" : "resources/images/Maketo.png"},
+    { "id" : "makt", "file" : "resources/images/CharMaktSheet.png"},
     { "id" : "zero", "file" : "resources/images/CharZeroSheet.png"},
     { "id" : "blinkMaster", "file" : "resources/images/CharBlinkSheet.png"},
     { "id" : "dinoSouls", "file" : "resources/images/CharDinoSheet.png"},
