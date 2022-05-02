@@ -83,7 +83,7 @@
     },
     {
       "id": "specialU",
-      "b2vecX": 2,
+      "b2vecX": 0,
       "b2vecY": 1,
       "base": 12,
       "damage": 4,

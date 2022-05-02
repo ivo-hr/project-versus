@@ -1,14 +1,10 @@
 #include "Projectile.h"
 #include "Utils/Particle.h"
 
-Projectile::Projectile(FightManager* manager, Vector2D* pos, b2Vec2 dir, float width, float height, int speed) :
+Projectile::Projectile(FightManager* manager, b2Vec2 pos, b2Vec2 dir, float width, float height, int speed) :
 	Entity(manager, pos, width, height)
 {
-	hurtbox = manager->GetSDLCoors(body, width, height);
-
 	reflected = 0;
-
-	iniPos = pos;
 
 	vecDir = dir;
 
@@ -25,6 +21,8 @@ Projectile::Projectile(FightManager* manager, Vector2D* pos, b2Vec2 dir, float w
 	body->SetGravityScale(0);
 
 	projectile = true;
+
+	outFor = 0;
 }
 
 Projectile::~Projectile()
@@ -34,8 +32,8 @@ Projectile::~Projectile()
 
 void Projectile::update()
 {
-	float distance = abs(body->GetPosition().x - iniPos->getX());
-	if (distance <= range)
+	outFor++;
+	if (outFor <= duration)
 	{
 		body->SetLinearVelocity(vecDir);
 
@@ -106,6 +104,7 @@ void Projectile::CheckHits()
 }
 bool Projectile::changeDir()
 {
+	outFor = 0;
 	vecDir = -vecDir;
 	data.damage *= 1.2f;
 	reflected = 3;

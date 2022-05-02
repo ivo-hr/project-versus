@@ -109,13 +109,15 @@ protected:
 	int respawnFrames;
 
 	int lives = 3;
-	Vector2D respawnPos;
+	b2Vec2 respawnPos;
 
+	int kills;
+	Entity* lastCharacter; // El ultimo jugador que golpeo a este
 
 public:
 	string nombre;
 
-	Entity(FightManager* mngr, Vector2D* position, float w = 3.f, float h = 3.f);
+	Entity(FightManager* mngr, b2Vec2 position, float w = 3.f, float h = 3.f);
 	~Entity();
 
 	virtual void updateParticles();
@@ -151,6 +153,11 @@ public:
 	virtual bool changeDir() { return false; };
 
 	void resetHit();
+	void increaseKills() { kills++; }
+	int getKills() { return kills; }
+	void setLastCharacer(Entity* chrcter);
+	void resetLastCharacter() { lastCharacter = nullptr; }
+
 	Texture* getTexture() { return texture; }
 	//virtual void SendToHUD(Texture* tex);
 };

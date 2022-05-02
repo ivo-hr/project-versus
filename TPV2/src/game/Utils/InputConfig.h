@@ -29,12 +29,12 @@ public:
 
 	// Metodo para hacer pruebas con los mandos
 	// Se llama en update de character
-	void controllerTest() {
-		// Util para saber que buttonNumber es cada boton del mando
-		for (int i = 0; i < 10; i++)if (ih.getButtonState(0, i))std::cout << "Button pressed: " << i << std::endl;
+	//void controllerTest() {
+	//	// Util para saber que buttonNumber es cada boton del mando
+	//	for (int i = 0; i < 10; i++)if (ih.getButtonState(0, i))std::cout << "Button pressed: " << i << std::endl;
 
-		// Para los ejes
-		ih.controllerAxesTest(0, 0);
-	}
+	//	// Para los ejes
+	//	ih.controllerAxesTest(0, 0);
+	//}
 
 };

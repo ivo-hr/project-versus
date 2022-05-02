@@ -91,7 +91,7 @@ json Character::ReadJson(std::string filename)
 	return jsonFile;
 }
 
-Character::Character(FightManager* manager, Vector2D* pos, char input, float w, float h) :
+Character::Character(FightManager* manager, b2Vec2 pos, char input, float w, float h) :
 	Entity(manager, pos, w, h)
 {
 	arrowsTex = &sdl->images().at("arrows");
@@ -103,9 +103,12 @@ Character::Character(FightManager* manager, Vector2D* pos, char input, float w, 
 
 	stun = 0;
 	dash = false;
-	lives = 3;
+	lives = maxLives;
 	this->input = new InputConfig(input);
 	input_ = input;
+	totalDamageTaken = 0;
+	kills = 0;
+	resetLastCharacter();
 }
 
 Character::~Character()
@@ -118,7 +121,7 @@ void Character::SetSpawn(b2Vec2 spawn, int dir)
 {
 	body->SetTransform(spawn, 0);
 	this->dir = dir;
-	respawnPos = new Vector2D(spawn.x, 5);
+	respawnPos = b2Vec2(spawn.x, 5);
 }
 
 void Character::SetPNumber(uint16 num)
@@ -222,6 +225,7 @@ void Character::update()
 		
 		if (input->basic())
 		{
+			sdl->soundEffects().at(codeName + "Steps").haltChannel();
 
 			if (input->up()) //básico arriba
 			{
@@ -247,6 +251,8 @@ void Character::update()
 		// Ataque con B (provisional)
 		if (input->special())
 		{
+			sdl->soundEffects().at(codeName + "Steps").haltChannel();
+
 
 			if (input->up()) //especial arriba
 			{
@@ -287,19 +293,19 @@ void Character::update()
 			StartMove([this](int f) { StartJump(f); });
 		}
 
-		if (!GetGround() && body->GetLinearVelocity().y > 0.01f)
+		if (!GetGround())
 		{
-			if (anim->CurrentAnimation() != "airborne")
+			if (body->GetLinearVelocity().y > 0.01f && anim->CurrentAnimation() != "airborne")
 				anim->StartAnimation("airborne");
 		}
-		else if (anim->CurrentAnimation() != "jump")
+		else
 		{
 			if (speed > 0.1f || speed < -0.1f)
 			{
 				if (anim->CurrentAnimation() != "run")
 					anim->StartAnimation("run");
-
 				sdl->soundEffects().at(codeName + "Steps").play();
+				
 			}
 			//frenarse
 			else
@@ -327,11 +333,15 @@ void Character::update()
 				fall = 0;
 			}
 		}
-		//if (input->taunt() && onGround) 
-		//{
-		//	StartMove([this](int f) { Taunt(f); });
-		//}
+		if (input->taunt() && onGround) 
+		{
+			sdl->soundEffects().at(codeName + "Taunt").play();
+
+			StartMove([this](int f) { Taunt(f); });
+		}
 	}
+
+	//else sdl->soundEffects().at(codeName + "Steps").haltChannel();
 
 	if (input->down() && body->GetFixtureList()->GetFilterData().maskBits != 2) down = true; // Marca que se ha pulsado abajo (para el tema de bajar plataformas)
 
@@ -415,10 +425,10 @@ void Character::update()
 void Character::draw()
 {
 	//xd
+	Entity::draw();
 
 	if (!alive) return;
 
-	Entity::draw();
 	anim->render();
 
 	//if (debug)
@@ -445,10 +455,10 @@ void Character::draw()
 void Character::draw(SDL_Rect* camera)
 {
 	//xd
+	Entity::draw(camera);
 
 	if (!alive) return;
 
-	Entity::draw(camera);
 	anim->render(camera);
 
 	SDL_Rect aux = hurtbox;
@@ -489,7 +499,6 @@ void Character::draw(SDL_Rect* camera)
 
 bool Character::GetHit(attackData a, Entity* attacker)
 {
-	
 	if (shield)
 	{
 		//Actualiza el da�o
@@ -509,7 +518,7 @@ bool Character::GetHit(attackData a, Entity* attacker)
 		anim->update();
 		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
 
-		stun = (recoil / 1.8f);
+		stun = (recoil / 1.8f) + 4;
 
 		//Actualiza el da�o
 		damageTaken += a.damage;
@@ -617,7 +626,8 @@ bool Character::GetHit(attackData a, Entity* attacker)
 			}
 		}
 		//Produce el knoback..
-		body->SetLinearVelocity(aux);		
+		body->SetLinearVelocity(aux);
+		return true;
 	}
 
 }
@@ -661,6 +671,8 @@ void Character::StartJump(int frameNumber)
 	}
 	else if (frameNumber >= 4)
 	{
+		sdl->soundEffects().at(codeName + "Steps").haltChannel();
+
 		anim->StartAnimation("jump");
 		if (!GetGround())
 		{
@@ -802,6 +814,7 @@ void Character::ChangeMove(std::function<void(int)> newMove)
 }
 
 
+
 SDL_Rect* Character::GetHurtbox()
 {
 	return &hurtbox;
@@ -809,7 +822,11 @@ SDL_Rect* Character::GetHurtbox()
 
 void Character::OnDeath()
 {
-	body->SetTransform({ respawnPos.getX(), respawnPos.getY() }, 0);
+	AddDeathParticle();
+
+	sdl->soundEffects().at("death").play();
+
+	body->SetTransform(respawnPos, 0);
 	body->SetAwake(false);
 	alive = false;
 	lives--;
@@ -829,9 +846,29 @@ void Character::OnDeath()
 		efEstado = none;
 		statePower = 0;
 	}
+	if (lastCharacter != nullptr) {
+		lastCharacter->increaseKills();
+	}
+
 	if (lives <= 0) {
 		manager->RemoveCharacter(this);
 	}
+
+}
+
+void Character::AddDeathParticle()
+{
+	//O dios mio que he creado
+	AddParticle(new Particle(
+		Vector2D(
+			( manager->ToSDL(body->GetPosition().x) < 0 ?
+				0 : manager->ToSDL(body->GetPosition().x )) > manager->GetDeathZone()->w?
+				manager->GetDeathZone()->w : manager->ToSDL(body->GetPosition().x),
+
+			( manager->ToSDL(body->GetPosition().y) < 0 ? 
+				0 : manager->ToSDL(body->GetPosition().y )) > manager->GetDeathZone()->h ?
+				manager->GetDeathZone()->h : manager->ToSDL(body->GetPosition().y)),
+		1, "died", this));
 }
 
 void Character::Respawn()
@@ -844,11 +881,14 @@ void Character::Respawn()
 	speed = 0;
 
 	alive = true;
+	totalDamageTaken += damageTaken;
 	damageTaken = 0;
 	moving = false;
 
 	currentMove = nullptr;
 	moveFrame = 0;
+
+	resetLastCharacter();
 
 	anim->StartAnimation("idle");
 }

@@ -55,12 +55,12 @@ public:
 			onMouseButtonChange(event, false);
 			break;
 		case  SDL_JOYBUTTONDOWN:
-			whichOne = event.jaxis.which;
-			m_buttonStates[whichOne][event.jbutton.button] = true;
+	/*		whichOne = event.jaxis.which;
+			m_buttonStates[whichOne][event.jbutton.button] = true;*/
 			break;
 		case SDL_JOYBUTTONUP:
-			whichOne = event.jaxis.which;
-			m_buttonStates[whichOne][event.jbutton.button] = false;
+	/*		whichOne = event.jaxis.which;
+			m_buttonStates[whichOne][event.jbutton.button] = false;*/
 			break;
 		default:
 			break;
@@ -201,8 +201,9 @@ public:
 	//	4=joystick der eje Y / 5=R2 trigger
 	inline int xboxGetAxesState(int joy, int axesNumber) {
 		if (SDL_NumJoysticks() > joy) {
+			SDL_GameController* gc = SDL_GameControllerOpen(SDL_NumJoysticks() - joy - 1);
 			SDL_JoystickID id = joy;
-			SDL_Joystick* joystick = SDL_JoystickFromInstanceID(id);
+			SDL_Joystick* joystick = SDL_JoystickOpen(SDL_NumJoysticks() - joy - 1);
 			int deathZoneMin, deathZoneMax;
 			
 			if (SDL_JoystickNumAxes(joystick) < 6) { // if NES controller
@@ -210,15 +211,27 @@ public:
 				deathZoneMax = -100;
 				if (axesNumber == 0)axesNumber = 1;
 				else if (axesNumber == 1)axesNumber = 4;
+				if (SDL_JoystickGetAxis(joystick, axesNumber) > deathZoneMax)return 1;
+				else if (SDL_JoystickGetAxis(joystick, axesNumber) < deathZoneMin)return -1;
+				else return 0;
 			}
 			else { // if any other controller
+				SDL_GameControllerAxis s;
+				switch (axesNumber)
+				{
+				case 0:
+					s = SDL_CONTROLLER_AXIS_LEFTX;
+					break;
+				case 1:
+					s = SDL_CONTROLLER_AXIS_LEFTY;
+					break;
+				}
 				deathZoneMax = 15000;
 				deathZoneMin = -deathZoneMax;
+				if (SDL_GameControllerGetAxis(gc, s) > deathZoneMax)return 1;
+				else if (SDL_GameControllerGetAxis(gc, s) < deathZoneMin)return -1;
+				else return 0;
 			}
-
-			if (SDL_JoystickGetAxis(joystick, axesNumber) > deathZoneMax)return 1;
-			else if (SDL_JoystickGetAxis(joystick, axesNumber) < deathZoneMin)return -1;
-			else return 0;
 		}
 		else return 0;
 	}

@@ -13,7 +13,8 @@
 #include "../State/MenuState.h"
 #include "../State/PlayingState.h"
 #include "../State/GameOverState.h"
-#include "../State/PauseState.h"
+#include "../Utils/PlayerSelectRect.h"
+#include "../State/ConfigurationState.h"
 
 
 
@@ -59,13 +60,16 @@ class FightManager :public StateMachine
 	SDL_Rect camera; 
 	SDL_Rect hitLagCam;
 
-	int cameraOffset = 300;
+	int cameraOffset = 75;
 
 	void MoveCamera();
 
 	vector<Texture*>winnersTextures;
 
 	int winnerInput;
+	vector<vector<int>>gameStats;
+	bool endGame=false;
+	int endGameTimer=0;
 
 public:
 
@@ -75,6 +79,8 @@ public:
 	bool isExit() { return exit_; };
 	bool isFinish() { return fightEnded; };
 	void Update();
+
+	void HideOutOfBounds();
 
 	void LoadStage(std::string file);
 	int StartFight(std::vector<Character*> ent);
@@ -113,4 +119,11 @@ public:
 	SDLUtils* GetSDLU() { return sdl; };
 
 	int getWinnerInput() { return winnerInput; }
+	void addCharacterStats(Character* character);
+	vector<vector<int>>getGameStats() { return gameStats; }
+
+	void userExit() { exit_ = true; };
+
+	void onNewGame();
+
 };

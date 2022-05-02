@@ -12,6 +12,7 @@
 
 #include "game/PlayingState/FightManager.h"
 
+
 int main(int ac, char **av) {
 
 	// Initialise the SDLGame singleton
@@ -69,11 +70,10 @@ int main(int ac, char **av) {
 	}
 	else 
 		ratioFin = alto;
-
 	FightManager* fghtmngr = new FightManager(&sdl, ratioFin);
 
-
 	
+	SDL_Quit();
 
 	return 0;
 }

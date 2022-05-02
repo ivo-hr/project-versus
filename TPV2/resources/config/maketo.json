@@ -7,8 +7,8 @@
     "ballSpeed": 20,
     "speed":0,
     "maxJumps": 1 ,
-    "jumpStr": 1000,
-    "ballJump": 900,
+    "jumpStr": 1050,
+    "ballJump": 950,
     "onGround": true,
     "shield": false ,
     "maxShield": 360,
@@ -136,7 +136,25 @@
           "loop" :true
         },
         {
+          "id" : "idleB",
+          "iniSprite" : 6,
+          "totalSprites" : 2,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 30,
+          "loop" :true
+        },
+        {
           "id" : "basicN",
+          "iniSprite" : 12,
+          "totalSprites" : 3,
+          "keySprite" : 2,
+          "attack": "basicN",
+          "totalFrames" : 15,
+          "loop" :false
+        },
+        {
+          "id" : "basicNB",
           "iniSprite" : 12,
           "totalSprites" : 3,
           "keySprite" : 2,
@@ -154,7 +172,25 @@
           "loop" :false
         },
         {
+          "id" : "basicUB",
+          "iniSprite" : 15,
+          "totalSprites" : 4,
+          "keySprite" : 2,
+          "attack": "basicU",
+          "totalFrames" : 20,
+          "loop" :false
+        },
+        {
           "id" : "basicD",
+          "iniSprite" : 19,
+          "totalSprites" : 3,
+          "keySprite" : 2,
+          "attack": "basicD",
+          "totalFrames" : 35,
+          "loop" :false
+        },
+        {
+          "id" : "basicDB",
           "iniSprite" : 19,
           "totalSprites" : 3,
           "keySprite" : 2,
@@ -172,7 +208,25 @@
           "loop" :false
         },
         {
+          "id" : "basicFB",
+          "iniSprite" : 22,
+          "totalSprites" : 4,
+          "keySprite" : 2,
+          "attack": "basicF",
+          "totalFrames" : 40,
+          "loop" :false
+        },
+        {
           "id" : "shield",
+          "iniSprite" : 26,
+          "totalSprites" : 2,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 40,
+          "loop" : true
+        },
+        {
+          "id" : "shieldB",
           "iniSprite" : 26,
           "totalSprites" : 2,
           "keySprite" : -1,
@@ -190,6 +244,15 @@
           "loop" : true
         },
         {
+          "id" : "runB",
+          "iniSprite" : 0,
+          "totalSprites" : 6,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
           "id" : "airborne",
           "iniSprite" : 10,
           "totalSprites" : 1,
@@ -199,7 +262,25 @@
           "loop" : true
         },
         {
+          "id" : "airborneB",
+          "iniSprite" : 10,
+          "totalSprites" : 1,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
           "id" : "dash",
+          "iniSprite" : 28,
+          "totalSprites" : 2,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 40,
+          "loop" : true
+        },
+        {
+          "id" : "dashB",
           "iniSprite" : 28,
           "totalSprites" : 2,
           "keySprite" : -1,
@@ -262,6 +343,15 @@
           "loop" : true
         },
         {
+          "id" : "stunB",
+          "iniSprite" : 63,
+          "totalSprites" : 1,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
           "id" : "jump",
           "iniSprite" : 10,
           "totalSprites" : 1,
@@ -271,7 +361,25 @@
           "loop" : true
         },
         {
+          "id" : "jumpB",
+          "iniSprite" : 10,
+          "totalSprites" : 1,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
           "id" : "jumpCharge",
+          "iniSprite" : 10,
+          "totalSprites" : 1,
+          "keySprite" : -1,
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "jumpChargeB",
           "iniSprite" : 10,
           "totalSprites" : 1,
           "keySprite" : -1,

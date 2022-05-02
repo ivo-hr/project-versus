@@ -29,6 +29,8 @@ protected:
 	int stun;
 	int lives;
 
+	const int maxLives = 3;
+
 	string codeName;
 	bool moving;
 	int maxSpeed;
@@ -50,7 +52,9 @@ protected:
 	int weight;
 
 	int damageTaken;
+	int totalDamageTaken;
 
+	
 	bool recovery = true;
 
 	//frame actual del movimiento que este haciendo
@@ -73,7 +77,7 @@ protected:
 	int input_;
 public:
 
-	Character(FightManager* manager, Vector2D* pos, char input, float w = 3.f, float h = 3.f);
+	Character(FightManager* manager, b2Vec2 pos, char input, float w = 3.f, float h = 3.f);
 	~Character();
 
 	void SetSpawn(b2Vec2 spawn, int dir);
@@ -88,6 +92,7 @@ public:
 	Texture* getPortrait() { return portrait; };
 
 	virtual void OnDeath() override;
+	void AddDeathParticle();
 	virtual void Respawn();
 
 	virtual void BasicNeutral(int frameNumber) {
@@ -136,4 +141,6 @@ public:
 	void ChangeMove(std::function<void(int)> newMove);
 
 	int getInput() { return input_; }
+	int getDamageTaken() { return totalDamageTaken; }
+	int getDeaths() { return maxLives - lives; }
 };

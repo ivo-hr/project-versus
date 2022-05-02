@@ -5,12 +5,12 @@
 class PlayingState : public State {
     
     vector<int>playersInput_;
-
+ 
 public:
 
-    PlayingState(FightManager* fmngr , vector<int>player, vector<int>characters);
-    PlayingState(FightManager* fmngr, vector<int>player, vector<int>characters, vector<int>teams);
-    ~PlayingState() = default;
+    PlayingState(FightManager* fmngr , vector<int>player, vector<int>characters, int map) ;
+    PlayingState(FightManager* fmngr, vector<int>player, vector<int>characters, vector<int>teams , int map);
+    ~PlayingState();
 
     void update() override;
     void draw() override;

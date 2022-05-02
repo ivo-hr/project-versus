@@ -11,13 +11,13 @@
     "platformData": [
         {
         "platformX": 37.5,
-        "platformY": 32.0,
+        "platformY": 35.0,
         "platformW": 10.0,
         "platformH": 0.5
         },
         {
         "platformX": 62.5,
-        "platformY": 32.0,
+        "platformY": 35.0,
         "platformW": 10.0,
         "platformH": 0.5
         }],

@@ -3,7 +3,7 @@
 #include "Spear.h"
 #include "../../Utils/Particle.h"
 
-Spear::Spear(FightManager* manager, Vector2D* pos, attackData attack, b2Vec2 dir, Togo* togo) :
+Spear::Spear(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir, Togo* togo) :
 	Projectile(manager, pos, dir, 5.25f, 0.7f, 20)
 {
 	owner = togo;
@@ -11,13 +11,15 @@ Spear::Spear(FightManager* manager, Vector2D* pos, attackData attack, b2Vec2 dir
 	//funciona , but i dont know why
 	data = attack;
 
-	range = 30.f;
+	duration = 240;
 
-	lag = 1;
+	lag = 0;
 
 	body->SetGravityScale(8.0f);
 
 	hitDelay = 5;
+
+	body->GetUserData().pointer = 1; // Para atravesar el suelo
 }
 
 Spear::~Spear()
@@ -27,8 +29,8 @@ Spear::~Spear()
 
 void Spear::update()
 {
-	float distance = abs(body->GetPosition().x - iniPos->getX());
-	if (distance <= range)
+	outFor++;
+	if (outFor <= duration)
 	{
 		body->SetLinearVelocity(vecDir);
 

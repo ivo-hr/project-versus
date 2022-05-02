@@ -3,22 +3,20 @@
   "fonts" : [
     { "id" : "ARIAL16", "file" : "resources/fonts/ARIAL.ttf", "size": 16 },
     { "id" : "ARIAL24", "file" : "resources/fonts/ARIAL.ttf", "size": 24 },
-    { "id" : "ARIAL48", "file" : "resources/fonts/ARIAL.ttf", "size": 48 } , { "id" : "nes16", "file" : "resources/fonts/NES-Chimera.ttf", "size": 8 },
-    { "id" : "nes24", "file" : "resources/fonts/NES-Chimera.ttf", "size": 16 },
-    { "id" : "nes48", "file" : "resources/fonts/NES-Chimera.ttF", "size": 24 }
+    { "id" : "ARIAL48", "file" : "resources/fonts/ARIAL.ttf", "size": 48 }
+  
   ],
   
   "images" : [
-    { "id" : "C0", "file" : "resources/images/rompe_cristal/0.png" },
-    { "id" : "C1", "file" : "resources/images/rompe_cristal/1.png"},
-    { "id" : "C2", "file" : "resources/images/rompe_cristal/2.png"},
-    { "id" : "C3", "file" : "resources/images/rompe_cristal/3.png" },
-    { "id" : "C4", "file" : "resources/images/rompe_cristal/4.png"},
-    { "id" : "C5", "file" : "resources/images/rompe_cristal/5.png"},
-    { "id" : "C6", "file" : "resources/images/rompe_cristal/6.png" },
-    { "id" : "C7", "file" : "resources/images/rompe_cristal/7.png"},
-    { "id" : "C8", "file" : "resources/images/rompe_cristal/8.png"},
-    { "id" : "C9", "file" : "resources/images/rompe_cristal/9.png"},
+    { "id" : "ExitBut", "file" : "resources/images/configuracion/quit.png"},
+    { "id" : "BackBut", "file" : "resources/images/configuracion/back.png"},
+    { "id" : "ConfigBut", "file" : "resources/images/configuracion/configuracion.png"},
+    { "id" : "ConfigBack", "file" : "resources/images/configuracion/Configuracionfondo.png"},
+    { "id" : "SfxT", "file" : "resources/images/configuracion/sfx.png"},
+    { "id" : "BgmT", "file" : "resources/images/configuracion/bgm.png"},
+    { "id" : "plusB", "file" : "resources/images/configuracion/mas.png"},
+    { "id" : "minusB", "file" : "resources/images/configuracion/menos.png"},
+    { "id" : "cuadro", "file" : "resources/images/configuracion/Cuadro.png"},
     { "id" : "MNormalB", "file" : "resources/images/MNormalB.png"},
     { "id" : "MNormalC", "file" : "resources/images/MNormalC.png"},
     { "id" : "MTeamB", "file" : "resources/images/MTeamB.png"},
@@ -27,9 +25,7 @@
     { "id" : "T1C", "file" : "resources/images/T1C.png"},
     { "id" : "T2B", "file" : "resources/images/T2B.png"},
     { "id" : "T2C", "file" : "resources/images/T2C.png"},
-    { "id" : "pause", "file" : "resources/images/Pause.png" },
-    { "id" : "star", "file" : "resources/images/star.png"},
-    { "id" : "makt", "file" : "resources/images/Maketo.png"},
+    { "id" : "makt", "file" : "resources/images/CharMaktSheet.png"},
     { "id" : "zero", "file" : "resources/images/CharZeroSheet.png"},
     { "id" : "blinkMaster", "file" : "resources/images/CharBlinkSheet.png"},
     { "id" : "dinoSouls", "file" : "resources/images/CharDinoSheet.png"},
@@ -45,6 +41,8 @@
     { "id" : "run", "file" : "resources/images/runSmoke.png"},
     { "id" : "play", "file" : "resources/images/Play.png"},
     { "id" : "selectbg", "file" : "resources/images/SelectMenu.png"},
+    { "id" : "mapbg", "file" : "resources/images/select_map.png"},
+    { "id" : "Exitbg", "file" : "resources/images/Exitbg.png"},
     { "id" : "P0","file" : "resources/images/P0.png"},
     { "id" : "P1", "file" : "resources/images/P1.png"},
     { "id" : "P2", "file" : "resources/images/P2.png"},
@@ -65,13 +63,25 @@
     { "id" : "zeroSelect", "file" : "resources/images/zeroSelect.png"},
     { "id" : "dinoSoulsSelect", "file" : "resources/images/dinoSoulsSelect.png"},
     { "id" : "mazmorra", "file" : "resources/images/Mazmorra.png"},
-    { "id" : "rockPlat", "file" : "resources/images/rock plataform.png"}
-
+    { "id" : "rockPlat", "file" : "resources/images/rock plataform.png"},
+    { "id" : "gameoverscreen1", "file" : "resources/images/V1.png"},
+    { "id" : "gameoverscreen2", "file" : "resources/images/V2.png"},
+    { "id" : "playagain", "file" : "resources/images/play_again.png"},
+    { "id" : "instru", "file" : "resources/images/instru.png"},
+    { "id" : "nubePlat", "file" : "resources/images/nube plataforma.png"},
+    { "id" : "sky", "file" : "resources/images/Sky.png"},
+    { "id" : "night", "file" : "resources/images/Night.png"},
+    { "id" : "died", "file" : "resources/images/explosionMuerte.png"},
+    { "id" : "water", "file" : "resources/images/agua.png"},
+    { "id" : "electric", "file" : "resources/images/electrico.png"},
+    { "id" : "fire", "file" : "resources/images/fuego.png"},
+    { "id" : "backToMenu", "file" : "resources/images/backtomenu.png"},
+    { "id" : "nasNasSelect", "file" : "resources/images/NasNasSelect.png"},
+    { "id" : "aleatorioSelect", "file" : "resources/images/aleatorioSel.png"}
   ],
   
   "messages" : [
-    { "id" : "PressAnyKey", "text" : "Press Any Key", "font" : "ARIAL24", "color" : "0x112233ff", "bg" : "0xffffffff" },
-    { "id" : "HelloSDL", "text" : "Hello SDL!", "font" : "ARIAL48", "color" : "0x0000ffff" }
+    
   ],
 
   "sounds": [
@@ -108,6 +118,14 @@
       "file": "resources/sound/01General/uiSelect.wav"
     },
     {
+      "id": "uiPlay",
+      "file": "resources/sound/01General/play.wav"
+    },
+    {
+      "id": "death",
+      "file": "resources/sound/01General/death.wav"
+    },
+    {
       "id": "zeroAtk0",
       "file": "resources/sound/ZeroChar/atk0.wav"
     },
@@ -141,10 +159,6 @@
       "file": "resources/sound/CatChar/atk3.wav"
     },
     {
-      "id": "catAtk3",
-      "file": "resources/sound/CatChar/atk3.wav"
-    },
-    {
       "id": "catSpecD",
       "file": "resources/sound/CatChar/specD.wav"
     },
@@ -172,55 +186,54 @@
 
     {
       "id": "dinoAtk0",
-      "file": "resources/sound/CatChar/atk0.wav"
+      "file": "resources/sound/DinoChar/atk0.wav"
     },
     {
       "id": "dinoAtk1",
-      "file": "resources/sound/CatChar/atk1.wav"
+      "file": "resources/sound/DinoChar/atk1.wav"
     },
     {
       "id": "dinoAtk2",
-      "file": "resources/sound/CatChar/atk2.wav"
+      "file": "resources/sound/DinoChar/atk2.wav"
     },
     {
       "id": "dinoAtk3",
-      "file": "resources/sound/CatChar/atk3.wav"
-    },
-    {
-      "id": "dinoAtk3",
-      "file": "resources/sound/CatChar/atk3.wav"
+      "file": "resources/sound/DinoChar/atk3.wav"
     },
     {
       "id": "dinoSpecD",
-      "file": "resources/sound/CatChar/specD.wav"
+      "file": "resources/sound/DinoChar/specD.wav"
     },
     {
       "id": "dinoSpecN",
-      "file": "resources/sound/CatChar/specN.wav"
+      "file": "resources/sound/DinoChar/specN.wav"
     },
     {
       "id": "dinoSpecS",
-      "file": "resources/sound/CatChar/specS.wav"
+      "file": "resources/sound/DinoChar/specS.wav"
     },
     {
       "id": "dinoSpecU",
-      "file": "resources/sound/CatChar/specU.wav"
+      "file": "resources/sound/DinoChar/specU.wav"
     },
     {
       "id": "dinoSteps",
-      "file": "resources/sound/CatChar/steps.wav"
+      "file": "resources/sound/DinoChar/steps.wav"
     },
     {
       "id": "dinoTaunt",
-      "file": "resources/sound/CatChar/taunt.wav"
+      "file": "resources/sound/DinoChar/taunt.wav"
     }
 
 
   ],
   "musics" : [
     { "id" : "main", "file" : "resources/sound/00Music/8-Bit-Adventure_adhesiveWombat.mp3" },
+    { "id" : "sawtines", "file" : "resources/sound/00Music/Sawtines_adhesiveWombat.mp3" },
     { "id" : "cube", "file" : "resources/sound/00Music/Cube_adhesiveWombat.mp3" },
-    { "id" : "sawtines", "file" : "resources/sound/00Music/Sawtines_adhesiveWombat.mp3" }
+    { "id" : "prep", "file" : "resources/sound/00Music/xDeviruchi-PrepareforBattle.wav"},
+    { "id" : "decis", "file" : "resources/sound/00Music/xDeviruchi-DecisiveBattle.wav" },
+    { "id" : "win", "file" : "resources/sound/00Music/8 Bit-WinHeatleyBros.mp3" }
   ] 
 
 }

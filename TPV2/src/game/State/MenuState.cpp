@@ -1,5 +1,6 @@
 #include "MenuState.h"
 #include "PlayingState.h"
+#include "ExitState.h"
 #include "ConfigState.h"
 #include "../PlayingState/FightManager.h"
 
@@ -8,8 +9,9 @@ MenuState::MenuState(FightManager* game) : State(game) {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     background = &sdl->images().at("menu");
-
+    exit = new Button( &sdl->images().at("ExitBut"),0,h -ts(20),ts(40),ts(20));
     sdl->musics().at("main").play();
+    config = new Button(&sdl->images().at("ConfigBut"), w-ts(20), h - ts(21), ts(20), ts(20));
 }
 
 void MenuState::update() {
@@ -36,6 +38,32 @@ void MenuState::update() {
         textTimer = SDL_GetTicks();
         drawText = !drawText;
     }
+    if (config->mouseClick()) {
+        if (fmngr->getSavedState() == nullptr) {
+            //pause
+            std::cout << "pause" << std::endl;
+            fmngr->saveState(fmngr->getState());
+            fmngr->setState(new ConfigurationState(fmngr,-1));
+            return;
+        }
+        else
+        {
+            State* tmp = fmngr->getState();
+            State* saved = fmngr->getSavedState();
+            fmngr->setState(saved);
+            fmngr->saveState(tmp);
+        }
+    }
+    if (exit->mouseClick()) fmngr->userExit();
+
+    if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
+        if (fmngr->getExitState() == nullptr) {
+            //pause
+            fmngr->saveExitState(fmngr->getState());
+            fmngr->setState(new ExitState(fmngr));
+            return;
+        }
+    }
 }
 
 void MenuState::draw() {
@@ -44,12 +72,16 @@ void MenuState::draw() {
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
     if (drawText)
-        showText(" Pulse Flecha Arriba o la Tecla W o Joystick Arriba en su mando", ts(8), ts(40), ts(220), build_sdlcolor(0x112233ff));
+        showText("PRESS ARROW UP / JOYSTICK UP / W TO START", ts(7) , ts(120), ts(220), build_sdlcolor(0xFFFFFFff));
+    exit->render();
+    config->render();
     sdl->presentRenderer();  
 }
 
 void MenuState::next() {
     cout << "Next State " << endl;
     fmngr->setState(new ConfigState(fmngr,Finput));
+
+    sdl->soundEffects().at("uiSelect").play();
     delete this;
 }

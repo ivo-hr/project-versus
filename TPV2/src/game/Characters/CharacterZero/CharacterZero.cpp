@@ -1,7 +1,7 @@
 #include "CharacterZero.h"
 #include "../../Utils/AnimationManager.h"
 
-CharacterZero::CharacterZero(FightManager* mngr, Vector2D* pos, char input) : Character(mngr, pos, input)
+CharacterZero::CharacterZero(FightManager* mngr, b2Vec2 pos, char input) : Character(mngr, pos, input)
 {
 	//importamos json del personaje
 	
@@ -62,11 +62,19 @@ void CharacterZero::BasicNeutral(int frameNumber)
 
 		//Al ultimo frame...
 
+		//SDL_DestroyRenderer(sdl->renderer());
+		//char a = 'a';
+		//SDL_ShowSimpleMessageBox(1, &a, &a, SDL_CreateWindow(&a, 10, 10, 10, 10, 1));
+		//SDL_DestroyWindow(sdl->window());
+		//SDL_Quit();
+
+
 		//Vacia current move para que Character sepa que ha acabado
 		currentMove = nullptr;
 
 		//Reinicia moveFrame para el siguiente
 		moveFrame = -1;
+
 		break;
 	}
 }

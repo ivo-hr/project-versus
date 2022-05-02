@@ -10,7 +10,6 @@ void Button::render()
 	{
 		tex->render({ x,y,w,h });
 	}
-	
 }
 
 bool Button::mouseClick()
@@ -21,17 +20,22 @@ bool Button::mouseClick()
 
 		if ((mx > x) && (mx < x + w) && (my > y) && (my < y + h))
 		{
-			if (ih.getMouseButtonState(ih.LEFT)) {
+			if (!ih.mouseButtonEvent())
+			{
+				pressed = false;
+				return false;
+			}
+			if (pressed)
+			{
+				return true;
+			}
+			if (ih.getMouseButtonState(ih.LEFT) && !pressed) {
 				pressed = true;
 				rendered = false;
+				return true;
 			}
+			
 		}
-		if (!ih.mouseButtonEvent() && pressed) {
-			pressed = false;
-			rendered = false;
-			return true;
-		}
-		return false;
 	}
 	return false;
 }
@@ -54,17 +58,20 @@ bool Button::pointerClick(SDL_Rect rect)
 
 PlayButton::PlayButton(Texture* t, int x, int y, int width, int height) :Button(t, x, y, width, height)
 {
-	for (auto i = 0u; i < 10; i++) {
-		std::string c = "C" + std::to_string(i);
-		txV.push_back(&sdl->images().at(c));
+
+	for (auto i = 0u; i < 22; i++) {
+		std::string key = "C" + std::to_string(i);
+		std::string file = "resources/images/rompe_cristal/" + std::to_string(i) + ".png";
+		sdl->images().emplace(key, Texture(sdl->renderer(), file));
+		txV.push_back(&sdl->images().at(key));
 	}
 }
 
 void PlayButton::render()
 {
 	rendered = true;
-	if (frame < 9) {
-		if (cont + 35 < SDL_GetTicks()) {
+	if (frame < 21) {
+		if (cont + 5 < SDL_GetTicks()) {
 			cont = SDL_GetTicks();
 			frame++;
 		}

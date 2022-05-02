@@ -7,13 +7,13 @@
 #include <iostream>
 using json = nlohmann::json;
 
-NasNas::NasNas(FightManager* mngr, Vector2D* pos, char input) : Character(mngr, pos, input, 1.5f, 3.5f)
+NasNas::NasNas(FightManager* mngr, b2Vec2 pos, char input) : Character(mngr, pos, input, 1.5f, 3.5f)
 {
 
 	ReadJson("resources/config/nasnas.json");
 	//guardamos la textura
 	texture = &sdl->images().at("dinoSouls");
-	//portrait = &sdl->images().at("nasNasSelect");
+	portrait = &sdl->images().at("nasNasSelect");
 
 	anim = new AnimationManager(this, texture, spData);
 }
@@ -195,7 +195,7 @@ void NasNas::SpecialNeutral(int frameNumber)
 			aaa.estado = electric;
 			aaa.power = 25;
 		}
-		auto spell = new Spell(manager, new Vector2D(body->GetPosition().x, body->GetPosition().y), aaa, b2Vec2(dir, 0));
+		auto spell = new Spell(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y), aaa, b2Vec2(dir, 0));
 		manager->AddEntity(spell);
 		manager->MoveToFront(spell);
 		spell->SetOponents(oponents);

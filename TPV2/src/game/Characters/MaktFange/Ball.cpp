@@ -1,7 +1,7 @@
 #include "Ball.h"
 #include "../../Utils/Particle.h"
 
-MaktBall::MaktBall(FightManager* manager, Vector2D* pos, attackData attack, b2Vec2 dir, Vector2D* respawn) :
+MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir, b2Vec2 respawn) :
 	Projectile(manager, pos, dir, 2.f, 2.f, 20)
 {
 	texture = &sdl->images().at("makt");
@@ -12,7 +12,7 @@ MaktBall::MaktBall(FightManager* manager, Vector2D* pos, attackData attack, b2Ve
 
 	vecDir *= attack.damage * 1.1f;
 
-	range = attack.damage * 1.2f;
+	duration = attack.damage * 2.2f;
 
 	physic = false;
 
@@ -35,15 +35,18 @@ void MaktBall::update()
 	{
 		if (!physic)
 		{
-			float distance = abs(body->GetPosition().x - iniPos->getX());
-			if (distance <= range)
+			outFor++;
+			if (outFor <= duration)
 			{
 				body->SetLinearVelocity(vecDir);
+
 			}
 			else
 			{
 				physic = true;
 				body->SetGravityScale(10.f);
+
+				body->SetLinearDamping(3.);
 			}
 		}
 
@@ -87,7 +90,7 @@ void MaktBall::CheckHits()
 
 void MaktBall::OnDeath()
 {
-	body->SetTransform({ respawnPos.getX(), respawnPos.getY() }, 0);
+	body->SetTransform(respawnPos, 0);
 	body->SetAwake(false);
 	alive = false;
 	physic = true;

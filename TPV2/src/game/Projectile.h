@@ -7,9 +7,9 @@ class Projectile : public Entity
 {
 protected:
 	int damage;
-	float range;
+	int duration;
+	int outFor;
 	int lag = 6;
-	Vector2D* iniPos;
 	b2Vec2 vecDir;
 	attackData data;
 	float ang;
@@ -17,7 +17,7 @@ protected:
 	int reflected;
 
 public:
-	Projectile(FightManager* manager, Vector2D* pos, b2Vec2 dir, float width, float height, int speed);
+	Projectile(FightManager* manager, b2Vec2 pos, b2Vec2 dir, float width, float height, int speed);
 	~Projectile();
 
 	virtual void update() override;

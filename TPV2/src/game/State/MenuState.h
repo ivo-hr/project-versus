@@ -7,6 +7,7 @@ class MenuState : public State {
     int Finput = -3;
     Uint32 textTimer = 0;
     bool drawText = false;
+    Button* exit ,*config;
 public:
 
     MenuState(FightManager* game);

@@ -76,7 +76,7 @@ void FightManager::MoveCamera()
 	camera.y += (cameraEnd.y - camera.y) * 0.2f;
 	camera.w += (cameraEnd.w - camera.w) * 0.2f;
 	camera.h = camera.w * ((float)(sdl->height()) / (float)(sdl->width()));
-
+	
 	//camera.x = cameraEnd.x;
 	//camera.y = cameraEnd.y;
 	//camera.w = cameraEnd.w;
@@ -89,17 +89,29 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 	listener = new MyListener();
 	stage = new Stage(sdl, listener, step);
 
-	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
+	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust)};
 
 	this->screenAdjust = screenAdjust;
 
+	cameraOffset *= screenAdjust;
+
+	
+	for (auto i = 0u; i < 100; i++) {
+		string s = "nes" + to_string(i);
+		sdl->fonts().emplace(s, Font("resources/fonts/NES-Chimera.ttf", i));
+	}
+
 	setState(new MenuState(this));
 	while (!exit_) {
+		
+
 		ih.refresh();
-		if (ih.isKeyDown(SDLK_ESCAPE))
-			exit_ = true;
 		getState()->update();
 		getState()->draw();
+	/*	SDL_Event event;
+		while (SDL_PollEvent(&event)) {
+			if (event.type == SDL_QUIT) userExit();
+		}*/
 	}
 }
 
@@ -109,18 +121,21 @@ FightManager::~FightManager()
 
 void FightManager::Update()
 {
-
+	
 	Uint32 startTime = sdl->currRealTime();
-
-	if (ih.isKeyDown(SDLK_ESCAPE))
-		exit_ = true;
-	if (ih.isKeyDown(SDLK_p) && ih.keyDownEvent()) {
+	if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
 		if (getSavedState() == nullptr) {
 			//pause
-			std::cout << "pause" << std::endl;
 			saveState(getState());
-			setState(new PauseState(this));
-				return;
+			setState(new ConfigurationState(this,characters[0]->getInput()));
+			return;
+		}
+		else
+		{
+			State* tmp = getState();
+			State* saved = getSavedState();
+			setState(saved);
+			saveState(tmp);
 		}
 	}
 
@@ -134,13 +149,13 @@ void FightManager::Update()
 	{
 		entities[i]->update();
 	}
-	for (int i = entities.size() - 1; i >= 0; i--)
-	{
-		entities[i]->draw(&camera);
-	}
 	for (Entity* ent : entities)
 	{
 		ent->CheckHits();
+	}
+	for (int i = entities.size() - 1; i >= 0; i--)
+	{
+		entities[i]->draw(&camera);
 	}
 
 	while (addedDelay > 0)
@@ -167,6 +182,9 @@ void FightManager::Update()
 			entities[i]->updateParticles();
 			entities[i]->draw(&hitLagCam);
 		}
+
+		HideOutOfBounds();
+
 		// present new frame
 		sdl->presentRenderer();
 
@@ -177,6 +195,8 @@ void FightManager::Update()
 			SDL_Delay((step * 1000));
 		}
 	}
+	
+	HideOutOfBounds();
 
 	// present new frame
 	sdl->presentRenderer();
@@ -187,6 +207,33 @@ void FightManager::Update()
 	{
 		SDL_Delay((step * 1000));
 	}
+	
+	if (endGameTimer + 1000 < SDL_GetTicks() && endGame) {
+
+		getState()->next();
+	}
+
+}
+
+void FightManager::HideOutOfBounds()
+{
+	int w, h;
+	SDL_GetWindowSize(sdl->window(), &w, &h);
+
+	if (sdl->width() * screenAdjust < w)
+	{
+		SDL_Rect camOOBX = { sdl->width() * screenAdjust, 0, w - (sdl->width() * screenAdjust), h };
+
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 0, 255);
+		SDL_RenderFillRect(sdl->renderer(), &camOOBX);
+	}
+	else if (sdl->height() * screenAdjust < h)
+	{
+		SDL_Rect camOOBY = { 0, sdl->height() * screenAdjust, w, h - (sdl->height() * screenAdjust) };
+
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 0, 255);
+		SDL_RenderFillRect(sdl->renderer(), &camOOBY);
+	}
 }
 
 void FightManager::LoadStage(std::string file)
@@ -196,6 +243,7 @@ void FightManager::LoadStage(std::string file)
 
 int FightManager::StartFight(std::vector<Character*> ent)
 {
+	//onNewGame();
 
 	for (Character* a : ent)
 	{
@@ -211,13 +259,30 @@ int FightManager::StartFight(std::vector<Character*> ent)
 		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i)); 
 		characters[i]->SetPNumber(i);
 	}
-	sdl->musics().at("cube").play();
-	//Music::setMusicVolume(1);
+
+	auto mus = RandomNumberGenerator().nextInt(0, 3);
+
+	switch (mus) {
+		case 0:
+			sdl->musics().at("cube").play();
+			break;
+		case 1:
+			sdl->musics().at("prep").play();
+			break;
+		case 2:
+			sdl->musics().at("decis").play();
+			break;
+
+	}
+
+	
 
 	return 1;
 }
 int FightManager::StartFight(std::vector<Character*> team1 , std::vector<Character*> team2)
 {
+	//onNewGame();
+
 	std::vector<Entity*> aux1;
 	std::vector<Entity*> aux2;
 	for (Character* a : team1)
@@ -257,6 +322,8 @@ int FightManager::StartFight(std::vector<Character*> team1 , std::vector<Charact
 }
 int FightManager::StartFight(std::vector<Character*> team1, std::vector<Character*> team2, std::vector<Character*> team3)
 {
+	//onNewGame();
+
 	for (Character* a : team1)
 	{
 		entities.push_back(a);
@@ -317,6 +384,8 @@ bool FightManager::RemoveCharacter(Character* character)
 	{
 		if (characters[i] == character)
 		{
+			addCharacterStats(characters[i]);
+			winnersTextures.push_back(characters[i]->getPortrait());
 			for (int j = i + 1; j < characters.size(); j++)
 			{
 				characters[j - 1] = characters[j];
@@ -326,12 +395,22 @@ bool FightManager::RemoveCharacter(Character* character)
 	}
 	listener->RemoveCharacter(character);
 	RemoveEntity(character);
-	if (characters.size() == 1) {
+	if (characters.size() == 1 && !endGame) {
+	/*	addCharacterStats(characters[0]);
 		winnerInput = characters[0]->getInput();
 		winnersTextures.push_back(characters[0]->getPortrait());
 		entities.clear();
 		characters.clear();
-		getState()->next();
+		stage->UnLoadStage();*/
+		addCharacterStats(characters[0]);
+		winnerInput = characters[0]->getInput();
+		winnersTextures.push_back(characters[0]->getPortrait());
+		endGameTimer = SDL_GetTicks();
+		endGame = true;
+		/*while (time+1500>SDL_GetTicks())
+		{
+		}
+		getState()->next();*/
 	}
 	return false;
 }
@@ -432,6 +511,28 @@ b2World* FightManager::GetWorld()
 {
 	return stage->GetWorld();
 }
+
+void FightManager::addCharacterStats(Character* character)
+{
+	vector<int>stats;
+	stats.push_back(character->getDeaths());
+	stats.push_back(character->getDamageTaken());
+	stats.push_back(character->getKills());
+	gameStats.push_back(stats);
+}
+
+void FightManager::onNewGame()
+{
+	entities.clear();
+	characters.clear();
+	stage->UnLoadStage();
+	winnersTextures.clear();
+	endGame = false;
+	endGameTimer = 0;
+	gameStats.clear();
+
+}
+
 
 
 

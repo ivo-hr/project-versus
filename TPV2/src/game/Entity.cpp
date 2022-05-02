@@ -1,14 +1,14 @@
 #include "Entity.h"
 #include "Utils/Particle.h"
 
-Entity::Entity(FightManager* mngr, Vector2D* position, float w, float h) : manager(mngr), width(w), height(h)
+Entity::Entity(FightManager* mngr, b2Vec2 position, float w, float h) : manager(mngr), width(w), height(h)
 {
 	this->sdl = mngr->GetSDLU();
 
 	//Definimos un objeto (dinámico)
 
 	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(position->getX(), position->getY());
+	groundBodyDef.position.Set(position.x, position.y);
 	groundBodyDef.type = b2_dynamicBody;
 
 	//Definimos un caja
@@ -19,7 +19,7 @@ Entity::Entity(FightManager* mngr, Vector2D* position, float w, float h) : manag
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 3.f;
-	fixtureDef.friction = 0.9f;
+	fixtureDef.friction = 0.0f; // Para que no se pegue a las paredes
 	fixtureDef.filter.categoryBits = 1; // 1 para los personajes (se atraviesan entre sí)
 	fixtureDef.filter.maskBits = 2 | 4; // Colisiona con el suelo y plataforma (tiene este categoryBits en FightManager)
 
@@ -86,6 +86,11 @@ void Entity::resetHit()
 	for (int i = 0; i < isHit.size(); i++) {
 		isHit[i] = false;
 	}
+}
+
+void Entity::setLastCharacer(Entity* chrcter)
+{
+	lastCharacter = chrcter;
 }
 
 void Entity::draw()
@@ -213,6 +218,8 @@ void Entity::CheckHits()
 				if (oponents[j]->GetHit(hitboxes[i]->data, this))
 				{
 					manager->HitLag(hitboxes[i]->hit.hitlag);
+
+					oponents[j]->setLastCharacer(this);
 
 					if (hitboxes[i]->hit.hitlag >= 15)
 					{
