@@ -10,7 +10,7 @@ public:
 
     PlayingState(FightManager* fmngr , vector<int>player, vector<int>characters, int map) ;
     PlayingState(FightManager* fmngr, vector<int>player, vector<int>characters, vector<int>teams , int map);
-    ~PlayingState() = default;
+    ~PlayingState();
 
     void update() override;
     void draw() override;

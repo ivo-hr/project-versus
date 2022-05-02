@@ -209,12 +209,7 @@ void FightManager::Update()
 	}
 	
 	if (endGameTimer + 1000 < SDL_GetTicks() && endGame) {
-		addCharacterStats(characters[0]);
-		winnerInput = characters[0]->getInput();
-		winnersTextures.push_back(characters[0]->getPortrait());
-		entities.clear();
-		characters.clear();
-		stage->UnLoadStage();
+
 		getState()->next();
 	}
 
@@ -248,7 +243,7 @@ void FightManager::LoadStage(std::string file)
 
 int FightManager::StartFight(std::vector<Character*> ent)
 {
-	onNewGame();
+	//onNewGame();
 
 	for (Character* a : ent)
 	{
@@ -286,7 +281,7 @@ int FightManager::StartFight(std::vector<Character*> ent)
 }
 int FightManager::StartFight(std::vector<Character*> team1 , std::vector<Character*> team2)
 {
-	onNewGame();
+	//onNewGame();
 
 	std::vector<Entity*> aux1;
 	std::vector<Entity*> aux2;
@@ -327,7 +322,7 @@ int FightManager::StartFight(std::vector<Character*> team1 , std::vector<Charact
 }
 int FightManager::StartFight(std::vector<Character*> team1, std::vector<Character*> team2, std::vector<Character*> team3)
 {
-	onNewGame();
+	//onNewGame();
 
 	for (Character* a : team1)
 	{
@@ -400,13 +395,16 @@ bool FightManager::RemoveCharacter(Character* character)
 	}
 	listener->RemoveCharacter(character);
 	RemoveEntity(character);
-	if (characters.size() == 1) {
+	if (characters.size() == 1 && !endGame) {
 	/*	addCharacterStats(characters[0]);
 		winnerInput = characters[0]->getInput();
 		winnersTextures.push_back(characters[0]->getPortrait());
 		entities.clear();
 		characters.clear();
 		stage->UnLoadStage();*/
+		addCharacterStats(characters[0]);
+		winnerInput = characters[0]->getInput();
+		winnersTextures.push_back(characters[0]->getPortrait());
 		endGameTimer = SDL_GetTicks();
 		endGame = true;
 		/*while (time+1500>SDL_GetTicks())
@@ -510,9 +508,12 @@ void FightManager::addCharacterStats(Character* character)
 
 void FightManager::onNewGame()
 {
-	//for (auto e : winnersTextures)delete e;
+	entities.clear();
+	characters.clear();
+	stage->UnLoadStage();
 	winnersTextures.clear();
-
+	endGame = false;
+	endGameTimer = 0;
 	gameStats.clear();
 
 }

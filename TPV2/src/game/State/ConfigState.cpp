@@ -317,7 +317,7 @@ void ConfigState::checkButtonPointerClick()
         }
         //Comprobacion con cada boton
         if (zero->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
-            playerTexture[i]->setFront(&sdl->images().at("zeroSelect"));
+            playerTexture[i]->setFront(&sdl->images().at("nasNasSelect"));
             charactersSelect[i] = 0;
             keyRelease = false;
             lastPointerClick = playerInput[i];
