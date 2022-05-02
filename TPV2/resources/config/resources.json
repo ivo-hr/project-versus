@@ -74,7 +74,8 @@
     { "id" : "died", "file" : "resources/images/explosionMuerte.png"},
     { "id" : "water", "file" : "resources/images/agua.png"},
     { "id" : "electric", "file" : "resources/images/electrico.png"},
-    { "id" : "fire", "file" : "resources/images/fuego.png"}
+    { "id" : "fire", "file" : "resources/images/fuego.png"},
+    { "id" : "backToMenu", "file" : "resources/images/backtomenu.png"}
   ],
   
   "messages" : [

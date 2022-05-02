@@ -22,12 +22,13 @@ public:
     };
 
     virtual ~State() {
-        delete tex;
+        
     };
     virtual void update() = 0;
     virtual void draw() = 0;
     virtual void next() = 0;
     virtual void jump(State* state);
+    virtual void jumpWithoutDelete(State* state);
     bool doQuit();
     virtual string getStateName() const = 0;
 };

@@ -40,7 +40,11 @@ double State::ts(double i)
 
 void State::jump(State* state) {
     fmngr->setState(state);
-    delete tex;
     delete this;
+}
+
+void State::jumpWithoutDelete(State* state)
+{
+    fmngr->setState(state);
 }
 

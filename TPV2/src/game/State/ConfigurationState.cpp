@@ -10,7 +10,7 @@ ConfigurationState::ConfigurationState(FightManager* game ,int pI) : State(game)
     music = &sdl->images().at("BgmT");
     sfx = &sdl->images().at("SfxT");
     instru = &sdl->images().at("instru");
-    exit = new Button(&sdl->images().at("ExitBut"), 0, h - ts(20), ts(40), ts(20));
+    exit = new Button(&sdl->images().at("backToMenu"), 0, h - ts(20), ts(40), ts(20));
     back = new Button(&sdl->images().at("BackBut"), ts(15), ts(15), ts(15), ts(15));
 
     muscm = new Button(&sdl->images().at("minusB"), ts(120), ts(105), ts(10), ts(10));
@@ -104,7 +104,12 @@ void ConfigurationState::update() {
     }
     if (exit->mouseClick() || exit->pointerClick(p1->getRect()) && enter && keyRelease) {
         keyRelease = false;
-        fmngr->userExit();
+        std::cout << "unpause" << std::endl;
+        State* tmp = fmngr->getState();
+        State* saved = fmngr->getSavedState();
+        delete saved;
+        fmngr->saveState(tmp);
+        fmngr->getState()->jumpWithoutDelete(new MenuState(fmngr));
         return;
     }
     enter = false;
