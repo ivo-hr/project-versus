@@ -3,8 +3,8 @@
 #include "Explosion.h"
 #include"../../PlayingState/FightManager.h"
 
-Explosion::Explosion(FightManager* manager, Vector2D* pos, int power, int type) :
-	Entity(manager, pos, 7.5, 5)
+Explosion::Explosion(FightManager* manager, b2Vec2 pos, int power, int type) :
+	Entity(manager, pos, 7.5f, 5.f)
 {
 
 	//this->SetOponents(manager->GetEntities(this));

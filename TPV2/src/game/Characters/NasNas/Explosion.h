@@ -8,7 +8,7 @@ class Explosion : public Entity
 protected:
 	attackData data;
 public:
-	Explosion(FightManager* manager, Vector2D* pos, int power, int type);
+	Explosion(FightManager* manager, b2Vec2 pos, int power, int type);
 	~Explosion();
 
 	virtual void update() override;
