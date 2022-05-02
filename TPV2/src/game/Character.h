@@ -5,6 +5,7 @@
 #include "Utils/InputConfig.h"
 #include "../json/json.hpp"
 #include <fstream>
+#include "Utils/Particle.h"
 using json = nlohmann::json;
 
 class Character : public Entity

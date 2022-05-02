@@ -1,7 +1,6 @@
 #include "Character.h"
 #include "Utils/AnimationManager.h"
 #include "Utils/InputConfig.h"
-#include "Utils/Particle.h"
 #include <iostream>
 
 

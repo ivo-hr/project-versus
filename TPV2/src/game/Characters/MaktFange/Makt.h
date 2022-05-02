@@ -21,8 +21,16 @@ public:
 	virtual void ThrowRecover(int frameNumber);
 	virtual void BallPickUp(int frameNumber);
 
+	virtual void update() override;
+
+	virtual bool GetHit(attackData a, Entity* attacker) override;
+	virtual void StartJump(int frameNumber) override;
+	virtual void StartShield(int frameNumber) override;
+	virtual void EndShield(int frameNumber) override;
+	virtual void Dash(int frameNumber) override;
+	virtual void Taunt(int frameNumber) override;
+
 private:
-	MaktBall* ball;
 
 	int baseWeight;
 	int ballWeight;
@@ -35,4 +43,6 @@ private:
 
 	void RecoveredBall();
 	void ThrowBall(attackData force, int timeHeld);
+
+	MaktBall* ball;
 };
