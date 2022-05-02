@@ -103,14 +103,15 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 
 	setState(new MenuState(this));
 	while (!exit_) {
-		SDL_Event event;
-		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) userExit();
-		}
+		
 
 		ih.refresh();
 		getState()->update();
 		getState()->draw();
+	/*	SDL_Event event;
+		while (SDL_PollEvent(&event)) {
+			if (event.type == SDL_QUIT) userExit();
+		}*/
 	}
 }
 
@@ -207,6 +208,16 @@ void FightManager::Update()
 		SDL_Delay((step * 1000));
 	}
 	
+	if (endGameTimer + 1000 < SDL_GetTicks() && endGame) {
+		addCharacterStats(characters[0]);
+		winnerInput = characters[0]->getInput();
+		winnersTextures.push_back(characters[0]->getPortrait());
+		entities.clear();
+		characters.clear();
+		stage->UnLoadStage();
+		getState()->next();
+	}
+
 }
 
 void FightManager::HideOutOfBounds()
@@ -390,13 +401,18 @@ bool FightManager::RemoveCharacter(Character* character)
 	listener->RemoveCharacter(character);
 	RemoveEntity(character);
 	if (characters.size() == 1) {
-		addCharacterStats(characters[0]);
+	/*	addCharacterStats(characters[0]);
 		winnerInput = characters[0]->getInput();
 		winnersTextures.push_back(characters[0]->getPortrait());
 		entities.clear();
 		characters.clear();
-		stage->UnLoadStage();
-		getState()->next();
+		stage->UnLoadStage();*/
+		endGameTimer = SDL_GetTicks();
+		endGame = true;
+		/*while (time+1500>SDL_GetTicks())
+		{
+		}
+		getState()->next();*/
 	}
 	return false;
 }

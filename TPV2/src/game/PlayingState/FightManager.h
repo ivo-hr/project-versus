@@ -68,6 +68,8 @@ class FightManager :public StateMachine
 
 	int winnerInput;
 	vector<vector<int>>gameStats;
+	bool endGame=false;
+	int endGameTimer=0;
 
 public:
 
