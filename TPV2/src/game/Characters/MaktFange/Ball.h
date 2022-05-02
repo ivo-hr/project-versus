@@ -29,9 +29,14 @@ public:
 
 	bool PickUp();
 
+	virtual void draw(SDL_Rect* camera) override;
+
 private:
 
 	void Respawn();
 
 	bool physic;
+
+	int sprite = 0;
+	float anim = 0;
 };

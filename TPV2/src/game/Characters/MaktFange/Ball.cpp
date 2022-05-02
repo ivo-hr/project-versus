@@ -2,7 +2,7 @@
 #include "../../Utils/Particle.h"
 
 MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir, b2Vec2 respawn) :
-	Projectile(manager, pos, dir, 2.f, 2.f, 20)
+	Projectile(manager, pos, dir, 1.5f, 1.5f, 20)
 {
 	texture = &sdl->images().at("makt");
 
@@ -117,4 +117,44 @@ void MaktBall::Respawn()
 	alive = true;
 
 	respawnFrames = 180;
+}
+
+void MaktBall::draw(SDL_Rect* camera)
+{
+	SDL_Rect aux = hurtbox;
+
+	//si hurtbox.x = camera w + camera x                   aux.x = manager->GetActualWidth()
+	//   hurtbox.x = camera w / 2 + camera x               aux.x = manager->GetActualWidth() / 2
+
+	aux.x -= camera->x;
+	aux.x *= (manager->GetActualWidth() / (float)camera->w);
+
+	aux.y -= camera->y;
+	aux.y *= (manager->GetActualHeight() / (float)camera->h);
+
+	aux.w *= (manager->GetActualWidth() / (float)camera->w);
+	aux.h *= (manager->GetActualHeight() / (float)camera->h);
+
+	SDL_Rect src = { 1260 + sprite, 1543, 17, 17 };
+	if (dir < 0)
+		texture->render(src, aux, ang, nullptr, SDL_FLIP_HORIZONTAL);
+	else
+		texture->render(src, aux);
+
+#ifdef _DEBUG
+
+	SDL_RenderDrawRect(sdl->renderer(), &aux);
+
+#endif // _DEBUG
+
+	/*if (anim >= 1) {
+		if (sprite != 320) {
+			sprite += 140;
+		}
+		else {
+			sprite = 0;
+		}
+		anim = 0;
+	}
+	anim += 0.1;*/
 }
