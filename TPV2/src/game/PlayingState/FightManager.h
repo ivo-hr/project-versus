@@ -33,6 +33,8 @@ class FightManager :public StateMachine
 
 	std::vector<Entity*> entities;
 	std::vector<Character*> characters;
+	std::vector<Character*> team1;
+	std::vector<Character*> team2;
 
 	SDLUtils* sdl;
 
@@ -45,7 +47,7 @@ class FightManager :public StateMachine
 
 	bool fightEnded = false;
 
-	int numPlayers = 2;
+	int numPlayers = 0;
 	
 	int addedDelay;
 
@@ -70,7 +72,7 @@ class FightManager :public StateMachine
 	vector<vector<int>>gameStats;
 	bool endGame=false;
 	int endGameTimer=0;
-
+	bool teammode = false;
 public:
 
 	FightManager(SDLUtils* sdl, double screenAdjust);

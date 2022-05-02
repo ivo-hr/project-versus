@@ -150,9 +150,8 @@ PlayingState::PlayingState(FightManager* game, vector<int> playersInput, vector<
 			break;
 		}
 		playersInput_ = playersInput;
-
-		fmngr->StartFight(team1, team2);
 	}
+	fmngr->StartFight(team1, team2);
 }
 
 PlayingState::~PlayingState()

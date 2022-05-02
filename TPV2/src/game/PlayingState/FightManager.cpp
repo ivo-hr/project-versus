@@ -283,21 +283,23 @@ int FightManager::StartFight(std::vector<Character*> ent)
 
 	return 1;
 }
-int FightManager::StartFight(std::vector<Character*> team1 , std::vector<Character*> team2)
+int FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Character*> ateam2)
 {
 	//onNewGame();
-
+	teammode = true;
 	std::vector<Entity*> aux1;
 	std::vector<Entity*> aux2;
-	for (Character* a : team1)
+	for (Character* a : ateam1)
 	{
+		team1.push_back(a);
 		entities.push_back(a);
 		characters.push_back(a);
 		aux1.push_back(a);
 	}
 
-	for (Character* a : team2)
+	for (Character* a : ateam2)
 	{
+		team2.push_back(a);
 		entities.push_back(a);
 		characters.push_back(a);
 		aux2.push_back(a);
@@ -305,15 +307,15 @@ int FightManager::StartFight(std::vector<Character*> team1 , std::vector<Charact
 	//characters = team1;
 
 
-	for (auto i = 0u; i < team1.size(); i++) {
-		numPlayers++;
+	for (auto i = 0u; i < ateam1.size(); i++) {
+		//numPlayers++;
 		characters[i]->SetOponents(aux2);
 		listener->AddCharacter(characters[i]);
 		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
 		characters[i]->SetPNumber(0);
 	}
-	for (auto i = team1.size(); i < team2.size()+team1.size() ; i++) {
-		numPlayers++;
+	for (auto i = ateam1.size(); i < ateam2.size()+ateam1.size() ; i++) {
+		//numPlayers++;
 		characters[i]->SetOponents(aux1);
 		listener->AddCharacter(characters[i]);
 		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
@@ -365,27 +367,54 @@ bool FightManager::RemoveCharacter(Character* character)
 				characters[j - 1] = characters[j];
 			}
 			characters.pop_back();
+			if (teammode) {
+				if (i < 2) {
+					for (int x = i + 1; x < team1.size(); x++)
+					{
+						team1[x - 1] = team1[x];
+					}
+					team1.pop_back();
+				}
+				else
+				{
+					for (int y = (i%2) + 1; y < team2.size(); y++)
+					{
+						team2[y - 1] = team2[y];
+					}
+					team2.pop_back();
+				}
+			}
 		}
 	}
 	listener->RemoveCharacter(character);
 	RemoveEntity(character);
-	if (characters.size() == 1 && !endGame) {
-	/*	addCharacterStats(characters[0]);
-		winnerInput = characters[0]->getInput();
-		winnersTextures.push_back(characters[0]->getPortrait());
-		entities.clear();
-		characters.clear();
-		stage->UnLoadStage();*/
-		addCharacterStats(characters[0]);
-		winnerInput = characters[0]->getInput();
-		winnersTextures.push_back(characters[0]->getPortrait());
-		endGameTimer = SDL_GetTicks();
-		endGame = true;
-		/*while (time+1500>SDL_GetTicks())
-		{
+	if (!teammode) {
+		if (characters.size() == 1 && !endGame) {
+			/*	addCharacterStats(characters[0]);
+				winnerInput = characters[0]->getInput();
+				winnersTextures.push_back(characters[0]->getPortrait());
+				entities.clear();
+				characters.clear();
+				stage->UnLoadStage();*/
+			addCharacterStats(characters[0]);
+			winnerInput = characters[0]->getInput();
+			winnersTextures.push_back(characters[0]->getPortrait());
+			endGameTimer = SDL_GetTicks();
+			endGame = true;
+			/*while (time+1500>SDL_GetTicks())
+			{
+			}
+			getState()->next();*/
 		}
-		getState()->next();*/
 	}
+	else
+	{
+		if ((team1.size() == 0 || team2.size() == 0) && !endGame) {
+			endGameTimer = SDL_GetTicks();
+			endGame = true;
+		}
+	}
+
 	return false;
 }
 
