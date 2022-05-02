@@ -5,7 +5,7 @@
 class PlayingState : public State {
     
     vector<int>playersInput_;
-
+ 
 public:
 
     PlayingState(FightManager* fmngr , vector<int>player, vector<int>characters, int map) ;

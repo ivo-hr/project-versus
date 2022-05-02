@@ -8,9 +8,9 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
    // background = &sdl->images().at("selectbg");
-    aleatorio = nullptr;
+    aleatorio = new Button(&sdl->images().at("aleatorioSelect"), ts(270), ts(50), ts(30), ts(30));;
     nasnas = nullptr;
-    zero = new Button(&sdl->images().at("zeroSelect"), ts(30), ts(50), ts(30), ts(30));
+    zero = new Button(&sdl->images().at("nasNasSelect"), ts(30), ts(50), ts(30), ts(30));
     gatoespia = new Button(&sdl->images().at("blinkMasterSelect"), ts(90), ts(50), ts(30), ts(30));
     maketo = new Button(&sdl->images().at("maktSelect"), ts(150), ts(50), ts(30), ts(30));
     togo = new Button(&sdl->images().at("dinoSoulsSelect"), ts(210), ts(50), ts(30), ts(30));
@@ -352,6 +352,15 @@ void ConfigState::checkButtonPointerClick()
 
             sdl->soundEffects().at("uiMov").play();
         }
+        else if (aleatorio->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
+            playerTexture[i]->setFront(&sdl->images().at("aleatorioSelect"));
+            charactersSelect[i] = -1;
+            keyRelease = false;
+            lastPointerClick = playerInput[i];
+            selected[i] = true;
+
+            sdl->soundEffects().at("uiMov").play();
+        }
         else if (minusB->pointerClick(playerPointers[i]->getRect()) && enter && numOfplayer > 2 && keyRelease) {
             numOfplayer--;
 
@@ -593,6 +602,7 @@ void ConfigState::playerMenuRender()
     minusB->render();
     normalmode->render();
     teammode->render();
+    aleatorio->render();
     config->render();
     if (ready) {
         play->render();

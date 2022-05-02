@@ -75,7 +75,9 @@
     { "id" : "water", "file" : "resources/images/agua.png"},
     { "id" : "electric", "file" : "resources/images/electrico.png"},
     { "id" : "fire", "file" : "resources/images/fuego.png"},
-    { "id" : "backToMenu", "file" : "resources/images/backtomenu.png"}
+    { "id" : "backToMenu", "file" : "resources/images/backtomenu.png"},
+    { "id" : "nasNasSelect", "file" : "resources/images/NasNasSelect.png"},
+    { "id" : "aleatorioSelect", "file" : "resources/images/aleatorioSel.png"}
   ],
   
   "messages" : [

@@ -6,6 +6,8 @@
 #include "../Utils/MyListener.h"
 #include "../../../CharInclude.h"
 
+
+
 PlayingState::PlayingState(FightManager* game, vector<int>playersInput, vector<int>characters , int map) : State(game) {
 	std::vector<Character*> entities;
 	std::vector<Character*> team1;
@@ -36,8 +38,24 @@ PlayingState::PlayingState(FightManager* game, vector<int>playersInput, vector<i
 		case 4://Nasnas
 			//entities.push_back(new NasNas(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
 			break;
-		case 5://Aleatorio
-			//entities.push_back(new Togo(fmngr, new Vector2D(20 + i * 10, 0), player[i]));
+		case -1://Aleatorio
+			int charac = sdl->rand().nextInt(0, 4);
+			switch (charac)
+			{
+			case 0: //zero
+				entities.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				break;
+			case 1://Gato espia
+				entities.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				break;
+			case 2://Togo
+				entities.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				break;
+			case 3: //Maketo
+				entities.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				break;
+			}
+		
 			break;
 		}
 	}
@@ -92,7 +110,44 @@ PlayingState::PlayingState(FightManager* game, vector<int> playersInput, vector<
 			break;
 		case 4://Nasnas		
 			break;
-		case 5://Aleatorio
+		case -1://Aleatorio
+		
+			int charac = sdl->rand().nextInt(0,4);
+			switch (charac)
+			{
+			case 0: //zero
+				if (teams[i] == 0)
+					team1.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				else
+				{
+					team2.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				}
+				break;
+			case 1://Gato espia
+				if (teams[i] == 0)
+					team1.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				else
+				{
+					team2.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				}
+				break;
+			case 2://Togo
+				if (teams[i] == 0)
+					team1.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				else
+				{
+					team2.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				}
+				break;
+			case 3: //Maketo
+				if (teams[i] == 0)
+					team1.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				else
+				{
+					team2.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i]));
+				}
+				break;
+			}
 			break;
 		}
 	}
