@@ -19,7 +19,7 @@ GatoEspia::GatoEspia(FightManager* mngr, b2Vec2 pos, char input,int p) : Charact
 
 GatoEspia::~GatoEspia()
 {
-
+	
 }
 
 //Lo mismo que el de arriba pero mas rapido y debil xd
@@ -539,6 +539,12 @@ void GatoEspia::Counter(int frameNumber)
 		moveFrame = -1;
 	}
 
+}
+
+void GatoEspia::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
+{
+	Character::drawHUD(w,h,numOfPlayer,screenadjust);
+	
 }
 
 

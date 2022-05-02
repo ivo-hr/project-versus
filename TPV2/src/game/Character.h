@@ -76,6 +76,9 @@ protected:
 	double ralentizar = 0;
 //	void (Character::* currentMove)(int);
 	int input_;
+
+	int r = 0;
+	int g = 255;
 public:
 
 	Character(FightManager* manager, b2Vec2 pos, char input,int player, float w = 3.f, float h = 3.f);
@@ -87,7 +90,7 @@ public:
 	virtual void update() override;
 	virtual void draw() override;
 	virtual void draw(SDL_Rect* camera) override;
-	virtual void drawHUD(int w, int h, int numOfPlayer) {};
+	virtual void drawHUD(int w, int h, int numOfPlayer, int screenadjust) ;
 
 	virtual bool GetHit(attackData a, Entity* attacker);
 	virtual SDL_Rect* GetHurtbox();

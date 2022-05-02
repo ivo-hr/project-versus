@@ -97,7 +97,10 @@ void ConfigState::update() {
         if (map >= 0) selectMap = false;
     }
     if (ready) {
-        if (play->mouseClick())fmngr->getState()->next();
+        if (play->mouseClick()) {
+            fmngr->getState()->next();
+            return;
+        }
         for (auto i = 0; i < playerInput.size(); i++) {
             bool enter = false;
             switch (playerInput[i])
@@ -114,7 +117,6 @@ void ConfigState::update() {
             }
             if (play->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
                 fmngr->getState()->next();
-
                 return;
             }
         }

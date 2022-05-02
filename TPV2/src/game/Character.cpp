@@ -113,6 +113,8 @@ Character::Character(FightManager* manager, b2Vec2 pos, char input,int playerPos
 
 Character::~Character()
 {
+	r = 0;
+	g = 255;
 	delete input;
 	delete anim;
 }
@@ -431,6 +433,7 @@ void Character::draw()
 
 	anim->render();
 
+
 	//if (debug)
 #ifdef _DEBUG
 
@@ -496,6 +499,8 @@ void Character::draw(SDL_Rect* camera)
 
 #endif // _DEBUG
 }
+
+
 
 bool Character::GetHit(attackData a, Entity* attacker)
 {
@@ -822,6 +827,7 @@ SDL_Rect* Character::GetHurtbox()
 
 void Character::OnDeath()
 {
+
 	AddDeathParticle();
 
 	sdl->soundEffects().at("death").play();
@@ -891,6 +897,8 @@ void Character::Respawn()
 	resetLastCharacter();
 
 	anim->StartAnimation("idle");
+	r = 0;
+	g = 255;
 }
 
 void Character::Taunt(int frameNumber) {
@@ -997,4 +1005,43 @@ void Character::Elements()
 		stun += (statePower / (stateDur / 60))*1.5;
 	}
 }
+void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
+{
+	//Portrait y posiciones
+	int s = screenadjust;
+	int dist = (w - 50 * s) / numOfPlayer;
+	int offset = s * (300 / numOfPlayer);
+	int x = (int)(playerPosition * dist + offset);
+	int y = 300 * s;
+	portrait->render({ x, y,50 * s,50 * s });
+	//Porcentaje
+	string fontstring = "nes" + to_string(9 * s);
+	auto& font = sdl->fonts().at(fontstring);
+	string damage = to_string(damageTaken) + "%";
+	if (r < 255) {
+		r = damageTaken * 2;
+		if (r > 255)r = 255;
+	}
+	else
+	{
+		g = 255 - damageTaken;
+		if (g < 0)g = 0;
+	}
+	Uint32 color = r * pow(16, 6) + g * pow(16, 4);
+	Texture* perct = new Texture(sdl->renderer(), damage, font, build_sdlcolor(color));
+	perct->render(x, y + 40 * s);
 
+	//Numero jugador
+	string player = "Player" + to_string(playerPosition + 1);
+	SDL_Color c;
+	if (playerPosition == 0)c = build_sdlcolor(0xFF000000);
+	else if (playerPosition == 1)c = build_sdlcolor(0x002EFF00);
+	else if (playerPosition == 2)c = build_sdlcolor(0x00FF6100);
+	else if (playerPosition == 3)c = build_sdlcolor(0xFFF00000);
+	Texture* Player = new Texture(sdl->renderer(), player, font, c);
+	Player->render(x - 5 * s, y - 10 * s);
+	//Vidas
+	string vidas = "Lives:" + to_string(lives);
+	Texture* lives = new Texture(sdl->renderer(), vidas, font, build_sdlcolor(0x00F7FF00));
+	lives->render(x - 8 * s, y + 50 * s);
+}

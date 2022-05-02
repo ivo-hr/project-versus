@@ -144,6 +144,10 @@ void FightManager::Update()
 	stage->Update(&camera);
 
 	stage->GetWorld()->Step(step, 1, 1);
+	for (Character* c : characters)
+	{
+		c->drawHUD(GetActualWidth(), GetActualHeight(), numPlayers, screenAdjust);
+	}
 
 	for (auto i = 0u; i < entities.size(); i++)
 	{
@@ -274,7 +278,7 @@ int FightManager::StartFight(std::vector<Character*> ent)
 			break;
 
 	}
-
+	numPlayers = characters.size();
 	
 
 	return 1;
@@ -317,40 +321,10 @@ int FightManager::StartFight(std::vector<Character*> team1 , std::vector<Charact
 	}
 	sdl->musics().at("cube").play();
 	//Music::setMusicVolume(1);
-
+	numPlayers = characters.size();
 	return 1;
 }
-int FightManager::StartFight(std::vector<Character*> team1, std::vector<Character*> team2, std::vector<Character*> team3)
-{
-	//onNewGame();
 
-	for (Character* a : team1)
-	{
-		entities.push_back(a);
-		characters.push_back(a);
-	}
-
-	for (Character* a : team2)
-	{
-		entities.push_back(a);
-		characters.push_back(a);
-	}
-	for (Character* a : team3)
-	{
-		entities.push_back(a);
-		characters.push_back(a);
-	}
-	for (auto i = 0u; i < characters.size(); i++) {
-		numPlayers++;
-		characters[i]->SetOponents(entities);
-		listener->AddCharacter(characters[i]);
-		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
-		characters[i]->SetPNumber(i);
-	}
-	sdl->musics().at("cube").play();
-	//Music::setMusicVolume(1);
-	return 1;
-}
 
 void FightManager::AddEntity(Entity* ent)
 {

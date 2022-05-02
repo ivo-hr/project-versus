@@ -14,6 +14,6 @@ public:
 
 	virtual void SpecialNeutral(int frameNumber) override;
 
-	virtual void drawHUD(int w, int h, int numOfPlayer)override;
+	virtual void drawHUD(int w, int h, int numOfPlayer, int screenadjust)override;
 
 };

@@ -109,8 +109,13 @@ void CharacterZero::SpecialNeutral(int frameNumber)
 	}
 }
 
-void CharacterZero::drawHUD(int w, int h, int numOfPlayer)
+void CharacterZero::drawHUD(int w, int h, int numOfPlayer , int screenadjust)
 {
-	int x = w / numOfPlayer *playerPosition;
-	portrait->render({});
+	int s = screenadjust;
+	int dist = (w -50*s ) / numOfPlayer;
+	int offset = dist ;
+	int x = (int)(playerPosition * dist + offset);
+	//int x = w / numOfPlayer * (1+playerPosition) - ;
+	portrait->render({x,200*s,30*s,30*s});
+
 }
