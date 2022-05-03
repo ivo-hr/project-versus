@@ -1011,12 +1011,14 @@ void Character::Elements()
 void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 {
 	//Portrait y posiciones
+	int w_ = manager->GetDeathZone()->w;
+	int h_ = manager->GetDeathZone()->h;
 	int s = screenadjust;
-	int dist = 100 / numOfPlayer;
-	int offset = 50 / numOfPlayer;
+	int dist = w_/ numOfPlayer;
+	int offset = (w_ / 2) / numOfPlayer - w_/30;
 	int x = (int)(playerPosition * dist + offset);
-	int y = 50;
-	portrait->render(manager->GetSDLCoors(x, y, 6, 6));
+	int y = h_ - (h_ / 6);
+	portrait->render({ x, y, w_ / 15, w_ / 15 });
 	//Porcentaje
 	string fontstring = "nes" + to_string(7 * s);
 	auto& font = sdl->fonts().at(fontstring);
@@ -1032,13 +1034,13 @@ void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 	}
 	Uint32 color = r * pow(16, 6) + g * pow(16, 4);
 	SDL_Color c = build_sdlcolor(color);
-	string fontstringp = "nes" + to_string(8 * s);
+	string fontstringp = "nes" + to_string(10 * s);
 	auto& fontp = sdl->fonts().at(fontstringp);
 	string key = fontstringp + damage + to_string(c.r) + to_string(c.g) + to_string(c.b);
 	if (sdl->msgs().count(key) == 0) {
 		sdl->msgs().emplace(key, Texture(sdl->renderer(), damage, fontp, c));
 	}
-	sdl->msgs().at(key).render(manager->ToSDL(x+3), manager->ToSDL(y+1));
+	sdl->msgs().at(key).render(x+w_/15 , y+w_/22);
 
 	//Numero jugador
 	//
@@ -1051,16 +1053,16 @@ void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 	if (sdl->msgs().count(key) == 0) {
 		sdl->msgs().emplace(key, Texture(sdl->renderer(), player, font, c));
 	}
-	sdl->msgs().at(key).render(manager->ToSDL(x-3), manager->ToSDL(y-3));
+	sdl->msgs().at(key).render(x, y);
 
 
 	//Vidas
 	//
 	string vidas = "Lives:" + to_string(lives);
 	c = build_sdlcolor(0x00F7FF00);
-	key = fontstring + player + to_string(c.r) + to_string(c.g) + to_string(c.b);
+	key = fontstring + vidas + to_string(c.r) + to_string(c.g) + to_string(c.b);
 	if (sdl->msgs().count(key) == 0) {
 		sdl->msgs().emplace(key, Texture(sdl->renderer(), vidas, font, c));
 	}
-	sdl->msgs().at(key).render(manager->ToSDL(x-3), manager->ToSDL(y+3));
+	sdl->msgs().at(key).render(x, y+w_/15);
 }
