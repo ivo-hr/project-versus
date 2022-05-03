@@ -113,6 +113,7 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 			getState()->draw();
 		}
 	}
+	if(getSavedState()!=nullptr)
 	delete getState();
 }
 
