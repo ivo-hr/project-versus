@@ -7,13 +7,16 @@
 #include "sdlutils/InputHandler.h"
 #include "sdlutils/macros.h"
 
+#include "utils/CheckML.h"
+
 #include "sdlutils/sdlutils_demo.h"
 #include "sdlutils/SDLUtils.h"
 
 #include "game/PlayingState/FightManager.h"
 
-
 int main(int ac, char **av) {
+
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // Check Memory Leaks
 
 	// Initialise the SDLGame singleton
 	SDLUtils::init("Project Vs21", 512, 288,
@@ -72,7 +75,7 @@ int main(int ac, char **av) {
 		ratioFin = alto;
 	FightManager* fghtmngr = new FightManager(&sdl, ratioFin);
 
-	
+	delete fghtmngr;
 	SDL_Quit();
 
 	return 0;

@@ -1,5 +1,6 @@
 #include "State.h"
 #include "../PlayingState/FightManager.h"
+#include "../../utils/CheckML.h"
 
 bool State::doQuit() {
     return false;

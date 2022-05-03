@@ -1,6 +1,7 @@
 #include "Stage.h"
 #include "../Utils/MyListener.h"
 #include "../../json/json.hpp"
+#include "../../utils/CheckML.h"
 #include <fstream>
 #include <iostream>
 
@@ -18,7 +19,7 @@ Stage::Stage(SDLUtils* sdl, MyListener* _listener, float step) :
 }
 Stage::~Stage() 
 {
-	UnLoadStage();
+	delete world;
 }
 
 void Stage::UnLoadStage()

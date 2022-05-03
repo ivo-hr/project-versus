@@ -1,5 +1,6 @@
 #include "Projectile.h"
 #include "Utils/Particle.h"
+#include "../utils/CheckML.h"
 
 Projectile::Projectile(FightManager* manager, b2Vec2 pos, b2Vec2 dir, float width, float height, int speed) :
 	Entity(manager, pos, width, height)
@@ -91,7 +92,7 @@ void Projectile::CheckHits()
 					manager->HitLag(lag);
 
 					oponents[j]->AddParticle(new Particle(
-						new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+						Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
 						1, "sHitParticle", oponents[j]));
 				}
 				if (reflected == 0)

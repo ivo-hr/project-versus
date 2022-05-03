@@ -3,6 +3,7 @@
 #include "Utils/InputConfig.h"
 #include "Utils/Particle.h"
 #include "Characters/NasNas/Explosion.h"
+#include "../utils/CheckML.h"
 #include <iostream>
 
 
@@ -828,14 +829,14 @@ SDL_Rect* Character::GetHurtbox()
 void Character::OnDeath()
 {
 
-	AddDeathParticle();
-
 	sdl->soundEffects().at("death").play();
 
-	body->SetTransform(respawnPos, 0);
-	body->SetAwake(false);
 	alive = false;
 	lives--;
+
+	AddDeathParticle();
+	body->SetTransform(respawnPos, 0);
+	body->SetAwake(false);
 	currentMove = nullptr;
 	moveFrame = 0;
 	moving = false;
@@ -864,6 +865,8 @@ void Character::OnDeath()
 
 void Character::AddDeathParticle()
 {
+	if (lives == 0)
+		return;
 	//O dios mio que he creado
 	AddParticle(new Particle(
 		Vector2D(
@@ -1030,6 +1033,7 @@ void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 	Uint32 color = r * pow(16, 6) + g * pow(16, 4);
 	Texture* perct = new Texture(sdl->renderer(), damage, font, build_sdlcolor(color));
 	perct->render(x, y + 40 * s);
+	//delete perct;
 
 	//Numero jugador
 	string player = "Player" + to_string(playerPosition + 1);
@@ -1040,8 +1044,10 @@ void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 	else if (playerPosition == 3)c = build_sdlcolor(0xFFF00000);
 	Texture* Player = new Texture(sdl->renderer(), player, font, c);
 	Player->render(x - 5 * s, y - 10 * s);
+	//delete Player;
 	//Vidas
 	string vidas = "Lives:" + to_string(lives);
 	Texture* lives = new Texture(sdl->renderer(), vidas, font, build_sdlcolor(0x00F7FF00));
 	lives->render(x - 8 * s, y + 50 * s);
+	//delete lives;
 }

@@ -23,6 +23,7 @@
  */
 
 #include "../json/JSONValue.h"
+#include "../utils/CheckML.h"
 
 #include <stdio.h>
 #include <string.h>

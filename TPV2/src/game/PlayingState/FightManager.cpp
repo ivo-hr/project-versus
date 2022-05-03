@@ -4,6 +4,7 @@
 #include "../Utils/Particle.h"
 #include "../Utils/MyListener.h"
 #include "../PlayingState/Stage.h"
+#include "../../utils/CheckML.h"
 
 void FightManager::MoveCamera()
 {
@@ -88,6 +89,7 @@ void FightManager::MoveCamera()
 
 FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 {
+
 	listener = new MyListener();
 	stage = new Stage(sdl, listener, step);
 
@@ -119,6 +121,9 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 
 FightManager::~FightManager()
 {
+	delete stage;
+	delete listener;
+	delete getSavedState();
 }
 
 void FightManager::Update()
@@ -586,6 +591,7 @@ void FightManager::startCount()
 		y = 100 * screenAdjust;
 	}
 	count->render(x,y);
+	delete count;
 }
 
 

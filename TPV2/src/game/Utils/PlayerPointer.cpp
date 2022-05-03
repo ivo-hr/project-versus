@@ -1,4 +1,5 @@
 #include "PlayerPointer.h"
+#include "../../utils/CheckML.h"
 
 void PlayerPointer::render()
 {	if(active)

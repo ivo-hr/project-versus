@@ -168,9 +168,6 @@
     <ClInclude Include="src\game\State\MenuState.h">
       <Filter>Header Files\game\State</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\State\PauseState.h">
-      <Filter>Header Files\game\State</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\State\PlayingState.h">
       <Filter>Header Files\game\State</Filter>
     </ClInclude>
@@ -218,6 +215,15 @@
     </ClInclude>
     <ClInclude Include="src\game\Characters\NasNas\Explosion.h">
       <Filter>Header Files\game\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\State\ConfigurationState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\State\ExitState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\CheckML.h">
+      <Filter>Source Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -299,9 +305,6 @@
     <ClCompile Include="src\game\State\MenuState.cpp">
       <Filter>Source Files\game\State</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\State\PauseState.cpp">
-      <Filter>Source Files\game\State</Filter>
-    </ClCompile>
     <ClCompile Include="src\game\State\PlayingState.cpp">
       <Filter>Source Files\game\State</Filter>
     </ClCompile>
@@ -340,6 +343,12 @@
     </ClCompile>
     <ClCompile Include="src\game\Characters\NasNas\Explosion.cpp">
       <Filter>Source Files\game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\State\ConfigurationState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\State\ExitState.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
