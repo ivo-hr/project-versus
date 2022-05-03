@@ -1018,7 +1018,7 @@ void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 	int y = 50;
 	portrait->render(manager->GetSDLCoors(x, y, 6, 6));
 	//Porcentaje
-	string fontstring = "nes" + to_string(9 * s);
+	string fontstring = "nes" + to_string(7 * s);
 	auto& font = sdl->fonts().at(fontstring);
 	string damage = to_string(damageTaken) + "%";
 	if (r < 255) {
@@ -1032,11 +1032,13 @@ void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 	}
 	Uint32 color = r * pow(16, 6) + g * pow(16, 4);
 	SDL_Color c = build_sdlcolor(color);
-	string key = fontstring + damage + to_string(c.r) + to_string(c.g) + to_string(c.b);
+	string fontstringp = "nes" + to_string(8 * s);
+	auto& fontp = sdl->fonts().at(fontstringp);
+	string key = fontstringp + damage + to_string(c.r) + to_string(c.g) + to_string(c.b);
 	if (sdl->msgs().count(key) == 0) {
-		sdl->msgs().emplace(key, Texture(sdl->renderer(), damage, font, c));
+		sdl->msgs().emplace(key, Texture(sdl->renderer(), damage, fontp, c));
 	}
-	sdl->msgs().at(key).render(x, y + 40 * s);
+	sdl->msgs().at(key).render(manager->ToSDL(x+3), manager->ToSDL(y+1));
 
 	//Numero jugador
 	//
@@ -1049,7 +1051,7 @@ void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 	if (sdl->msgs().count(key) == 0) {
 		sdl->msgs().emplace(key, Texture(sdl->renderer(), player, font, c));
 	}
-	sdl->msgs().at(key).render(x - 5 * s, y - 10 * s);
+	sdl->msgs().at(key).render(manager->ToSDL(x-3), manager->ToSDL(y-3));
 
 
 	//Vidas
@@ -1060,5 +1062,5 @@ void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 	if (sdl->msgs().count(key) == 0) {
 		sdl->msgs().emplace(key, Texture(sdl->renderer(), vidas, font, c));
 	}
-	sdl->msgs().at(key).render(x - 8 * s, y + 50 * s);
+	sdl->msgs().at(key).render(manager->ToSDL(x-3), manager->ToSDL(y+3));
 }
