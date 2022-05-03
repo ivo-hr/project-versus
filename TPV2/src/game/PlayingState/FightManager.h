@@ -139,4 +139,6 @@ public:
 
 	void onNewGame();
 
+	bool getTeammode() { return teammode; }
+
 };
