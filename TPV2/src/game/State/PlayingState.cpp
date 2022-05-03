@@ -40,23 +40,29 @@ PlayingState::PlayingState(FightManager* game, vector<int>playersInput, vector<i
 			//entities.push_back(new NasNas(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
 			break;
 		case -1://Aleatorio
-			int charac = sdl->rand().nextInt(0, 4);
+			int charac = sdl->rand().nextInt(0, 9);
 			switch (charac)
 			{
-			case 0: //zero
+			case 0: //nasnas
+			case 1:
 				entities.push_back(new NasNas(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				break;
-			case 1://Gato espia
+			case 2://Gato espia
+			case 3:
 				entities.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				break;
-			case 2://Togo
+			case 4://Togo
+			case 5:
 				entities.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				break;
-			case 3: //Maketo
+			case 6: //Maketo
+			case 7:
 				entities.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				break;
+			case 8: //Zero
+				entities.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				break;
 			}
-		
 			break;
 		}
 	}
@@ -112,18 +118,20 @@ PlayingState::PlayingState(FightManager* game, vector<int> playersInput, vector<
 		case 4://Nasnas		
 			break;
 		case -1://Aleatorio
-			int charac = sdl->rand().nextInt(0, 4);
+			int charac = sdl->rand().nextInt(0, 9);
 			switch (charac)
 			{
-			case 0: //zero
+			case 0: //Nasnas
+			case 1:
 				if (teams[i] == 0)
-					team1.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+					team1.push_back(new NasNas(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				else
 				{
-					team2.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+					team2.push_back(new NasNas(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				}
 				break;
-			case 1://Gato espia
+			case 2://Gato espia
+			case 3:
 				if (teams[i] == 0)
 					team1.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				else
@@ -131,7 +139,8 @@ PlayingState::PlayingState(FightManager* game, vector<int> playersInput, vector<
 					team2.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				}
 				break;
-			case 2://Togo
+			case 4://Togo
+			case 5:
 				if (teams[i] == 0)
 					team1.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				else
@@ -139,12 +148,21 @@ PlayingState::PlayingState(FightManager* game, vector<int> playersInput, vector<
 					team2.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				}
 				break;
-			case 3: //Maketo
+			case 6: //Maketo
+			case 7:
 				if (teams[i] == 0)
 					team1.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				else
 				{
 					team2.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				}
+				break;
+			case 8: //Zero
+				if (teams[i] == 0)
+					team1.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				else
+				{
+					team2.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				}
 				break;
 			}

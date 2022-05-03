@@ -1012,11 +1012,11 @@ void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 {
 	//Portrait y posiciones
 	int s = screenadjust;
-	int dist = (w - 50 * s) / numOfPlayer;
-	int offset = s * (300 / numOfPlayer);
+	int dist = 100 / numOfPlayer;
+	int offset = 50 / numOfPlayer;
 	int x = (int)(playerPosition * dist + offset);
-	int y = 300 * s;
-	portrait->render({ x, y,50 * s,50 * s });
+	int y = 50;
+	portrait->render(manager->GetSDLCoors(x, y, 6, 6));
 	//Porcentaje
 	string fontstring = "nes" + to_string(9 * s);
 	auto& font = sdl->fonts().at(fontstring);
@@ -1050,9 +1050,6 @@ void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 		sdl->msgs().emplace(key, Texture(sdl->renderer(), player, font, c));
 	}
 	sdl->msgs().at(key).render(x - 5 * s, y - 10 * s);
-
-
-
 
 
 	//Vidas
