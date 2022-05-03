@@ -18,7 +18,7 @@ class Bullet : public Projectile
 
 public:
 	Bullet(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir);
-	~Bullet();
+	virtual ~Bullet();
 
 	virtual bool GetHit(attackData a, Entity* attacker) { return(false);};
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox;};

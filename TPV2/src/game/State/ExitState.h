@@ -7,7 +7,7 @@ class ExitState : public State {
 public:
 
     ExitState(FightManager* fmngr);
-    ~ExitState() = default;
+    virtual  ~ExitState();
 
     void update() override;
     void draw() override;

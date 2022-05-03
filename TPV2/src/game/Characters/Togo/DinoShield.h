@@ -9,7 +9,7 @@ protected:
 	attackData data;
 public:
 	DinoShield(FightManager* manager, b2Vec2 pos);
-	~DinoShield();
+	virtual ~DinoShield();
 
 	virtual void update() override;
 	virtual void draw() override;

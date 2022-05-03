@@ -4,7 +4,7 @@ class CharacterZero : public Character
 {
 public:
 	CharacterZero(FightManager* mngr, b2Vec2 pos, char input,int p);
-	~CharacterZero();
+	virtual ~CharacterZero();
 	
 	
 

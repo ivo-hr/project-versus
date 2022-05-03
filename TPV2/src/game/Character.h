@@ -83,7 +83,7 @@ protected:
 public:
 
 	Character(FightManager* manager, b2Vec2 pos, char input,int player, float w = 3.f, float h = 3.f);
-	~Character();
+	virtual ~Character();
 
 	void SetSpawn(b2Vec2 spawn, int dir);
 	void SetPNumber(uint16 num);

@@ -11,7 +11,7 @@ public:
 	InputConfig(char c) {
 		 typeofInput = c;
 	};
-	~InputConfig()=default;
+	virtual ~InputConfig() {};
 
 	//char seeinput();
 	bool up();

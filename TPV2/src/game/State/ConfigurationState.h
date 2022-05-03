@@ -16,7 +16,7 @@ class ConfigurationState : public State {
 public:
 
     ConfigurationState(FightManager* fmngr ,int pI);
-    ~ConfigurationState() = default;
+    virtual  ~ConfigurationState();
 
     void update() override;
     void draw() override;

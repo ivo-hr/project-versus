@@ -6,7 +6,7 @@ class Togo : public Character
 {
 public:
 	Togo(FightManager* mngr, b2Vec2 pos, char input,int p);
-	~Togo();
+	virtual ~Togo();
 
 	virtual void BasicNeutral(int frameNumber) override;
 	virtual void BasicForward(int frameNumber) override;

@@ -18,7 +18,7 @@ class MaktBall : public Projectile
 
 public:
 	MaktBall(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir, b2Vec2 respawn);
-	~MaktBall();
+	virtual ~MaktBall();
 
 	virtual void update() override;
 	virtual void CheckHits() override;

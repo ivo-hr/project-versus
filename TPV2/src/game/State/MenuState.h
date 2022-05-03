@@ -11,7 +11,7 @@ class MenuState : public State {
 public:
 
     MenuState(FightManager* game);
-    ~MenuState() = default;
+    virtual ~MenuState();
 
     void update() override;
     void draw() override;

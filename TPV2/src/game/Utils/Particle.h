@@ -37,7 +37,7 @@ public:
 
 
 	Particle(Vector2D position, int dir, std::string id, Entity* ent);
-	~Particle();
+	virtual ~Particle();
 
 	virtual void update();
 	virtual void draw();

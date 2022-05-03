@@ -118,7 +118,7 @@ public:
 	string nombre;
 
 	Entity(FightManager* mngr, b2Vec2 position, float w = 3.f, float h = 3.f);
-	~Entity();
+	virtual ~Entity();
 
 	virtual void updateParticles();
 	virtual void update();

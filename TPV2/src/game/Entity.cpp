@@ -226,7 +226,7 @@ void Entity::CheckHits()
 					if (hitboxes[i]->hit.hitlag >= 15)
 					{
 						AddParticle(new Particle(
-							new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+							 Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
 							1, "bHitParticle", this));
 
 						manager->GetSDLU()->soundEffects().at("hitStr").play();
@@ -234,7 +234,7 @@ void Entity::CheckHits()
 					else
 					{
 						AddParticle(new Particle(
-							new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+							 Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
 							1, "sHitParticle", this));
 
 						manager->GetSDLU()->soundEffects().at("hitMed").play();

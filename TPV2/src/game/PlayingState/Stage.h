@@ -37,7 +37,7 @@ class Stage
 
 public:
 	Stage(SDLUtils* sdl, MyListener* _listener, float step);
-	~Stage();
+	virtual ~Stage();
 
 	void UnLoadStage();
 

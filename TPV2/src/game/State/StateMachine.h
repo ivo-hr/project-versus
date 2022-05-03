@@ -7,6 +7,10 @@ protected:
     State* savedState = nullptr;
     State* exitState = nullptr;
 public:
+    //~StateMachine() {
+    //    if(state!=nullptr)
+    //    delete state;
+    //}
     void setState(State* state) {
         this->state = state;
     }

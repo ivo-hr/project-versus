@@ -6,10 +6,25 @@ ExitState::ExitState(FightManager* game) : State(game) {
 
     string fontstring = "nes" + to_string((int)ts(8));
     auto& font = sdl->fonts().at(fontstring);
-    Texture* ye = new Texture(sdl->renderer(), "YES", font, build_sdlcolor(0xFF333300));
-    yes = new Button(ye, ts(290), ts(150), ts(30), ts(30));
-    Texture* n = new Texture(sdl->renderer(), "NO", font, build_sdlcolor(0x33FFFC00));
-    no = new Button(n, ts(190), ts(150), ts(30), ts(30));
+    SDL_Color c = build_sdlcolor(0xFF333300);
+    string key = fontstring + "YES" + to_string(c.r) + to_string(c.g) + to_string(c.b);
+    if (sdl->msgs().count(key) == 0) {
+        sdl->msgs().emplace(key, Texture(sdl->renderer(), "YES", font, c));
+    }
+    yes = new Button(&sdl->msgs().at(key), ts(290), ts(150), ts(30), ts(30));
+
+    c = build_sdlcolor(0x33FFFC00);
+    key = fontstring + "NO" + to_string(c.r) + to_string(c.g) + to_string(c.b);
+    if (sdl->msgs().count(key) == 0) {
+        sdl->msgs().emplace(key, Texture(sdl->renderer(), "NO", font, c));
+    }
+    no = new Button(&sdl->msgs().at(key), ts(190), ts(150), ts(30), ts(30));
+}
+
+ExitState::~ExitState()
+{
+    delete yes;
+    delete no;
 }
 
 
@@ -52,8 +67,12 @@ void ExitState::update() {
        
     }
     
- 
-    if (yes->mouseClick()) fmngr->userExit();
+    if (yes->mouseClick()) {
+        fmngr->userExit();
+        State* saved = fmngr->getExitState();
+        delete saved;
+        delete this;
+    }
 }
 
 void ExitState::draw() {

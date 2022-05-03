@@ -75,6 +75,7 @@ ConfigState::~ConfigState()
     {
         for (auto a : e)delete a;
     }
+    for (auto e : maps)delete e;
 }
 
 void ConfigState::update() {

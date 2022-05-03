@@ -6,7 +6,7 @@ class Makt : public Character
 {
 public:
 	Makt(FightManager* mngr, b2Vec2 pos, char input,int p);
-	~Makt();
+	virtual ~Makt();
 
 	virtual void BasicNeutral(int frameNumber) override;
 	virtual void BasicForward(int frameNumber) override;

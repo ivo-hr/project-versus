@@ -25,6 +25,17 @@ ConfigurationState::ConfigurationState(FightManager* game ,int pI) : State(game)
     pInput = pI;
 }
 
+ConfigurationState::~ConfigurationState()
+{
+    delete sfxp;
+    delete sfxm;
+    delete muscp;
+    delete muscm;
+    delete exit;
+    delete back;
+    delete p1;
+}
+
 
 
 void ConfigurationState::update() {
@@ -109,7 +120,7 @@ void ConfigurationState::update() {
         State* saved = fmngr->getSavedState();
         delete saved;
         fmngr->saveState(tmp);
-        fmngr->getState()->jumpWithoutDelete(new MenuState(fmngr));
+        fmngr->setState(new MenuState(fmngr));
         return;
     }
     enter = false;

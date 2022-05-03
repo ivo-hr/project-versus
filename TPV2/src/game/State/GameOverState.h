@@ -17,7 +17,7 @@ class GameOverState : public State {
 
 public:
     GameOverState(FightManager* fmngr, vector<Texture*>winnersTextures, vector<vector<int>>gameStats, int playersInput, vector<int>playersInputV);
-    ~GameOverState();
+    virtual ~GameOverState();
 
     void update() override;
     void draw() override;

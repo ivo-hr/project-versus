@@ -107,22 +107,22 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 
 	setState(new MenuState(this));
 	while (!exit_) {
-		
-
 		ih.refresh();
 		getState()->update();
-		getState()->draw();
-	/*	SDL_Event event;
-		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) userExit();
-		}*/
+		if (!exit_) {
+			getState()->draw();
+		}
 	}
+	delete getState();
 }
 
 FightManager::~FightManager()
 {
 	delete stage;
 	delete listener;
+	for (auto e : entities)
+		delete e;
+	entities.clear();
 	delete getSavedState();
 }
 
@@ -578,6 +578,11 @@ void FightManager::addCharacterStats(Character* character)
 
 void FightManager::onNewGame()
 {
+	
+	for (auto e : entities) {
+		listener->RemoveCharacter(e);
+		delete e;
+	}
 	entities.clear();
 	characters.clear();
 	team1.clear();

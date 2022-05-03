@@ -22,7 +22,8 @@ public:
 	Button():tex(nullptr),x(0),y(0),w(0),h(0),pressed(false) {};
 	Button(Texture* t,int x,int y,int width,int height) :tex(t), x(x),y(y),w(width),h(height),pressed(false){};
 	Button(Texture* t,Texture*dt, int x, int y, int width, int height) :tex(t), x(x), y(y), w(width), h(height), pressed(false),destex(dt) {};
-	
+	virtual ~Button() {};
+
 	void setPressTexture(Texture* t) { presstex = t; };
 	void setTexture(Texture* t) { tex = t; };
 	void setX(int x0) { x = x0; };
@@ -45,6 +46,7 @@ class PlayButton : public Button {
 public:
 	PlayButton() :Button() {};
 	PlayButton(Texture* t, int x, int y, int width, int height);
+	virtual ~PlayButton() {};
 	void render() override;
 	void reset() override { frame = 0; };
 };

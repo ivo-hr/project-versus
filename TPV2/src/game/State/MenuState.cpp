@@ -15,6 +15,12 @@ MenuState::MenuState(FightManager* game) : State(game) {
     config = new Button(&sdl->images().at("ConfigBut"), w-ts(20), h - ts(21), ts(20), ts(20));
 }
 
+MenuState::~MenuState()
+{
+    delete exit;
+    delete config;
+}
+
 void MenuState::update() {
     for (auto i = 0u; i < SDL_NumJoysticks(); i++) {
         if (ih.xboxGetAxesState(i, 1) == -1) {

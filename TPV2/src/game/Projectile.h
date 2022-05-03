@@ -18,7 +18,7 @@ protected:
 
 public:
 	Projectile(FightManager* manager, b2Vec2 pos, b2Vec2 dir, float width, float height, int speed);
-	~Projectile();
+	virtual ~Projectile();
 
 	virtual void update() override;
 	virtual void draw() override;

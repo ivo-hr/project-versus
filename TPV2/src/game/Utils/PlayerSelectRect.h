@@ -14,6 +14,6 @@ public:
 	void setFront(Texture* f) { front = f; };
 	void setgotInput(bool b) { gotInput = b; };
 	void render(int x, int y, int w, int h);
-	~PlayerSelectRect() {};
+	virtual ~PlayerSelectRect() {};
 };
 

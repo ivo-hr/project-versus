@@ -18,7 +18,7 @@ class Spell : public Projectile
 
 public:
 	Spell(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir);
-	~Spell();
+	virtual ~Spell();
 
 	virtual bool GetHit(attackData a, Entity* attacker) { return(false);};
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox;};

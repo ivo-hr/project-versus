@@ -4,7 +4,7 @@ class GatoEspia : public Character
 {
 public:
 	GatoEspia(FightManager* mngr, b2Vec2 pos, char input,int p);
-	~GatoEspia();
+	virtual ~GatoEspia();
 
 
 	virtual void BasicNeutral(int frameNumber) override;

@@ -51,7 +51,7 @@ class ConfigState : public State {
 public:
 
     ConfigState(FightManager* game , int fInput) ;
-    ~ConfigState();
+    virtual  ~ConfigState();
 
     void update() override;
     void draw() override;

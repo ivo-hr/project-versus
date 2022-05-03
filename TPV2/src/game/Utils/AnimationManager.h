@@ -29,7 +29,7 @@ protected:
 public:
 
 	AnimationManager(Entity* entity, Texture* textura, spriteSheetData data);
-	~AnimationManager();
+	virtual ~AnimationManager();
 
 	void update();
 	void render();

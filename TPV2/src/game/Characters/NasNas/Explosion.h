@@ -9,7 +9,7 @@ protected:
 	attackData data;
 public:
 	Explosion(FightManager* manager, b2Vec2 pos, int power, int type);
-	~Explosion();
+	virtual ~Explosion();
 
 	virtual void update() override;
 	virtual void draw() override;

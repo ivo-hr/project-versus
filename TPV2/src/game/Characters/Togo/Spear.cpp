@@ -68,7 +68,7 @@ void Spear::CheckHits()
 					manager->HitLag(lag);
 
 					oponents[j]->AddParticle(new Particle(
-						new Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+						Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
 						1, "sHitParticle", oponents[j]));
 				}
 			}

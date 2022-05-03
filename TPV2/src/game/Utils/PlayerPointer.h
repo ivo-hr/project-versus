@@ -8,9 +8,9 @@ class PlayerPointer {
 	bool active = false;
 	SDLUtils* sdl = SDLUtils::instance();
 public:
-	PlayerPointer() :texture(nullptr), x(0), y(0), w(0), h(0),vel(1) {};
+	PlayerPointer() :texture(nullptr), x(0), y(0), w(0), h(0),vel(1),wh(),ww() {};
 	PlayerPointer(Texture* t, int x, int y, int width, int height ,int ww,int wh) :texture(t), x(x), y(y), w(width), h(height) ,vel(8) ,ww(ww),wh(wh){};
-	~PlayerPointer() {};
+	virtual ~PlayerPointer() {};
 	void render();
 	void move(int dir);
 	void setActive(bool b) { active = b; };
