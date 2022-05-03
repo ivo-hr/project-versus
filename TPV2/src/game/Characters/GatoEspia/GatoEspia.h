@@ -26,7 +26,7 @@ public:
 	virtual bool GetHit(attackData a, Entity* attacker) override;
 	void Counter(int frameNumber);
 
-	virtual void drawHUD(int w, int h, int numOfPlayer, int screenadjust)override;
+	virtual void drawHUD( int numOfPlayer)override;
 private:
 
 	Texture* blinkContainer = nullptr;

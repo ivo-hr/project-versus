@@ -1008,7 +1008,7 @@ void Character::Elements()
 		stun += (statePower / (stateDur / 60))*1.5;
 	}
 }
-void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
+void Character::drawHUD(int numOfPlayer)
 {
 	//Portrait y posiciones
 	int w_ = manager->GetDeathZone()->w;

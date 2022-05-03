@@ -545,16 +545,18 @@ void GatoEspia::Counter(int frameNumber)
 
 }
 
-void GatoEspia::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
+void GatoEspia::drawHUD(int numOfPlayer)
 {
-	Character::drawHUD(w,h,numOfPlayer,screenadjust); 
+	Character::drawHUD(numOfPlayer); 
 
-	int dist = (w - 50 * screenadjust) / numOfPlayer;
-	int offset = screenadjust * (300 / numOfPlayer);
+	int w_ = manager->GetDeathZone()->w;
+	int h_ = manager->GetDeathZone()->h;
+	int dist = w_ / numOfPlayer;
+	int offset = (w_ / 2) / numOfPlayer - w_ / 30;
 	int x = (int)(playerPosition * dist + offset);
-	int y = 300 * screenadjust;
+	int y = h_ - (h_ / 6);
 
-	SDL_Rect cont = {
+	/*SDL_Rect cont = {
 		x - (30 * screenadjust),
 		y + (51.5f * screenadjust) - (47 * screenadjust) ,
 		20 * screenadjust,
@@ -571,7 +573,7 @@ void GatoEspia::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 	SDL_SetRenderDrawColor(sdl->renderer(), 0x53, 0xed, 0xee, 0xff);
 	SDL_RenderFillRect(sdl->renderer(), &blinkFill);
 
-	blinkContainer->render(cont);
+	blinkContainer->render(cont);*/
 }
 
 

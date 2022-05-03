@@ -19,7 +19,7 @@ public:
 	virtual void SpecialDownward(int frameNumber) override;
 
 	virtual void update() override;
-	virtual void drawHUD(int w, int h, int numOfPlayer, int screenadjust)override;
+	virtual void drawHUD( int numOfPlayer)override;
 private:
 	int maxMana = 600;
 	int mana = maxMana;

@@ -154,7 +154,7 @@ void FightManager::Update()
 	
 	for (Character* c : characters)
 	{
-		c->drawHUD(GetActualWidth(), GetActualHeight(), numPlayers, screenAdjust);
+		c->drawHUD( numPlayers);
 	}
 	if (scount > -1) {
 		startCount();
@@ -197,7 +197,7 @@ void FightManager::Update()
 
 		for (Character* c : characters)
 		{
-			c->drawHUD(GetActualWidth(), GetActualHeight(), numPlayers, screenAdjust);
+			c->drawHUD( numPlayers);
 		}
 
 		for (int i = entities.size() - 1; i >= 0; i--)

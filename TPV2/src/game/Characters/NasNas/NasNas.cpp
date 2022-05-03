@@ -370,9 +370,9 @@ void NasNas::update()
 	}
 }
 
-void NasNas::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
+void NasNas::drawHUD( int numOfPlayer)
 {
-	Character::drawHUD(w, h, numOfPlayer, screenadjust);
+	Character::drawHUD(numOfPlayer);
 }
 
 

@@ -1077,9 +1077,9 @@ void Makt::Taunt(int frameNumber)
 	}
 }
 
-void Makt::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
+void Makt::drawHUD(int numOfPlayer)
 {
-	Character::drawHUD(w, h, numOfPlayer, screenadjust);
+	Character::drawHUD( numOfPlayer);
 
 }
 
