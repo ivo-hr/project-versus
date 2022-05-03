@@ -2,6 +2,7 @@
 #include "Utils/Particle.h"
 #include "../utils/CheckML.h"
 
+
 Entity::Entity(FightManager* mngr, b2Vec2 position, float w, float h) : manager(mngr), width(w), height(h)
 {
 	this->sdl = mngr->GetSDLU();

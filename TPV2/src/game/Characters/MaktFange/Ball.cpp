@@ -1,5 +1,6 @@
 #include "Ball.h"
 #include "../../Utils/Particle.h"
+#include "../../../utils/CheckML.h"
 
 MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir, b2Vec2 respawn) :
 	Projectile(manager, pos, dir, 1.5f, 1.5f, 20)

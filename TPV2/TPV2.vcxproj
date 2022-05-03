@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CharInclude.h" />
-    <ClInclude Include="HUDManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="resources\resource.h" />
     <ClInclude Include="src\game\Character.h" />
@@ -75,7 +74,6 @@
     <ClInclude Include="src\utils\Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HUDManager.cpp" />
     <ClCompile Include="src\game\Character.cpp" />
     <ClCompile Include="src\game\Characters\CharacterZero\CharacterZero.cpp" />
     <ClCompile Include="src\game\Characters\GatoEspia\Bullet.cpp" />

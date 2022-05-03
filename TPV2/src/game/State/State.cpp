@@ -9,10 +9,12 @@ bool State::doQuit() {
 void State::showText(string s, int size, int x, int y, SDL_Color c)
 {
     string fontstring = "nes" + to_string(size);
-
     auto& font = sdl->fonts().at(fontstring);
-    tex = new Texture(sdl->renderer(), s, font, c);
-    
+    string key = fontstring + s + to_string(c.r) + to_string(c.g) + to_string(c.b);
+    if (sdl->msgs().count(key) == 0) {
+        sdl->msgs().emplace(key, Texture(sdl->renderer(), s, font, c));
+    }
+    tex = &sdl->msgs().at(key);
     tex->render(x, y);
 }
 

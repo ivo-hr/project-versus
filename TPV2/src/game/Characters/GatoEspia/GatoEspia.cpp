@@ -3,6 +3,7 @@
 #include "bullet.h"
 #include "../../../json/json.hpp"
 #include <fstream>
+#include "../../../utils/CheckML.h"
 #include <iostream>
 using json = nlohmann::json;
 GatoEspia::GatoEspia(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p, 1.5f, 3.f)

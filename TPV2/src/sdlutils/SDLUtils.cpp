@@ -4,7 +4,7 @@
 
 #include <cassert>
 #include <memory>
-
+#include "../utils/CheckML.h"
 #include "../json/JSON.h"
 
 SDLUtils::SDLUtils() :

@@ -2,6 +2,7 @@
 #include "../../Utils/AnimationManager.h"
 #include "../../../json/json.hpp"
 #include "../../Utils/Particle.h"
+#include "../../../utils/CheckML.h"
 #include "Spear.h"
 #include "DinoShield.h"
 #include <fstream>

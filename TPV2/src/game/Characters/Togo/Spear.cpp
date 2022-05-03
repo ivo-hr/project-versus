@@ -1,6 +1,7 @@
 #include "../../Utils/AnimationManager.h"
 #include "Togo.h"
 #include "Spear.h"
+#include "../../../utils/CheckML.h"
 #include "../../Utils/Particle.h"
 
 Spear::Spear(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir, Togo* togo) :

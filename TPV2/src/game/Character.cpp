@@ -1031,23 +1031,37 @@ void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 		if (g < 0)g = 0;
 	}
 	Uint32 color = r * pow(16, 6) + g * pow(16, 4);
-	Texture* perct = new Texture(sdl->renderer(), damage, font, build_sdlcolor(color));
-	perct->render(x, y + 40 * s);
-	//delete perct;
+	SDL_Color c = build_sdlcolor(color);
+	string key = fontstring + damage + to_string(c.r) + to_string(c.g) + to_string(c.b);
+	if (sdl->msgs().count(key) == 0) {
+		sdl->msgs().emplace(key, Texture(sdl->renderer(), damage, font, c));
+	}
+	sdl->msgs().at(key).render(x, y + 40 * s);
 
 	//Numero jugador
+	//
 	string player = "Player" + to_string(playerPosition + 1);
-	SDL_Color c;
 	if (playerPosition == 0)c = build_sdlcolor(0xFF000000);
 	else if (playerPosition == 1)c = build_sdlcolor(0x002EFF00);
 	else if (playerPosition == 2)c = build_sdlcolor(0x00FF6100);
 	else if (playerPosition == 3)c = build_sdlcolor(0xFFF00000);
-	Texture* Player = new Texture(sdl->renderer(), player, font, c);
-	Player->render(x - 5 * s, y - 10 * s);
-	//delete Player;
+	key = fontstring + player + to_string(c.r) + to_string(c.g) + to_string(c.b);
+	if (sdl->msgs().count(key) == 0) {
+		sdl->msgs().emplace(key, Texture(sdl->renderer(), player, font, c));
+	}
+	sdl->msgs().at(key).render(x - 5 * s, y - 10 * s);
+
+
+
+
+
 	//Vidas
+	//
 	string vidas = "Lives:" + to_string(lives);
-	Texture* lives = new Texture(sdl->renderer(), vidas, font, build_sdlcolor(0x00F7FF00));
-	lives->render(x - 8 * s, y + 50 * s);
-	//delete lives;
+	c = build_sdlcolor(0x00F7FF00);
+	key = fontstring + player + to_string(c.r) + to_string(c.g) + to_string(c.b);
+	if (sdl->msgs().count(key) == 0) {
+		sdl->msgs().emplace(key, Texture(sdl->renderer(), vidas, font, c));
+	}
+	sdl->msgs().at(key).render(x - 8 * s, y + 50 * s);
 }

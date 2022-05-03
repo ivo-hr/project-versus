@@ -1,5 +1,6 @@
 #include "CharacterZero.h"
 #include "../../Utils/AnimationManager.h"
+#include "../../../utils/CheckML.h"
 
 CharacterZero::CharacterZero(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p)
 {

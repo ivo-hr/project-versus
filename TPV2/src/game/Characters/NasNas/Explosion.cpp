@@ -2,6 +2,7 @@
 #include "../../Utils/AnimationManager.h"	﻿
 #include "Explosion.h"
 #include"../../PlayingState/FightManager.h"
+#include "../../../utils/CheckML.h"
 
 Explosion::Explosion(FightManager* manager, b2Vec2 pos, int power, int type) :
 	Entity(manager, pos, 7.5f, 5.f)

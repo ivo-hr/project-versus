@@ -2,12 +2,13 @@
 #include "PlayingState.h"
 #include "ExitState.h"
 #include "../PlayingState/FightManager.h"
-
+#include "../../utils/CheckML.h"
 
 ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfplayer(2) {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
    // background = &sdl->images().at("selectbg");
+ 
     aleatorio = new Button(&sdl->images().at("aleatorioSelect"), ts(270), ts(50), ts(30), ts(30));;
     nasnas = nullptr;
     zero = new Button(&sdl->images().at("nasNasSelect"), ts(30), ts(50), ts(30), ts(30));
@@ -66,8 +67,6 @@ ConfigState::~ConfigState()
     delete play;
     delete teammode;
     delete normalmode;
-    delete team1;
-    delete team2;
     delete config;
     for (auto e : playerPointers)delete e;
     for (auto e : playerTexture)delete e;

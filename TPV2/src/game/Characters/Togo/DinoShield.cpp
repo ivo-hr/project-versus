@@ -3,6 +3,7 @@
 #include "Togo.h"
 #include "DinoShield.h"
 #include"../../PlayingState/FightManager.h"
+#include "../../../utils/CheckML.h"
 
 DinoShield::DinoShield(FightManager* manager, b2Vec2 pos) :
 	Entity(manager, pos, 7.5, 5)
