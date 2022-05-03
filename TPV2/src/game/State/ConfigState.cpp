@@ -193,8 +193,16 @@ void ConfigState::configTeamChoose()
         p.push_back(p1);
     }
     for (int i = 0; i < 4; i++) {
-        p[i][0]->active(true);
-        charactersTeam[i] = 0;
+        if (i < 2) {
+            p[i][0]->active(true);
+            charactersTeam[i] = 0;
+        }
+        else
+        {
+            p[i][1]->active(true);
+            charactersTeam[i] = 1;
+        }
+      
     }
 }
 
