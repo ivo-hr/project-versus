@@ -1013,14 +1013,13 @@ void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 	//Portrait y posiciones
 	int w_ = manager->GetDeathZone()->w;
 	int h_ = manager->GetDeathZone()->h;
-	int s = screenadjust;
 	int dist = w_/ numOfPlayer;
 	int offset = (w_ / 2) / numOfPlayer - w_/30;
 	int x = (int)(playerPosition * dist + offset);
 	int y = h_ - (h_ / 6);
 	portrait->render({ x, y, w_ / 15, w_ / 15 });
 	//Porcentaje
-	string fontstring = "nes" + to_string(7 * s);
+	string fontstring = "nes" + to_string(7 * w_/sdl->width());
 	auto& font = sdl->fonts().at(fontstring);
 	string damage = to_string(damageTaken) + "%";
 	if (r < 255) {
@@ -1034,7 +1033,7 @@ void Character::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 	}
 	Uint32 color = r * pow(16, 6) + g * pow(16, 4);
 	SDL_Color c = build_sdlcolor(color);
-	string fontstringp = "nes" + to_string(10 * s);
+	string fontstringp = "nes" + to_string(10 * w_ / sdl->width());
 	auto& fontp = sdl->fonts().at(fontstringp);
 	string key = fontstringp + damage + to_string(c.r) + to_string(c.g) + to_string(c.b);
 	if (sdl->msgs().count(key) == 0) {
