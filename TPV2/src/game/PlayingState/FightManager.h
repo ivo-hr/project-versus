@@ -33,8 +33,15 @@ class FightManager :public StateMachine
 
 	std::vector<Entity*> entities;
 	std::vector<Character*> characters;
+
+	// Team mode
 	std::vector<Character*> team1;
 	std::vector<Character*> team2;
+	vector<vector<int>>team1DeadStats;
+	vector<vector<int>>team2DeadStats;
+	vector<Texture*>team1DeadTextures;
+	vector<Texture*>team2DeadTextures;
+
 
 	SDLUtils* sdl;
 
@@ -66,7 +73,7 @@ class FightManager :public StateMachine
 
 	void MoveCamera();
 
-	vector<Texture*>winnersTextures;
+	vector<Texture*>deadTextures; // Textures of dead characters for gameover stats
 
 	int winnerInput;
 	vector<vector<int>>gameStats;
@@ -116,7 +123,7 @@ public:
 	double GetScreenRatio();
 	double GetScreeAdjust();
 
-	vector<Texture*>getWinnersTextures() { return winnersTextures; }
+	vector<Texture*>getWinnersTextures() { return deadTextures; }
 
 	std::vector<Entity*> GetOponents(Entity* current);
 	std::vector<Entity*> GetEntities(Entity* current);

@@ -100,7 +100,7 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 	cameraOffset *= screenAdjust;
 
 	
-	for (auto i = 0u; i < 600; i++) {
+	for (auto i = 0u; i < 1000; i++) {
 		string s = "nes" + to_string(i);
 		sdl->fonts().emplace(s, Font("resources/fonts/NES-Chimera.ttf", i));
 	}
@@ -383,56 +383,82 @@ bool FightManager::RemoveCharacter(Character* character)
 	{
 		if (characters[i] == character)
 		{
-			addCharacterStats(characters[i]);
-			winnersTextures.push_back(characters[i]->getPortrait());
-			for (int j = i + 1; j < characters.size(); j++)
-			{
-				characters[j - 1] = characters[j];
+			if (!teammode) {
+				addCharacterStats(characters[i]);
+				deadTextures.push_back(characters[i]->getPortrait());
 			}
-			characters.pop_back();
-			if (teammode) {
-				if (i < 2) {
+			else {
+				bool belongsTeam1 = false;
+				for (auto e : team1) {
+					if (e == character)belongsTeam1 = true;
+				}
+				if (belongsTeam1) { // Si pertenece al team1
+					vector<int>stats;
+					stats.push_back(characters[i]->getDeaths());
+					stats.push_back(characters[i]->getDamageTaken());
+					stats.push_back(characters[i]->getKills());
+					team1DeadStats.push_back(stats);
+					team1DeadTextures.push_back(characters[i]->getPortrait());
 					for (int x = i + 1; x < team1.size(); x++)
 					{
 						team1[x - 1] = team1[x];
 					}
 					team1.pop_back();
 				}
-				else
+				else // Si pertenece al team2
 				{
-					for (int y = (i%2) + 1; y < team2.size(); y++)
+					vector<int>stats;
+					stats.push_back(characters[i]->getDeaths());
+					stats.push_back(characters[i]->getDamageTaken());
+					stats.push_back(characters[i]->getKills());
+					team2DeadStats.push_back(stats);
+					team2DeadTextures.push_back(characters[i]->getPortrait());
+					for (int y = (i % 2) + 1; y < team2.size(); y++)
 					{
 						team2[y - 1] = team2[y];
 					}
 					team2.pop_back();
 				}
 			}
+			for (int j = i + 1; j < characters.size(); j++)
+			{
+				characters[j - 1] = characters[j];
+			}
+			characters.pop_back();
 		}
 	}
 	listener->RemoveCharacter(character);
 	RemoveEntity(character);
 	if (!teammode) {
 		if (characters.size() == 1 && !endGame) {
-			/*	addCharacterStats(characters[0]);
-				winnerInput = characters[0]->getInput();
-				winnersTextures.push_back(characters[0]->getPortrait());
-				entities.clear();
-				characters.clear();
-				stage->UnLoadStage();*/
 			addCharacterStats(characters[0]);
 			winnerInput = characters[0]->getInput();
-			winnersTextures.push_back(characters[0]->getPortrait());
+			deadTextures.push_back(characters[0]->getPortrait());
 			endGameTimer = SDL_GetTicks();
 			endGame = true;
-			/*while (time+1500>SDL_GetTicks())
-			{
-			}
-			getState()->next();*/
 		}
 	}
 	else
 	{
-		if ((team1.size() == 0 || team2.size() == 0) && !endGame) {
+		if (team1.size() == 0 && !endGame) { // Si team1 pierde
+			for (auto e : team1DeadStats)gameStats.push_back(e);
+			for (auto e : team1DeadTextures)deadTextures.push_back(e);
+			for (auto e : team2DeadStats)gameStats.push_back(e);
+			for (auto e : team2DeadTextures)deadTextures.push_back(e);
+			for (auto e : characters)addCharacterStats(e);
+			for (auto e : characters)deadTextures.push_back(e->getPortrait());
+			winnerInput = characters[0]->getInput();
+			endGameTimer = SDL_GetTicks();
+			endGame = true;
+		}
+		else if (team2.size() == 0 && !endGame) { // Si team2 pierde
+			for (auto e : team2DeadStats)gameStats.push_back(e);
+			for (auto e : team2DeadTextures)deadTextures.push_back(e);
+			for (auto e : team1DeadStats)gameStats.push_back(e);
+			for (auto e : team1DeadTextures)deadTextures.push_back(e);
+			for (auto e : characters)addCharacterStats(e);
+			for (auto e : characters)deadTextures.push_back(e->getPortrait());
+			winnerInput = characters[0]->getInput();
 			endGameTimer = SDL_GetTicks();
 			endGame = true;
 		}
@@ -554,7 +580,11 @@ void FightManager::onNewGame()
 	team1.clear();
 	team2.clear();
 	stage->UnLoadStage();
-	winnersTextures.clear();
+	deadTextures.clear();
+	team1DeadStats.clear();
+	team1DeadTextures.clear();
+	team2DeadStats.clear();
+	team2DeadTextures.clear();
 	endGame = false;
 	endGameTimer = 0;
 	gameStats.clear();
