@@ -15,6 +15,9 @@ GatoEspia::GatoEspia(FightManager* mngr, b2Vec2 pos, char input,int p) : Charact
 	//smolH = &sdl->soundEffects().at("zeroSmolHit");
 
 	anim = new AnimationManager(this, texture, spData);
+
+	blinkContainer = &sdl->images().at("blinkCont");
+	blinkfondo = &sdl->images().at("blinkContb");
 }
 
 GatoEspia::~GatoEspia()
@@ -543,8 +546,31 @@ void GatoEspia::Counter(int frameNumber)
 
 void GatoEspia::drawHUD(int w, int h, int numOfPlayer, int screenadjust)
 {
-	Character::drawHUD(w,h,numOfPlayer,screenadjust);
-	
+	Character::drawHUD(w,h,numOfPlayer,screenadjust); 
+
+	int dist = (w - 50 * screenadjust) / numOfPlayer;
+	int offset = screenadjust * (300 / numOfPlayer);
+	int x = (int)(playerPosition * dist + offset);
+	int y = 300 * screenadjust;
+
+	SDL_Rect cont = {
+		x - (30 * screenadjust),
+		y + (51.5f * screenadjust) - (47 * screenadjust) ,
+		20 * screenadjust,
+		47 * screenadjust };
+
+	blinkfondo->render(cont);
+
+	SDL_Rect blinkFill = { 
+		x - (27 * screenadjust), 
+		y + (51 * screenadjust) - (46 * screenadjust * blinks / maxBlinks) , 
+		14 * screenadjust, 
+		46 * screenadjust * blinks / maxBlinks };
+
+	SDL_SetRenderDrawColor(sdl->renderer(), 0x53, 0xed, 0xee, 0xff);
+	SDL_RenderFillRect(sdl->renderer(), &blinkFill);
+
+	blinkContainer->render(cont);
 }
 
 

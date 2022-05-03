@@ -28,6 +28,10 @@ public:
 
 	virtual void drawHUD(int w, int h, int numOfPlayer, int screenadjust)override;
 private:
+
+	Texture* blinkContainer = nullptr;
+	Texture* blinkfondo = nullptr;
+
 	float maxBlinks = 3.2;
 	float blinks = maxBlinks;
 	float blinkRecover = 0.008;

@@ -98,8 +98,8 @@
       "base": 0,
       "damage": 0,
       "multiplier": 0,
-      "startUp": 10,
-      "totalFrames": 30
+      "startUp": 4,
+      "totalFrames": 24
     },
     {
       "id": "specialDHit",

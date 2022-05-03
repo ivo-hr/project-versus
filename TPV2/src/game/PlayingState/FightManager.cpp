@@ -190,6 +190,11 @@ void FightManager::Update()
 
 		stage->Update(&hitLagCam);
 
+		for (Character* c : characters)
+		{
+			c->drawHUD(GetActualWidth(), GetActualHeight(), numPlayers, screenAdjust);
+		}
+
 		for (int i = entities.size() - 1; i >= 0; i--)
 		{
 			entities[i]->updateParticles();

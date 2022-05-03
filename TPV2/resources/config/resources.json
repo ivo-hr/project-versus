@@ -77,7 +77,9 @@
     { "id" : "fire", "file" : "resources/images/fuego.png"},
     { "id" : "backToMenu", "file" : "resources/images/backtomenu.png"},
     { "id" : "nasNasSelect", "file" : "resources/images/NasNasSelect.png"},
-    { "id" : "aleatorioSelect", "file" : "resources/images/aleatorioSel.png"}
+    { "id" : "aleatorioSelect", "file" : "resources/images/aleatorioSel.png"},
+    { "id" : "blinkCont", "file" : "resources/images/blinkCont.png"},
+    { "id" : "blinkContb", "file" : "resources/images/blinkContb.png"}
   ],
   
   "messages" : [
