@@ -35,10 +35,6 @@ Makt::Makt(FightManager* mngr, b2Vec2 pos, char input,int p) :
 
 Makt::~Makt()
 {
-	if (ball != nullptr)
-	{
-		manager->RemoveEntity(ball);
-	}
 }
 
 void Makt::BasicNeutral(int frameNumber)
