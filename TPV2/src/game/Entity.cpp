@@ -54,6 +54,7 @@ Entity::Entity(FightManager* mngr, b2Vec2 position, float w, float h) : manager(
 
 Entity::~Entity()
 {
+	for (Particle* ent : particulas)RemoveParticle(ent);
 	manager->GetWorld()->DestroyBody(body);
 }
 

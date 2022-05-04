@@ -68,14 +68,14 @@ void ConfigurationState::update() {
     if (muscm->mouseClick() || muscm->pointerClick(p1->getRect())&&enter && keyRelease ) {
         if (musicV > 0) {
             musicV--;
-            Music::setMusicVolume((128 * musicV) / 10);
+            Music::setMusicVolume((int)(128 * musicV) / 10);
             keyRelease = false;
         }
     }
     else if (muscp->mouseClick()  || muscp->pointerClick(p1->getRect()) && enter && keyRelease) {
         if (musicV < 10) {
             musicV++;
-            Music::setMusicVolume((128 * musicV) / 10);
+            Music::setMusicVolume((int)(128 * musicV) / 10);
             keyRelease = false;
         }
 
@@ -83,7 +83,8 @@ void ConfigurationState::update() {
     else if (sfxm->mouseClick() || sfxm->pointerClick(p1->getRect()) && enter && keyRelease) {
         if (sfxV > 0) {
             sfxV--;
-            SoundEffect::setChannelVolume((128 * sfxV) / 10);
+            SoundEffect::setChannelVolume((int)(128 * sfxV) / 10);
+            SoundEffect::setChannelVolume((int)(128 * sfxV) / 10,1);
 
             keyRelease = false;
 
@@ -94,7 +95,8 @@ void ConfigurationState::update() {
     else if (sfxp->mouseClick() || sfxp->pointerClick(p1->getRect()) && enter && keyRelease) {
         if (sfxV < 10) {
             sfxV++;
-            SoundEffect::setChannelVolume((128 * sfxV) / 10);
+            SoundEffect::setChannelVolume((int)(128 * sfxV) / 10);
+            SoundEffect::setChannelVolume((int)(128 * sfxV) / 10,1);
 
             keyRelease = false;
 
