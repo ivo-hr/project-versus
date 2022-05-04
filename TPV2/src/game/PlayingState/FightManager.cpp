@@ -197,6 +197,7 @@ void FightManager::Update()
 			{
 				RemoveCharacter(aux);
 			}
+			if(entities.size()>1)
 			i--;
 		}
 	}
