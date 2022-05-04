@@ -114,6 +114,8 @@ protected:
 	int kills;
 	Entity* lastCharacter; // El ultimo jugador que golpeo a este
 
+	bool toDelete = false;
+
 public:
 	string nombre;
 
@@ -133,7 +135,7 @@ public:
 	virtual void DeleteOponent(Entity* ent);
 
 	virtual void CheckHits();
-	virtual void OnDeath() { manager->RemoveEntity(this); };
+	virtual void OnDeath() { toDelete = true; };
 	virtual bool GetHit(attackData a, Entity* attacker) = 0;
 
 	FightManager* GetManager() { return manager; };
@@ -160,4 +162,5 @@ public:
 
 	Texture* getTexture() { return texture; }
 	//virtual void SendToHUD(Texture* tex);
+	bool ToDelete() { return toDelete; };
 };

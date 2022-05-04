@@ -162,19 +162,42 @@ void FightManager::Update()
 	}
 	else
 	{
+		//update
 		for (auto i = 0u; i < entities.size(); i++)
 		{
 			entities[i]->update();
 		}
+
+		//Checkeamos todas las colisiones
+		for (Entity* ent : entities)
+		{
+			ent->CheckHits();
+		}
 	}
 
-	for (Entity* ent : entities)
-	{
-		ent->CheckHits();
-	}
+	//Dibuja las entidades
 	for (int i = entities.size() - 1; i >= 0; i--)
 	{
 		entities[i]->draw(&camera);
+	}
+
+	//Elimina entidades a borrar;
+	for (auto i = 0u; i < entities.size(); i++)
+	{
+		if (entities[i]->ToDelete())
+		{
+			Character* aux = static_cast<Character*>(entities[i]);
+
+			if (aux == nullptr)
+			{
+				RemoveEntity(entities[i]);
+			}
+			else
+			{
+				RemoveCharacter(aux);
+			}
+			i--;
+		}
 	}
 
 	while (addedDelay > 0)

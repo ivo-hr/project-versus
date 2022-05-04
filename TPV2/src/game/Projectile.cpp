@@ -42,7 +42,7 @@ void Projectile::update()
 	}
 	else
 	{
-		manager->RemoveEntity(this);
+		toDelete = true;
 	}
 }
 
@@ -96,7 +96,7 @@ void Projectile::CheckHits()
 						1, "sHitParticle", oponents[j]));
 				}
 				if (reflected == 0)
-					manager->RemoveEntity(this);
+					toDelete = true;
 			}
 		}
 	}

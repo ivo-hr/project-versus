@@ -17,6 +17,7 @@ public:
 	virtual void CheckHits() override {};
 	virtual bool GetHit(attackData a, Entity* attacker);
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox; };
+	virtual void setToDelete() { toDelete = true; }
 private:
 	int spriteX = 896;
 	int spriteY = 82;

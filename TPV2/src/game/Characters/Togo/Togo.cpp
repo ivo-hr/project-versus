@@ -246,7 +246,7 @@ void Togo::SpecialNeutral(int frameNumber)
 		if (/*frameNumber == attacks["specialN"].totalFrames || */ !input->special())
 		{
 			anim->StartAnimation("idle");
-			manager->RemoveEntity(dShield);
+			dShield->setToDelete();
 			dShield = nullptr;
 			currentMove = nullptr;
 			moveFrame = -1;
@@ -420,7 +420,7 @@ bool Togo::GetHit(attackData a, Entity* attacker)
 {
 	if (dShield != nullptr)
 	{
-		manager->RemoveEntity(dShield);
+		dShield->setToDelete();
 		dShield = nullptr;
 	}
 	Character::GetHit(a,attacker);
@@ -431,7 +431,7 @@ void Togo::update()
 {
 	if (dShield != nullptr && stun > 0)
 	{
-		manager->RemoveEntity(dShield);
+		dShield->setToDelete();
 		dShield = nullptr;
 	}
 	Character::update();

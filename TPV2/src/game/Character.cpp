@@ -856,7 +856,7 @@ void Character::OnDeath()
 	}
 
 	if (lives <= 0) {
-		manager->RemoveCharacter(this);
+		toDelete = true;
 	}
 
 }

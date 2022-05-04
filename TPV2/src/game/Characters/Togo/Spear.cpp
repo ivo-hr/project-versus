@@ -79,7 +79,7 @@ void Spear::CheckHits()
 
 void Spear::OnDeath() {
 	owner->SetSpear(true);
-	manager->RemoveEntity(this);
+	Projectile::OnDeath();
 }
 
 void Spear::draw(SDL_Rect* camera)

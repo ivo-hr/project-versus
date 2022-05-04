@@ -103,7 +103,7 @@ bool MaktBall::PickUp()
 {
 	if (physic)
 	{
-		manager->RemoveEntity(this);
+		toDelete = true;
 		return true;
 	}
 	else
