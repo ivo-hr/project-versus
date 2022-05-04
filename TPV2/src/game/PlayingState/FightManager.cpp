@@ -114,8 +114,8 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 		}
 	}
 	// En ExitState se borran el state y el exitState, el savedState se borra en esta destructora
-	//if(getSavedState()!=nullptr)
-	//delete getState();
+	delete getState();
+
 }
 
 FightManager::~FightManager()

@@ -70,7 +70,7 @@ void ExitState::update() {
     if (yes->mouseClick()) {
         fmngr->userExit();
         State* saved = fmngr->getExitState();
-        delete saved;
+        fmngr->setState(saved);
         delete this;
     }
 }
