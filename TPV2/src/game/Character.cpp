@@ -566,8 +566,7 @@ bool Character::GetHit(attackData a, Entity* attacker)
 					int poder = (statePower + a.power) / 2;
 					auto plasma = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 1);
 					manager->AddEntity(plasma);
-					manager->AddOponnent(plasma);
-					plasma->SetOponents(oponents);
+					plasma->SetOponents(manager->GetEntities(plasma));
 					manager->MoveToFront(plasma);
 					efEstado = none;
 					statePower = 0;
@@ -584,8 +583,7 @@ bool Character::GetHit(attackData a, Entity* attacker)
 					int poder = (statePower + a.power) / 2;
 					auto vapor = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 0);
 					manager->AddEntity(vapor);
-					manager->AddOponnent(vapor);
-					vapor->SetOponents(oponents);
+					vapor->SetOponents(manager->GetEntities(vapor));
 					manager->MoveToFront(vapor);
 					efEstado = none;
 					statePower = 0;

@@ -177,15 +177,15 @@ void NasNas::SpecialNeutral(int frameNumber)
 		attackData aaa = attacks["specialN"];
 		if (estado == fire)
 		{
-			aaa.damage = 20;
+			aaa.damage = 10;
 			aaa.base = 10;
 			aaa.estado = fire;
 			aaa.power = 25;
 		}
 		else if (estado == water)
 		{
-			aaa.damage = 10;
-			aaa.base = 20;
+			aaa.damage = 5;
+			aaa.base = 15;
 			aaa.estado = water;
 			aaa.power = 20;
 		}
@@ -233,7 +233,7 @@ void NasNas::SpecialForward(int frameNumber)
 			hitbox.y += 20;
 			hitbox.h /= 1.5;
 			hitbox.w *= 3;
-			aaa.damage = 35;
+			aaa.damage = 25;
 			aaa.base = 15;
 			aaa.estado = fire;
 			aaa.power = 50;
@@ -245,7 +245,7 @@ void NasNas::SpecialForward(int frameNumber)
 			hitbox.h /= 3;
 			hitbox.w *= 6;
 			aaa.damage = 20;
-			aaa.base = 30;
+			aaa.base = 25;
 			aaa.estado = water;
 			aaa.power = 45;
 		}
@@ -256,7 +256,7 @@ void NasNas::SpecialForward(int frameNumber)
 			hitbox.h /= 8;
 			hitbox.w *= 8;
 			aaa.damage = 12;
-			aaa.base = 12;
+			aaa.base = 1;
 			aaa.estado = electric;
 			aaa.power = 50;
 		}
@@ -310,20 +310,20 @@ void NasNas::SpecialUpward(int frameNumber)
 
 		if (estado == fire)
 		{
-			aaa.damage = 45;
+			aaa.damage = 35;
 			aaa.base = 25;
 			aaa.estado = fire;
 		}
 		else if (estado == water)
 		{
 			aaa.damage = 30;
-			aaa.base = 40;
+			aaa.base = 35;
 			aaa.estado = water;
 		}
 		else if (estado == electric)
 		{
 			aaa.damage = 20;
-			aaa.base = 20;
+			aaa.base = 10;
 			aaa.estado = electric;
 		}
 		hitboxes.push_back(new Hitbox(hitbox, aaa, 10, OnHitData(20, false, false)));

@@ -83,6 +83,7 @@ void MaktBall::CheckHits()
 
 					physic = true;
 					body->SetGravityScale(10.f);
+					body->SetLinearDamping(3.);
 				}
 			}
 		}

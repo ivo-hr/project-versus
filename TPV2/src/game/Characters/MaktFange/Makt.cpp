@@ -656,122 +656,19 @@ void Makt::update()
 
 bool Makt::GetHit(attackData a, Entity* attacker)
 {
-	if (shield)
+	if (Character::GetHit(a, attacker))
 	{
-		//Actualiza el da�o
-		damageTaken += (int)(a.damage * 0.4f);
-		return true;
-	}
-	if (dash)
-	{
-		return false;
-	}
-	else if (!shield && !dash)
-	{
-		body->SetGravityScale(10.0f);
-		currentMove = nullptr;
-		moveFrame = -1;
-		if (ball == nullptr) {
+		if (ball == nullptr && !shield) {
 			anim->StartAnimation("stunB");
 		}
-		else {
+		else if(!shield)
+		{
 			anim->StartAnimation("stun");
 		}
 		anim->update();
-		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
-
-		stun = (recoil / 1.8f) + 4;
-
-		//Actualiza el da�o
-		damageTaken += a.damage;
-
-		b2Vec2 aux = a.direction;
-
-		if (recoil > 90)
-		{
-			manager->KillingBlow();
-
-			AddParticle(new Particle(
-				Vector2D(
-					manager->ToSDL(body->GetPosition().x),
-					manager->ToSDL(body->GetPosition().y)),
-				1, "killVfx", this));
-			AddParticle(new Particle(
-				Vector2D(
-					manager->ToSDL(body->GetPosition().x),
-					manager->ToSDL(body->GetPosition().y)),
-				1, "killHit", this));
-		}
-
-		aux *= recoil;
-		aux.y *= -1;
-		aux.x *= attacker->GetDir();
-
-		if (a.estado != none)
-		{
-			if (efEstado != a.estado && efEstado != none)
-			{
-				if ((efEstado == fire && a.estado == electric) || (efEstado == electric && a.estado == fire))
-				{
-					efEstado = none;
-					statePower = 0;
-					stateCont = 0;
-					//explosión de fuego/rayo
-				}
-				else if ((efEstado == fire && a.estado == water) || (efEstado == water && a.estado == fire))
-				{
-					if (efEstado == water)
-					{
-						maxSpeed += ralentizar;
-						ralentizar = 0;
-					}
-					efEstado = none;
-					statePower = 0;
-					stateCont = 0;
-					//explosión de fuego/agua
-				}
-				else if ((efEstado == water && a.estado == electric) || (efEstado == electric && a.estado == water))
-				{
-					if (efEstado == water)
-					{
-						maxSpeed += ralentizar;
-						ralentizar = 0;
-					}
-					efEstado = wElectric;
-					statePower += a.power;
-					stateCont = 0;
-
-				}
-			}
-			else if (efEstado == a.estado)
-			{
-				stateCont = 0;
-				statePower = a.power;
-				if (efEstado == electric)
-				{
-					stun += statePower * 1.5;
-				}
-			}
-			else if (efEstado == none)
-			{
-				efEstado = a.estado;
-				statePower = a.power;
-				if (efEstado == electric)
-				{
-					stun += statePower * 1.5;
-				}
-				else if (efEstado == water)
-				{
-					ralentizar = maxSpeed * ((float)statePower / 100);
-					maxSpeed -= ralentizar;
-				}
-			}
-		}
-		//Produce el knoback..
-		body->SetLinearVelocity(aux);
 		return true;
 	}
-
+	return false;
 }
 
 void Makt::StartJump(int frameNumber)
