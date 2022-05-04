@@ -34,7 +34,11 @@ Explosion::~Explosion()
 
 void Explosion::update()
 {
-
+	time++;
+	if (time >= duration)
+	{
+		toDelete = true;
+	}
 }
 void Explosion::CheckHits()
 {

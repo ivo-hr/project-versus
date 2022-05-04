@@ -21,4 +21,6 @@ private:
 	int spriteX = 896;
 	int spriteY = 82;
 	float anim = 0;
+	int duration = 20;
+	int time = 0;
 };

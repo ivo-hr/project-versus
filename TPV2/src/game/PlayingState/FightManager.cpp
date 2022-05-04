@@ -169,9 +169,9 @@ void FightManager::Update()
 		}
 
 		//Checkeamos todas las colisiones
-		for (Entity* ent : entities)
+		for (auto i = 0u; i < entities.size(); i++)
 		{
-			ent->CheckHits();
+			entities[i]->CheckHits();
 		}
 	}
 
