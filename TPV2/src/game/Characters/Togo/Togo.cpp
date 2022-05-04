@@ -246,8 +246,10 @@ void Togo::SpecialNeutral(int frameNumber)
 		if (/*frameNumber == attacks["specialN"].totalFrames || */ !input->special())
 		{
 			anim->StartAnimation("idle");
-			dShield->setToDelete();
-			dShield = nullptr;
+			if (dShield != nullptr) {
+				dShield->setToDelete();
+				dShield = nullptr;
+			}
 			currentMove = nullptr;
 			moveFrame = -1;
 		}
