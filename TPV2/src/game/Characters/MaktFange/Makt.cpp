@@ -270,7 +270,7 @@ void Makt::SpecialUpward(int frameNumber)
 	}
 	else if (frameNumber >= attacks["specialU"].totalFrames)
 	{
-		recovery = true;
+		recovery = false;
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
