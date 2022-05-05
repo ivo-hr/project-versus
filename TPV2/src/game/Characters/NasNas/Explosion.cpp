@@ -19,8 +19,7 @@ Explosion::Explosion(FightManager* manager, b2Vec2 pos, int power, int type) :
 		data.damage = 10;
 		data.multiplier = 0.4;
 	}
-	else if (type == 1);
-	{
+	else{
 		data.base = 10;
 		data.damage = power / 2;
 		data.multiplier = 0.4;
