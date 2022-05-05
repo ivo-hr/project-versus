@@ -80,6 +80,11 @@ protected:
 
 	int r = 0;
 	int g = 255;
+
+	int arrowCont = 0;
+	bool invencible = false;
+	bool drawArrow=false;
+	int invencibleCont = 0;
 public:
 
 	Character(FightManager* manager, b2Vec2 pos, char input,int player, float w = 3.f, float h = 3.f);

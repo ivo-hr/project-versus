@@ -339,6 +339,10 @@ void Makt::update()
 {
 	// Para probar mandos
 	//input->controllerTest();
+	if (invencible && invencibleCont + 3000 < SDL_GetTicks()) {
+		invencible = false;
+		dash = false;
+	}
 
 	updateParticles();
 

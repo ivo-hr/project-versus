@@ -137,6 +137,10 @@ void Character::update()
 {
 	// Para probar mandos
 	//input->controllerTest();
+	if (invencible && invencibleCont + 3000 < SDL_GetTicks()) {
+		invencible = false;
+		dash = false;
+	}
 
 	updateParticles();
 
@@ -430,12 +434,13 @@ void Character::update()
 void Character::draw()
 {
 	//xd
-	Entity::draw();
+	
+		Entity::draw();
 
-	if (!alive) return;
+		if (!alive) return;
 
-	anim->render();
-
+		anim->render();
+	
 
 	//if (debug)
 #ifdef _DEBUG
@@ -461,12 +466,14 @@ void Character::draw()
 void Character::draw(SDL_Rect* camera)
 {
 	//xd
-	Entity::draw(camera);
+	if (drawArrow) {
+		Entity::draw(camera);
 
-	if (!alive) return;
+		if (!alive) return;
 
-	anim->render(camera);
+		anim->render(camera);
 
+	}
 	SDL_Rect aux = hurtbox;
 
 	aux.x -= camera->x;
@@ -479,6 +486,18 @@ void Character::draw(SDL_Rect* camera)
 	aux.h *= (manager->GetActualHeight() / (float)camera->h);
 
 	int xpos = aux.x + (aux.w / 2);
+
+	if (invencible)
+	{
+		if (arrowCont + 100 < SDL_GetTicks()) {
+			arrowCont = SDL_GetTicks();
+			drawArrow = !drawArrow;
+		}		
+	}
+	else
+	{
+		drawArrow = true;
+	}
 
 	arrowsTex->render(arrowSrc, { xpos - 15, aux.y - 44, 30, 16 });
 
@@ -903,6 +922,11 @@ void Character::Respawn()
 	anim->StartAnimation("idle");
 	r = 0;
 	g = 255;
+
+	invencible = true;
+	dash = true;
+	arrowCont = 0;
+	invencibleCont = SDL_GetTicks();
 }
 
 void Character::Taunt(int frameNumber) {
