@@ -624,6 +624,7 @@ void FightManager::onNewGame()
 	endGame = false;
 	endGameTimer = 0;
 	gameStats.clear();
+	
 	int scount = 4;
 	int startticks = 0;
 

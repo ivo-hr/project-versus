@@ -587,7 +587,7 @@ void ConfigState::playerMenuRender()
             j = 1;
         } 
         charselbg->render({ (int)(c%4 * dist + offset),(int)((ts(80)*j)+ts(50)),(int)ts(40),(int)ts(40)});
-        showText(charName[c], ts(8), (int)(c % 4 * dist + offset)-ts(10), (int)((ts(80) * j) + ts(100)), build_sdlcolor(0x33FFE900));
+        showText(charName[c], ts(8), (int)(c % 4 * dist + offset)-ts(30), (int)((ts(80) * j) + ts(100)), build_sdlcolor(0x33FFE900));
     }
     int dist = (w - ts(50)) / numOfplayer;
     int offset = dist - ts(110);
@@ -737,18 +737,18 @@ void ConfigState::initcharact()
  
     nasnas = nullptr;
     zero = new Button(&sdl->images().at("nasNasSelect"), offset , ts(56), ts(30), ts(30));
-    charName.push_back("Nasnas");
+    charName.push_back("    Nasnas");
     gatoespia = new Button(&sdl->images().at("blinkMasterSelect"), dist + offset, ts(56), ts(30), ts(30));
-    charName.push_back("Blink Master");
+    charName.push_back(" Blink Master");
     maketo = new Button(&sdl->images().at("maktSelect"), dist*2 + offset, ts(56), ts(30), ts(30));
-    charName.push_back("Makt Fenge");
+    charName.push_back("  Makt Fenge");
     togo = new Button(&sdl->images().at("dinoSoulsSelect"), dist*3 + offset, ts(56), ts(30), ts(30));
-    charName.push_back("DinoSouls");
+    charName.push_back("  DinoSouls");
 
-    charName.push_back("Proximamente");
-    charName.push_back("Proximamente");
-    charName.push_back("Proximamente");
-    charName.push_back("Aleatorio");
+    charName.push_back(" Coming Soon");
+    charName.push_back(" Coming Soon");
+    charName.push_back(" Coming Soon");
+    charName.push_back("    Random");
 
     aleatorio = new Button(&sdl->images().at("aleatorioSelect"), dist * 3 + offset, ts(50)+ts(86), ts(30), ts(30));;
 }

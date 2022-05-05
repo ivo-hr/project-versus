@@ -10,7 +10,7 @@ GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures
     background = &sdl->images().at("gameoverscreen1");
     //fmngr = game;
     winnersTextures_ = winnersTextures;
-    playAgain = new Button(&sdl->images().at("playagain"), ts(170), ts(100), ts(150), ts(100));
+    playAgain = new Button(&sdl->images().at("playagain"), ts(180), ts(70), ts(150), ts(100));
 
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
