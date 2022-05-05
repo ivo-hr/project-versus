@@ -65,7 +65,6 @@ void Stage::LoadJsonStage(std::string fileName, double screenAdjust)
 	fixt.density = 10.0f;
 	fixt.friction = 0.5f;
 	fixt.filter.categoryBits = 2; // 2 para el suelo principal
-	fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
 
 	stage->CreateFixture(&fixt);
 
@@ -87,7 +86,6 @@ void Stage::LoadJsonStage(std::string fileName, double screenAdjust)
 		fi.density = 10.0f;;
 		fi.friction = 0.5f;
 		fi.filter.categoryBits = 4; // 4 para las plataformas que puedes atravesar desde abajo
-		fixt.filter.maskBits = 1; // Colisiona con los personajes (tienen este categoryBits en Entity)
 
 		platforms.push_back(world->CreateBody(&gDef));
 		platforms[i]->CreateFixture(&fi);

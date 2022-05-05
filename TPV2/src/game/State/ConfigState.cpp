@@ -572,11 +572,11 @@ void ConfigState::checkPlayerReady()
             ready = false;
             play->reset();
             return;
-        }
-
-        ready = true;
-
+        } 
     }
+    if (ready)return;
+    ready = true;
+    sdl->soundEffects().at("uiPlay").play(0,1);
 }
 void ConfigState::playerMenuRender()
 {
@@ -615,9 +615,9 @@ void ConfigState::playerMenuRender()
     aleatorio->render();
     config->render();
     if (ready) {
-        play->render();
-        sdl->soundEffects().at("uiPlay").play();
+        play->render(); 
     }
+
         
     for (auto e : playerPointers)e->render();
 }

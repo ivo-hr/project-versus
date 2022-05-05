@@ -827,7 +827,8 @@ SDL_Rect* Character::GetHurtbox()
 void Character::OnDeath()
 {
 
-	sdl->soundEffects().at("death").play();
+	//Canal 1 , (antes a veces no se escucha)
+	sdl->soundEffects().at("death").play(0,1);
 
 	alive = false;
 	lives--;
