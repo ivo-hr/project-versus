@@ -5,7 +5,7 @@
 #include "../Utils/PlayerSelectRect.h"
 
 class ConfigState : public State {
-    Texture* background;
+    Texture* background , *charselbg;
     int numOfplayer;
     Button *zero, *gatoespia, *maketo ,*togo , *nasnas ,*aleatorio , *plusB, *minusB ,*play;
     Button* teammode, * normalmode , *team1, *team2 ,*config;
@@ -33,7 +33,7 @@ class ConfigState : public State {
     vector<Texture*> charactTexture;
     vector<vector<Button*>> p;
     vector<Button*> maps;
-
+    vector<string> charName;
     void configTeamChoose();
    
     void searchInput();
@@ -47,6 +47,7 @@ class ConfigState : public State {
     void mapMenuRender();
     void mapcheckButtonPointerClick();
     void mapcheckButtonMouseClick();
+    void initcharact();
     int timerMapkeyRelease = 0;
 public:
 

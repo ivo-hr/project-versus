@@ -7,14 +7,7 @@
 ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfplayer(2) {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
-   // background = &sdl->images().at("selectbg");
- 
-    aleatorio = new Button(&sdl->images().at("aleatorioSelect"), ts(270), ts(50), ts(30), ts(30));;
-    nasnas = nullptr;
-    zero = new Button(&sdl->images().at("nasNasSelect"), ts(30), ts(50), ts(30), ts(30));
-    gatoespia = new Button(&sdl->images().at("blinkMasterSelect"), ts(90), ts(50), ts(30), ts(30));
-    maketo = new Button(&sdl->images().at("maktSelect"), ts(150), ts(50), ts(30), ts(30));
-    togo = new Button(&sdl->images().at("dinoSoulsSelect"), ts(210), ts(50), ts(30), ts(30));
+    initcharact();
     plusB = new Button(&sdl->images().at("pB"), ts(480), ts(210), ts(30), ts(30));
     minusB = new Button(&sdl->images().at("mB"), ts(480), ts(240), ts(30), ts(30));
     play = new PlayButton(&sdl->images().at("play"), 0, 0, w, h);
@@ -22,7 +15,7 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     normalmode->active(true);
     teammode = new Button(&sdl->images().at("MTeamC"), &sdl->images().at("MTeamB"), ts(400), ts(2), ts(40), ts(20));
     config = new Button(&sdl->images().at("ConfigBut"), w - ts(25), ts(3) , ts(20), ts(20));
-   // play = new PlayButton(&sdl->images().at("play"), ts(130), ts(40), ts(250), ts(150));
+ 
     configTeamChoose();
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P1")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P2")));
@@ -581,10 +574,21 @@ void ConfigState::checkPlayerReady()
 void ConfigState::playerMenuRender()
 {
     background = &sdl->images().at("selectbg");
+    charselbg = &sdl->images().at("selectcharbg");
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
+    for (auto c = 0u; c < 8; c++) {
+        int dist = (w - ts(50)) / 4;
+        int offset = dist - ts(50);
+        int j = 0;
+        if (c >= 4) {
+            j = 1;
+        } 
+        charselbg->render({ (int)(c%4 * dist + offset),(int)((ts(80)*j)+ts(50)),(int)ts(40),(int)ts(40)});
+        showText(charName[c], ts(8), (int)(c % 4 * dist + offset)-ts(10), (int)((ts(80) * j) + ts(100)), build_sdlcolor(0x33FFE900));
+    }
     int dist = (w - ts(50)) / numOfplayer;
     int offset = dist - ts(110);
     for (auto i = 0u; i < numOfplayer; i++) {
@@ -721,4 +725,30 @@ void ConfigState::mapcheckButtonMouseClick()
             sdl->soundEffects().at("uiSelect").play();
         }
     }
+}
+
+void ConfigState::initcharact()
+{
+    int w = fmngr->GetActualWidth();
+    int h = fmngr->GetActualHeight();
+    int dist = (w - ts(50)) / 4;
+    int offset = dist - ts(50)+ts(7) ;
+    //c % 4 * dist + offset), (int)((ts(80) * j) + ts(50));
+ 
+    nasnas = nullptr;
+    zero = new Button(&sdl->images().at("nasNasSelect"), offset , ts(56), ts(30), ts(30));
+    charName.push_back("Nasnas");
+    gatoespia = new Button(&sdl->images().at("blinkMasterSelect"), dist + offset, ts(56), ts(30), ts(30));
+    charName.push_back("Blink Master");
+    maketo = new Button(&sdl->images().at("maktSelect"), dist*2 + offset, ts(56), ts(30), ts(30));
+    charName.push_back("Makt Fenge");
+    togo = new Button(&sdl->images().at("dinoSoulsSelect"), dist*3 + offset, ts(56), ts(30), ts(30));
+    charName.push_back("DinoSouls");
+
+    charName.push_back("Proximamente");
+    charName.push_back("Proximamente");
+    charName.push_back("Proximamente");
+    charName.push_back("Aleatorio");
+
+    aleatorio = new Button(&sdl->images().at("aleatorioSelect"), dist * 3 + offset, ts(50)+ts(86), ts(30), ts(30));;
 }
