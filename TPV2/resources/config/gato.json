@@ -56,7 +56,7 @@
       "b2vecX": 1,
       "b2vecY": 1,
       "base": 1,
-      "damage": 5,
+      "damage": 10,
       "multiplier": 0.2,
       "startUp": 9,
       "totalFrames": 25
