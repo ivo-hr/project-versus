@@ -14,22 +14,19 @@ public:
 	{
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
+		bool sensor;
+
+		if (one->GetType() == b2_staticBody) sensor = contact->GetFixtureB()->IsSensor();
+		else {
+			swap(one, two);
+			sensor = contact->GetFixtureA()->IsSensor();
+		}
 		// Mira si está en contacto con el suelo
-		if (one->GetType() == b2_staticBody && contact->GetFixtureB()->IsSensor())
+		if (one->GetType() == b2_staticBody && sensor)
 		{
 			for (int i = 0; i < characters.size(); i++)
 			{
 				if (two == characters[i]->GetBody())
-				{
-					characters[i]->SetGround(true);
-				}
-			}
-		}
-		else if (two->GetType() == b2_staticBody && contact->GetFixtureA()->IsSensor())
-		{
-			for (int i = 0; i < characters.size(); i++)
-			{
-				if (one == characters[i]->GetBody())
 				{
 					characters[i]->SetGround(true);
 				}
@@ -40,22 +37,20 @@ public:
 	{
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
+		bool sensor;
+
+		if (one->GetType() == b2_staticBody) sensor = contact->GetFixtureB()->IsSensor();
+		else {
+			swap(one, two);
+			sensor = contact->GetFixtureA()->IsSensor();
+		}
+
 		// Mira si deja de contactar con el suelo
-		if (one->GetType() == b2_staticBody && contact->GetFixtureB()->IsSensor())
+		if (one->GetType() == b2_staticBody && sensor)
 		{
 			for (int i = 0; i < characters.size(); i++)
 			{
 				if (two == characters[i]->GetBody())
-				{
-					characters[i]->SetGround(false);
-				}
-			}
-		}
-		else if (two->GetType() == b2_staticBody && contact->GetFixtureA()->IsSensor())
-		{
-			for (int i = 0; i < characters.size(); i++)
-			{
-				if (one == characters[i]->GetBody())
 				{
 					characters[i]->SetGround(false);
 				}
@@ -67,11 +62,10 @@ public:
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
 
+		if (!one->GetType() == b2_staticBody) swap(one, two);
 		// Mira si es proyectil o personaje que quiere subir a la plataforma (atravesándola)
-		if ((one->GetType() == b2_staticBody && two->GetUserData().pointer == 1) || 
-			(two->GetType() == b2_staticBody && one->GetUserData().pointer == 1) || 
-			(one->GetFixtureList()->GetFilterData().categoryBits == 4 && two->GetLinearVelocity().y < 0) ||
-			(two->GetFixtureList()->GetFilterData().categoryBits == 4 && one->GetLinearVelocity().y < 0))
+		if (one->GetType() == b2_staticBody && (two->GetUserData().pointer == 1 || 
+			(one->GetFixtureList()->GetFilterData().categoryBits == 4 && two->GetLinearVelocity().y < 0)))
 		{ 
 			contact->SetEnabled(false);
 		}
