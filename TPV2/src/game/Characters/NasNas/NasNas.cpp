@@ -30,7 +30,7 @@ void NasNas::BasicNeutral(int frameNumber)
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("basicN");
-		//sdl->soundEffects().at("catAtk0").play();
+		sdl->soundEffects().at("nasAtk0").play();
 	}
 	else if (frameNumber == attacks["basicN"].startUp)
 	{
@@ -64,7 +64,7 @@ void NasNas::BasicForward(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("basicF");
-		//sdl->soundEffects().at("catAtk1").play();
+		sdl->soundEffects().at("nasAtk1").play();
 	}
 	else if (frameNumber == attacks["basicF"].startUp)
 	{
@@ -108,7 +108,7 @@ void NasNas::BasicUpward(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("basicU");
-		//sdl->soundEffects().at("catAtk3").play();
+		sdl->soundEffects().at("nasAtk2").play();
 	}
 	else if (frameNumber == attacks["basicU"].startUp)
 	{
@@ -134,7 +134,7 @@ void NasNas::BasicDownward(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("basicD");
-		//sdl->soundEffects().at("catAtk2").play();
+		sdl->soundEffects().at("nasAtk3").play();
 	}
 	else if (frameNumber == attacks["basicD"].startUp)
 	{
@@ -170,7 +170,6 @@ void NasNas::SpecialNeutral(int frameNumber)
 		}
 		else mana -= 150;
 		anim->StartAnimation("basicF");
-		//sdl->soundEffects().at("catAtk0").play();
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
@@ -181,6 +180,7 @@ void NasNas::SpecialNeutral(int frameNumber)
 			aaa.base = 10;
 			aaa.estado = fire;
 			aaa.power = 25;
+			sdl->soundEffects().at("nasSpecNf").play();
 		}
 		else if (estado == water)
 		{
@@ -188,6 +188,7 @@ void NasNas::SpecialNeutral(int frameNumber)
 			aaa.base = 15;
 			aaa.estado = water;
 			aaa.power = 20;
+			sdl->soundEffects().at("nasSpecNw").play();
 		}
 		else if (estado == electric)
 		{
@@ -195,6 +196,7 @@ void NasNas::SpecialNeutral(int frameNumber)
 			aaa.base = 7;
 			aaa.estado = electric;
 			aaa.power = 25;
+			sdl->soundEffects().at("nasSpecNr").play();
 		}
 		auto spell = new Spell(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y), aaa, b2Vec2(dir, 0));
 		manager->AddEntity(spell);
@@ -220,7 +222,7 @@ void NasNas::SpecialForward(int frameNumber)
 		mana -= 300;
 		moving = false;
 		anim->StartAnimation("basicF");
-		//sdl->soundEffects().at("catAtk1").play();
+		
 
 	}
 	else if (frameNumber == attacks["specialF"].startUp)
@@ -237,6 +239,7 @@ void NasNas::SpecialForward(int frameNumber)
 			aaa.base = 15;
 			aaa.estado = fire;
 			aaa.power = 50;
+			sdl->soundEffects().at("nasSpecSf").play();
 		}
 		else if (estado == water)
 		{
@@ -248,6 +251,7 @@ void NasNas::SpecialForward(int frameNumber)
 			aaa.base = 25;
 			aaa.estado = water;
 			aaa.power = 45;
+			sdl->soundEffects().at("nasSpecSw").play();
 		}
 		else if (estado == electric)
 		{
@@ -259,6 +263,7 @@ void NasNas::SpecialForward(int frameNumber)
 			aaa.base = 1;
 			aaa.estado = electric;
 			aaa.power = 50;
+			sdl->soundEffects().at("nasSpecSr").play();
 		}
 		if (dir == -1)
 		{
@@ -287,12 +292,13 @@ void NasNas::SpecialUpward(int frameNumber)
 		mana -= 10;
 		moving = false;
 		anim->StartAnimation("basicF");
-		//sdl->soundEffects().at("catAtk1").play();
+
 
 	}
 	else if (frameNumber == attacks["specialU"].startUp)
 	{
 		body->SetLinearVelocity(b2Vec2(0, -70));
+		sdl->soundEffects().at("nasSpecUup").play();
 	}
 	else if (frameNumber == attacks["specialU"].totalFrames)
 	{
@@ -307,7 +313,7 @@ void NasNas::SpecialUpward(int frameNumber)
 		hitbox.x -= (hitbox.w / 4);
 		hitbox.y -= 25;
 		aaa.power = 70;
-
+		sdl->soundEffects().at("nasSpecU").play();
 		if (estado == fire)
 		{
 			aaa.damage = 35;
@@ -343,7 +349,7 @@ void NasNas::SpecialDownward(int frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("basicD");
-		//sdl->soundEffects().at("catAtk2").play();
+		sdl->soundEffects().at("nasSpecD").play();
 	}
 	if (frameNumber == attacks["specialF"].startUp)
 	{

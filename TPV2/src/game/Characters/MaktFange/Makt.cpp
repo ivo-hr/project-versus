@@ -47,6 +47,7 @@ void Makt::BasicNeutral(int frameNumber)
 		else {
 			anim->StartAnimation("basicN");
 		}
+		sdl->soundEffects().at("maktAtk0").play();
 	}
 	else if (frameNumber == attacks["basicN"].startUp)
 	{
@@ -76,7 +77,7 @@ void Makt::BasicForward(int frameNumber)
 		else {
 			anim->StartAnimation("basicF");
 		}
-		sdl->soundEffects().at("catAtk1").play();
+		sdl->soundEffects().at("maktAtk1").play();
 
 		body->SetLinearVelocity(b2Vec2(dir * 30, body->GetLinearVelocity().y));
 	}
@@ -116,6 +117,7 @@ void Makt::BasicUpward(int frameNumber)
 		else {
 			anim->StartAnimation("basicU");
 		}
+		sdl->soundEffects().at("maktAtk2").play();
 	}
 	else if (frameNumber == attacks["basicU"].startUp)
 	{
@@ -144,6 +146,7 @@ void Makt::BasicDownward(int frameNumber)
 		else {
 			anim->StartAnimation("basicD");
 		}
+		sdl->soundEffects().at("maktAtk3").play();
 	}
 	else if (frameNumber == attacks["basicD"].startUp)
 	{
@@ -182,7 +185,7 @@ void Makt::SpecialNeutral(int frameNumber)
 		}
 		moving = false;
 		anim->StartAnimation("especialN");
-		//sdl->soundEffects().at("catAtk3").play();
+		sdl->soundEffects().at("maktSpecN").play();
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
@@ -214,7 +217,7 @@ void Makt::SpecialForward(int frameNumber)
 		}
 		moving = false;
 		anim->StartAnimation("especialLEntrada");
-		//sdl->soundEffects().at("catAtk3").play();
+		sdl->soundEffects().at("maktSpecS").play();
 	}
 	
 	else if (frameNumber >= attacks["specialL"].startUp)
@@ -251,7 +254,7 @@ void Makt::SpecialUpward(int frameNumber)
 		}
 		moving = false;
 		anim->StartAnimation("especialUEntrada");
-		//sdl->soundEffects().at("catAtk3").play();
+		sdl->soundEffects().at("maktSpecU").play();
 	}
 	else if (frameNumber == attacks["specialU"].startUp)
 	{
@@ -285,7 +288,7 @@ void Makt::SpecialDownward(int frameNumber)
 		}
 		moving = false;
 		anim->StartAnimation("especialD");
-		//sdl->soundEffects().at("catAtk3").play();
+		sdl->soundEffects().at("maktSpecD").play();
 	}
 	else if (frameNumber == attacks["specialD"].startUp)
 	{

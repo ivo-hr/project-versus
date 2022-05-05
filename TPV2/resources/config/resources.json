@@ -225,6 +225,109 @@
     {
       "id": "dinoTaunt",
       "file": "resources/sound/DinoChar/taunt.wav"
+    },
+
+    {
+      "id": "maktAtk0",
+      "file": "resources/sound/MaktChar/atk0.wav"
+    },
+    {
+      "id": "maktAtk1",
+      "file": "resources/sound/MaktChar/atk1.wav"
+    },
+    {
+      "id": "maktAtk2",
+      "file": "resources/sound/MaktChar/atk2.wav"
+    },
+    {
+      "id": "maktAtk3",
+      "file": "resources/sound/MaktChar/atk3.wav"
+    },
+    {
+      "id": "maktSpecD",
+      "file": "resources/sound/MaktChar/specD.wav"
+    },
+    {
+      "id": "maktSpecN",
+      "file": "resources/sound/MaktChar/specN.wav"
+    },
+    {
+      "id": "maktSpecS",
+      "file": "resources/sound/MaktChar/specS.wav"
+    },
+    {
+      "id": "maktSpecU",
+      "file": "resources/sound/MaktChar/specU.wav"
+    },
+    {
+      "id": "maktSteps",
+      "file": "resources/sound/MaktChar/steps.wav"
+    },
+    {
+      "id": "maktTaunt",
+      "file": "resources/sound/MaktChar/taunt.wav"
+    },
+
+    
+    {
+      "id": "nasAtk0",
+      "file": "resources/sound/NasChar/atk0.wav"
+    },
+    {
+      "id": "nasAtk1",
+      "file": "resources/sound/NasChar/atk1.wav"
+    },
+    {
+      "id": "nasAtk2",
+      "file": "resources/sound/NasChar/atk2.wav"
+    },
+    {
+      "id": "nasAtk3",
+      "file": "resources/sound/NasChar/atk3.wav"
+    },
+    {
+      "id": "nasSpecD",
+      "file": "resources/sound/NasChar/specD.wav"
+    },
+    {
+      "id": "nasSpecNf",
+      "file": "resources/sound/NasChar/specNf.wav"
+    },
+    {
+      "id": "nasSpecNw",
+      "file": "resources/sound/NasChar/specNw.wav"
+    },
+    {
+      "id": "nasSpecNr",
+      "file": "resources/sound/NasChar/specNr.wav"
+    },
+    {
+      "id": "nasSpecSf",
+      "file": "resources/sound/NasChar/specSf.wav"
+    },
+    {
+      "id": "nasSpecSw",
+      "file": "resources/sound/NasChar/specSw.wav"
+    },
+    {
+      "id": "nasSpecSr",
+      "file": "resources/sound/NasChar/specSr.wav"
+    },
+    {
+      "id": "nasSpecUup",
+      "file": "resources/sound/NasChar/specUup.wav"
+    },
+    {
+      "id": "nasSpecU",
+      "file": "resources/sound/NasChar/specU.wav"
+    },
+    {
+      "id": "nasSteps",
+      "file": "resources/sound/NasChar/steps.wav"
+    },
+    {
+      "id": "nasTaunt",
+      "file": "resources/sound/NasChar/taunt.wav"
     }
 
 
