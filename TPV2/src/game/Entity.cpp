@@ -60,9 +60,19 @@ Entity::~Entity()
 
 void Entity::updateParticles()
 {
-	for (Particle* ent : particulas)
+	for (Particle* part : particulas)
 	{
-		ent->update();
+		part->update();
+	}
+
+	for (auto i = 0u; i < particulas.size(); i++)
+	{
+		if (particulas[i]->dead)
+		{
+			RemoveParticle(particulas[i]);
+			if (particulas.size() > 0)
+				i--;
+		}
 	}
 }
 
@@ -236,7 +246,7 @@ void Entity::CheckHits()
 					{
 						AddParticle(new Particle(
 							 Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-							1, "sHitParticle", this));
+							1, "sHitParticle", this)); 
 
 						manager->GetSDLU()->soundEffects().at("hitMed").play();
 					}

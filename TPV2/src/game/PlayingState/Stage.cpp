@@ -16,6 +16,8 @@ Stage::Stage(SDLUtils* sdl, MyListener* _listener, float step) :
 	world(new b2World(b2Vec2(0.f, 15.f))), sdl(sdl), step(step)
 {
 	listener = _listener;
+
+	world->SetContactListener(listener);
 }
 Stage::~Stage() 
 {
@@ -95,8 +97,6 @@ void Stage::LoadJsonStage(std::string fileName, double screenAdjust)
 
 	//Creo las cajas que representaran a los objetos
 	stageRect = GetSDLCoors(stage, floorW, floorH);
-
-	world->SetContactListener(listener);
 
 	deathZone = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
 

@@ -42,4 +42,6 @@ public:
 	virtual void update();
 	virtual void draw();
 	virtual void draw(SDL_Rect* camera);
+
+	bool dead = false;
 };

@@ -190,7 +190,7 @@ void Particle::update()
 			}
 			else
 			{
-				ent->RemoveParticle(this);
+				dead = true;
 			}
 		}
 	}

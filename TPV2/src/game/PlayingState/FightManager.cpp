@@ -292,6 +292,7 @@ void FightManager::LoadStage(std::string file)
 
 int FightManager::StartFight(std::vector<Character*> ent)
 {
+	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
 	
 	//onNewGame();
 	teammode = false;
@@ -332,6 +333,7 @@ int FightManager::StartFight(std::vector<Character*> ent)
 }
 int FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Character*> ateam2)
 {
+	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
 	//onNewGame();
 	teammode = true;
 	std::vector<Entity*> aux1;

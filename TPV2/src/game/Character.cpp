@@ -299,7 +299,9 @@ void Character::update()
 		if (!GetGround())
 		{
 			if (body->GetLinearVelocity().y > 0.01f && anim->CurrentAnimation() != "airborne")
-				anim->StartAnimation("airborne");
+				anim->StartAnimation("airborne"); 
+			else if (body->GetLinearVelocity().y < -0.01f && anim->CurrentAnimation() != "jump")
+				anim->StartAnimation("jump");
 		}
 		else
 		{
