@@ -149,4 +149,5 @@ public:
 	int getInput() { return input_; }
 	int getDamageTaken() { return totalDamageTaken; }
 	int getDeaths() { return maxLives - lives; }
+	virtual bool isCharacter() override { return true; };
 };

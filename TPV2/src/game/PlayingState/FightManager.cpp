@@ -187,21 +187,19 @@ void FightManager::Update()
 	{
 		if (entities[i]->ToDelete())
 		{
-			Character* aux = static_cast<Character*>(entities[i]);
-
-			if (aux == nullptr)
+ 			if (!entities[i]->isCharacter())
 			{
 				RemoveEntity(entities[i]);
 			}
 			else
 			{
+				Character* aux = static_cast<Character*>(entities[i]);
 				RemoveCharacter(aux);
 			}
 			if(entities.size()>1)
 			i--;
 		}
 	}
-
 	while (addedDelay > 0)
 	{
 

@@ -163,4 +163,5 @@ public:
 	Texture* getTexture() { return texture; }
 	//virtual void SendToHUD(Texture* tex);
 	bool ToDelete() { return toDelete; };
+	virtual bool isCharacter() { return false; };
 };
