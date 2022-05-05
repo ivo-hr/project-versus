@@ -290,12 +290,32 @@
       "file": "resources/sound/NasChar/specD.wav"
     },
     {
-      "id": "nasSpecN",
-      "file": "resources/sound/NasChar/specN.wav"
+      "id": "nasSpecNf",
+      "file": "resources/sound/NasChar/specNf.wav"
     },
     {
-      "id": "nasSpecS",
-      "file": "resources/sound/NasChar/specS.wav"
+      "id": "nasSpecNw",
+      "file": "resources/sound/NasChar/specNw.wav"
+    },
+    {
+      "id": "nasSpecNr",
+      "file": "resources/sound/NasChar/specNr.wav"
+    },
+    {
+      "id": "nasSpecSf",
+      "file": "resources/sound/NasChar/specSf.wav"
+    },
+    {
+      "id": "nasSpecSw",
+      "file": "resources/sound/NasChar/specSw.wav"
+    },
+    {
+      "id": "nasSpecSr",
+      "file": "resources/sound/NasChar/specSr.wav"
+    },
+    {
+      "id": "nasSpecUup",
+      "file": "resources/sound/NasChar/specUup.wav"
     },
     {
       "id": "nasSpecU",
