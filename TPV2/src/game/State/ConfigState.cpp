@@ -737,13 +737,13 @@ void ConfigState::initcharact()
  
     nasnas = nullptr;
     zero = new Button(&sdl->images().at("nasNasSelect"), offset , ts(56), ts(30), ts(30));
-    charName.push_back("    Nasnas");
+    charName.push_back("    NasNas");
     gatoespia = new Button(&sdl->images().at("blinkMasterSelect"), dist + offset, ts(56), ts(30), ts(30));
     charName.push_back(" Blink Master");
     maketo = new Button(&sdl->images().at("maktSelect"), dist*2 + offset, ts(56), ts(30), ts(30));
-    charName.push_back("  Makt Fenge");
+    charName.push_back("  Makt Fange");
     togo = new Button(&sdl->images().at("dinoSoulsSelect"), dist*3 + offset, ts(56), ts(30), ts(30));
-    charName.push_back("  DinoSouls");
+    charName.push_back("    Togo");
 
     charName.push_back(" Coming Soon");
     charName.push_back(" Coming Soon");
