@@ -25,6 +25,16 @@ public:
 				}
 			}
 		}
+		else if (two->GetType() == b2_staticBody && contact->GetFixtureA()->IsSensor())
+		{
+			for (int i = 0; i < characters.size(); i++)
+			{
+				if (one == characters[i]->GetBody())
+				{
+					characters[i]->SetGround(true);
+				}
+			}
+		}
 	}
 	void EndContact(b2Contact* contact)
 	{
@@ -41,6 +51,16 @@ public:
 				}
 			}
 		}
+		else if (two->GetType() == b2_staticBody && contact->GetFixtureA()->IsSensor())
+		{
+			for (int i = 0; i < characters.size(); i++)
+			{
+				if (one == characters[i]->GetBody())
+				{
+					characters[i]->SetGround(false);
+				}
+			}
+		}
 	}
 	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 	{
@@ -49,7 +69,9 @@ public:
 
 		// Mira si es proyectil o personaje que quiere subir a la plataforma (atravesándola)
 		if ((one->GetType() == b2_staticBody && two->GetUserData().pointer == 1) || 
-			(one->GetFixtureList()->GetFilterData().categoryBits == 4 && two->GetLinearVelocity().y < 0))
+			(two->GetType() == b2_staticBody && one->GetUserData().pointer == 1) || 
+			(one->GetFixtureList()->GetFilterData().categoryBits == 4 && two->GetLinearVelocity().y < 0) ||
+			(two->GetFixtureList()->GetFilterData().categoryBits == 4 && one->GetLinearVelocity().y < 0))
 		{ 
 			contact->SetEnabled(false);
 		}
