@@ -152,7 +152,7 @@
         "id" : "basicFWalk",
         "iniSprite" : 15,
         "totalSprites" : 6,
-        "keySprite" : 3,
+        "keySprite" : 2,
         "attack": "basicF",
         "totalFrames" : 20,
         "loop" :false

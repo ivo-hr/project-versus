@@ -34,20 +34,11 @@ void NasNas::BasicNeutral(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicN"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.h /= 4;
-		hitbox.w *= 2.5;
-		hitbox.y += hitbox.h / 2;
-		hitbox.y += (hitbox.h + 10);
-		if (dir == -1)
-		{
-			hitbox.x -= hitbox.w-20;
-		}
-		else 
-		{
-			hitbox.x += 15;
-		}
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x + dir * width,
+			body->GetPosition().y,
+			width * 2.5f,
+			height * 0.25f);
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["basicN"], 2, OnHitData(5, false, false)));
 
@@ -68,13 +59,13 @@ void NasNas::BasicForward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicF"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x + dir * width,
+			body->GetPosition().y,
+			width * 1.5f,
+			height * 1.02f);
 
-		hitbox.h += 20;
-		hitbox.w *= 1.5;
-		hitbox.x += dir * 50;
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicF"], 1, Vector2D(dir * 50,hitbox.y), OnHitData(20, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, attacks["basicF"], 3, Vector2D(dir * 50,hitbox.y), OnHitData(20, false, false)));
 	}
 	else if (frameNumber == attacks["basicF"].totalFrames)
 	{
@@ -112,12 +103,11 @@ void NasNas::BasicUpward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicU"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.w *= 2.4f;
-		hitbox.h *= 0.7f;
-		hitbox.x -= hitbox.w / 3;
-		hitbox.y -= 45;
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x + dir * 0.2f,
+			body->GetPosition().y - height * 0.9f,
+			width * 2.4f,
+			height * 0.9f);
 
 		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 10, OnHitData(5, false, false)));
 	}
@@ -138,16 +128,13 @@ void NasNas::BasicDownward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicD"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x + width / 3,
+			body->GetPosition().y + height * 0.5f,
+			width * 4,
+			height * 0.5f);
 
-
-		hitbox.y += hitbox.h;
-		hitbox.w *= 4;
-		hitbox.h *= 0.5f;
-		hitbox.x -= hitbox.w / 3;
-		hitbox.y -= hitbox.h;
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 1, OnHitData(5, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 2, OnHitData(5, false, false)));
 	}
 	else if (frameNumber == attacks["basicD"].totalFrames)
 	{
@@ -227,14 +214,16 @@ void NasNas::SpecialForward(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialF"].startUp)
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+		SDL_Rect hitbox;
 		attackData aaa = attacks["specialF"];
 		if (estado == fire)
 		{
-			hitbox.w *= 3;
-			if (dir == -1) {
-				hitbox.x += width*11;
-			}
+			hitbox = manager->GetSDLCoors(
+				body->GetPosition().x + dir * width,
+				body->GetPosition().y - height * 0.2f,
+				width * 3,
+				height * 1.3f);
+
 			aaa.damage = 25;
 			aaa.base = 15;
 			aaa.estado = fire;
@@ -243,13 +232,12 @@ void NasNas::SpecialForward(int frameNumber)
 		}
 		else if (estado == water)
 		{
-			hitbox.x += width;
-			if (dir == -1) {
-				hitbox.x += width * 10;
-			}
-			hitbox.y += (hitbox.h / 2)-7;
-			hitbox.h /= 3;
-			hitbox.w *= 4;
+			hitbox = manager->GetSDLCoors(
+				body->GetPosition().x + dir * width * 2,
+				body->GetPosition().y,
+				width * 4,
+				height / 3);
+
 			aaa.damage = 20;
 			aaa.base = 25;
 			aaa.estado = water;
@@ -258,13 +246,12 @@ void NasNas::SpecialForward(int frameNumber)
 		}
 		else if (estado == electric)
 		{
-			hitbox.x += width;
-			if (dir == -1) {
-				hitbox.x += width * 10;
-			}
-			hitbox.y += (hitbox.h / 2)-4;
-			hitbox.h /= 6;
-			hitbox.w *= 5.4;
+			hitbox = manager->GetSDLCoors(
+				body->GetPosition().x + dir * width * 3,
+				body->GetPosition().y,
+				width * 5.4f,
+				height / 6);
+
 			aaa.damage = 12;
 			aaa.base = 1;
 			aaa.estado = electric;
@@ -361,12 +348,14 @@ void NasNas::SpecialUpHit(int frameNumber)
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("especialUHit");
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
+
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x,
+			body->GetPosition().y,
+			width * 1.5f,
+			height * 1.5f);
+
 		attackData aaa = attacks["specialU"];
-		hitbox.h /= 1.5;
-		hitbox.w *= 2;
-		hitbox.x -= (hitbox.w / 4);
-		hitbox.y += 15;
 		aaa.power = 70;
 		sdl->soundEffects().at("nasSpecU").play();
 		if (estado == fire)
