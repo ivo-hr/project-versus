@@ -1,6 +1,6 @@
 Copyright © 2021-2022 LeftOvers Productions - Todos los derechos reservados :)
 
-# _**Project Vs21**_
+# _**Project Vs 21**_
 
 *Documento de diseño de videojuego*
 
