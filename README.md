@@ -85,6 +85,7 @@ Juego de lucha 2D 1vs1 con multijugador local en el que de dos a cuatro personaj
 5. [Referencias](#Referencias) 
 
 6. [Diagrama UML](#UML)
+7. [QA](#QA)
 
 
 ## <a name = "aspectos-generales">1. Aspectos generales</a>
@@ -314,4 +315,171 @@ Ciro es un personaje oculto el cual tiene una pequeña probabilidad de aparecer 
  ##  <a name = "UML"> 6. UML</a>
  ![uml proyecto drawio](https://user-images.githubusercontent.com/63046549/154976798-93c78ab0-5171-43f2-ad1f-cfee1e613ae9.png)
 
-Project VERSUS: 21 - Documento de diseño de videojuego / Biblia de producto Página 10 de 10
+##  <a name = "QA"> 7. QA</a>
+
+  - Primer QA
+  
+  IVÁN
+
+¿Te ha parecido muy rápido el movimiento?
+
+"No, no me ha parecido muy rápido. [...] 
+
+Del 1 al 5, evalúa la dificultad del juego
+
+"¿Eh, dificultad? 1 o 2, literalmente es moverte y dos tipos de ataque, o sea, no hay muchos tipos de ataque. Con la práctica cogerías habilidad…"
+
+¿Qué cambiarías?
+
+"Empezando porque te puedas salir de la partida con un doble salto, proyectiles más visibles y que hagan algo. Apenas tienen daño 
+
+¿Qué es lo que más te ha gustado?
+
+"El teletransporte está guay, está bien también el ataque cuerpo a cuerpo. No es que sea bueno, pero me gustaría saber qué hacen porque sólo una vez envíe al compañero a Parla. "
+
+¿Y las que menos?
+
+"Supongo que lo que he dicho antes del doble salto y los proyectiles y el mapa, no sé por qué estaba la plataforma porque te ibas siempre fuera del mapa."
+
+VICTOR
+
+¿Te ha parecido muy rápido el movimiento?
+
+“Eh me ha parecido un poco difícil de controlar, no tanto por la velocidad sino porque te deslizas. Hay una fricción muy baja”
+
+Del 1 al 5, evalúa la dificultad del juego
+
+“Pelear contra Iván ha sido muy fácil con el Gato, con el Cubo ha sido muy complicado.”
+
+¿Qué cambiarías?
+
+“Movimiento no se sentía bien, añadir más personas, los mapas y ya”
+
+¿Qué es lo que más te ha gustado?
+
+“El teletransporte, es una mecánica interesante que no había visto antes en un fighter”
+
+¿Y las que menos?
+
+“Que si tocas el techo mueres y el deslizamiento. Las balas son muy chiquititas”
+RAQUEL
+
+¿Te ha parecido muy rápido el movimiento?
+
+“No sé, me ha parecido normal”
+
+Del 1 al 5, evalúa la dificultad del juego
+
+“1, es muy fácil”
+
+¿Qué cambiarías?
+“Por mi, nada”
+
+¿Qué es lo que más te ha gustado?
+“La piedra que canta”
+
+¿Y las que menos?
+“Me parece que todo está bien, las líneas rojas tienen que ser más visibles. Y que haya un poco más de terreno para practicar.”
+
+
+
+
+
+
+
+¿Cuánto tiempo dura el bucle de partida?
+Minuto y medio, dos minutos
+¿Cuánto tardan en aprender?
+30 segundos de partida Victor, partida y media Iván
+¿Qué mecánicas usan más?
+Teletransporte, apertura de piernas???, corto hacia abajo, cuerpo a cuerpo Iván
+¿Y cuáles no tanto?
+Corto hacia arriba, disparo
+
+
+
+Documentación general ->
+	¿cuándo se han hecho, con cuánta gente, qué se les ha preguntado y qué ha salido?
+	conclusión general de las pruebas
+
+¿Cómo se aplica la info de QA al proyecto?
+¿Qué cambios se han hecho?
+¿Qué problemas o limitaciones se han descubierto?
+
+  - Segundo QA
+  
+  Estimación partida: 5min
+Básicos por partida: básico/2seg
+Ataques fuertes por partida: ataq/5seg
+Salto por partida: 2salto/seg
+(Tp blinkmaster): 2tp/seg
+
+
+
+Sergio
+
+¿Te ha parecido muy rápido el movimiento?
+
+A ver teóricamente el movimiento está bastante bien [...] en el menú tarda mucho en llegar. Respecto a los ataques te quedas demasiado bloqueado
+
+Del 1 al 5, evalúa la dificultad del juego
+
+“Como depende de personaje que tengas y contra quién es complicado decirte… Pero a la hora de aprender controles un 1.
+
+¿Qué cambiarías?
+
+“El tiempo de espera tras los ataques fuertes y el recover para volver a la plataforma (movilidad aérea). 
+
+¿Qué es lo que más te ha gustado?
+
+“La variedad de ataques que hay”
+
+¿Y las que menos?
+
+“El tiempo que tardas en recuperarte de un ataque fuerte con el cubo; rango de habilidad del cubo. El control que tienes sobre el ataque fuerte de Dino a los lados”
+
+Gorka
+
+¿Te ha parecido muy rápido el movimiento?
+
+“En los menús muy lento, vendría bien movimiento dinámico (cuánto más mueves el joystick más se mueve el cursor). En el juego está bien”
+
+Del 1 al 5, evalúa la dificultad del juego
+
+“En cuanto a los controles, en teclado duro porque las manos están pegadas, en mando necesito un botón de salto apartado. Resulta bastante difícil volver a la plataforma si te caes. No queda del todo claro cuántos saltos te quedan”
+
+¿Qué cambiarías?
+
+“La movilidad en el aire y la fluidez de los ataques”
+
+¿Qué es lo que más te ha gustado?
+
+“La cara del cubo. La diversidad de ataques.”
+
+¿Y las que menos?
+
+“Que no sepas cuántos saltos tienes, que te pegues a las paredes (enlazado con lo anterior).”
+
+
+
+¿Cuánto tiempo dura el bucle de partida?
+Minuto y medio, dos minutos
+¿Cuánto tardan en aprender?
+30 segundos de partida Victor, partida y media Iván
+¿Qué mecánicas usan más?
+Teletransporte, apertura de piernas???, corto hacia abajo, cuerpo a cuerpo Iván
+¿Y cuáles no tanto?
+Corto hacia arriba, disparo
+
+
+
+Documentación general ->
+	¿cuándo se han hecho, con cuánta gente, qué se les ha preguntado y qué ha salido?
+	conclusión general de las pruebas
+
+¿Cómo se aplica la info de QA al proyecto?
+¿Qué cambios se han hecho?
+¿Qué problemas o limitaciones se han descubierto?
+
+  
+  
