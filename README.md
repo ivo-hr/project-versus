@@ -46,7 +46,7 @@ Versión 0.1 – 3 de febrero de 2022
 
 ## Descripción
 
-Juego de lucha 2D 1vs1 con multijugador local en el que dos personajes se enfrentan en un escenario compuesto por varias plataformas. Cada personaje dispondrá de un ataque básico y tres ataques especiales únicos, además de la habilidad de saltar y bloquear ataques rivales. Los ataques desplazan al rival en mayor o menor medida. El objetivo principal es conseguir que el rival salga del escenario.
+Juego de lucha 2D 1vs1 con multijugador local en el que de dos a cuatro personajes se enfrentan en un escenario compuesto por varias plataformas. Cada personaje dispondrá de un ataque básico y tres ataques especiales únicos, además de la habilidad de saltar y bloquear ataques rivales. Los ataques desplazan al rival en mayor o menor medida. El objetivo principal es conseguir que el rival salga del escenario.
 
 ## Versiones del documento
 
@@ -88,13 +88,13 @@ Esperamos ofrecer al jugador la experiencia de ver a los personajes de Proyectos
 
 ### <a name = "relato-breve"> 1.1 Relato breve y parcial de una partida típica</a>
 
-Al ejecutar el juego, los jugadores verán la pantalla de menú principal en el que verán los botones de jugar, ajustes y salir al escritorio. En el menú de ajustes podrán modificar el tamaño de la pantalla, sonido, etc.; El de salir al escritorio cierra el juego.
+Al ejecutar el juego, los jugadores verán la pantalla de menú principal en el que verán un mensaje que pide pulsar un determinado botón del mando/teclado que se va a utilizar, el botón de ajustes y el botón de salir al escritorio. En el menú de ajustes podrán modificar diferentes valores de sonido y verán una imagen con los diferentes controles disponibles (teclado, mando de NES y otro tipo de mando). El botón de salir al escritorio cierra el juego. 
 
 Al pulsar el botón de jugar se abrirá el menú de selección de personajes, en el que se verán a todos los personajes implementados en el juego y un botón de seleccionar un personaje al azar. Cuando todos los jugadores hayan elegido y se haya pulsado el botón en pantalla de aceptar, empezará el combate.
 
 Después de una breve cuenta atrás los jugadores serán capaces de moverse libremente por el escenario. Tendrán que atacarse el uno al otro para que el rival acumule daño y así sea más fácil sacarlo de la pantalla para derrotarlo.
 
-Una vez haya un ganador se mostrará una pantalla de victoria mostrando al que haya ganado, y al pulsar cualquier botón se volverá a la selección de personaje.
+Una vez haya un ganador se mostrará una pantalla de victoria mostrando al que haya ganado, y al pulsar el botón de volver a jugar se volverá al menú principal.
 
 ## <a name = "Jugabilidad"> 2. Jugabilidad</a>
 
@@ -105,7 +105,7 @@ Los personajes se sitúan en un escenario 2D y tendrán que atacar al rival hast
 ####  <a name = "Mecánicas-personaje"> Mecánicas del personaje</a>
 
 - Mecanicas generales:
-  - Vida: cada jugador tiene X vidas, al caerse fuera del escenario pierde una vida y se renace en la parte superior de la escenario (si le quedan más vidas).
+  - Vida: cada jugador tiene 3 vidas, al caerse fuera del escenario pierde una vida y se renace en la parte superior de la escenario (si le quedan más vidas).
   - Porcentaje: Cada jugador tiene un porcentaje que comienza en 0% y sube con cada ataque recibido. A mayor porcentaje mayores las probabilidades de sacarlo del escenario.
   - Aire: Todos los movimientos son iguales y pueden realizarse tanto si el personaje está en el aire como si está en el suelo a excepción de los ataques hacia abajo.
   - Rebote contra el suelo: Si el personaje choca contra una superficie con la suficiente velocidad, este rebotará perdiendo un poco del impulso en el proceso.
@@ -115,11 +115,11 @@ Los personajes se sitúan en un escenario 2D y tendrán que atacar al rival hast
 
 - Movimientos generales: 
   - Ataque básico: todos los personajes tienen un ataque básico distinto.
-    - Ataque neutral (A) en mando, (V, P) en teclado
-    - Ataque lateral(←/→ + A) en mando, (A/D + V, ←/→ + P) en teclado
-    - Ataque hacia abajo (↓ + A) en mando, (S+ V, ↓ + P) en teclado
-    - Ataque hacia arriba (↑ + A) en mando, (W + V, ↑ + P) en teclado
-    - Ataques aéreo: (en el aire + A) en mando, (en el aire + V, P) en teclado
+    - Ataque neutral (A) en mando, (E, L) en teclado
+    - Ataque lateral(←/→ + A) en mando, (A/D + E, ←/→ + L) en teclado
+    - Ataque hacia abajo (↓ + A) en mando, (S+ E, ↓ + L) en teclado
+    - Ataque hacia arriba (↑ + A) en mando, (W + E, ↑ + L) en teclado
+    - Ataques aéreo: (en el aire + A) en mando, (en el aire + E, L) en teclado
   - Bloqueo: (↓) en mando, (S, ↓) en teclado
     - Los personajes pueden usar el movimiento de bloqueo para reducir el daño recibido y evitar el efecto de knockback y de lanzamiento de otro jugador. Para el equilibrio, el movimiento tiene un tiempo de cooldown. El personaje no podrá realizar otros ataques mientras.
   - Esquiva: (en el aire + ↓)
@@ -127,10 +127,10 @@ Los personajes se sitúan en un escenario 2D y tendrán que atacar al rival hast
   - Saltos: (↑)
     - El jugador salta más o menos dependiendo del tiempo que se presione el botón. Hay múltiples saltos.
 - Movimientos especiales:
-  - Especial neutral (←/→ + B) en mando, (A/D + C, ←/→ + O) en teclado
-  - Ataque lateral(←/→ + B) en mando, (A/D + C, ←/→ + O) en teclado
-  - Ataque hacia abajo (↓ + B) en mando, (S+ C, ↓ + O) en teclado
-  - Recovery: (↑ + B) en el mando, (W + C, ↑ + O) en teclado
+  - Especial neutral (←/→ + B) en mando, (A/D + R, ←/→ + K) en teclado
+  - Ataque lateral(←/→ + B) en mando, (A/D + R, ←/→ + K) en teclado
+  - Ataque hacia abajo (↓ + B) en mando, (S+ R, ↓ + K) en teclado
+  - Recovery: (↑ + B) en el mando, (W + R, ↑ + K) en teclado
 
 
 ####  <a name = "Mecánicas-escenario"> Mecánicas de escenario</a>
@@ -139,27 +139,29 @@ El escenario contará con dos tipos de suelo: plataformas y bases. La base será
 
 ####  <a name = "Controles"> Controles</a>
 
-El menú inicial antes de una partida se controlará con los controles de dirección y la tecla Enter/A o Retroceso/B para entrar/salir de una opción como los ajustes o elegir un personaje.
+El juego está concebido para poder ser jugado con un mando de NES. Sin embargo, también daremos soporte a mandos actuales (como Xbox o PS4) y teclado.
+
+El menú inicial antes de una partida se controlará con los controles de dirección y la tecla E/L/botón A o clicando sobre el botón de salir para entrar/salir de una opción como los ajustes o elegir un personaje.
 
 En partida el jugador dispone de varios botones con los que atacar, defender y maniobrar por el escenario:
 
-- Movimiento: Se realizará con los controles de dirección del control que esté usando el jugador (flechas/wasd en teclado, cruceta en mando).
+- Movimiento: Se realizará con los controles de dirección del control que esté usando 	el jugador (flechas/wasd en teclado, cruceta o joystick en mando).
   - Izquierda/derecha: Moverán al jugador en esa dirección.
   - Arriba: Hará que el jugador salte.
   - Abajo: El jugador bloqueará/esquivará. Pulsado dos veces rápidamente subido a una plataforma te bajará de ella.
 
-- Ataques básicos: Los botones V/P en teclado y A en mando activarán los ataques básicos. Pueden combinarse con las teclas de movimiento.
-- Ataques especiales:Los botones C/O en teclado y B en mando activarán los ataques básicos. Pueden combinarse con las teclas de movimiento.
-- Menú de pausa: La tecla Retroceso en teclado y Start en mando activará la pestaña de pausa de partida.
-- Taunt: La tecla T/K en teclado y Select en mando activará la animación de burla.
+- Ataques básicos: Los botones E/L en teclado y A en mando activarán los ataques básicos. Pueden combinarse con las teclas de movimiento.
+- Ataques especiales:Los botones R/K en teclado y B en mando activarán los ataques básicos. Pueden combinarse con las teclas de movimiento.
+- Menú de pausa: La tecla Escape en teclado activará la pestaña de pausa de partida.
+- Taunt: La tecla T/J en teclado y Start en mando activará la animación de burla.
 
 ####  <a name = "Cámara"> Cámara</a>
 
-Cámara estática con movimiento en el eje Y para mostrar a ambos personajes en caso de distanciamiento. La distancia intentará ser ni muy grande ni muy pequeña, a una distancia prudente en la que se puedan ver a ambos. Cuando los jugadores sean golpeados se añadirá una especie de temblor en la pantalla para dar feedback del golpe a los jugadores.
+Cámara dinámica que se mueve, acerca y aleja automáticamente para mantener en todo momento a todos los personajes en pantalla, en caso de distanciamiento. La distancia intentará ser ni muy grande ni muy pequeña, a una distancia prudente en la que se puedan ver a ambos. Cuando los jugadores sean golpeados se añadirá una especie de temblor en la pantalla para dar feedback del golpe a los jugadores.
 
 ###  <a name = "Dinámica"> 2.2 Dinámica
 
-Dos jugadores se enfrentan entre sí en un escenario, cada uno puede golpear y ser golpeado. Los dos jugadores empiezan con tres vidas. Si se recibe daño, la fuerza de los golpes de tu oponente hacia ti será mayor, hasta el punto en que uno de los dos caiga del escenario, y por tanto pierda una vida. Al final pierde quien se quede sin vidas.
+De dos a cuatro jugadores se enfrentan entre sí en un escenario, cada uno puede golpear y ser golpeado. Los jugadores empiezan con tres vidas. Si se recibe daño, la fuerza de los golpes de tu oponente hacia ti será mayor, hasta el punto en que uno de los dos caiga del escenario, y por tanto pierda una vida. Al final pierde quien se quede sin vidas.
 
  ###  <a name = "Estética"> 2.3 Estética</a>
 
@@ -171,8 +173,8 @@ Durante la partida se pueden ver distintos efectos que hacen el juego más entre
 
 - Menú principal:
   - Jugar:
-    - Selección de personaje
     - Selección de mapa
+    - Selección de personaje
     - Empezar el combate
   - Configuración
   - Salir
@@ -182,16 +184,19 @@ Durante la partida se pueden ver distintos efectos que hacen el juego más entre
   - Menú principal
 - Menú de victoria
   - Marcadores
-  - Rematch
   - Menú principal
+  
+  Existen dos modos de juegos:
+- Modo normal: se enfrentan de 2 a 4 jugadores en una batalla todos contra todos. El orden en el que vayan muriendo determinará su posición en el ranking final.
+- Modo por equipos: dos equipos se enfrentan entre sí. Cada equipo puede estar formado por uno o dos jugadores. Los miembros del mismo equipo no pueden atacarse entre ellos. Cuando todos los miembros de un equipo hayan muerto, terminará la partida y el otro equipo habrá ganado.
+
 
 ###  <a name = "Configuración"> 3.1 Configuración</a>
 
 - Sonido:
   - SFX
   - Música
-- Pantalla
-- Controles (Permite cambiar los controles, solo en el menú principal)
+- Controles (Permite ver los controles disponibles)
 
  ###  <a name = "Interfaz"> 3.2 Interfaz y control</a>
 
@@ -244,14 +249,14 @@ Los personajes del juego son los protagonistas de los proyectos de la asignatura
 #### -Makt Fange:
   
   - Ataque básico:
-    - Ataque neutral 
-    - Ataque lateral.
-    - Ataque hacia abajo 
-    - Ataque hacia arriba
+    - Ataque neutral: puñetazo
+    - Ataque lateral: cabezazo
+    - Ataque hacia abajo: grito y salen zarigüeyas
+    - Ataque hacia arriba: gancho con el puño
   - Movimientos especiales:
     - Especial neutral: Ataque lento de daño alto con un área de impacto mayor a la de un ataque básico. Makt echa hacia atrás su brazo con la herropea, para a continuación arremeter contra el oponente con ella en la mano. Tiene recuperación lenta.
     - Especial lateral: Ataque cargado a distancia de daño medio-alto. Makt agarra la herropea por la cadena, haciendo la bola girar mientras el ataque se cargue. Cuando el botón de ataque sea soltado, Makt lanzará la bola en la dirección en la que ha cargado el ataque. Esta se detendrá al llegar al final de la distancia cargada por el lanzamiento o al chocar con un rival, haciéndole daño y empujándolo bastante. La bola se quedará en el suelo hasta que Makt la recoja intentando hacer un ataque especial encima de ella. Si esta cae fuera del mapa reaparecerá a los 3 segundos como si fuera un personaje. Este ataque tiene recuperación media.
-    - Especial hacia abajo: Makt agarrará la herropea con ambas manos, pasándola por encima de su cabeza y bajándola con fuerza hacia el suelo, creando un área de daño medio en el suelo a su alrededor. Los oponentes afectados serán levantados en el aire durante una distancia corta determinada por el porcentaje de daño que tengan. Este ataque es lento y tiene recuperación lenta.
+    - Especial hacia abajo: Makt agarrará la herropea con una mano, pasándola por encima de su cabeza y bajándola con fuerza hacia el suelo, creando un área de daño medio en el suelo a su alrededor. Los oponentes afectados serán levantados en el aire durante una distancia corta determinada por el porcentaje de daño que tengan. Este ataque es lento y tiene recuperación lenta.
     - Especial hacia arriba (Recovery): Lanzamiento hacia arriba. Makt gira la herropea con la cadena como si fuera el martillo de Thor y la lanza hacia arriba aún sujeta, impulsándose con ella por la inercia. Si la bola da a un rival no se detiene, pero este recibe daño leve igual.
   - Característica especial (Herropea): Makt es más pesado y lento cuando lleva la herropea en la mano, además de saltar un poco menos. El ataque Especial Lateral lanza la herropea, haciendo que esta se quede en el suelo. Mientras Makt no tenga la herropea será más ligero y podrá moverse más rápido y saltar más, pero no tendrá acceso a ataques especiales.   A DISCUTIR (El lanzamiento de herropea se hará con un ángulo de unos 30 grados y caerá de forma física haciendo un arco hasta que entre en contacto con el suelo o se caiga por el vacío.).
 
@@ -284,6 +289,13 @@ Realizar combinaciones de estos efectos produce efectos adicionales, lo que hace
     - Fuego+Rayo: Crea una explosión que empuja al rival
     - Agua+Rayo: Electrocuta varias veces al oponente.
 Todos estos hechizos dependen de una barra de maná que NasNas regenera con el tiempo (a razón de 5 de maná por segundo). Si tenemos en cuenta que la barra al máximo son 100, el especial neutral gasta 15, el especial lateral 25 y el especial arriba 50. Además, cada especial realiza el efecto del elemento de forma distinta. El especial neutral tendrá efectos de elemento más débiles, el especial lateral más fuerte y el máximo será el especial hacia arriba. Por ejemplo, en el caso del rayo el especial neutral paraliza durante 0.2 segundos, el especial lateral durante 0.6 y el especial hacia arriba durante 1 segundo. En el caso de las combinaciones su potencia viene determinada por el ataque que aplica el segundo efecto. Si el rival estuviera afectado por fuego y le asestamos un especial neutral de rayo, será empujado con menos fuerza que si le asestamos un especial lateral, y este con menos fuerza que el especial hacia arriba.
+
+  #### -Ciro:
+  
+Ciro es un personaje oculto el cual tiene una pequeña probabilidad de aparecer al seleccionar la opción de personaje aleatorio.
+  
+  - Ataque básico: golpe de corto alcance.
+  - Ataque especial: versión potenciada y más lenta del ataque básico la cual desplaza al rival una mayor distancia acompañado de un inconfundible grito de guerra.
 
 
  ##  <a name = "Referencias"> 5. Referencias</a>
