@@ -28,6 +28,7 @@ body {
   font-family: Permanent;
 }
 
+
 a { color: #3CC; }
 
 a:hover { color: #FF0; }
@@ -416,7 +417,7 @@ footer ul li a {
   text-align: center;
   display: inline-block;
   background-color: #00000000;
-  color: #183357;
+  color: #ff3333;
   border-radius: 50%;
   text-decoration: none;
   transition: all 0.5s;
@@ -424,8 +425,8 @@ footer ul li a {
 }
 
 footer ul li a:hover {
-  color: #5d7ba3;
-  background-color: #ff6600ad;
+  color: #ff9292;
+  background-color: #ff660000;
 }
 
 footer p {
