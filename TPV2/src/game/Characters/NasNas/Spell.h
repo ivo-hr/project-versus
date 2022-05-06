@@ -17,9 +17,14 @@ class Spell : public Projectile
 //	float ang;
 
 public:
-	Spell(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir);
+	Spell(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir, state state);
 	virtual ~Spell();
 
 	virtual bool GetHit(attackData a, Entity* attacker) { return(false);};
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox;};
+
+	virtual void draw(SDL_Rect* camera) override;
+
+	int sprite = 0;
+	float anim = 0;
 };

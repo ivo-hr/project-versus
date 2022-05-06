@@ -198,7 +198,7 @@ void NasNas::SpecialNeutral(int frameNumber)
 			aaa.power = 25;
 			sdl->soundEffects().at("nasSpecNr").play();
 		}
-		auto spell = new Spell(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y), aaa, b2Vec2(dir, 0));
+		auto spell = new Spell(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y), aaa, b2Vec2(dir, 0), estado);
 		manager->AddEntity(spell);
 		manager->MoveToFront(spell);
 		spell->SetOponents(oponents);
@@ -231,10 +231,10 @@ void NasNas::SpecialForward(int frameNumber)
 		attackData aaa = attacks["specialF"];
 		if (estado == fire)
 		{
-			hitbox.x += width;
-			hitbox.y += 20;
-			hitbox.h /= 1.5;
 			hitbox.w *= 3;
+			if (dir == -1) {
+				hitbox.x += width*11;
+			}
 			aaa.damage = 25;
 			aaa.base = 15;
 			aaa.estado = fire;
@@ -244,9 +244,12 @@ void NasNas::SpecialForward(int frameNumber)
 		else if (estado == water)
 		{
 			hitbox.x += width;
-			hitbox.y += (hitbox.h / 2)-10;
+			if (dir == -1) {
+				hitbox.x += width * 10;
+			}
+			hitbox.y += (hitbox.h / 2)-7;
 			hitbox.h /= 3;
-			hitbox.w *= 6;
+			hitbox.w *= 4;
 			aaa.damage = 20;
 			aaa.base = 25;
 			aaa.estado = water;
@@ -256,9 +259,12 @@ void NasNas::SpecialForward(int frameNumber)
 		else if (estado == electric)
 		{
 			hitbox.x += width;
-			hitbox.y += (hitbox.h / 2) - 10;
-			hitbox.h /= 8;
-			hitbox.w *= 8;
+			if (dir == -1) {
+				hitbox.x += width * 10;
+			}
+			hitbox.y += (hitbox.h / 2)-4;
+			hitbox.h /= 6;
+			hitbox.w *= 5.4;
 			aaa.damage = 12;
 			aaa.base = 1;
 			aaa.estado = electric;
@@ -284,12 +290,12 @@ void NasNas::SpecialUpward(int frameNumber)
 {
 	if (frameNumber == 0)
 	{
-		if (mana < 10) {
+		if (mana < 450) {
 			currentMove = nullptr;
 			moveFrame = -1;
 			return;
 		}
-		mana -= 10;
+		mana -= 450;
 		moving = false;
 		anim->StartAnimation("especialU");
 
@@ -365,10 +371,10 @@ void NasNas::SpecialUpHit(int frameNumber)
 		anim->StartAnimation("especialUHit");
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 		attackData aaa = attacks["specialU"];
-		hitbox.h *= 1.5;
+		hitbox.h /= 1.5;
 		hitbox.w *= 2;
 		hitbox.x -= (hitbox.w / 4);
-		hitbox.y -= 25;
+		hitbox.y += 15;
 		aaa.power = 70;
 		sdl->soundEffects().at("nasSpecU").play();
 		if (estado == fire)
@@ -401,6 +407,9 @@ void NasNas::SpecialUpHit(int frameNumber)
 void NasNas::update()
 {
 	Character::update();
+	if (mana < 0) {
+		mana = 0;
+	}
 	if (mana < maxMana) {
 		mana ++;
 	}
