@@ -329,34 +329,34 @@ void NasNas::SpecialDownward(int frameNumber)
 		anim->StartAnimation("especialD");
 		sdl->soundEffects().at("nasSpecD").play();
 	}
-	if (frameNumber == attacks["specialF"].startUp)
+	if (frameNumber == attacks["specialD"].startUp)
 	{
 		if (estado == fire)
 		{
 			estado = water;
+			anim->ChangeSheet(&sdl->images().at("nasnasWater"));
 		}
 		else if (estado == water)
 		{
 			estado = electric;
+			anim->ChangeSheet(&sdl->images().at("nasnasElectric"));
 		}
 		else if (estado == electric)
 		{
 			estado = fire;
+			anim->ChangeSheet(&sdl->images().at("nasnasFire"));
 		}
 	}
-	if (frameNumber == attacks["specialF"].totalFrames)
+	if (frameNumber == attacks["specialD"].totalFrames)
 	{
 		if (estado == fire)
 		{
-			anim->ChangeSheet(&sdl->images().at("nasnasFire"));
 		}
 		else if (estado == water)
 		{
-			anim->ChangeSheet(&sdl->images().at("nasnasWater"));
 		}
 		else if (estado == electric)
 		{
-			anim->ChangeSheet(&sdl->images().at("nasnasElectric"));
 		}
 		currentMove = nullptr;
 		moveFrame = -1;
