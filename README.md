@@ -48,6 +48,9 @@ Versión 0.1 – 3 de febrero de 2022
 
 Juego de lucha 2D 1vs1 con multijugador local en el que de dos a cuatro personajes se enfrentan en un escenario compuesto por varias plataformas. Cada personaje dispondrá de un ataque básico y tres ataques especiales únicos, además de la habilidad de saltar y bloquear ataques rivales. Los ataques desplazan al rival en mayor o menor medida. El objetivo principal es conseguir que el rival salga del escenario.
 
+![captura](https://user-images.githubusercontent.com/82372508/167219888-166f5c6b-cab8-4dac-9fb1-773b0cf6a7a3.jpg)
+
+
 ## Versiones del documento
 
 3 de febrero de 2022: Creación del documento
