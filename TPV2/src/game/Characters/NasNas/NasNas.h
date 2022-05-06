@@ -22,6 +22,7 @@ public:
 
 	virtual void update() override;
 	virtual void drawHUD( int numOfPlayer) override;
+	virtual void Respawn() override;
 private:
 	int maxMana = 600;
 	int mana = maxMana;

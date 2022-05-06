@@ -331,6 +331,10 @@ void NasNas::SpecialDownward(int frameNumber)
 	}
 	if (frameNumber == attacks["specialD"].startUp)
 	{
+		
+	}
+	if (frameNumber == attacks["specialD"].totalFrames)
+	{
 		if (estado == fire)
 		{
 			estado = water;
@@ -345,18 +349,6 @@ void NasNas::SpecialDownward(int frameNumber)
 		{
 			estado = fire;
 			anim->ChangeSheet(&sdl->images().at("nasnasFire"));
-		}
-	}
-	if (frameNumber == attacks["specialD"].totalFrames)
-	{
-		if (estado == fire)
-		{
-		}
-		else if (estado == water)
-		{
-		}
-		else if (estado == electric)
-		{
 		}
 		currentMove = nullptr;
 		moveFrame = -1;
@@ -435,6 +427,12 @@ void NasNas::drawHUD( int numOfPlayer)
 
 	SDL_SetRenderDrawColor(sdl->renderer(), 0x53, 0xed, 0xee, 0xff);
 	SDL_RenderFillRect(sdl->renderer(), &aaab);
+}
+
+void NasNas::Respawn()
+{
+	Character::Respawn();
+	mana = maxMana;
 }
 
 

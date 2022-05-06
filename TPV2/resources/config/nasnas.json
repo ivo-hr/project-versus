@@ -244,7 +244,7 @@
         "totalSprites" : 5,
         "keySprite" : 3,
         "attack": "specialD",
-        "totalFrames" : 40,
+        "totalFrames" : 25,
         "loop" : false
       },
       {
