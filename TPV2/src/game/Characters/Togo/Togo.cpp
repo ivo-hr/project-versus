@@ -273,9 +273,9 @@ void Togo::SpecialForward(int frameNumber)
 		
 		moving = false;
 		body->SetLinearVelocity(b2Vec2(dir*30, 0));
-		body->ApplyLinearImpulseToCenter(b2Vec2(dir*30,0), true);
+		body->ApplyLinearImpulseToCenter(b2Vec2(dir*20,0), true);
 
-		if (frameNumber >= attacks["specialL"].startUp && frameNumber < attacks["specialL"].totalFrames / 2 + 5) {
+		if (frameNumber >= attacks["specialL"].startUp && frameNumber < attacks["specialL"].totalFrames-10) {
 			bite = manager->GetSDLCoors(
 				body->GetPosition().x + (dir * width * 1.8f),
 				body->GetPosition().y - height * 0.2f,
@@ -295,7 +295,7 @@ void Togo::SpecialForward(int frameNumber)
 #endif // _DEBUG
 
 		}
-		else if (frameNumber == attacks["specialL"].totalFrames / 2 + 5)
+		else if (frameNumber == attacks["specialL"].totalFrames-10)
 		{
 			anim->StartAnimation("especialLSalida");
 		}

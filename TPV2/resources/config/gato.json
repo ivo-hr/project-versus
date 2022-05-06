@@ -79,7 +79,7 @@
       "damage": 30,
       "multiplier": 1.6,
       "startUp": 3,
-      "totalFrames": 60
+      "totalFrames": 45
     },
     {
       "id": "specialU",
@@ -115,7 +115,7 @@
 
   "spData": {
     "leftOffset": 32,
-    "upOffset": 15,
+    "upOffset": 12.5,
     "sizeXOffset": 72,
     "sizeYOffset": 16,
     "spritesInX": 6,

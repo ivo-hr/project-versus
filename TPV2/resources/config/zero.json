@@ -16,17 +16,17 @@
       "b2vecX": 1,
       "b2vecY": 2,
       "base": 40,
-      "damage": 20,
+      "damage": 150,
       "multiplier": 1.8,
-      "startUp": 56,
-      "totalFrames": 100
+      "startUp": 35,
+      "totalFrames": 70
     },
     {
       "id": "debil",
       "b2vecX": 1,
       "b2vecY": 4,
       "base": 20,
-      "damage": 5,
+      "damage": 50,
       "multiplier": 0.2,
       "startUp": 12,
       "totalFrames": 20

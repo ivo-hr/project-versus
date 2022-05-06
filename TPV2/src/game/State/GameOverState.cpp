@@ -110,21 +110,21 @@ void GameOverState::drawGameStats()
     int dist = (w ) / numOfplayer;
     int offset = (w/2) / numOfplayer -ts(50);
     if (fmngr->getTeammode()) {
-        showText("1", ts(16), (int)(dist / 2 + 3 * offset), (int)ts(190), build_sdlcolor(0xFFFF0000));
-        showText("2", ts(16), (int)(10 / 3 * dist - 2 * offset), (int)ts(190), build_sdlcolor(0xFFFF0000));
+        showText("1", ts(16), (int)(dist / 2 + 3 * offset), (int)ts(190), build_sdlcolor(0x00000000));
+        showText("2", ts(16), (int)(10 / 3 * dist - 2 * offset), (int)ts(190), build_sdlcolor(0x00000000));
     }
     for (auto i = 0u; i < numOfplayer; i++) {
         winnersTextures_[numOfplayer - i - 1]->render({ (int)(i * dist + offset), (int)ts(200), (int)ts(50), (int)ts(50) });
 
-        if (!fmngr->getTeammode())showText(to_string(i + 1), ts(16), (int)(i * dist + offset), (int)ts(190), build_sdlcolor(0xFFFF0000));
+        if (!fmngr->getTeammode())showText(to_string(i + 1), ts(16), (int)(i * dist + offset), (int)ts(190), build_sdlcolor(0x00000000));
 
-        showText("Kills: ", ts(6), (int)(i * dist + offset + ts(0)), (int)ts(255), build_sdlcolor(0xFFFF0000));
-        showText(to_string(gameStats_[numOfplayer - i - 1][2]), ts(6), (int)(i * dist + offset + ts(100)), (int)ts(255), build_sdlcolor(0xFFFF0000));
+        showText("Kills: ", ts(6), (int)(i * dist + offset + ts(0)), (int)ts(255), build_sdlcolor(0x00000000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][2]), ts(6), (int)(i * dist + offset + ts(100)), (int)ts(255), build_sdlcolor(0x00000000));
 
-        showText("Deaths: ", ts(6), (int)(i * dist + offset + ts(0)), (int)ts(265), build_sdlcolor(0xFFFF0000));
-        showText(to_string(gameStats_[numOfplayer - i - 1][0]), ts(6), (int)(i * dist + offset + ts(100)), (int)ts(265), build_sdlcolor(0xFFFF0000));
+        showText("Deaths: ", ts(6), (int)(i * dist + offset + ts(0)), (int)ts(265), build_sdlcolor(0x00000000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][0]), ts(6), (int)(i * dist + offset + ts(100)), (int)ts(265), build_sdlcolor(0x00000000));
 
-        showText("Damage taken: ", ts(6), (int)(i * dist + offset + ts(0)), (int)ts(275), build_sdlcolor(0xFFFF0000));
-        showText(to_string(gameStats_[numOfplayer - i - 1][1]), ts(6), (int)(i * dist + offset + ts(100)), (int)ts(275), build_sdlcolor(0xFFFF0000));
+        showText("Damage taken: ", ts(6), (int)(i * dist + offset + ts(0)), (int)ts(275), build_sdlcolor(0x00000000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][1]), ts(6), (int)(i * dist + offset + ts(100)), (int)ts(275), build_sdlcolor(0x00000000));
     }
 }
