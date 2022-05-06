@@ -143,6 +143,19 @@ a:hover { color: #FF0; }
   letter-spacing: 0.5px;
 }
 
+.secondary-button a {
+  display: inline-block;
+  background-color: #4020469a;
+  padding: 15px 24px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: rgb(141, 141, 141);
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+
 
 .parallax-content {
   width: 100%;
