@@ -37,4 +37,6 @@ public:
 
 	void StartAnimation(std::string index);
 	std::string CurrentAnimation() { return currentAnimIndex; };
+
+	void ChangeSheet(Texture* textura) { texture = textura; };
 };

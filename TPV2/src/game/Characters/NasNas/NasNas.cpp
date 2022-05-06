@@ -8,12 +8,12 @@
 #include <iostream>
 using json = nlohmann::json;
 
-NasNas::NasNas(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p, 1.5f, 3.5f)
+NasNas::NasNas(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p, 1.5f, 2.7f)
 {
 
 	ReadJson("resources/config/nasnas.json");
 	//guardamos la textura
-	texture = &sdl->images().at("dinoSouls");
+	texture = &sdl->images().at("nasnasFire");
 	portrait = &sdl->images().at("nasNasSelect");
 
 	anim = new AnimationManager(this, texture, spData);
@@ -63,7 +63,7 @@ void NasNas::BasicForward(int frameNumber)
 	if (frameNumber == 0)
 	{
 		moving = false;
-		anim->StartAnimation("basicF");
+		anim->StartAnimation("basicFWalk");
 		sdl->soundEffects().at("nasAtk1").play();
 	}
 	else if (frameNumber == attacks["basicF"].startUp)
@@ -169,7 +169,7 @@ void NasNas::SpecialNeutral(int frameNumber)
 			return;
 		}
 		else mana -= 150;
-		anim->StartAnimation("basicF");
+		anim->StartAnimation("especialN");
 	}
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
@@ -221,7 +221,7 @@ void NasNas::SpecialForward(int frameNumber)
 		}
 		mana -= 300;
 		moving = false;
-		anim->StartAnimation("basicF");
+		anim->StartAnimation("especialF");
 		
 
 	}
@@ -291,7 +291,7 @@ void NasNas::SpecialUpward(int frameNumber)
 		}
 		mana -= 10;
 		moving = false;
-		anim->StartAnimation("basicF");
+		anim->StartAnimation("especialU");
 
 
 	}
@@ -303,9 +303,66 @@ void NasNas::SpecialUpward(int frameNumber)
 	else if (frameNumber == attacks["specialU"].totalFrames)
 	{
 		body->SetLinearVelocity(b2Vec2(0, 70));
+		anim->StartAnimation("especialUFall");
 	}
 	else if (frameNumber >= attacks["specialU"].totalFrames && onGround)
 	{
+		ChangeMove([this](int f) { SpecialUpHit(f); });
+	}
+	if (body->GetLinearVelocity().x > 0 || body->GetLinearVelocity().x < 0)
+	{
+		body->SetLinearVelocity(b2Vec2(0, body->GetLinearVelocity().y));
+	}
+}
+
+void NasNas::SpecialDownward(int frameNumber)
+{
+	if (frameNumber == 0)
+	{
+		moving = false;
+		anim->StartAnimation("especialD");
+		sdl->soundEffects().at("nasSpecD").play();
+	}
+	if (frameNumber == attacks["specialF"].startUp)
+	{
+		if (estado == fire)
+		{
+			estado = water;
+		}
+		else if (estado == water)
+		{
+			estado = electric;
+		}
+		else if (estado == electric)
+		{
+			estado = fire;
+		}
+	}
+	if (frameNumber == attacks["specialF"].totalFrames)
+	{
+		if (estado == fire)
+		{
+			anim->ChangeSheet(&sdl->images().at("nasnasFire"));
+		}
+		else if (estado == water)
+		{
+			anim->ChangeSheet(&sdl->images().at("nasnasWater"));
+		}
+		else if (estado == electric)
+		{
+			anim->ChangeSheet(&sdl->images().at("nasnasElectric"));
+		}
+		currentMove = nullptr;
+		moveFrame = -1;
+	}
+
+}
+
+void NasNas::SpecialUpHit(int frameNumber)
+{
+	if (frameNumber == 0)
+	{
+		anim->StartAnimation("especialUHit");
 		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 		attackData aaa = attacks["specialU"];
 		hitbox.h *= 1.5;
@@ -332,40 +389,13 @@ void NasNas::SpecialUpward(int frameNumber)
 			aaa.base = 10;
 			aaa.estado = electric;
 		}
-		hitboxes.push_back(new Hitbox(hitbox, aaa, 10, OnHitData(20, false, false)));
-
-		currentMove = nullptr;
-		moveFrame = -1;
+		hitboxes.push_back(new Hitbox(hitbox, aaa, 6, OnHitData(20, false, false)));
 	}
-	if (body->GetLinearVelocity().x > 0 || body->GetLinearVelocity().x < 0)
-	{
-		body->SetLinearVelocity(b2Vec2(0, body->GetLinearVelocity().y));
-	}
-}
-
-void NasNas::SpecialDownward(int frameNumber)
-{
-	if (frameNumber == 0)
-	{
-		moving = false;
-		anim->StartAnimation("basicD");
-		sdl->soundEffects().at("nasSpecD").play();
-	}
-	if (frameNumber == attacks["specialF"].startUp)
-	{
-		if (estado == fire)
-			estado = water;
-		else if (estado == water)
-			estado = electric;
-		else if (estado == electric)
-			estado = fire;
-	}
-	if (frameNumber == attacks["specialF"].totalFrames)
+	if (frameNumber >= attacks["specialF"].totalFrames - attacks["specialU"].startUp)
 	{
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
-
 }
 
 void NasNas::update()

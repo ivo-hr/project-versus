@@ -58,8 +58,8 @@
       "base": 15,
       "damage": 15,
       "multiplier": 0.3,
-      "startUp": 9,
-      "totalFrames": 25
+      "startUp": 20,
+      "totalFrames": 30
     },
     {
       "id": "specialF",
@@ -94,28 +94,28 @@
   ],
 
   "spData": {
-    "leftOffset": 50,
-    "upOffset": 28,
-    "sizeXOffset": 250,
-    "sizeYOffset": 30,
-    "spritesInX": 8,
-    "spritesInY": 13
+    "leftOffset": 35,
+    "upOffset": 40,
+    "sizeXOffset": 280,
+    "sizeYOffset": 42,
+    "spritesInX": 6,
+    "spritesInY": 16
   },
   "animationData":{
     "anim":[
       {
         "id" : "idle",
         "iniSprite" : 0,
-        "totalSprites" : 2,
+        "totalSprites" : 4,
         "keySprite" : -1,
         "attack": "",
-        "totalFrames" : 30,
+        "totalFrames" : 50,
         "loop" :true
       },
       {
         "id" : "basicN",
-        "iniSprite" : 21,
-        "totalSprites" : 9,
+        "iniSprite" : 26,
+        "totalSprites" : 7,
         "keySprite" : 2,
         "attack": "basicN",
         "totalFrames" : 30,
@@ -123,34 +123,43 @@
       },
       {
         "id" : "basicU",
-        "iniSprite" : 45,
-        "totalSprites" : 14,
-        "keySprite" : 5,
+        "iniSprite" : 33,
+        "totalSprites" : 9,
+        "keySprite" : 3,
         "attack": "basicU",
         "totalFrames" : 30,
         "loop" :false
       },
       {
         "id" : "basicD",
-        "iniSprite" : 37,
+        "iniSprite" : 42,
         "totalSprites" : 8,
-        "keySprite" : 3,
+        "keySprite" : 5,
         "attack": "basicD",
         "totalFrames" : 30,
         "loop" :false
       },
       {
         "id" : "basicF",
-        "iniSprite" : 30,
-        "totalSprites" : 5,
-        "keySprite" : -1,
+        "iniSprite" : 20,
+        "totalSprites" : 6,
+        "keySprite" : 4,
+        "attack": "basicF",
+        "totalFrames" : 20,
+        "loop" :false
+      },
+      {
+        "id" : "basicFWalk",
+        "iniSprite" : 15,
+        "totalSprites" : 6,
+        "keySprite" : 3,
         "attack": "basicF",
         "totalFrames" : 20,
         "loop" :false
       },
       {
         "id" : "shield",
-        "iniSprite" : 6,
+        "iniSprite" : 50,
         "totalSprites" : 2,
         "keySprite" : -1,
         "attack": "",
@@ -159,8 +168,8 @@
       },
       {
         "id" : "run",
-        "iniSprite" : 2,
-        "totalSprites" : 4,
+        "iniSprite" : 9,
+        "totalSprites" : 6,
         "keySprite" : -1,
         "attack": "",
         "totalFrames" : 50,
@@ -168,7 +177,7 @@
       },
       {
         "id" : "airborne",
-        "iniSprite" : 11,
+        "iniSprite" : 7,
         "totalSprites" : 2,
         "keySprite" : -1,
         "attack": "",
@@ -177,7 +186,7 @@
       },
       {
         "id" : "dash",
-        "iniSprite" : 13,
+        "iniSprite" : 52,
         "totalSprites" : 2,
         "keySprite" : -1,
         "attack": "",
@@ -186,34 +195,43 @@
       },
       {
         "id" : "especialN",
-        "iniSprite" : 89,
-        "totalSprites" : 3,
-        "keySprite" : -1,
+        "iniSprite" : 58,
+        "totalSprites" : 5,
+        "keySprite" : 4,
         "attack": "specialN",
         "totalFrames" : 15,
         "loop" : false
       },
       {
-        "id" : "especialNHold",
-        "iniSprite" : 92,
-        "totalSprites" : 3,
-        "keySprite" : -1,
-        "attack": "specialN",
+        "id" : "especialF",
+        "iniSprite" : 68,
+        "totalSprites" : 17,
+        "keySprite" : 11,
+        "attack": "specialF",
         "totalFrames" : 15,
+        "loop" : false
+      },
+      {
+        "id" : "especialU",
+        "iniSprite" : 55,
+        "totalSprites" : 2,
+        "keySprite" : -1,
+        "attack": "specialU",
+        "totalFrames" : 10,
+        "loop" : false
+      },
+      {
+        "id" : "especialUFall",
+        "iniSprite" : 57,
+        "totalSprites" : 1,
+        "keySprite" : -1,
+        "attack": "",
+        "totalFrames" : 10,
         "loop" : true
       },
       {
-        "id" : "especialLEntrada",
-        "iniSprite" : 67,
-        "totalSprites" : 10,
-        "keySprite" : 4,
-        "attack": "specialL",
-        "totalFrames" : 25,
-        "loop" : false
-      },
-      {
-        "id" : "especialLSalida",
-        "iniSprite" : 77,
+        "id" : "especialUHit",
+        "iniSprite" : 85,
         "totalSprites" : 5,
         "keySprite" : -1,
         "attack": "",
@@ -221,27 +239,9 @@
         "loop" : false
       },
       {
-        "id" : "especialLHit",
-        "iniSprite" : 82,
-        "totalSprites" : 7,
-        "keySprite" : 3,
-        "attack": "specialLHit",
-        "totalFrames" : 15,
-        "loop" : false
-      },
-      {
-        "id" : "especialU",
-        "iniSprite" : 97,
-        "totalSprites" : 4,
-        "keySprite" : -1,
-        "attack": "specialU",
-        "totalFrames" : 10,
-        "loop" : true
-      },
-      {
         "id" : "especialD",
-        "iniSprite" : 59,
-        "totalSprites" : 8,
+        "iniSprite" : 63,
+        "totalSprites" : 5,
         "keySprite" : 3,
         "attack": "specialD",
         "totalFrames" : 40,
@@ -249,7 +249,7 @@
       },
       {
         "id" : "stun",
-        "iniSprite" : 8,
+        "iniSprite" : 54,
         "totalSprites" : 1,
         "keySprite" : -1,
         "attack": "",
@@ -258,7 +258,7 @@
       },
       {
         "id" : "jumpCharge",
-        "iniSprite" : 9,
+        "iniSprite" : 4,
         "totalSprites" : 1,
         "keySprite" : -1,
         "attack": "",
@@ -267,8 +267,8 @@
       },
       {
         "id" : "jump",
-        "iniSprite" : 10,
-        "totalSprites" : 1,
+        "iniSprite" : 5,
+        "totalSprites" : 2,
         "keySprite" : -1,
         "attack": "",
         "totalFrames" : 10,

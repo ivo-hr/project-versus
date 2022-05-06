@@ -18,6 +18,8 @@ public:
 	virtual void SpecialUpward(int frameNumber) override;
 	virtual void SpecialDownward(int frameNumber) override;
 
+	virtual void SpecialUpHit(int frameNumber);
+
 	virtual void update() override;
 	virtual void drawHUD( int numOfPlayer)override;
 private:

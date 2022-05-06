@@ -111,7 +111,7 @@ Particle::Particle(Vector2D position, int dir, std::string id, Entity* ent): ent
 	}
 	else if (id == "water")
 	{
-		int w = 16;
+		int w = 32;
 		int h = w;
 
 		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
@@ -125,7 +125,7 @@ Particle::Particle(Vector2D position, int dir, std::string id, Entity* ent): ent
 	}
 	else if (id == "electric")
 	{
-		int w = 16;
+		int w = 32;
 		int h = w;
 
 		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
@@ -139,7 +139,7 @@ Particle::Particle(Vector2D position, int dir, std::string id, Entity* ent): ent
 	}
 	else if (id == "fire")
 	{
-		int w = 16;
+		int w = 32;
 		int h = w;
 
 		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };

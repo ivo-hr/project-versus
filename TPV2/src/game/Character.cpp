@@ -642,11 +642,19 @@ bool Character::GetHit(attackData a, Entity* attacker)
 				if (efEstado == electric)
 				{
 					stun += statePower * 1.5;
+
+					AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "electric", this));
 				}
 				else if (efEstado == water)
 				{
 					ralentizar = maxSpeed * ((float)statePower / 100);
 					maxSpeed -= ralentizar;
+
+					AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "water", this));
+				}
+				else if (efEstado == fire)
+				{
+					AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "fire", this));
 				}
 			}
 		}
