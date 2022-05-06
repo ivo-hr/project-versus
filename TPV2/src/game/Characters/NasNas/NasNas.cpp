@@ -418,6 +418,23 @@ void NasNas::update()
 void NasNas::drawHUD( int numOfPlayer)
 {
 	Character::drawHUD(numOfPlayer);
+
+	int w_ = manager->GetDeathZone()->w;
+	int h_ = manager->GetDeathZone()->h;
+	int dist = w_ / numOfPlayer;
+	int offset = (w_ / 2) / numOfPlayer - w_ / 30;
+	int x = (int)(playerPosition * dist + offset) + (w_ / 14);
+	int y = (h_ - (h_ / 6)) + w_ / 46;
+
+	SDL_Rect aaa = { x, y, w_ / 15, w_ / 45 };
+
+	SDL_SetRenderDrawColor(sdl->renderer(), 0x53, 0x1d, 0x1e, 0x5f);
+	SDL_RenderFillRect(sdl->renderer(), &aaa);
+
+	SDL_Rect aaab = { x, y, (w_ / 15) * ((float)mana / (float)maxMana), w_ / 45 };
+
+	SDL_SetRenderDrawColor(sdl->renderer(), 0x53, 0xed, 0xee, 0xff);
+	SDL_RenderFillRect(sdl->renderer(), &aaab);
 }
 
 

@@ -10,7 +10,6 @@ Explosion::Explosion(FightManager* manager, b2Vec2 pos, int power, int type) :
 
 	//this->SetOponents(manager->GetEntities(this));
 	hurtbox = manager->GetSDLCoors(body, width, height);
-	texture = &sdl->images().at("dinoSouls");
 	data.direction = b2Vec2(1 , 1.8);
 	//agua y fuego
 	if (type == 0)
@@ -18,12 +17,16 @@ Explosion::Explosion(FightManager* manager, b2Vec2 pos, int power, int type) :
 		data.base = power / 2;
 		data.damage = 10;
 		data.multiplier = 0.4;
+		texture = &sdl->images().at("ExplosionWF");
 	}
 	else{
 		data.base = 10;
 		data.damage = power / 2;
 		data.multiplier = 0.4;
+		texture = &sdl->images().at("ExplosionEF");
 	}
+
+	spDur = duration / 5;
 }
 
 Explosion::~Explosion()
@@ -37,6 +40,23 @@ void Explosion::update()
 	if (time >= duration)
 	{
 		toDelete = true;
+	}
+
+	anim++;
+	if (anim == spDur) {
+		
+		spriteX += texture->width() / 2;
+
+		if (spriteX == texture->width()) {
+
+			spriteX = 0;
+			spriteY += texture->height() / 3;
+
+			if (spriteY == texture->height()) {
+				toDelete = true;
+			}
+		}
+		anim = 0;
 	}
 }
 void Explosion::CheckHits()
@@ -58,12 +78,12 @@ void Explosion::CheckHits()
 
 void Explosion::draw()
 {
-	texture->render(hurtbox);
+	texture->render({ spriteX, spriteY, texture->width() / 2, texture->height() / 3 }, hurtbox);
 }
 
 void Explosion::draw(SDL_Rect* camera)
 {
-	SDL_Rect aux = hurtbox;
+	SDL_Rect aux = { hurtbox.x, hurtbox.y - hurtbox.w / 4, hurtbox.w, hurtbox.w };
 
 	//si hurtbox.x = camera w + camera x                   aux.x = manager->GetActualWidth()
 	//   hurtbox.x = camera w / 2 + camera x               aux.x = manager->GetActualWidth() / 2
@@ -77,7 +97,7 @@ void Explosion::draw(SDL_Rect* camera)
 	aux.w *= (manager->GetActualWidth() / (float)camera->w);
 	aux.h *= (manager->GetActualHeight() / (float)camera->h);
 
-	SDL_Rect src = { 896 - spriteX, 903 + spriteY, 128, 82};
+	SDL_Rect src = { spriteX, spriteY, texture->width() / 2, texture->height() / 3 };
 
 	if (dir < 0)
 		texture->render(src, aux);
@@ -89,18 +109,5 @@ void Explosion::draw(SDL_Rect* camera)
 	SDL_RenderDrawRect(sdl->renderer(), &aux);
 
 #endif // _DEBUG
-
-	if (anim >= 1) {
-		if (spriteX == 0) {
-			spriteX = 896;
-			spriteY = 82;
-		}
-		else {
-			spriteX = 0;
-			spriteY = 0;
-		}
-		anim = 0;
-	}
-	anim += 0.1;
 
 }

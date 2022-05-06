@@ -21,7 +21,7 @@ public:
 	virtual void SpecialUpHit(int frameNumber);
 
 	virtual void update() override;
-	virtual void drawHUD( int numOfPlayer)override;
+	virtual void drawHUD( int numOfPlayer) override;
 private:
 	int maxMana = 600;
 	int mana = maxMana;

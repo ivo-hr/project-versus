@@ -1039,6 +1039,7 @@ void Character::Elements()
 	else if (efEstado == wElectric)
 	{
 		stun += (statePower / (stateDur / 60))*1.5;
+		body->SetLinearVelocity({ 0, 0 });
 	}
 }
 void Character::drawHUD(int numOfPlayer)
