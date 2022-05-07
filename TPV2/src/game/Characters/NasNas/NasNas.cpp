@@ -235,7 +235,7 @@ void NasNas::SpecialForward(int frameNumber)
 			hitbox = manager->GetSDLCoors(
 				body->GetPosition().x + dir * width * 2,
 				body->GetPosition().y,
-				width * 4,
+				width * 3.8,
 				height / 3);
 
 			aaa.damage = 20;
@@ -249,7 +249,7 @@ void NasNas::SpecialForward(int frameNumber)
 			hitbox = manager->GetSDLCoors(
 				body->GetPosition().x + dir * width * 3,
 				body->GetPosition().y,
-				width * 5.4f,
+				width * 4.8f,
 				height / 6);
 
 			aaa.damage = 12;
