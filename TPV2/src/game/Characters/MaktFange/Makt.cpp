@@ -150,21 +150,22 @@ void Makt::BasicDownward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicD"].startUp)
 	{
-		SDL_Rect sweetspot = manager->GetSDLCoors(
-				body->GetPosition().x + (dir * width),
-				body->GetPosition().y + height * .4f,
-				width,
-				height * 0.5f);
-
-		hitboxes.push_back(new Hitbox(sweetspot, attacks["basicDS"], 3, OnHitData(16, false, false)));
-
-		SDL_Rect sourspot = manager->GetSDLCoors(
-			body->GetPosition().x - (dir * width * 0.5f),
-			body->GetPosition().y + height * .4f,
+		SDL_Rect hitbox = manager->GetSDLCoors(
+			body->GetPosition().x + (dir * width * 0.7f),
+			body->GetPosition().y + height / 2,
 			width * 2,
-			height * 0.5f);
+			height / 2);
+		SDL_Rect hitbox2 = manager->GetSDLCoors(
+			body->GetPosition().x - (dir * width * 0.7f),
+			body->GetPosition().y + height / 2,
+			width * 2,
+			height / 2);
 
-		hitboxes.push_back(new Hitbox(sourspot, attacks["basicD"], 3, OnHitData(10, false, false)));
+		attackData invert = attacks["basicD"];
+		invert.direction.x = -attacks["basicD"].direction.x;
+
+		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 3, OnHitData(15, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox2, invert, 3, OnHitData(15, false, false)));
 
 	}
 	else if (frameNumber == attacks["basicD"].totalFrames)
@@ -190,7 +191,7 @@ void Makt::SpecialNeutral(int frameNumber)
 	else if (frameNumber == attacks["specialN"].startUp)
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * 1.2f),
+			body->GetPosition().x + (dir * 1.6f),
 			body->GetPosition().y,
 			width * 1.7f,
 			height);

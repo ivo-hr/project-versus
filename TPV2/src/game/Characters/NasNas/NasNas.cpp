@@ -129,12 +129,21 @@ void NasNas::BasicDownward(int frameNumber)
 	else if (frameNumber == attacks["basicD"].startUp)
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + width / 3,
-			body->GetPosition().y + height * 0.5f,
-			width * 4,
-			height * 0.5f);
+			body->GetPosition().x + (dir * width * 0.7f),
+			body->GetPosition().y + height / 2,
+			width * 1.4f,
+			height / 2);
+		SDL_Rect hitbox2 = manager->GetSDLCoors(
+			body->GetPosition().x - (dir * width * 0.7f),
+			body->GetPosition().y + height / 2,
+			width * 1.4f,
+			height / 2);
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 2, OnHitData(5, false, false)));
+		attackData invert = attacks["basicD"];
+		invert.direction.x = -attacks["basicD"].direction.x;
+
+		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 3, OnHitData(5, false, false)));
+		hitboxes.push_back(new Hitbox(hitbox2, invert, 3, OnHitData(5, false, false)));
 	}
 	else if (frameNumber == attacks["basicD"].totalFrames)
 	{
@@ -180,7 +189,7 @@ void NasNas::SpecialNeutral(int frameNumber)
 		else if (estado == electric)
 		{
 			aaa.damage = 7;
-			aaa.base = 7;
+			aaa.base = 0.1;
 			aaa.estado = electric;
 			aaa.power = 25;
 			sdl->soundEffects().at("nasSpecNr").play();
@@ -218,11 +227,20 @@ void NasNas::SpecialForward(int frameNumber)
 		attackData aaa = attacks["specialF"];
 		if (estado == fire)
 		{
-			hitbox = manager->GetSDLCoors(
-				body->GetPosition().x + dir * width,
-				body->GetPosition().y - height * 0.2f,
-				width * 3,
-				height * 1.3f);
+			if (dir == 1) {
+				hitbox = manager->GetSDLCoors(
+					body->GetPosition().x + width * 2,
+					body->GetPosition().y - height * 0.2f,
+					width,
+					height * 1.3f);
+			}
+			else {
+				hitbox = manager->GetSDLCoors(
+					body->GetPosition().x - width/1.2,
+					body->GetPosition().y - height * 0.2f,
+					width,
+					height * 1.3f);
+			}
 
 			aaa.damage = 25;
 			aaa.base = 15;
@@ -232,11 +250,20 @@ void NasNas::SpecialForward(int frameNumber)
 		}
 		else if (estado == water)
 		{
-			hitbox = manager->GetSDLCoors(
-				body->GetPosition().x + dir * width * 2,
-				body->GetPosition().y,
-				width * 3.8,
-				height / 3);
+			if (dir == 1) {
+				hitbox = manager->GetSDLCoors(
+					body->GetPosition().x + width * 2.5,
+					body->GetPosition().y,
+					width * 2,
+					height / 3);
+			}
+			else {
+				hitbox = manager->GetSDLCoors(
+					body->GetPosition().x - width/1.5,
+					body->GetPosition().y,
+					width * 2,
+					height / 3);
+			}
 
 			aaa.damage = 20;
 			aaa.base = 25;
@@ -246,14 +273,23 @@ void NasNas::SpecialForward(int frameNumber)
 		}
 		else if (estado == electric)
 		{
-			hitbox = manager->GetSDLCoors(
-				body->GetPosition().x + dir * width * 3,
-				body->GetPosition().y,
-				width * 4.8f,
-				height / 6);
+			if (dir == 1) {
+				hitbox = manager->GetSDLCoors(
+					body->GetPosition().x + width * 3,
+					body->GetPosition().y,
+					width * 3.5,
+					height / 6);
+			}
+			else {
+				hitbox = manager->GetSDLCoors(
+					body->GetPosition().x - width+2,
+					body->GetPosition().y,
+					width * 3.5,
+					height / 6);
+			}
 
 			aaa.damage = 12;
-			aaa.base = 1;
+			aaa.base = 0.1;
 			aaa.estado = electric;
 			aaa.power = 50;
 			sdl->soundEffects().at("nasSpecSr").play();
@@ -373,7 +409,7 @@ void NasNas::SpecialUpHit(int frameNumber)
 		else if (estado == electric)
 		{
 			aaa.damage = 20;
-			aaa.base = 10;
+			aaa.base = 0.1;
 			aaa.estado = electric;
 		}
 		hitboxes.push_back(new Hitbox(hitbox, aaa, 6, OnHitData(20, false, false)));

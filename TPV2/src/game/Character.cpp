@@ -536,7 +536,7 @@ bool Character::GetHit(attackData a, Entity* attacker)
 	{
 		return false;
 	}
-	else if (!shield && !dash)
+	else if (!shield && !dash && !attacker->ToDelete())
 	{
 		body->SetGravityScale(10.0f);
 		currentMove = nullptr;
@@ -584,7 +584,7 @@ bool Character::GetHit(attackData a, Entity* attacker)
 					//explosión de fuego/rayo
 					// 
 					//suma de efectos de estado para pasarselo a la explosion
-					int poder = (statePower + a.power) / 2;
+					int poder = statePower + a.power;
 					auto plasma = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 1);
 					manager->AddEntity(plasma);
 					plasma->SetOponents(manager->GetEntities(plasma));

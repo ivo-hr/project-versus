@@ -64,13 +64,11 @@ void Explosion::CheckHits()
 	for (int j = 0; j < oponents.size(); j++)
 	{
 		SDL_Rect hitArea;
-		if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea))
+		if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea) && !isHit[j])
 		{
 			if (oponents[j]->GetHit(data, this))
 			{		
-				/*oponents[j]->AddParticle(new Particle(
-				Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-				1, "sHitParticle", oponents[j]));*/
+				isHit[j] = true;
 			}
 		}
 	}
