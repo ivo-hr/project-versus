@@ -2,7 +2,7 @@
 #include "bullet.h"
 #include "../../../utils/CheckML.h"
 
-Bullet::Bullet(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir) :
+Bullet::Bullet(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir) :
 	Projectile(manager, pos, dir, 0.5f, 0.2f, 20)
 {
 	texture = &sdl->images().at("bullet");

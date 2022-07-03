@@ -11,33 +11,75 @@ void AnimationManager::UpdateIndex()
 		//Aumenta el índice para renderizar el siguiente sprite
 		currIndex++;
 
-		//Si ha llegado al keySprite...
-		if (currIndex == currentAnim.keySprite + currentAnim.iniSprite)
+		if (currentAnim->keySprite.size() == 0)
 		{
-			//Vuelve a calcular los frames que dura cada sprite para que el final coincida con el final del movimiento
-
-			if (currentAnim.totalSprites - currentAnim.keySprite == 0)
+			if (currIndex == currentAnim->totalSprites + currentAnim->iniSprite)
 			{
-				framespSprite = currentAnim.totalFrames - currentAnim.hitboxFrame;
-			}
-			else
-			{
-				framespSprite = (int)((currentAnim.totalFrames - currentAnim.hitboxFrame) /
-					(currentAnim.totalSprites - currentAnim.keySprite));
+				if (!currentAnim->loop)
+				{
+					//Si no loopea inicia la animacion de idle
+					StartAnimation("idle");
+				}
+				else
+				{
+					//Si loopea reinicia la animacion
+					StartAnimation(currentAnimIndex);
+				}
 			}
 		}
-
-		//Si llega al final..
-		if (currIndex == currentAnim.totalSprites + currentAnim.iniSprite)
+		else
 		{
-			if (!currentAnim.loop)
+			if (currentState == currentAnim->keySprite.size())
 			{
-				//Si no loopea inicia la animacion de idle
-				StartAnimation("idle");
+				if (currIndex == currentAnim->totalSprites + currentAnim->iniSprite)
+				{
+					if (!currentAnim->loop)
+					{
+						//Si no loopea inicia la animacion de idle
+						StartAnimation("idle");
+					}
+					else
+					{
+						//Si loopea reinicia la animacion
+						StartAnimation(currentAnimIndex);
+					}
+				}
 			}
 			else
-				//Si loopea reinicia la animacion
-				currIndex = currentAnim.iniSprite;
+			{
+				if (currIndex >= currentAnim->keySprite[currentState] + currentAnim->iniSprite)
+				{
+					currentState++;
+					if (currentState == currentAnim->keySprite.size())
+					{
+						if (currentAnim->totalSprites - currentAnim->keySprite[currentState - 1] == 0)
+						{
+							framespSprite = currentAnim->totalFrames - currentAnim->keyFrame[currentState - 1];
+						}
+						else
+						{
+							framespSprite = (int)((currentAnim->totalFrames - currentAnim->keyFrame[currentState - 1]) /
+							(currentAnim->totalSprites - currentAnim->keySprite[currentState - 1]));
+						}
+					}
+					else
+					{
+						if (currentAnim->keySprite[currentState] - currentAnim->keySprite[currentState - 1] == 0)
+						{
+							framespSprite = currentAnim->keyFrame[currentState] - currentAnim->keyFrame[currentState - 1];
+						}
+						else
+						{
+							framespSprite = (int)((currentAnim->keyFrame[currentState] - currentAnim->keyFrame[currentState - 1]) /
+							(currentAnim->keySprite[currentState] - currentAnim->keySprite[currentState - 1]));
+						}
+					}
+					if (currIndex > currentAnim->keySprite[currentState - 1] + currentAnim->iniSprite)
+					{
+						currIndex = currentAnim->keySprite[currentState - 1] + currentAnim->iniSprite;
+					}
+				}
+			}
 		}
 
 		//Reinicia el contador
@@ -54,7 +96,7 @@ AnimationManager::AnimationManager(Entity* entity, Texture* textura, spriteSheet
 	w = textura->width() / data.spritesInX;			//Sacamos la anchura de cada sprite
 	h = textura->height() / data.spritesInY;		//bruh
 
-	for (int i =0; i < data.spritesInY; i++)
+	for (int i = 0; i < data.spritesInY; i++)
 	{
 		for (int j = 0; j < data.spritesInX; j++)
 		{
@@ -83,17 +125,7 @@ AnimationManager::AnimationManager(Entity* entity, Texture* textura, spriteSheet
 	//dest.h += 115.f;
 
 	//Inicializamos la animacion primera (en zero es idle)
-	currentAnimIndex = "idle";
-	currentAnim = data.animations["idle"];
-
-	//El index es el primer sprite
-	currIndex = currentAnim.iniSprite;
-
-	//Calculamos cuantos frames tienen que mantenerse cada sprite
-	framespSprite = (int)(currentAnim.totalFrames / currentAnim.totalSprites);
-
-	//Inicializamos el contador
-	cont = framespSprite;
+	StartAnimation("idle");
 }
 
 AnimationManager::~AnimationManager()
@@ -165,21 +197,32 @@ void AnimationManager::StartAnimation(std::string index)
 {
 	currentAnimIndex = index;
 	//La animacion actual cambia a ser la nueva especificada
-	currentAnim = info.animations[index];
+	currentAnim = &info.animations[index];
 
 	//El indice será el primero que esté en los datos
-	currIndex = currentAnim.iniSprite;
+	currIndex = currentAnim->iniSprite;
+
+	currentState = 0;
+
+	assert(currentAnim->keySprite.size() == currentAnim->keyFrame.size());
 
 	//Calcula cuanto debe durar cada sprite para que...
-	if (currentAnim.keySprite == -1 || currentAnim.hitboxFrame == -1)
-		//El key Sprite coincida con la hitbox
-		framespSprite = (int)(currentAnim.totalFrames / currentAnim.totalSprites);
-	else
+	if (currentAnim->keySprite.size() == 0)
+	{
 		//Acabe a la vez que el movimiento
-		framespSprite = (int)(currentAnim.hitboxFrame / currentAnim.keySprite);
+		framespSprite = (int)(currentAnim->totalFrames / currentAnim->totalSprites);
 
-	//Inicializamos el contador
-	cont = framespSprite;
+		//Inicializamos el contador
+		cont = framespSprite + currentAnim->totalFrames % currentAnim->totalSprites;
+	}
+	else
+	{
+		//El key Sprite coincida con la hitbox
+		framespSprite = (int)(currentAnim->keyFrame[0] / currentAnim->keySprite[0]);
+
+		//Inicializamos el contador
+		cont = framespSprite + (currentAnim->keyFrame[0] % currentAnim->keySprite[0]);
+	}
 }
 
 

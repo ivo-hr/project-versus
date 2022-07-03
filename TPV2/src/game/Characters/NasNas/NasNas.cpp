@@ -11,7 +11,9 @@ using json = nlohmann::json;
 NasNas::NasNas(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p, 1.5f, 2.7f)
 {
 
-	ReadJson("resources/config/nasnas.json");
+	spriteSheetData spData;
+
+	ReadJson("resources/config/nasnas.json", spData);
 	//guardamos la textura
 	texture = &sdl->images().at("nasnasFire");
 	portrait = &sdl->images().at("nasNasSelect");
@@ -32,7 +34,7 @@ void NasNas::BasicNeutral(int frameNumber)
 		anim->StartAnimation("basicN");
 		sdl->soundEffects().at("nasAtk0").play();
 	}
-	else if (frameNumber == attacks["basicN"].startUp)
+	else if (frameNumber == attacks["basicN"].keyFrames[0])
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(
 			body->GetPosition().x + dir * width,
@@ -40,7 +42,7 @@ void NasNas::BasicNeutral(int frameNumber)
 			width * 2.5f,
 			height * 0.25f);
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicN"], 2, OnHitData(5, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox, attacks["basicN"], 2, OnHitData(5, false, false)));
 
 	}
 	else if (frameNumber == attacks["basicN"].totalFrames)
@@ -57,7 +59,7 @@ void NasNas::BasicForward(int frameNumber)
 		anim->StartAnimation("basicFWalk");
 		sdl->soundEffects().at("nasAtk1").play();
 	}
-	else if (frameNumber == attacks["basicF"].startUp)
+	else if (frameNumber == attacks["basicF"].keyFrames[0])
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(
 			body->GetPosition().x + dir * width,
@@ -65,7 +67,7 @@ void NasNas::BasicForward(int frameNumber)
 			width * 1.5f,
 			height * 1.02f);
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicF"], 3, Vector2D(dir * 50,hitbox.y), OnHitData(20, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox, attacks["basicF"], 3, Vector2D(dir * 50,hitbox.y), OnHitData(20, false, false)));
 	}
 	else if (frameNumber == attacks["basicF"].totalFrames)
 	{
@@ -101,7 +103,7 @@ void NasNas::BasicUpward(int frameNumber)
 		anim->StartAnimation("basicU");
 		sdl->soundEffects().at("nasAtk2").play();
 	}
-	else if (frameNumber == attacks["basicU"].startUp)
+	else if (frameNumber == attacks["basicU"].keyFrames[0])
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(
 			body->GetPosition().x + dir * 0.2f,
@@ -109,7 +111,7 @@ void NasNas::BasicUpward(int frameNumber)
 			width * 2.4f,
 			height * 0.9f);
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 10, OnHitData(5, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 10, OnHitData(5, false, false)));
 	}
 	else if (frameNumber == attacks["basicU"].totalFrames)
 	{
@@ -126,7 +128,7 @@ void NasNas::BasicDownward(int frameNumber)
 		anim->StartAnimation("basicD");
 		sdl->soundEffects().at("nasAtk3").play();
 	}
-	else if (frameNumber == attacks["basicD"].startUp)
+	else if (frameNumber == attacks["basicD"].keyFrames[0])
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(
 			body->GetPosition().x + (dir * width * 0.7f),
@@ -140,10 +142,10 @@ void NasNas::BasicDownward(int frameNumber)
 			height / 2);
 
 		attackData invert = attacks["basicD"];
-		invert.direction.x = -attacks["basicD"].direction.x;
+		//invert.direction.x = -attacks["basicD"].direction.x;
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 3, OnHitData(5, false, false)));
-		hitboxes.push_back(new Hitbox(hitbox2, invert, 3, OnHitData(5, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 3, OnHitData(5, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox2, invert, 3, OnHitData(5, false, false)));
 	}
 	else if (frameNumber == attacks["basicD"].totalFrames)
 	{
@@ -167,9 +169,9 @@ void NasNas::SpecialNeutral(int frameNumber)
 		else mana -= 150;
 		anim->StartAnimation("especialN");
 	}
-	else if (frameNumber == attacks["specialN"].startUp)
+	else if (frameNumber == attacks["specialN"].keyFrames[0])
 	{
-		attackData aaa = attacks["specialN"];
+		HitData aaa = attacks["specialN"].hitBoxes[0].hitdata;
 		if (estado == fire)
 		{
 			aaa.damage = 10;
@@ -218,13 +220,12 @@ void NasNas::SpecialForward(int frameNumber)
 		mana -= 300;
 		moving = false;
 		anim->StartAnimation("especialF");
-		
 
 	}
-	else if (frameNumber == attacks["specialF"].startUp)
+	else if (frameNumber == attacks["specialF"].keyFrames[0])
 	{
 		SDL_Rect hitbox;
-		attackData aaa = attacks["specialF"];
+		HitData aaa = attacks["specialF"].hitBoxes[0].hitdata;
 		if (estado == fire)
 		{
 			if (dir == 1) {
@@ -298,7 +299,7 @@ void NasNas::SpecialForward(int frameNumber)
 		{
 			hitbox.x -= hitbox.w;
 		}
-			hitboxes.push_back(new Hitbox(hitbox, aaa, 10, OnHitData(20, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox, aaa, 10, OnHitData(20, false, false)));
 
 	
 	}
@@ -324,7 +325,7 @@ void NasNas::SpecialUpward(int frameNumber)
 
 
 	}
-	else if (frameNumber == attacks["specialU"].startUp)
+	else if (frameNumber == attacks["specialU"].keyFrames[0])
 	{
 		body->SetLinearVelocity(b2Vec2(0, -70));
 		sdl->soundEffects().at("nasSpecUup").play();
@@ -352,7 +353,7 @@ void NasNas::SpecialDownward(int frameNumber)
 		anim->StartAnimation("especialD");
 		sdl->soundEffects().at("nasSpecD").play();
 	}
-	if (frameNumber == attacks["specialD"].startUp)
+	if (frameNumber == attacks["specialD"].keyFrames[0])
 	{
 		
 	}
@@ -391,7 +392,7 @@ void NasNas::SpecialUpHit(int frameNumber)
 			width * 1.5f,
 			height * 1.5f);
 
-		attackData aaa = attacks["specialU"];
+		HitData aaa = attacks["specialU"].hitBoxes[0].hitdata;
 		aaa.power = 70;
 		sdl->soundEffects().at("nasSpecU").play();
 		if (estado == fire)
@@ -412,9 +413,9 @@ void NasNas::SpecialUpHit(int frameNumber)
 			aaa.base = 0.1;
 			aaa.estado = electric;
 		}
-		hitboxes.push_back(new Hitbox(hitbox, aaa, 6, OnHitData(20, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox, aaa, 6, OnHitData(20, false, false)));
 	}
-	if (frameNumber >= attacks["specialF"].totalFrames - attacks["specialU"].startUp)
+	if (frameNumber >= attacks["specialF"].totalFrames - attacks["specialU"].keyFrames[0])
 	{
 		currentMove = nullptr;
 		moveFrame = -1;

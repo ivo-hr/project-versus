@@ -17,8 +17,6 @@ protected:
 	//InputHandler& ih = *InputHandler::instance();
 	InputConfig *input = nullptr;
 
-	spriteSheetData spData;
-
 	AnimationManager* anim;
 
 	//Datos de los ataques (Deberian salir de jsons en un futuro)
@@ -67,7 +65,7 @@ protected:
 	//Metodo del movimiento que este haciendo (esto es una variable que guarda metodos :v)
 	std::function<void(int)> currentMove;
 
-	json ReadJson(std::string file);
+	json ReadJson(std::string file, spriteSheetData& spData);
 
 	// efectos de estado
 	enum state efEstado = none;
@@ -85,6 +83,14 @@ protected:
 	bool invencible = false;
 	bool drawArrow=false;
 	int invencibleCont = 0;
+
+	virtual void CreateHitBox(HitBoxData* data);
+
+	virtual void BuildBoxes() = 0;
+	virtual Vector2D BuildBoxOffset(const HitBoxData& data) {
+		return Vector2D((data.box.x + (data.box.w / 2)) - (hurtbox.x + (hurtbox.w / 2)), (data.box.y + (data.box.h / 2)) - (hurtbox.y + (hurtbox.h / 2)));
+	};
+
 public:
 
 	Character(FightManager* manager, b2Vec2 pos, char input,int player, float w = 3.f, float h = 3.f);
@@ -98,7 +104,7 @@ public:
 	virtual void draw(SDL_Rect* camera) override;
 	virtual void drawHUD(int numOfPlayer) ;
 
-	virtual bool GetHit(attackData a, Entity* attacker);
+	virtual bool GetHit(HitData a, Entity* attacker) override;
 	virtual SDL_Rect* GetHurtbox();
 	Texture* getPortrait() { return portrait; };
 

@@ -18,7 +18,7 @@ public:
 	virtual void SpecialUpward(int frameNumber) override;
 	virtual void SpecialDownward(int frameNumber) override;
 
-	virtual bool GetHit(attackData a, Entity* attacker);
+	virtual bool GetHit(HitData a, Entity* attacker) override;
 	virtual void update() override;
 	virtual void SetSpear(bool spear);
 	void SpecialLHit(int frameNumber);
@@ -30,4 +30,6 @@ private:
 	float attackMul;
 	DinoShield* dShield = nullptr;
 	SDL_Rect bite;
+protected:
+	void BuildBoxes() override;
 };

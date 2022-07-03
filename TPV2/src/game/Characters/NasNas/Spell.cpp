@@ -2,7 +2,7 @@
 #include "Spell.h"
 #include "../../../utils/CheckML.h"
 
-Spell::Spell(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir, state state) :
+Spell::Spell(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, state state) :
 	Projectile(manager, pos, dir, 2.f, 1.f, 20)
 {
 	

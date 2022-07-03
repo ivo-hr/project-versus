@@ -15,7 +15,7 @@ public:
 	virtual void draw() override;
 	virtual void draw(SDL_Rect* camera) override;
 	virtual void CheckHits() override {};
-	virtual bool GetHit(attackData a, Entity* attacker);
+	virtual bool GetHit(HitData a, Entity* attacker) override;
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox; };
 	virtual void setToDelete() { toDelete = true; }
 private:

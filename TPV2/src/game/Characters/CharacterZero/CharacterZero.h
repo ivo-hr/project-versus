@@ -15,5 +15,7 @@ public:
 	virtual void SpecialNeutral(int frameNumber) override;
 
 	virtual void drawHUD( int numOfPlayer)override;
+protected:
+	void BuildBoxes() override {};
 
 };

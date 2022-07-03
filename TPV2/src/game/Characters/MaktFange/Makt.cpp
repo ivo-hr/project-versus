@@ -10,7 +10,9 @@ Makt::Makt(FightManager* mngr, b2Vec2 pos, char input,int p) :
 	Character(mngr, pos, input,p, 2.f, 3.5f)
 {
 
-	json js = ReadJson("resources/config/maketo.json");
+	spriteSheetData spData;
+
+	json js = ReadJson("resources/config/maketo.json", spData);
 
 	baseJump = jumpStr;
 	ballJump = js["ballJump"];
@@ -49,7 +51,7 @@ void Makt::BasicNeutral(int frameNumber)
 		}
 		sdl->soundEffects().at("maktAtk0").play();
 	}
-	else if (frameNumber == attacks["basicN"].startUp)
+	else if (frameNumber == attacks["basicN"].keyFrames[0])
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(
 			body->GetPosition().x + (dir * .6f),
@@ -57,7 +59,7 @@ void Makt::BasicNeutral(int frameNumber)
 			width * 1.8f,
 			height);
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicN"], 3, OnHitData(12, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox, attacks["basicN"], 3, OnHitData(12, false, false)));
 	}
 	else if (frameNumber == attacks["basicN"].totalFrames)
 	{
@@ -81,7 +83,7 @@ void Makt::BasicForward(int frameNumber)
 
 		body->SetLinearVelocity(b2Vec2(dir * 30, body->GetLinearVelocity().y));
 	}
-	else if (frameNumber == attacks["basicF"].startUp)
+	else if (frameNumber == attacks["basicF"].keyFrames[0])
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(
 			body->GetPosition().x + (dir),
@@ -93,11 +95,11 @@ void Makt::BasicForward(int frameNumber)
 
 		if (!onGround)
 		{
-			aaa.direction.y = -10;
-			aaa.direction.Normalize();
+			//aaa.direction.y = -10;
+			//aaa.direction.Normalize();
 		}
 
-		hitboxes.push_back(new Hitbox(hitbox, aaa, 5, OnHitData(20, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox, aaa, 5, OnHitData(20, false, false)));
 	}
 	else if (frameNumber == attacks["basicF"].totalFrames)
 	{
@@ -119,7 +121,7 @@ void Makt::BasicUpward(int frameNumber)
 		}
 		sdl->soundEffects().at("maktAtk2").play();
 	}
-	else if (frameNumber == attacks["basicU"].startUp)
+	else if (frameNumber == attacks["basicU"].keyFrames[0])
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(
 			body->GetPosition().x + (dir * .2f),
@@ -127,7 +129,7 @@ void Makt::BasicUpward(int frameNumber)
 			width * 1.8f,
 			height);
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 5, OnHitData(5, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 5, OnHitData(5, false, false)));
 	}
 	else if (frameNumber == attacks["basicU"].totalFrames)
 	{
@@ -148,7 +150,7 @@ void Makt::BasicDownward(int frameNumber)
 		}
 		sdl->soundEffects().at("maktAtk3").play();
 	}
-	else if (frameNumber == attacks["basicD"].startUp)
+	else if (frameNumber == attacks["basicD"].keyFrames[0])
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(
 			body->GetPosition().x + (dir * width * 0.7f),
@@ -162,10 +164,10 @@ void Makt::BasicDownward(int frameNumber)
 			height / 2);
 
 		attackData invert = attacks["basicD"];
-		invert.direction.x = -attacks["basicD"].direction.x;
+		//invert.direction.x = -attacks["basicD"].direction.x;
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 3, OnHitData(15, false, false)));
-		hitboxes.push_back(new Hitbox(hitbox2, invert, 3, OnHitData(15, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 3, OnHitData(15, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox2, invert, 3, OnHitData(15, false, false)));
 
 	}
 	else if (frameNumber == attacks["basicD"].totalFrames)
@@ -188,7 +190,7 @@ void Makt::SpecialNeutral(int frameNumber)
 		anim->StartAnimation("especialN");
 		sdl->soundEffects().at("maktSpecN").play();
 	}
-	else if (frameNumber == attacks["specialN"].startUp)
+	else if (frameNumber == attacks["specialN"].keyFrames[0])
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(
 			body->GetPosition().x + (dir * 1.6f),
@@ -196,7 +198,7 @@ void Makt::SpecialNeutral(int frameNumber)
 			width * 1.7f,
 			height);
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialN"], 8, OnHitData(30, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox, attacks["specialN"], 8, OnHitData(30, false, false)));
 	}
 	else if (frameNumber >= attacks["specialN"].totalFrames)
 	{
@@ -221,9 +223,9 @@ void Makt::SpecialForward(int frameNumber)
 		sdl->soundEffects().at("maktSpecS").play();
 	}
 	
-	else if (frameNumber >= attacks["specialL"].startUp)
+	else if (frameNumber >= attacks["specialL"].keyFrames[0])
 	{
-		if (frameNumber == attacks["specialL"].startUp) {
+		if (frameNumber == attacks["specialL"].keyFrames[0]) {
 			anim->StartAnimation("especialLHold");
 		}
 		if(!input->special() || release) {
@@ -236,8 +238,8 @@ void Makt::SpecialForward(int frameNumber)
 			}
 			else if (frameNumber == frameRelease + 5) {
 				release = false;
-				ThrowBall(attacks["specialL"], frameNumber);
-				ChangeMove([this](int f) {ThrowRecover(f); });
+				ThrowBall(attacks["specialL"].hitBoxes[0].hitdata, frameNumber);
+				ChangeMove([this](int f) { ThrowRecover(f); });
 			}
 			
 		}		
@@ -257,7 +259,7 @@ void Makt::SpecialUpward(int frameNumber)
 		anim->StartAnimation("especialUEntrada");
 		sdl->soundEffects().at("maktSpecU").play();
 	}
-	else if (frameNumber == attacks["specialU"].startUp)
+	else if (frameNumber == attacks["specialU"].keyFrames[0])
 	{
 		anim->StartAnimation("especialU");
 		SDL_Rect hitbox = manager->GetSDLCoors(
@@ -265,7 +267,7 @@ void Makt::SpecialUpward(int frameNumber)
 			width * 1.2f,
 			height * 1.2f);
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 20, Vector2D(-5 + (5*dir), -50), OnHitData(3, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 20, Vector2D(-5 + (5*dir), -50), OnHitData(3, false, false)));
 
 		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, -60));
 	}
@@ -291,7 +293,7 @@ void Makt::SpecialDownward(int frameNumber)
 		anim->StartAnimation("especialD");
 		sdl->soundEffects().at("maktSpecD").play();
 	}
-	else if (frameNumber == attacks["specialD"].startUp)
+	else if (frameNumber == attacks["specialD"].keyFrames[0])
 	{
 		SDL_Rect hitbox = manager->GetSDLCoors(
 			body->GetPosition().x,
@@ -299,7 +301,7 @@ void Makt::SpecialDownward(int frameNumber)
 			width * 3,
 			height * 0.7f);
 
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialD"], 5, OnHitData(3, false, false)));
+		//hitboxes.push_back(new Hitbox(hitbox, attacks["specialD"], 5, OnHitData(3, false, false)));
 	}
 	else if (frameNumber >= attacks["specialD"].totalFrames)
 	{
@@ -323,7 +325,7 @@ void Makt::BallPickUp(int frameNumber)
 		moving = false;
 		//sdl->soundEffects().at("catAtk3").play();
 	}
-	else if (frameNumber == attacks["pickBall"].startUp)
+	else if (frameNumber == attacks["pickBall"].keyFrames[0])
 	{
 		if (SDL_HasIntersection(&hurtbox, ball->GetHurtbox())) {
 			anim->StartAnimation("ballPick");
@@ -662,7 +664,7 @@ void Makt::update()
 
 }
 
-bool Makt::GetHit(attackData a, Entity* attacker)
+bool Makt::GetHit(HitData a, Entity* attacker)
 {
 	if (Character::GetHit(a, attacker))
 	{
@@ -965,7 +967,7 @@ void Makt::Taunt(int frameNumber)
 		ChangeMove([this](int f) { StartJump(f); });
 	}
 
-	else if (frameNumber == spData.animations["taunt"].totalFrames)
+	else if (frameNumber == attacks["taunt"].totalFrames)
 	{
 		if (ball == nullptr) {
 			anim->StartAnimation("idleB");
@@ -995,7 +997,7 @@ void Makt::RecoveredBall()
 	}
 }
 
-void Makt::ThrowBall(attackData force, int timeHeld)
+void Makt::ThrowBall(HitData force, int timeHeld)
 {
 	if (timeHeld > 200)
 	{
@@ -1006,7 +1008,7 @@ void Makt::ThrowBall(attackData force, int timeHeld)
 	maxSpeed = baseSpeed;
 	weight = baseWeight;
 
-	attackData aux = force;
+	HitData aux = force;
 
 	aux.damage += timeHeld / 10;
 	aux.base += timeHeld / 10;

@@ -5,8 +5,10 @@
 CharacterZero::CharacterZero(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p)
 {
 	//importamos json del personaje
+
+	spriteSheetData spData;
 	
-	ReadJson("resources/config/zero.json");
+	ReadJson("resources/config/zero.json", spData);
 
 	//guardamos la textura
 	texture = &sdl->images().at("zero");
@@ -53,9 +55,9 @@ void CharacterZero::BasicNeutral(int frameNumber)
 
 		hitbox.x += dir * 60;
 		
-		hitboxes.push_back(new Hitbox(hitbox, 
+		/*hitboxes.push_back(new Hitbox(hitbox, 
 			attacks["fuerte"],
-			1, OnHitData(20, false, false)));
+			1, OnHitData(20, false, false)));*/
 
 	}
 	break;
@@ -97,9 +99,9 @@ void CharacterZero::SpecialNeutral(int frameNumber)
 
 		hitbox.x += dir * 30;
 
-		hitboxes.push_back(new Hitbox(hitbox, 
-			attacks["debil"], 
-			1));
+		//hitboxes.push_back(new Hitbox(hitbox, 
+		//	attacks["debil"], 
+		//	1));
 
 	}
 	break;

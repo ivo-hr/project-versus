@@ -6,100 +6,175 @@
   "speed":0,
   "maxJumps": 1 ,
   "jumpStr": 800,
-  "onGround": true,
-  "shield": false ,
   "maxShield": 360,
 
   "attacksData": [
     {
       "id": "basicN",
-      "b2vecX": 1,
-      "b2vecY": 1.8,
-      "base": 10,
-      "damage": 6,
-      "multiplier": 0.6,
-      "startUp": 4,
-      "totalFrames": 40
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": 1.8,
+            "base": 10,
+            "damage": 6,
+            "multiplier": 0.6,
+            "stun": -1,
+            "shieldBreak": false
+          },
+          "hitlag": -1,
+          "duration": 8
+        }
+      ],
+      "keyFrames": [4],
+      "totalFrames": 20
     },
     {
       "id": "basicF",
-      "b2vecX": 1,
-      "b2vecY": 2.5,
-      "base": 1,
-      "damage": 1,
-      "multiplier": 0.1,
-      "startUp": 12,
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": 2.5,
+            "base": 1,
+            "damage": 1,
+            "multiplier": 0.1,
+            "stun": -1,
+            "shieldBreak": false
+          },
+          "hitlag": -1,
+          "duration": 6
+        }
+      ],
+      "keyFrames": [8],
       "totalFrames": 30
     },
     {
       "id": "basicD",
-      "b2vecX": 1.5,
-      "b2vecY": 1,
-      "base": 10,
-      "damage": 10,
-      "multiplier": 1.2,
-      "startUp": 7,
-      "totalFrames": 30
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 1.3,
+            "b2vecY": 1,
+            "base": 40,
+            "damage": 10,
+            "multiplier": 0.2,
+            "stun": -1,
+            "shieldBreak": false
+          },
+          "hitlag": -1,
+          "duration": 4
+        }
+      ],
+      "keyFrames": [6, 13],
+      "totalFrames": 23
     },
     {
       "id": "basicU",
-      "b2vecX": 1,
-      "b2vecY": 9,
-      "base": 5,
-      "damage": 5,
-      "multiplier": 0.5,
-      "startUp": 12,
-      "totalFrames": 30
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 0,
+            "b2vecY": 0,
+            "base": 5,
+            "damage": 6,
+            "multiplier": 0.5,
+            "stun": 6,
+            "shieldBreak": false
+          },
+          "hitlag": -1,
+          "duration": 2
+        },
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": 9,
+            "base": 5,
+            "damage": 8,
+            "multiplier": 0.8,
+            "stun": -1,
+            "shieldBreak": false
+          },
+          "hitlag": 16,
+          "duration": 9
+        }
+      ],
+      "keyFrames": [5, 9, 13, 17, 21],
+      "totalFrames": 27
     },
     {
       "id": "specialN",
-      "b2vecX": 1,
-      "b2vecY": 1,
-      "base": 1,
-      "damage": 1,
-      "multiplier": 0.2,
-      "startUp": 9,
-      "totalFrames": 25
+      "hitBoxes": [
+      ],
+      "keyFrames": [4],
+      "totalFrames": 18
     },
     {
       "id": "specialL",
-      "b2vecX": 1,
-      "b2vecY": 1,
-      "base": 0,
-      "damage": 0,
-      "multiplier": 0,
-      "startUp": 8,
+      "hitBoxes": [
+      ],
+      "keyFrames": [6],
       "totalFrames": 40
     },
     {
       "id": "specialLHit",
-      "b2vecX": 1,
-      "b2vecY": 3,
-      "base": 5,
-      "damage": 30,
-      "multiplier": 0.5,
-      "startUp": 3,
-      "totalFrames": 30
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": 3,
+            "base": 40,
+            "damage": 30,
+            "multiplier": 0.5,
+            "stun": -1,
+            "shieldBreak": true
+          },
+          "hitlag": -1,
+          "duration": 3
+        }
+      ],
+      "keyFrames": [2],
+      "totalFrames": 16
     },
     {
       "id": "specialU",
-      "b2vecX": 0,
-      "b2vecY": 1,
-      "base": 12,
-      "damage": 4,
-      "multiplier": 0.3,
-      "startUp": 1,
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 0,
+            "b2vecY": 1,
+            "base": 12,
+            "damage": 4,
+            "multiplier": 0.3,
+            "stun": -1,
+            "shieldBreak": false
+          },
+          "hitlag": -1,
+          "duration": 26
+        }
+      ],
+      "keyFrames": [2],
       "totalFrames": 30
     },
     {
       "id": "specialD",
-      "b2vecX": 1,
-      "b2vecY": 1,
-      "base": 15,
-      "damage": 10,
-      "multiplier": 1.5,
-      "startUp": 15,
-      "totalFrames": 60
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 1.1,
+            "b2vecY": 1,
+            "base": 40,
+            "damage": 23,
+            "multiplier": 1.2,
+            "stun": -1,
+            "shieldBreak": true
+          },
+          "hitlag": -1,
+          "duration": 8
+        }
+      ],
+      "keyFrames": [14, 32],
+      "totalFrames": 40
     }
   ],
 
@@ -117,7 +192,7 @@
         "id" : "idle",
         "iniSprite" : 0,
         "totalSprites" : 2,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames" : 30,
         "loop" :true
@@ -126,7 +201,7 @@
         "id" : "basicN",
         "iniSprite" : 21,
         "totalSprites" : 9,
-        "keySprite" : 2,
+        "keySprite" : [3],
         "attack": "basicN",
         "totalFrames" : 30,
         "loop" :false
@@ -135,7 +210,7 @@
         "id" : "basicU",
         "iniSprite" : 45,
         "totalSprites" : 14,
-        "keySprite" : 5,
+        "keySprite" : [5, 6, 7, 8, 10],
         "attack": "basicU",
         "totalFrames" : 30,
         "loop" :false
@@ -143,8 +218,8 @@
       {
         "id" : "basicD",
         "iniSprite" : 37,
-        "totalSprites" : 8,
-        "keySprite" : 3,
+        "totalSprites" : 9,
+        "keySprite" : [3, 7],
         "attack": "basicD",
         "totalFrames" : 30,
         "loop" :false
@@ -153,7 +228,7 @@
         "id" : "basicF",
         "iniSprite" : 30,
         "totalSprites" : 5,
-        "keySprite" : -1,
+        "keySprite" : [4],
         "attack": "basicF",
         "totalFrames" : 20,
         "loop" :false
@@ -162,7 +237,7 @@
         "id" : "shield",
         "iniSprite" : 6,
         "totalSprites" : 2,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames" : 40,
         "loop" : true
@@ -171,7 +246,7 @@
         "id" : "run",
         "iniSprite" : 2,
         "totalSprites" : 4,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames" : 50,
         "loop" : true
@@ -180,7 +255,7 @@
         "id" : "airborne",
         "iniSprite" : 11,
         "totalSprites" : 2,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames" : 15,
         "loop" : true
@@ -189,7 +264,7 @@
         "id" : "dash",
         "iniSprite" : 13,
         "totalSprites" : 2,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames" : 15,
         "loop" : true
@@ -198,7 +273,7 @@
         "id" : "especialN",
         "iniSprite" : 89,
         "totalSprites" : 3,
-        "keySprite" : -1,
+        "keySprite" : [3],
         "attack": "specialN",
         "totalFrames" : 15,
         "loop" : false
@@ -207,8 +282,8 @@
         "id" : "especialNHold",
         "iniSprite" : 92,
         "totalSprites" : 3,
-        "keySprite" : -1,
-        "attack": "specialN",
+        "keySprite" : [],
+        "attack": "",
         "totalFrames" : 15,
         "loop" : true
       },
@@ -216,7 +291,7 @@
         "id" : "especialLEntrada",
         "iniSprite" : 67,
         "totalSprites" : 10,
-        "keySprite" : 4,
+        "keySprite" : [4],
         "attack": "specialL",
         "totalFrames" : 25,
         "loop" : false
@@ -225,7 +300,7 @@
         "id" : "especialLSalida",
         "iniSprite" : 77,
         "totalSprites" : 5,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames" : 15,
         "loop" : false
@@ -234,7 +309,7 @@
         "id" : "especialLHit",
         "iniSprite" : 82,
         "totalSprites" : 7,
-        "keySprite" : 3,
+        "keySprite" : [2],
         "attack": "specialLHit",
         "totalFrames" : 15,
         "loop" : false
@@ -243,7 +318,7 @@
         "id" : "especialU",
         "iniSprite" : 97,
         "totalSprites" : 4,
-        "keySprite" : -1,
+        "keySprite" : [3],
         "attack": "specialU",
         "totalFrames" : 10,
         "loop" : true
@@ -251,8 +326,8 @@
       {
         "id" : "especialD",
         "iniSprite" : 59,
-        "totalSprites" : 8,
-        "keySprite" : 3,
+        "totalSprites" : 7,
+        "keySprite" : [2, 5],
         "attack": "specialD",
         "totalFrames" : 40,
         "loop" : false
@@ -261,7 +336,7 @@
         "id" : "stun",
         "iniSprite" : 8,
         "totalSprites" : 1,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames" : 50,
         "loop" : true
@@ -270,7 +345,7 @@
         "id" : "jumpCharge",
         "iniSprite" : 9,
         "totalSprites" : 1,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames" : 10,
         "loop" : false
@@ -279,7 +354,7 @@
         "id" : "jump",
         "iniSprite" : 10,
         "totalSprites" : 1,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames" : 10,
         "loop" : true
@@ -288,7 +363,7 @@
         "id" : "taunt",
         "iniSprite" :15,
         "totalSprites" : 6,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames": 45,
         "loop" :false

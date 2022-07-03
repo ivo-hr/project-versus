@@ -7,7 +7,7 @@
 #include <iostream>
 
 
-json Character::ReadJson(std::string filename)
+json Character::ReadJson(std::string filename, spriteSheetData &spData)
 {
 	std::ifstream file(filename);
 	json jsonFile;
@@ -21,8 +21,6 @@ json Character::ReadJson(std::string filename)
 	speed = jsonFile["speed"];
 	maxJumps = jsonFile["maxJumps"];
 	jumpStr = jsonFile["jumpStr"];
-	onGround = jsonFile["onGround"];
-	shield = jsonFile["shield"];
 	maxShield = jsonFile["maxShield"];
 	jumpCounter = maxJumps;
 	damageTaken = 0;
@@ -39,15 +37,37 @@ json Character::ReadJson(std::string filename)
 
 	for (uint16 i = 0u; i < aData.size(); i++) {
 
-		aux.direction = b2Vec2(aData[i]["b2vecX"], aData[i]["b2vecY"]);
-		aux.direction.Normalize();
-		aux.base = aData[i]["base"];
-		aux.damage = aData[i]["damage"];
-		aux.multiplier = aData[i]["multiplier"];
-		aux.startUp = aData[i]["startUp"];
+		HitBoxData hitboxDataAux;
+
+		auto hitBoxes = aData[i]["hitBoxes"];
+		assert(hitBoxes.is_array());
+
+		for (uint16 j = 0u; j < hitBoxes.size(); j++)
+		{
+			hitboxDataAux.hitdata.damage = hitBoxes[j]["hitData"]["damage"];
+			hitboxDataAux.hitdata.direction = b2Vec2(hitBoxes[j]["hitData"]["b2vecX"], hitBoxes[j]["hitData"]["b2vecY"]);
+			hitboxDataAux.hitdata.direction.Normalize();
+			hitboxDataAux.hitdata.base = hitBoxes[j]["hitData"]["base"];
+			hitboxDataAux.hitdata.multiplier = hitBoxes[j]["hitData"]["multiplier"];
+			hitboxDataAux.hitdata.stun = hitBoxes[j]["hitData"]["stun"];
+			hitboxDataAux.hitdata.shieldBreak = hitBoxes[j]["hitData"]["shieldBreak"];
+
+			hitboxDataAux.hitlag = hitBoxes[j]["hitlag"];
+			hitboxDataAux.duration = hitBoxes[j]["duration"];
+
+			aux.hitBoxes.push_back(hitboxDataAux);
+		}
+
+		assert(aData[i]["keyFrames"].is_array());
+		for (uint16 j = 0u; j < aData[i]["keyFrames"].size(); j++)
+			aux.keyFrames.push_back(aData[i]["keyFrames"][j]);
+
 		aux.totalFrames = aData[i]["totalFrames"];
 
 		attacks.insert({ aData[i]["id"], aux });
+
+		aux.keyFrames.clear();
+		aux.hitBoxes.clear();
 	}
 
 
@@ -71,25 +91,43 @@ json Character::ReadJson(std::string filename)
 
 		auxAnim.iniSprite = animData[i]["iniSprite"];
 		auxAnim.totalSprites = animData[i]["totalSprites"];
-		auxAnim.keySprite = animData[i]["keySprite"];
+
+		std::vector<int> a = animData[i]["keySprite"];
+		auxAnim.keySprite = a;
 
 		if (animData[i]["attack"] != "")
 		{
-			auxAnim.hitboxFrame = attacks[animData[i]["attack"]].startUp;
+			auxAnim.keyFrame = attacks[animData[i]["attack"]].keyFrames;
 			auxAnim.totalFrames = attacks[animData[i]["attack"]].totalFrames;
 		}
 		else
 		{
-			auxAnim.keySprite = -1;
-			auxAnim.hitboxFrame = -1;
+			//auxAnim.keySprite = -1;
 			auxAnim.totalFrames = animData[i]["totalFrames"];
 		}
 		auxAnim.loop = animData[i]["loop"];
 
 		spData.animations.insert({ animData[i]["id"], auxAnim });
+		auxAnim.keyFrame.clear();
+	}
+
+	BuildBoxes();
+
+	for (auto& a : attacks)
+	{
+		for (HitBoxData& hitboxes : a.second.hitBoxes)
+		{
+			hitboxes.normalOffset = BuildBoxOffset(hitboxes);
+		}
 	}
 
 	return jsonFile;
+}
+
+void Character::CreateHitBox(HitBoxData* data)
+{
+	data->charOffset = Vector2D(data->normalOffset.getX() * dir, data->normalOffset.getY());
+	hitboxes.push_back(data);
 }
 
 Character::Character(FightManager* manager, b2Vec2 pos, char input,int playerPos, float w, float h) :
@@ -104,6 +142,7 @@ Character::Character(FightManager* manager, b2Vec2 pos, char input,int playerPos
 
 	stun = 0;
 	dash = false;
+	shield = false;
 	lives = maxLives;
 	this->input = new InputConfig(input);
 	input_ = input;
@@ -369,7 +408,6 @@ void Character::update()
 	}
 	else if (shield)
 	{
-
 		shieldCounter-=2;
 	}
 
@@ -523,13 +561,55 @@ void Character::draw(SDL_Rect* camera)
 }
 
 
-
-bool Character::GetHit(attackData a, Entity* attacker)
+bool Character::GetHit(HitData a, Entity* attacker)
 {
 	if (shield)
 	{
 		//Actualiza el da�o
-		damageTaken += (int)(a.damage * 0.4f);
+		if (!a.shieldBreak)
+		{
+			damageTaken += (int)(a.damage * 0.4f);
+		}
+		else
+		{
+			shield = false;
+			body->SetGravityScale(10.0f);
+			currentMove = nullptr;
+			moveFrame = -1;
+			anim->StartAnimation("stun");
+			anim->update();
+			float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f))) * 2;
+
+			stun = a.GetStun(recoil);
+
+			//Actualiza el da�o
+			damageTaken += a.damage * 2;
+
+			b2Vec2 aux = a.direction;
+
+			if (recoil > 90)
+			{
+				manager->KillingBlow();
+
+				AddParticle(new Particle(
+					Vector2D(
+						manager->ToSDL(body->GetPosition().x),
+						manager->ToSDL(body->GetPosition().y)),
+					1, "killVfx", this));
+				AddParticle(new Particle(
+					Vector2D(
+						manager->ToSDL(body->GetPosition().x),
+						manager->ToSDL(body->GetPosition().y)),
+					1, "killHit", this));
+			}
+
+			aux *= recoil;
+			aux.y *= -1;
+			aux.x *= attacker->GetDir();
+
+			//Produce el knoback..
+			body->SetLinearVelocity(aux);
+		}
 		return true;
 	}
 	if (dash)
@@ -545,7 +625,7 @@ bool Character::GetHit(attackData a, Entity* attacker)
 		anim->update();
 		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
 
-		stun = (recoil / 1.8f) + 4;
+		stun = a.GetStun(recoil);
 
 		//Actualiza el da�o
 		damageTaken += a.damage;
@@ -573,7 +653,6 @@ bool Character::GetHit(attackData a, Entity* attacker)
 		aux.x *= attacker->GetDir();
 
 		// Estados y combinaciones de estado
-
 		if (a.estado != none)
 		{
 			if (efEstado != a.estado && efEstado != none)
@@ -658,8 +737,10 @@ bool Character::GetHit(attackData a, Entity* attacker)
 				}
 			}
 		}
+
 		//Produce el knoback..
 		body->SetLinearVelocity(aux);
+
 		return true;
 	}
 
@@ -1023,7 +1104,7 @@ void Character::Taunt(int frameNumber) {
 		ChangeMove([this](int f) { StartJump(f); });
 	}
 
-	else if (frameNumber == spData.animations["taunt"].totalFrames)
+	else if (frameNumber == attacks["taunt"].totalFrames)
 	{
 		anim->StartAnimation("idle");
 		currentMove = nullptr;

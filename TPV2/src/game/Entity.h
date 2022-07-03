@@ -13,8 +13,8 @@ struct animationData
 	//Por cada animación...
 	int iniSprite;		//En que frame empieza
 	int totalSprites;	//Cuantos frames son
-	int keySprite;		//Sprite de la animación en el que debe aparecer la hitbox (Con respecto al sprite inicial)
-	int hitboxFrame;	//El frame en el que el juego crea la hitbox del ataque
+	std::vector<int>  keySprite = std::vector<int>();		//Sprite de la animación en el que debe aparecer la hitbox (Con respecto al sprite inicial)
+	std::vector<int>  keyFrame = std::vector<int>();		//Los frames en el que el juego crea las hitbox de los ataques
 	int totalFrames;	//Cuantos frames dura el movimiento en total (Hasta que se repita o acabe)
 	bool loop;			//Si se debe loopear
 };
@@ -25,6 +25,7 @@ struct spriteSheetData
 	int upOffset;		//bruh
 	int sizeXOffset;	//Que tan grande se tiene que hacer el sprite en X para que coincida
 	int sizeYOffset;	//bruh
+
 	int spritesInX;		//Cuantos frames hay en una fila de la spritesheet entera
 	int spritesInY;		//Cuantos frames hay en una columna de la spritesheet entera
 
@@ -32,49 +33,45 @@ struct spriteSheetData
 	//std::unordered_map<std::string, animationData> animations;
 };
 
-struct attackData 
-{
+struct HitData {
+
+	int damage;
+
 	b2Vec2 direction;
 	int base;
-	int damage;
 	float multiplier;
 
-	int startUp;
-	int totalFrames;
+	int stun = -1;
+	int GetStun(float recoil) { return stun <= 0 ? (recoil / 1.8f) + 4 : stun; };
+
+	bool shieldBreak = false;
 
 	state estado = none;
 	int power = 0;
 };
 
-struct OnHitData {
-	int hitlag;
-	bool zoom;
-	bool bigHit;
+struct HitBoxData
+{
+	SDL_Rect box;
 
-	OnHitData() : 
-		hitlag(0), zoom(false), bigHit(false) 
-	{};
+	HitData hitdata;
 
-	OnHitData(int lag, bool zoomIn, bool bigEffect) :
-		hitlag(lag), zoom(zoomIn), bigHit(bigEffect)
-	{};
+	int hitlag = -1;
+	int GetHitlag() { return hitlag <= 0 ? hitdata.damage * 0.6f : hitlag; };
+
+	int duration;
+	int outFor = 0;
+
+	Vector2D charOffset;	//Offset que tiene con respecto a la entidad para que la siga
+	Vector2D normalOffset;
 };
 
-struct Hitbox {
-	SDL_Rect box;
-	attackData data;
-	int duration;
-	OnHitData hit;
-	bool follow;
-	Vector2D charOffset;	//Offset que tiene con respecto a la entidad para que la siga
+struct attackData
+{
+	std::vector<HitBoxData> hitBoxes;
 
-	Hitbox(SDL_Rect a, attackData da, int frames, OnHitData b = OnHitData()) :
-		box(a), data(da), duration(frames), hit(b), charOffset(NULL, NULL), follow(false)
-	{};
-
-	Hitbox(SDL_Rect a, attackData da, int frames, Vector2D follow, OnHitData b = OnHitData()) :
-		box(a), data(da), duration(frames), hit(b), charOffset(follow), follow(true)
-	{};
+	std::vector<int> keyFrames;
+	int totalFrames = 0;
 };
 
 class Entity
@@ -98,7 +95,7 @@ protected:
 	int dir;
 
 	std::vector<Entity*> oponents;
-	std::vector<Hitbox*> hitboxes;
+	std::vector<HitBoxData*> hitboxes;
 	std::vector<bool> isHit;
 
 	bool onGround;
@@ -136,7 +133,7 @@ public:
 
 	virtual void CheckHits();
 	virtual void OnDeath() { toDelete = true; };
-	virtual bool GetHit(attackData a, Entity* attacker) = 0;
+	virtual bool GetHit(HitData a, Entity* attacker) { return false; };
 
 	FightManager* GetManager() { return manager; };
 

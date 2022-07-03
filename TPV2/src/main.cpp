@@ -77,7 +77,7 @@ int main(int ac, char **av) {
 
 	delete fghtmngr;
 
-	//SDL_Quit();
+	SDL_Quit();
 
 	return 0;
 }

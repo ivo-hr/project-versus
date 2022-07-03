@@ -6,7 +6,7 @@
 class Explosion : public Entity
 {
 protected:
-	attackData data;
+	HitData data;
 public:
 	Explosion(FightManager* manager, b2Vec2 pos, int power, int type);
 	virtual ~Explosion();
@@ -15,7 +15,6 @@ public:
 	virtual void draw() override;
 	virtual void draw(SDL_Rect* camera) override;
 	virtual void CheckHits() override;
-	virtual bool GetHit(attackData a, Entity* attacker) { return (false); };
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox; };
 private:
 	int anim = 0;

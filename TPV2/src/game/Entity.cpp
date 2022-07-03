@@ -222,19 +222,39 @@ void Entity::CheckHits()
 
 	for (int i = 0; i < hitboxes.size(); i++)
 	{
+
+		if (hitboxes[i]->duration == hitboxes[i]->outFor)
+		{
+			hitboxes[i]->outFor = 0;
+			for (int j = i + 1; j < hitboxes.size(); j++)
+			{
+				hitboxes[j - 1] = hitboxes[j];
+			}
+			hitboxes.pop_back();
+			i--;
+			toResetHits = true;
+		}
+		else
+		{
+			hitboxes[i]->box.x = (hurtbox.x + (hurtbox.w / 2) + hitboxes[i]->charOffset.getX()) - hitboxes[i]->box.w / 2;
+			hitboxes[i]->box.y = (hurtbox.y + (hurtbox.h / 2) + hitboxes[i]->charOffset.getY()) - hitboxes[i]->box.h / 2;
+			hitboxes[i]->outFor++;
+		}
+
+		if (!toResetHits)
 		for (int j = 0; j < oponents.size(); j++)
 		{
 			SDL_Rect hitArea;
 			if (SDL_IntersectRect(&hitboxes[i]->box, oponents[j]->GetHurtbox(), &hitArea) && !isHit[j])
 			{
 				//Le hace daño xddd
-				if (oponents[j]->GetHit(hitboxes[i]->data, this))
+				if (oponents[j]->GetHit(hitboxes[i]->hitdata, this))
 				{
-					manager->HitLag(hitboxes[i]->hit.hitlag);
+					manager->HitLag(hitboxes[i]->GetHitlag());
 
 					oponents[j]->setLastCharacer(this);
 
-					if (hitboxes[i]->hit.hitlag >= 15)
+					if (hitboxes[i]->hitlag >= 15)
 					{
 						AddParticle(new Particle(
 							 Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
@@ -252,27 +272,6 @@ void Entity::CheckHits()
 					}
 				}
 				isHit[j] = true;
-			}
-		}
-		hitboxes[i]->duration--;
-		if (hitboxes[i]->duration <= 0)
-		{
-			Hitbox* aux = hitboxes[i];
-			for (int j = i + 1; j < hitboxes.size(); j++)
-			{
-				hitboxes[j - 1] = hitboxes[j];
-			}
-			hitboxes.pop_back();
-			delete aux;
-			i--;
-			toResetHits = true;
-		}
-		else
-		{
-			if (hitboxes[i]->follow)
-			{
-				hitboxes[i]->box.x = hurtbox.x + hitboxes[i]->charOffset.getX();
-				hitboxes[i]->box.y = hurtbox.y + hitboxes[i]->charOffset.getY();
 			}
 		}
 	}

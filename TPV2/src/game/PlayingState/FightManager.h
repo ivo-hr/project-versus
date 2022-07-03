@@ -105,7 +105,7 @@ public:
 	void MoveToFront(Entity* ent);
 	void AddOponnent(Entity* ent, Entity* ignore = nullptr);
 
-	void HitLag(int frames);
+	void HitLag(int frames, bool shake = true);
 
 	void KillingBlow();
 

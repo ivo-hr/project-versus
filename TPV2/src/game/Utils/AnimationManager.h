@@ -15,14 +15,15 @@ protected:
 	std::string currentAnimIndex;
 
 	std::vector<b2Vec2> SpriteIndex;
-	std::vector<std::vector<int>> AnimationsInfo;
 	Texture* texture;
 	SDL_Rect recorteSheet;
 	SDL_Rect dest;
 
 	Entity* ent;
 	spriteSheetData info;
-	animationData currentAnim;
+	animationData* currentAnim = nullptr;
+
+	int currentState;
 
 	void UpdateIndex();
 

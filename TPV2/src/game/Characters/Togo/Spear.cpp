@@ -4,7 +4,7 @@
 #include "../../../utils/CheckML.h"
 #include "../../Utils/Particle.h"
 
-Spear::Spear(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir, Togo* togo) :
+Spear::Spear(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, Togo* togo) :
 	Projectile(manager, pos, dir, 5.25f, 0.7f, 20)
 {
 	owner = togo;

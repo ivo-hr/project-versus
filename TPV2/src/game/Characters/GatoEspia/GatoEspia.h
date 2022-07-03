@@ -23,7 +23,7 @@ public:
 
 	virtual void update() override;
 	virtual void Respawn() override;
-	virtual bool GetHit(attackData a, Entity* attacker) override;
+	virtual bool GetHit(HitData a, Entity* attacker) override;
 	void Counter(int frameNumber);
 
 	virtual void drawHUD( int numOfPlayer)override;
@@ -36,5 +36,8 @@ private:
 	float blinks = maxBlinks;
 	float blinkRecover = 0.004;
 	bool counter = false;
+
+protected:
+	void BuildBoxes() override;
 
 };

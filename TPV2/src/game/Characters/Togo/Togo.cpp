@@ -12,7 +12,9 @@ using json = nlohmann::json;
 Togo::Togo(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p, 1.5f, 3.5f)
 {
 
-	ReadJson("resources/config/dino.json");
+	spriteSheetData spData;
+
+	ReadJson("resources/config/dino.json", spData);
 	//guardamos la textura
 	texture = &sdl->images().at("dinoSouls");
 	portrait = &sdl->images().at("dinoSoulsSelect");
@@ -33,39 +35,9 @@ void Togo::BasicNeutral(int frameNumber)
 		anim->StartAnimation("basicN");
 		sdl->soundEffects().at("dinoAtk0").play();
 	}
-	else if (frameNumber == attacks["basicN"].startUp)
+	else if (frameNumber == attacks["basicN"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * 2.f),
-			body->GetPosition().y,
-			width * 4.f,
-			height * 0.4f);
-		SDL_Rect sweetspot = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * 5.5f),
-			body->GetPosition().y,
-			width * 1.1f,
-			height * 0.5f);
-
-		/*hitbox.h /= 6;
-		hitbox.w *= 4;
-		hitbox.y += hitbox.h / 2;
-		hitbox.y += (hitbox.h + 10);
-		if (dir == -1)
-		{
-			hitbox.x -= hitbox.w-20;
-		}
-		else 
-		{
-			hitbox.x += 15;
-
-		}*/
-
-		attackData a = attacks["basicN"];
-		a.damage *= 1.2f;
-		a.base *= 1.2f;
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicN"], 2, OnHitData(5, false, false)));
-		hitboxes.push_back(new Hitbox(sweetspot, a, 2, OnHitData(8, false, false)));
+		CreateHitBox(&attacks["basicN"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["basicN"].totalFrames)
 	{
@@ -86,9 +58,9 @@ void Togo::BasicForward(int frameNumber)
 		anim->StartAnimation("basicF");
 		sdl->soundEffects().at("dinoAtk1").play();
 	}
-	else if (frameNumber == attacks["basicF"].startUp)
+	else if (frameNumber == attacks["basicF"].keyFrames[0])
 	{
-			auto spear = new Spear(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y-height/2), attacks["basicF"], b2Vec2(dir, 0), this);
+			auto spear = new Spear(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y-height/2), attacks["basicF"].hitBoxes[0].hitdata, b2Vec2(dir, 0), this);
 			manager->AddEntity(spear);
 			manager->MoveToFront(spear);
 			spear->SetOponents(oponents);
@@ -103,75 +75,37 @@ void Togo::BasicForward(int frameNumber)
 
 void Togo::BasicUpward(int frameNumber)
 {
-	attackData a = attacks["basicU"];
-
-	a.base = 0;
-	a.multiplier = 0;
-	 
 	if (frameNumber == 0)
 	{
 		moving = false;
 		anim->StartAnimation("basicU");
 		sdl->soundEffects().at("dinoAtk2").play();
 	}
-	else if (frameNumber == attacks["basicU"].startUp)
+	else if (frameNumber == attacks["basicU"].keyFrames[0])
 	{
 		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, body->GetLinearVelocity().y / 5 });
+
 		if (!onGround) {
 			body->SetGravityScale(0.0f);
 		}
 
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x,
-			body->GetPosition().y - height * 0.7f,
-			width * 4.f,
-			height * 0.4f);
-
-		hitboxes.push_back(new Hitbox(hitbox, a, 3, OnHitData(3, false, false)));
+		CreateHitBox(&attacks["basicU"].hitBoxes[0]);
 	}
-	else if (frameNumber == attacks["basicU"].startUp+3)
+	else if (frameNumber == attacks["basicU"].keyFrames[1])
 	{
-
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x,
-			body->GetPosition().y - height * 0.7f,
-			width * 4.f,
-			height * 0.4f);
-
-		hitboxes.push_back(new Hitbox(hitbox, a, 3, OnHitData(3, false, false)));
+		CreateHitBox(&attacks["basicU"].hitBoxes[0]);
 	}
-	else if (frameNumber == attacks["basicU"].startUp+6)
+	else if (frameNumber == attacks["basicU"].keyFrames[2])
 	{
-
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x,
-			body->GetPosition().y - height * 0.7f,
-			width * 4.f,
-			height * 0.4f);
-
-		hitboxes.push_back(new Hitbox(hitbox, a, 3, OnHitData(3, false, false)));
+		CreateHitBox(&attacks["basicU"].hitBoxes[0]);
 	}
-	else if (frameNumber == attacks["basicU"].startUp+9)
+	else if (frameNumber == attacks["basicU"].keyFrames[3])
 	{
-
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x,
-			body->GetPosition().y - height * 0.7f,
-			width * 4.f,
-			height * 0.4f);
-
-		hitboxes.push_back(new Hitbox(hitbox, a, 3, OnHitData(3, false, false)));
+		CreateHitBox(&attacks["basicU"].hitBoxes[0]);
 	}
-	else if (frameNumber == attacks["basicU"].startUp+12)
+	else if (frameNumber == attacks["basicU"].keyFrames[4])
 	{
-
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x,
-			body->GetPosition().y - height * 0.7f,
-			width * 4.f,
-			height * 0.4f);
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 3, OnHitData(15, false, false)));
+		CreateHitBox(&attacks["basicU"].hitBoxes[1]);
 		body->SetGravityScale(10.0f);
 	}
 	else if (frameNumber == attacks["basicU"].totalFrames)
@@ -189,27 +123,17 @@ void Togo::BasicDownward(int frameNumber)
 		anim->StartAnimation("basicD");
 		sdl->soundEffects().at("dinoAtk3").play();
 	}
-	else if (frameNumber == attacks["basicD"].startUp)
+	else if (frameNumber == attacks["basicD"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * 1.8f),
-			body->GetPosition().y + height * 0.3f,
-			width * 2.6f,
-			height * 0.5f);
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 4, OnHitData(5, false, false)));
+		CreateHitBox(&attacks["basicD"].hitBoxes[0]);
 	}
-	else if (frameNumber == attacks["basicD"].startUp+attacks["basicD"].totalFrames/4)
+	else if (frameNumber == attacks["basicD"].keyFrames[1] - 2)
 	{
 		dir = -dir;
-
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * 1.8f),
-			body->GetPosition().y + height * 0.3f,
-			width * 2.6f,
-			height * 0.5f);
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 4, OnHitData(5, false, false)));
+	}
+	else if (frameNumber == attacks["basicD"].keyFrames[1])
+	{
+		CreateHitBox(&attacks["basicD"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["basicD"].totalFrames)
 	{
@@ -230,7 +154,7 @@ void Togo::SpecialNeutral(int frameNumber)
 			sdl->soundEffects().at("dinoSpecN").play();
 			moving = false;
 		}
-		else if (frameNumber == attacks["specialN"].startUp)
+		else if (frameNumber == attacks["specialN"].keyFrames[0])
 		{
 			anim->StartAnimation("especialNHold");
 			dShield = new DinoShield(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - GetHeight() / 4.5));
@@ -275,7 +199,7 @@ void Togo::SpecialForward(int frameNumber)
 		body->SetLinearVelocity(b2Vec2(dir*30, 0));
 		body->ApplyLinearImpulseToCenter(b2Vec2(dir*20,0), true);
 
-		if (frameNumber >= attacks["specialL"].startUp && frameNumber < attacks["specialL"].totalFrames-10) {
+		if (frameNumber >= attacks["specialL"].keyFrames[0] && frameNumber < attacks["specialL"].totalFrames-10) {
 			bite = manager->GetSDLCoors(
 				body->GetPosition().x + (dir * width * 1.8f),
 				body->GetPosition().y - height * 0.2f,
@@ -318,15 +242,9 @@ void Togo::SpecialUpward(int frameNumber)
 		sdl->soundEffects().at("dinoSpecU").play();
 	}
 	else if (frameNumber < attacks["specialU"].totalFrames) {
-		if (frameNumber == attacks["specialU"].startUp)
+		if (frameNumber == attacks["specialU"].keyFrames[0])
 		{
-			SDL_Rect hitbox = manager->GetSDLCoors(
-				body->GetPosition().x,
-				body->GetPosition().y,
-				width * 2,
-				height * 1.2f);
-
-			hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 20, Vector2D(-hitbox.w / 4, 0), OnHitData(6, false, false)));
+			CreateHitBox(&attacks["specialU"].hitBoxes[0]);
 
 			body->SetGravityScale(0.0f);
 			body->SetLinearVelocity(b2Vec2(0, -35));
@@ -356,28 +274,17 @@ void Togo::SpecialDownward(int frameNumber)
 		anim->StartAnimation("especialD");
 		sdl->soundEffects().at("dinoSpecD").play();
 	}
-	else if (frameNumber == attacks["specialD"].startUp)
+	else if (frameNumber == attacks["specialD"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * 1.9f),
-			body->GetPosition().y + height * 0.3f,
-			width * 2.8f,
-			height * 0.7f);
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialD"], 4, OnHitData(18, false, false)));
-
+		CreateHitBox(&attacks["specialD"].hitBoxes[0]);
 	}
-	else if (frameNumber == attacks["specialD"].startUp + attacks["specialD"].totalFrames/4)
+	else if (frameNumber == attacks["specialD"].keyFrames[1] - 2)
 	{
 		dir = -dir;
-
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * 1.9f),
-			body->GetPosition().y + height * 0.3f,
-			width * 2.8f,
-			height * 0.7f);
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialD"], 4, OnHitData(18, false, false)));
+	}
+	else if (frameNumber == attacks["specialD"].keyFrames[1])
+	{
+		CreateHitBox(&attacks["specialD"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["specialD"].totalFrames)
 	{
@@ -398,14 +305,9 @@ void Togo::SpecialLHit(int frameNumber)
 		moving = false;
 		body->SetLinearVelocity(b2Vec2(0, 0));
 	}
-	else if (frameNumber == attacks["specialLHit"].startUp) {
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * width * 1.8f),
-			body->GetPosition().y - height * 0.2f,
-			width * 4.5f,
-			height * 0.9f);
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialLHit"], 1, OnHitData(15, false, false)));
+	else if (frameNumber == attacks["specialLHit"].keyFrames[0])
+	{
+		CreateHitBox(&attacks["specialLHit"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["specialLHit"].totalFrames) {
 		currentMove = nullptr;
@@ -418,14 +320,14 @@ void Togo::drawHUD(int numOfPlayer)
 	Character::drawHUD(numOfPlayer);
 }
 
-bool Togo::GetHit(attackData a, Entity* attacker)
+bool Togo::GetHit(HitData a, Entity* attacker)
 {
 	if (dShield != nullptr)
 	{
 		dShield->setToDelete();
 		dShield = nullptr;
 	}
-	Character::GetHit(a,attacker);
+	Character::GetHit(a, attacker);
 	return true;
 }
 
@@ -437,4 +339,51 @@ void Togo::update()
 		dShield = nullptr;
 	}
 	Character::update();
+}
+
+void Togo::BuildBoxes()
+{
+
+	attacks["basicN"].hitBoxes[0].box = manager->GetSDLCoors(
+		body->GetPosition().x + (dir * 2.f),
+		body->GetPosition().y,
+		width * 4.f,
+		height * 0.4f);
+
+	attacks["basicD"].hitBoxes[0].box = manager->GetSDLCoors(
+		body->GetPosition().x + (dir * 1.8f),
+		body->GetPosition().y + height * 0.3f,
+		width * 2.6f,
+		height * 0.5f);
+
+	attacks["basicU"].hitBoxes[0].box = manager->GetSDLCoors(
+		body->GetPosition().x,
+		body->GetPosition().y - height * 0.7f,
+		width * 3.7f,
+		height * 0.3f);
+
+	attacks["basicU"].hitBoxes[1].box = manager->GetSDLCoors(
+		body->GetPosition().x,
+		body->GetPosition().y - height * 0.7f,
+		width * 4.f,
+		height * 0.4f);
+
+	attacks["specialLHit"].hitBoxes[0].box = manager->GetSDLCoors(
+		body->GetPosition().x + (dir * width * 1.8f),
+		body->GetPosition().y - height * 0.2f,
+		width * 4.5f,
+		height * 0.9f);
+
+	attacks["specialD"].hitBoxes[0].box = manager->GetSDLCoors(
+		body->GetPosition().x + (dir * 1.9f),
+		body->GetPosition().y + height * 0.3f,
+		width * 2.8f,
+		height * 0.7f);
+
+	attacks["specialU"].hitBoxes[0].box = manager->GetSDLCoors(
+		body->GetPosition().x,
+		body->GetPosition().y,
+		width * 2,
+		height * 1.2f);
+
 }

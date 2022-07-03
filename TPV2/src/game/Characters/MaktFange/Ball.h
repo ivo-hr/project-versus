@@ -17,12 +17,11 @@ class MaktBall : public Projectile
 	//	float ang;
 
 public:
-	MaktBall(FightManager* manager, b2Vec2 pos, attackData attack, b2Vec2 dir, b2Vec2 respawn);
+	MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, b2Vec2 respawn);
 	virtual ~MaktBall();
 
 	virtual void update() override;
 	virtual void CheckHits() override;
-	virtual bool GetHit(attackData a, Entity* attacker) { return(false); };
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox; };
 
 	virtual void OnDeath() override;

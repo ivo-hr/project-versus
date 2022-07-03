@@ -9,7 +9,9 @@ using json = nlohmann::json;
 GatoEspia::GatoEspia(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p, 1.5f, 3.f)
 {
 
-	ReadJson("resources/config/gato.json");
+	spriteSheetData spData;
+
+	ReadJson("resources/config/gato.json", spData);
 	//guardamos la textura
 	texture = &sdl->images().at("blinkMaster");
 	portrait = &sdl->images().at("blinkMasterSelect");
@@ -34,15 +36,9 @@ void GatoEspia::BasicNeutral(int frameNumber)
 		anim->StartAnimation("basicN");
 		sdl->soundEffects().at("catAtk0").play();
 	}
-	else if (frameNumber == attacks["basicN"].startUp)
+	else if (frameNumber == attacks["basicN"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * .8f), 
-			body->GetPosition().y, 
-			width * 1.8f, 
-			height);
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicN"], 2, OnHitData(5, false, false)));
+		CreateHitBox(&attacks["basicN"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["basicN"].totalFrames)
 	{
@@ -61,15 +57,9 @@ void GatoEspia::BasicForward(int frameNumber)
 
 		body->SetLinearVelocity(b2Vec2(dir * 40, body->GetLinearVelocity().y));
 	}
-	else if (frameNumber == attacks["basicF"].startUp)
+	else if (frameNumber == attacks["basicF"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir),
-			body->GetPosition().y,
-			width * 2.f,
-			height * 0.8f);
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicF"], 5, OnHitData(20, false, false)));
+		CreateHitBox(&attacks["basicF"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["basicF"].totalFrames)
 	{
@@ -86,24 +76,10 @@ void GatoEspia::BasicDownward(int frameNumber)
 		anim->StartAnimation("basicD");
 		sdl->soundEffects().at("catAtk2").play();
 	}
-	else if (frameNumber == attacks["basicD"].startUp)
+	else if (frameNumber == attacks["basicD"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * width * 0.7f),
-			body->GetPosition().y + height / 2,
-			width * 1.4f,
-			height / 2);
-		SDL_Rect hitbox2 = manager->GetSDLCoors(
-			body->GetPosition().x - (dir * width * 0.7f),
-			body->GetPosition().y + height / 2,
-			width * 1.4f,
-			height / 2);
-
-		attackData invert = attacks["basicD"];
-		invert.direction.x = -attacks["basicD"].direction.x;
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 3, OnHitData(5, false, false)));
-		hitboxes.push_back(new Hitbox(hitbox2, invert, 3, OnHitData(5, false, false)));
+		CreateHitBox(&attacks["basicD"].hitBoxes[0]);
+		CreateHitBox(&attacks["basicD"].hitBoxes[1]);
 	}
 	else if (frameNumber == attacks["basicD"].totalFrames)
 	{
@@ -120,15 +96,9 @@ void GatoEspia::BasicUpward(int frameNumber)
 		anim->StartAnimation("basicU");
 		sdl->soundEffects().at("catAtk3").play();
 	}
-	else if (frameNumber == attacks["basicU"].startUp)
+	else if (frameNumber == attacks["basicU"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x,
-			body->GetPosition().y - height * 0.6f,
-			width * 2.5f,
-			height * 0.7f);
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 4, OnHitData(5, false, false)));
+		CreateHitBox(&attacks["basicU"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["basicU"].totalFrames)
 	{
@@ -147,9 +117,9 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 		anim->StartAnimation("especialNL");
 		sdl->soundEffects().at("catSpecN").play();
 	}
-	else if (frameNumber == attacks["specialN"].startUp)
+	else if (frameNumber == attacks["specialN"].keyFrames[0])
 	{
-		auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x + dir * 2, body->GetPosition().y - height / 3), attacks["specialN"], b2Vec2(dir, 0));
+		auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x + dir * 2, body->GetPosition().y - height / 3), attacks["specialN"].hitBoxes[0].hitdata, b2Vec2(dir, 0));
 		manager->AddEntity(bullet);
 		bullet->SetOponents(oponents);
 	}
@@ -206,7 +176,7 @@ void GatoEspia::SpecialNeutralU(int frameNumber)
 		sdl->soundEffects().at("catSpecN").play();
 
 	}
-	else if (frameNumber == attacks["specialN"].startUp)
+	else if (frameNumber == attacks["specialN"].keyFrames[0])
 	{
 		//SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
 
@@ -215,8 +185,8 @@ void GatoEspia::SpecialNeutralU(int frameNumber)
 		//hitbox.x -= hitbox.w / 3;
 		//hitbox.y -= 45;
 
-		//hitboxes.push_back(new Hitbox(hitbox, attacks["specialN"], 1, OnHitData(5, false, false)));
-		auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["specialN"], b2Vec2(0,-1));
+		//CreateHitBox(new Hitbox(hitbox, attacks["specialN"], 1, OnHitData(5, false, false)));
+		auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["specialN"].hitBoxes[0].hitdata, b2Vec2(0,-1));
 		manager->AddEntity(bullet);
 		bullet->SetOponents(oponents);
 
@@ -271,9 +241,9 @@ void GatoEspia::SpecialNeutralD(int frameNumber)
 		anim->StartAnimation("especialND");
 		sdl->soundEffects().at("catSpecN").play();
 	}
-	else if (frameNumber == attacks["specialN"].startUp)
+	else if (frameNumber == attacks["specialN"].keyFrames[0])
 	{
-		auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x + dir / 2, body->GetPosition().y - height / 2), attacks["specialN"], b2Vec2(dir, -1));
+		auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x + dir / 2, body->GetPosition().y - height / 2), attacks["specialN"].hitBoxes[0].hitdata, b2Vec2(dir, -1));
 		manager->AddEntity(bullet);
 		bullet->SetOponents(oponents);
 	}
@@ -332,27 +302,25 @@ void GatoEspia::SpecialForward(int frameNumber)
 		}
 		body->SetLinearVelocity(b2Vec2(0, 0));
 		body->SetGravityScale(0);
-		anim->StartAnimation("entrarTP");
+		anim->StartAnimation("especialL");
 		sdl->soundEffects().at("catSpecS").play();
 		moving = false;
 		blinks -= 1.0f;
 	}
-	else if (frameNumber == attacks["specialL"].startUp / 2)
+	else if (frameNumber == attacks["specialL"].keyFrames[0])
 	{
 		dash = true;
 	}
-	else if (frameNumber == attacks["specialL"].startUp-1)
+	else if (frameNumber == attacks["specialL"].keyFrames[1])
 	{
 		body->SetTransform(body->GetPosition() + b2Vec2(dir * 7, 0), 0);
-		anim->StartAnimation("salirTP");
 		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, 0 });
 		body->SetGravityScale(10.0f);
 		dash = false;
 
 		if (input->special())
 		{
-			currentMove = [this](int f) { TpAtack(f); };
-			moveFrame = -5;
+			ChangeMove([this](int f) { TpAtack(f); });
 			sdl->soundEffects().at("catAtk1").play();
 		}
 	}
@@ -373,55 +341,48 @@ void GatoEspia::SpecialUpward(int frameNumber)
 			moveFrame = -1;
 			return;
 		}
-		anim->StartAnimation("entrarTP");
+		anim->StartAnimation("especialU");
 		sdl->soundEffects().at("catSpecU").play();
 		body->SetLinearVelocity(b2Vec2(0, 0));
 		body->SetGravityScale(0);
 		moving = false;
 		blinks -= 1.0f;
 	}
-	else if (frameNumber == attacks["specialU"].startUp / 2)
+	else if (frameNumber == attacks["specialU"].keyFrames[0])
 	{
 		dash = true;
 	}
-	//No me pregunten por que pero tengo que poner esto para que se vea bienxd
-	//else if (frameNumber == attacks["specialU"].startUp - 2)
-	//{
-	//	SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-	//	hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 1, OnHitData(6, false, false)));
-	//}
-	else if (frameNumber == attacks["specialU"].startUp)
+	else if (frameNumber == attacks["specialU"].keyFrames[1])
 	{
-		anim->StartAnimation("especialU");
 		b2Vec2 a;
-		if (input->left()) {
+		if (input->left())
+		{
+			dir = -1;
 			a = b2Vec2(-7, -7);
 			a.Normalize();
 			a *= 7;
 		}
 		else if (input->right())
 		{
+			dir = 1;
 			a = b2Vec2(7, -7);
 			a.Normalize();
 			a *= 7;
 		}
-		else {
+		else
+		{
 			a = b2Vec2(0, -7);
-			a.Normalize();
-			a *= 7;
 		}
 		body->SetTransform(body->GetPosition() + a, 0);
 		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, -25 });
 		body->SetGravityScale(10.0f);
-		dash = false;
 
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 1, OnHitData(6, false, false)));
+		CreateHitBox(&attacks["specialU"].hitBoxes[0]);
 
 	}
-	else if (frameNumber == attacks["specialU"].startUp+5)
+	else if (frameNumber == attacks["specialU"].keyFrames[2])
 	{
+		dash = false;
 		body->SetLinearVelocity(b2Vec2(0, 0));
 		body->SetGravityScale(0);
 	}
@@ -442,23 +403,16 @@ void GatoEspia::SpecialDownward(int frameNumber)
 			moveFrame = -1;
 			return;
 		}
-		anim->StartAnimation("especialDEntrada");
+		anim->StartAnimation("especialD");
 		sdl->soundEffects().at("catSpecD").play();
-		moving = false;
 		blinks -= 1.0f;
 	}
-	else if (frameNumber == attacks["specialD"].startUp)
+	else if (frameNumber == attacks["specialD"].keyFrames[0])
 	{
-		anim->StartAnimation("entrarTP");
 		dash = true;	
 		counter = true;
 	}
-	else if (frameNumber == attacks["specialD"].totalFrames-8)
-	{
-		anim->StartAnimation("salirTP");
-	}
 	else if (frameNumber == attacks["specialD"].totalFrames) {
-		anim->StartAnimation("especialDSalida");
 		dash = false;
 		counter = false;
 		currentMove = nullptr;
@@ -474,24 +428,19 @@ void GatoEspia::SpecialDownward(int frameNumber)
 
 void GatoEspia::TpAtack(int frameNumber)
 {
-
 	if (frameNumber == 0)
 	{
-		moving = false;
-		anim->StartAnimation("especialL");
+		anim->StartAnimation("especialLHit");
 	}
-	else if (frameNumber == attacks["specialLHit"].startUp)
+	else if (frameNumber == attacks["specialLHit"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width * 1.8f, height * 0.6f);
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialLHit"], 2, OnHitData(20, false, false)));
+		CreateHitBox(&attacks["specialLHit"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["specialLHit"].totalFrames)
 	{
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
-
 }
 
 void GatoEspia::update()
@@ -509,13 +458,17 @@ void GatoEspia::Respawn()
 	body->SetGravityScale(10.f);
 }
 
-bool GatoEspia::GetHit(attackData a, Entity* attacker)
+bool GatoEspia::GetHit(HitData a, Entity* attacker)
 {
 	if (counter && !attacker->isProjectile()) {
+		anim->StartAnimation("counter");
+		anim->update();
 		dir = attacker->GetDir();
-		body->SetTransform(attacker->GetBody()->GetPosition() + b2Vec2(-dir, 0), 0);
+		body->SetTransform(attacker->GetBody()->GetPosition() + b2Vec2(-dir * 2.4f, 0), 0);
 		currentMove = [this](int f) { Counter(f); };
 		moveFrame = -1;
+		manager->HitLag(20, false);
+		manager->MoveToFront(this);
 		return false;
 	}
 	Character::GetHit(a, attacker);
@@ -525,19 +478,16 @@ void GatoEspia::Counter(int frameNumber)
 {
 	if (frameNumber == 0)
 	{
-		anim->StartAnimation("salirTP");
+		anim->StartAnimation("especialDGolpe");
 		body->SetLinearVelocity({ 0.01, 0.01 });
 		dash = false;
 		counter = false;
 	}
-	else if (frameNumber == attacks["specialLHit"].startUp)
+	else if (frameNumber == attacks["specialDHit"].keyFrames[0])
 	{
-		anim->StartAnimation("especialL");
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width * 2, height);
-
-		hitboxes.push_back(new Hitbox(hitbox, attacks["specialLHit"], 1, OnHitData(20, false, false)));
+		CreateHitBox(&attacks["specialDHit"].hitBoxes[0]);
 	}
-	else if (frameNumber == attacks["specialLHit"].totalFrames)
+	else if (frameNumber == attacks["specialDHit"].totalFrames)
 	{
 		currentMove = nullptr;
 		moveFrame = -1;
@@ -547,7 +497,7 @@ void GatoEspia::Counter(int frameNumber)
 
 void GatoEspia::drawHUD(int numOfPlayer)
 {
-	Character::drawHUD(numOfPlayer); 
+	Character::drawHUD(numOfPlayer);
 
 	int w_ = manager->GetDeathZone()->w;
 	int h_ = manager->GetDeathZone()->h;
@@ -578,4 +528,49 @@ void GatoEspia::drawHUD(int numOfPlayer)
 	blinkContainer->render(cont);
 }
 
+void GatoEspia::BuildBoxes()
+{
+	attacks["basicN"].hitBoxes[0].box =
+		manager->GetSDLCoors(
+			body->GetPosition().x + (dir * .8f),
+			body->GetPosition().y,
+			width * 1.8f,
+			height);
 
+	attacks["basicF"].hitBoxes[0].box =
+		manager->GetSDLCoors(
+		body->GetPosition().x + (dir),
+		body->GetPosition().y,
+		width * 2.f,
+		height * 0.8f);
+
+	attacks["basicD"].hitBoxes[0].box = 
+		manager->GetSDLCoors(
+		body->GetPosition().x + (dir * width * 0.7f),
+		body->GetPosition().y + height / 2,
+		width * 1.4f,
+		height / 2);
+
+	attacks["basicD"].hitBoxes[1].box = 
+		manager->GetSDLCoors(
+		body->GetPosition().x - (dir * width * 0.7f),
+		body->GetPosition().y + height / 2,
+		width * 1.4f,
+		height / 2);
+
+	attacks["basicU"].hitBoxes[0].box = 
+		manager->GetSDLCoors(
+		body->GetPosition().x,
+		body->GetPosition().y - height * 0.6f,
+		width * 2.5f,
+		height * 0.7f);
+
+	attacks["specialU"].hitBoxes[0].box = 
+		manager->GetSDLCoors(body, width, height);
+
+	attacks["specialLHit"].hitBoxes[0].box = 
+		manager->GetSDLCoors(body, width * 1.8f, height * 0.6f);
+
+	attacks["specialDHit"].hitBoxes[0].box = 
+		manager->GetSDLCoors(body, width * 2, height);
+}

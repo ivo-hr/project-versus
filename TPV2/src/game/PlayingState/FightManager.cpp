@@ -523,16 +523,19 @@ void FightManager::AddOponnent(Entity* ent, Entity* ignore)
 	}
 }
 
-void FightManager::HitLag(int frames)
+void FightManager::HitLag(int frames, bool shake)
 {
 	if (addedDelay < frames)
 		addedDelay = frames;
 
 	hitLagCam = camera;
 
-	hitLagCam.x += (addedDelay * 0.4f) * (camera.w * 0.005f);
+	if (shake)
+	{
+		hitLagCam.x += (addedDelay * 0.1f) * (camera.w * 0.005f);
 
-	hitLagCam.y += addedDelay * 0.2f * (camera.w * 0.005f);
+		hitLagCam.y += addedDelay * 0.05f * (camera.w * 0.005f);
+	}
 }
 
 void FightManager::KillingBlow()

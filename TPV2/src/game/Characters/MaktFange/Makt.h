@@ -23,7 +23,7 @@ public:
 
 	virtual void update() override;
 
-	virtual bool GetHit(attackData a, Entity* attacker) override;
+	virtual bool GetHit(HitData a, Entity* attacker) override;
 	virtual void StartJump(int frameNumber) override;
 	virtual void StartShield(int frameNumber) override;
 	virtual void EndShield(int frameNumber) override;
@@ -43,7 +43,9 @@ private:
 	bool release = false;
 	int frameRelease;
 	void RecoveredBall();
-	void ThrowBall(attackData force, int timeHeld);
+	void ThrowBall(HitData force, int timeHeld);
 
 	MaktBall* ball;
+protected:
+	void BuildBoxes() override {};
 };
