@@ -36,13 +36,7 @@ void NasNas::BasicNeutral(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicN"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + dir * width,
-			body->GetPosition().y,
-			width * 2.5f,
-			height * 0.25f);
-
-		//hitboxes.push_back(new Hitbox(hitbox, attacks["basicN"], 2, OnHitData(5, false, false)));
+		CreateHitBox(&attacks["basicN"].hitBoxes[0]);
 
 	}
 	else if (frameNumber == attacks["basicN"].totalFrames)
@@ -61,13 +55,7 @@ void NasNas::BasicForward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicF"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + dir * width,
-			body->GetPosition().y,
-			width * 1.5f,
-			height * 1.02f);
-
-		//hitboxes.push_back(new Hitbox(hitbox, attacks["basicF"], 3, Vector2D(dir * 50,hitbox.y), OnHitData(20, false, false)));
+		CreateHitBox(&attacks["basicF"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["basicF"].totalFrames)
 	{
@@ -105,13 +93,7 @@ void NasNas::BasicUpward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicU"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + dir * 0.2f,
-			body->GetPosition().y - height * 0.9f,
-			width * 2.4f,
-			height * 0.9f);
-
-		//hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 10, OnHitData(5, false, false)));
+		CreateHitBox(&attacks["basicU"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["basicU"].totalFrames)
 	{
@@ -130,22 +112,8 @@ void NasNas::BasicDownward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicD"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * width * 0.7f),
-			body->GetPosition().y + height / 2,
-			width * 1.4f,
-			height / 2);
-		SDL_Rect hitbox2 = manager->GetSDLCoors(
-			body->GetPosition().x - (dir * width * 0.7f),
-			body->GetPosition().y + height / 2,
-			width * 1.4f,
-			height / 2);
-
-		attackData invert = attacks["basicD"];
-		//invert.direction.x = -attacks["basicD"].direction.x;
-
-		//hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 3, OnHitData(5, false, false)));
-		//hitboxes.push_back(new Hitbox(hitbox2, invert, 3, OnHitData(5, false, false)));
+		CreateHitBox(&attacks["basicD"].hitBoxes[0]);
+		CreateHitBox(&attacks["basicD"].hitBoxes[1]);
 	}
 	else if (frameNumber == attacks["basicD"].totalFrames)
 	{
@@ -171,32 +139,31 @@ void NasNas::SpecialNeutral(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialN"].keyFrames[0])
 	{
-		HitData aaa = attacks["specialN"].hitBoxes[0].hitdata;
+		Spell* spell = nullptr;
 		if (estado == fire)
 		{
-			aaa.damage = 10;
-			aaa.base = 10;
-			aaa.estado = fire;
-			aaa.power = 25;
+			attacks["specialN"].hitBoxes[0].hitdata.estado = fire;
+			attacks["specialN"].hitBoxes[0].hitdata.power = 25;
 			sdl->soundEffects().at("nasSpecNf").play();
+
+			spell = new Spell(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y), attacks["specialN"].hitBoxes[0].hitdata, b2Vec2(dir, 0), estado);
 		}
 		else if (estado == water)
 		{
-			aaa.damage = 5;
-			aaa.base = 15;
-			aaa.estado = water;
-			aaa.power = 20;
+			attacks["specialN"].hitBoxes[1].hitdata.estado = water;
+			attacks["specialN"].hitBoxes[1].hitdata.power = 20;
 			sdl->soundEffects().at("nasSpecNw").play();
+
+			spell = new Spell(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y), attacks["specialN"].hitBoxes[1].hitdata, b2Vec2(dir, 0), estado);
 		}
 		else if (estado == electric)
 		{
-			aaa.damage = 7;
-			aaa.base = 0.1;
-			aaa.estado = electric;
-			aaa.power = 25;
-			sdl->soundEffects().at("nasSpecNr").play();
+			attacks["specialN"].hitBoxes[2].hitdata.estado = electric;
+			attacks["specialN"].hitBoxes[2].hitdata.power = 25;
+			sdl->soundEffects().at("nasSpecNr").play(); 
+
+			spell = new Spell(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y), attacks["specialN"].hitBoxes[2].hitdata, b2Vec2(dir, 0), estado);
 		}
-		auto spell = new Spell(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y), aaa, b2Vec2(dir, 0), estado);
 		manager->AddEntity(spell);
 		manager->MoveToFront(spell);
 		spell->SetOponents(oponents);
@@ -224,82 +191,24 @@ void NasNas::SpecialForward(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialF"].keyFrames[0])
 	{
-		SDL_Rect hitbox;
-		HitData aaa = attacks["specialF"].hitBoxes[0].hitdata;
 		if (estado == fire)
 		{
-			if (dir == 1) {
-				hitbox = manager->GetSDLCoors(
-					body->GetPosition().x + width * 2,
-					body->GetPosition().y - height * 0.2f,
-					width,
-					height * 1.3f);
-			}
-			else {
-				hitbox = manager->GetSDLCoors(
-					body->GetPosition().x - width/1.2,
-					body->GetPosition().y - height * 0.2f,
-					width,
-					height * 1.3f);
-			}
-
-			aaa.damage = 25;
-			aaa.base = 15;
-			aaa.estado = fire;
-			aaa.power = 50;
 			sdl->soundEffects().at("nasSpecSf").play();
+
+			CreateHitBox(&attacks["specialF"].hitBoxes[0]);
 		}
 		else if (estado == water)
 		{
-			if (dir == 1) {
-				hitbox = manager->GetSDLCoors(
-					body->GetPosition().x + width * 2.5,
-					body->GetPosition().y,
-					width * 2,
-					height / 3);
-			}
-			else {
-				hitbox = manager->GetSDLCoors(
-					body->GetPosition().x - width/1.5,
-					body->GetPosition().y,
-					width * 2,
-					height / 3);
-			}
-
-			aaa.damage = 20;
-			aaa.base = 25;
-			aaa.estado = water;
-			aaa.power = 45;
 			sdl->soundEffects().at("nasSpecSw").play();
+
+			CreateHitBox(&attacks["specialF"].hitBoxes[1]);
 		}
 		else if (estado == electric)
 		{
-			if (dir == 1) {
-				hitbox = manager->GetSDLCoors(
-					body->GetPosition().x + width * 3,
-					body->GetPosition().y,
-					width * 3.5,
-					height / 6);
-			}
-			else {
-				hitbox = manager->GetSDLCoors(
-					body->GetPosition().x - width+2,
-					body->GetPosition().y,
-					width * 3.5,
-					height / 6);
-			}
-
-			aaa.damage = 12;
-			aaa.base = 0.1;
-			aaa.estado = electric;
-			aaa.power = 50;
 			sdl->soundEffects().at("nasSpecSr").play();
+
+			CreateHitBox(&attacks["specialF"].hitBoxes[2]);
 		}
-		if (dir == -1)
-		{
-			hitbox.x -= hitbox.w;
-		}
-		//hitboxes.push_back(new Hitbox(hitbox, aaa, 10, OnHitData(20, false, false)));
 
 	
 	}
@@ -330,12 +239,11 @@ void NasNas::SpecialUpward(int frameNumber)
 		body->SetLinearVelocity(b2Vec2(0, -70));
 		sdl->soundEffects().at("nasSpecUup").play();
 	}
-	else if (frameNumber == attacks["specialU"].totalFrames)
+	else if (frameNumber == attacks["specialU"].keyFrames[1])
 	{
 		body->SetLinearVelocity(b2Vec2(0, 70));
-		anim->StartAnimation("especialUFall");
 	}
-	else if (frameNumber >= attacks["specialU"].totalFrames && onGround)
+	else if (frameNumber > attacks["specialU"].keyFrames[1] && onGround)
 	{
 		ChangeMove([this](int f) { SpecialUpHit(f); });
 	}
@@ -355,10 +263,6 @@ void NasNas::SpecialDownward(int frameNumber)
 	}
 	if (frameNumber == attacks["specialD"].keyFrames[0])
 	{
-		
-	}
-	if (frameNumber == attacks["specialD"].totalFrames)
-	{
 		if (estado == fire)
 		{
 			estado = water;
@@ -374,6 +278,9 @@ void NasNas::SpecialDownward(int frameNumber)
 			estado = fire;
 			anim->ChangeSheet(&sdl->images().at("nasnasFire"));
 		}
+	}
+	if (frameNumber == attacks["specialD"].totalFrames)
+	{
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
@@ -386,36 +293,31 @@ void NasNas::SpecialUpHit(int frameNumber)
 	{
 		anim->StartAnimation("especialUHit");
 
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x,
-			body->GetPosition().y,
-			width * 1.5f,
-			height * 1.5f);
-
-		HitData aaa = attacks["specialU"].hitBoxes[0].hitdata;
-		aaa.power = 70;
 		sdl->soundEffects().at("nasSpecU").play();
+	}
+	else if (frameNumber == attacks["specialUHit"].keyFrames[0])
+	{
 		if (estado == fire)
 		{
-			aaa.damage = 35;
-			aaa.base = 25;
-			aaa.estado = fire;
+			attacks["specialUHit"].hitBoxes[0].hitdata.damage = 35;
+			attacks["specialUHit"].hitBoxes[0].hitdata.base = 25;
+			attacks["specialUHit"].hitBoxes[0].hitdata.estado = fire;
 		}
 		else if (estado == water)
 		{
-			aaa.damage = 30;
-			aaa.base = 35;
-			aaa.estado = water;
+			attacks["specialUHit"].hitBoxes[0].hitdata.damage = 30;
+			attacks["specialUHit"].hitBoxes[0].hitdata.base = 35;
+			attacks["specialUHit"].hitBoxes[0].hitdata.estado = water;
 		}
 		else if (estado == electric)
 		{
-			aaa.damage = 20;
-			aaa.base = 0.1;
-			aaa.estado = electric;
+			attacks["specialUHit"].hitBoxes[0].hitdata.damage = 20;
+			attacks["specialUHit"].hitBoxes[0].hitdata.base = 0.1;
+			attacks["specialUHit"].hitBoxes[0].hitdata.estado = electric;
 		}
-		//hitboxes.push_back(new Hitbox(hitbox, aaa, 6, OnHitData(20, false, false)));
+		CreateHitBox(&attacks["specialUHit"].hitBoxes[0]);
 	}
-	if (frameNumber >= attacks["specialF"].totalFrames - attacks["specialU"].keyFrames[0])
+	else if (frameNumber == attacks["specialUHit"].totalFrames)
 	{
 		currentMove = nullptr;
 		moveFrame = -1;
@@ -461,4 +363,78 @@ void NasNas::Respawn()
 	mana = maxMana;
 }
 
+void NasNas::BuildBoxes()
+{
+	attacks["basicN"].hitBoxes[0].box =
+		manager->GetSDLCoors(
+		body->GetPosition().x + dir * width,
+		body->GetPosition().y,
+		width * 2.5f,
+		height * 0.25f);
+
+	attacks["basicF"].hitBoxes[0].box = 
+		manager->GetSDLCoors(
+		body->GetPosition().x + dir * width,
+		body->GetPosition().y,
+		width * 1.8f,
+		height * 1.02f);
+
+	attacks["basicU"].hitBoxes[0].box = 
+		manager->GetSDLCoors(
+		body->GetPosition().x + dir * 0.2f,
+		body->GetPosition().y - height * 0.9f,
+		width * 2.4f,
+		height * 0.9f);
+
+	attacks["basicD"].hitBoxes[0].box = 
+		manager->GetSDLCoors(
+		body->GetPosition().x + (dir * width * 0.7f),
+		body->GetPosition().y + height / 2,
+		width * 1.4f,
+		height / 2);
+	attacks["basicD"].hitBoxes[1].box = manager->GetSDLCoors(
+		body->GetPosition().x - (dir * width * 0.7f),
+		body->GetPosition().y + height / 2,
+		width * 1.4f,
+		height / 2);
+
+	attacks["specialF"].hitBoxes[0].box = //fire 
+		manager->GetSDLCoors(
+		body->GetPosition().x + (dir * width * 2),
+		body->GetPosition().y - height * 0.2f,
+		width,
+		height * 1.3f);
+
+	attacks["specialF"].hitBoxes[0].hitdata.estado = fire;
+	attacks["specialF"].hitBoxes[0].hitdata.power = 50;
+
+	attacks["specialF"].hitBoxes[1].box = //water
+		manager->GetSDLCoors(
+		body->GetPosition().x + (dir * width * 2.5f),
+		body->GetPosition().y,
+		width * 2,
+		height / 3);
+
+	attacks["specialF"].hitBoxes[1].hitdata.estado = water;
+	attacks["specialF"].hitBoxes[1].hitdata.power = 45;
+
+	attacks["specialF"].hitBoxes[2].box = //electric
+		manager->GetSDLCoors(
+		body->GetPosition().x + (dir * width * 3),
+		body->GetPosition().y,
+		width * 3.5,
+		height / 6);
+
+	attacks["specialF"].hitBoxes[2].hitdata.estado = electric;
+	attacks["specialF"].hitBoxes[2].hitdata.power = 50;
+
+
+	attacks["specialUHit"].hitBoxes[0].box = manager->GetSDLCoors(
+		body->GetPosition().x,
+		body->GetPosition().y,
+		width * 3,
+		height * 1.5f);
+
+	attacks["specialUHit"].hitBoxes[0].hitdata.power = 70;
+}
 

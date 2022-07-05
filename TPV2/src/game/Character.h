@@ -84,6 +84,8 @@ protected:
 	bool drawArrow=false;
 	int invencibleCont = 0;
 
+	std::string animAddon = "";
+
 	virtual void CreateHitBox(HitBoxData* data);
 
 	virtual void BuildBoxes() = 0;

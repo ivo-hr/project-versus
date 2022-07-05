@@ -33,6 +33,8 @@ Makt::Makt(FightManager* mngr, b2Vec2 pos, char input,int p) :
 	portrait = &sdl->images().at("maktSelect");
 
 	anim = new AnimationManager(this, texture, spData);
+
+	animAddon = "B";
 }
 
 Makt::~Makt()
@@ -43,23 +45,12 @@ void Makt::BasicNeutral(int frameNumber)
 {
 	if (frameNumber == 0)
 	{
-		if (ball == nullptr) {
-			anim->StartAnimation("basicNB");
-		}
-		else {
-			anim->StartAnimation("basicN");
-		}
+		anim->StartAnimation("basicN" + animAddon);
 		sdl->soundEffects().at("maktAtk0").play();
 	}
 	else if (frameNumber == attacks["basicN"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * .6f),
-			body->GetPosition().y,
-			width * 1.8f,
-			height);
-
-		//hitboxes.push_back(new Hitbox(hitbox, attacks["basicN"], 3, OnHitData(12, false, false)));
+		CreateHitBox(&attacks["basicN"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["basicN"].totalFrames)
 	{
@@ -85,21 +76,10 @@ void Makt::BasicForward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicF"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir),
-			body->GetPosition().y,
-			width * 1.4f,
-			height);
-
-		attackData aaa = attacks["basicF"];
-
-		if (!onGround)
-		{
-			//aaa.direction.y = -10;
-			//aaa.direction.Normalize();
-		}
-
-		//hitboxes.push_back(new Hitbox(hitbox, aaa, 5, OnHitData(20, false, false)));
+		if (onGround)
+			CreateHitBox(&attacks["basicF"].hitBoxes[0]);
+		else
+			CreateHitBox(&attacks["basicF"].hitBoxes[1]);
 	}
 	else if (frameNumber == attacks["basicF"].totalFrames)
 	{
@@ -123,13 +103,7 @@ void Makt::BasicUpward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicU"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * .2f),
-			body->GetPosition().y - height * .5f,
-			width * 1.8f,
-			height);
-
-		//hitboxes.push_back(new Hitbox(hitbox, attacks["basicU"], 5, OnHitData(5, false, false)));
+		CreateHitBox(&attacks["basicU"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["basicU"].totalFrames)
 	{
@@ -152,23 +126,8 @@ void Makt::BasicDownward(int frameNumber)
 	}
 	else if (frameNumber == attacks["basicD"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * width * 0.7f),
-			body->GetPosition().y + height / 2,
-			width * 2,
-			height / 2);
-		SDL_Rect hitbox2 = manager->GetSDLCoors(
-			body->GetPosition().x - (dir * width * 0.7f),
-			body->GetPosition().y + height / 2,
-			width * 2,
-			height / 2);
-
-		attackData invert = attacks["basicD"];
-		//invert.direction.x = -attacks["basicD"].direction.x;
-
-		//hitboxes.push_back(new Hitbox(hitbox, attacks["basicD"], 3, OnHitData(15, false, false)));
-		//hitboxes.push_back(new Hitbox(hitbox2, invert, 3, OnHitData(15, false, false)));
-
+		CreateHitBox(&attacks["basicD"].hitBoxes[0]);
+		CreateHitBox(&attacks["basicD"].hitBoxes[1]);
 	}
 	else if (frameNumber == attacks["basicD"].totalFrames)
 	{
@@ -192,13 +151,7 @@ void Makt::SpecialNeutral(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialN"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * 1.6f),
-			body->GetPosition().y,
-			width * 1.7f,
-			height);
-
-		//hitboxes.push_back(new Hitbox(hitbox, attacks["specialN"], 8, OnHitData(30, false, false)));
+		CreateHitBox(&attacks["specialN"].hitBoxes[0]);
 	}
 	else if (frameNumber >= attacks["specialN"].totalFrames)
 	{
@@ -262,13 +215,9 @@ void Makt::SpecialUpward(int frameNumber)
 	else if (frameNumber == attacks["specialU"].keyFrames[0])
 	{
 		anim->StartAnimation("especialU");
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body,
-			width * 1.2f,
-			height * 1.2f);
 
-		//hitboxes.push_back(new Hitbox(hitbox, attacks["specialU"], 20, Vector2D(-5 + (5*dir), -50), OnHitData(3, false, false)));
-
+		CreateHitBox(&attacks["specialU"].hitBoxes[0]);
+		
 		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, -60));
 	}
 	else if (frameNumber >= attacks["specialU"].totalFrames)
@@ -295,13 +244,7 @@ void Makt::SpecialDownward(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialD"].keyFrames[0])
 	{
-		SDL_Rect hitbox = manager->GetSDLCoors(
-			body->GetPosition().x,
-			body->GetPosition().y + height * 0.2f,
-			width * 3,
-			height * 0.7f);
-
-		//hitboxes.push_back(new Hitbox(hitbox, attacks["specialD"], 5, OnHitData(3, false, false)));
+		CreateHitBox(&attacks["specialD"].hitBoxes[0]);
 	}
 	else if (frameNumber >= attacks["specialD"].totalFrames)
 	{
@@ -327,7 +270,8 @@ void Makt::BallPickUp(int frameNumber)
 	}
 	else if (frameNumber == attacks["pickBall"].keyFrames[0])
 	{
-		if (SDL_HasIntersection(&hurtbox, ball->GetHurtbox())) {
+		if (SDL_HasIntersection(&hurtbox, ball->GetHurtbox()))
+		{
 			anim->StartAnimation("ballPick");
 			RecoveredBall();
 		}
@@ -338,654 +282,6 @@ void Makt::BallPickUp(int frameNumber)
 	}
 }
 
-void Makt::update()
-{
-	// Para probar mandos
-	//input->controllerTest();
-	if (invencible && invencibleCont + 3000 < SDL_GetTicks()) {
-		invencible = false;
-		dash = false;
-	}
-
-	updateParticles();
-
-	if (!alive)
-	{
-		respawnFrames--;
-		if (respawnFrames == 0)
-		{
-			Respawn();
-			respawnFrames = 150;
-		}
-		return;
-	}
-
-	if (stun > 0)
-	{
-		stun--;
-		if (!recovery) recovery = true;
-	}
-
-
-	if (stun > 0) {
-		if (ball == nullptr) {
-			if (anim->CurrentAnimation() != "stunB")
-				anim->StartAnimation("stunB");
-		}
-		else {
-			if (anim->CurrentAnimation() != "stun")
-				anim->StartAnimation("stun");
-		}
-
-		if (input->right())
-		{
-			body->ApplyLinearImpulseToCenter({ 5, 0 }, true);
-		}
-		if (input->left())
-		{
-			body->ApplyLinearImpulseToCenter({ -5, 0 }, true);
-		}
-
-		currentMove = nullptr;
-	}
-	else
-	{
-		if (currentMove == nullptr || (currentMove != nullptr && !onGround))
-		{
-			if (input->right() && input->left())
-			{
-				speed = 0;
-			}
-			else
-			{
-
-				if (input->right())
-				{
-					if (currentMove == nullptr)
-						dir = 1;
-
-					if (speed < 1)
-						AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
-
-					speed = maxSpeed;
-				}
-				if (input->left())
-				{
-					if (currentMove == nullptr)
-						dir = -1;
-
-					if (speed > -1)
-						AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
-
-					speed = -maxSpeed;
-				}
-			}
-		}
-
-	}
-	if (!recovery) {
-		if (ball == nullptr) {
-			if (anim->CurrentAnimation() != "dashB")
-				anim->StartAnimation("dashB");
-		}
-		else {
-			if (anim->CurrentAnimation() != "dash")
-				anim->StartAnimation("dash");
-		}
-
-	}
-
-	if (speed > 4)
-		speed -= 4;
-	else if (speed < -4)
-		speed += 4;
-	else
-		speed = 0;
-
-	if (currentMove == nullptr /*|| currentMove == Taunt())*/ && stun == 0 && recovery)
-	{
-
-		// Ataque con A (provisional)
-
-		if (input->basic())
-		{
-			sdl->soundEffects().at(codeName + "Steps").haltChannel();
-
-			if (input->up()) //básico arriba
-			{
-				StartMove([this](int f) { BasicUpward(f); });
-			}
-			else if (input->down()) //básico abajo
-			{
-				StartMove([this](int f) { BasicDownward(f); });
-			}
-			else if (input->right() || input->left()) //básico en movimiento
-			{
-				StartMove([this](int f) { BasicForward(f); });
-			}
-			else //básico estático
-			{
-				StartMove([this](int f) { BasicNeutral(f); });
-			}
-
-			manager->MoveToFront(this);
-
-		}
-
-		// Ataque con B (provisional)
-		if (input->special())
-		{
-			sdl->soundEffects().at(codeName + "Steps").haltChannel();
-
-
-			if (input->up()) //especial arriba
-			{
-				StartMove([this](int f) { SpecialUpward(f); });
-			}
-			else if (input->down()) //especial abajo
-			{
-				StartMove([this](int f) { SpecialDownward(f); });
-			}
-			else if (input->right() || input->left()) //especial en movimiento
-			{
-				StartMove([this](int f) { SpecialForward(f); });
-			}
-			else //especial estático
-			{
-				StartMove([this](int f) { SpecialNeutral(f); });
-			}
-
-			manager->MoveToFront(this);
-
-		}
-
-		//Escudo
-		if (input->down() && onGround && shieldCounter > (maxShield / 3) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
-
-			StartMove([this](int f) { StartShield(f); });
-			body->SetLinearVelocity(b2Vec2(0, 0));
-
-		}
-		else if (input->down() && !onGround)
-		{
-			StartMove([this](int f) { Dash(f); });
-		}
-
-		// salto
-		if (input->up() && !(jumpCounter <= 0 || !jumpCooldown))
-		{
-			StartMove([this](int f) { StartJump(f); });
-		}
-
-		if (!GetGround())
-		{
-			if (ball == nullptr) {
-				if (body->GetLinearVelocity().y > 0.01f && anim->CurrentAnimation() != "airborneB")
-					anim->StartAnimation("airborneB");
-			}
-			else {
-				if (body->GetLinearVelocity().y > 0.01f && anim->CurrentAnimation() != "airborne")
-					anim->StartAnimation("airborne");
-			}
-		}
-		else
-		{
-			if (speed > 0.1f || speed < -0.1f)
-			{
-				if (ball == nullptr) {
-					if (anim->CurrentAnimation() != "runB")
-						anim->StartAnimation("runB");
-				}
-				else {
-					if (anim->CurrentAnimation() != "run")
-						anim->StartAnimation("run");
-				}
-				sdl->soundEffects().at(codeName + "Steps").play();
-
-			}
-			//frenarse
-			else
-			{
-				if (ball == nullptr) {
-					if (anim->CurrentAnimation() != "idleB")
-						anim->StartAnimation("idleB");
-				}
-				else {
-					if (anim->CurrentAnimation() != "idle")
-						anim->StartAnimation("idle");
-				}
-			}
-		}
-
-		// bajar plataformas
-		if (down && input->downReleased()) {
-			down = false;
-			fall = maxFallCount; // Activa contador para reconocer el bajar plataformas
-		}
-
-		if (onGround && fall > 0) {
-			fall--;
-			if (input->down()) { // Va a atravesar la plataforma
-				reactivateColl = maxFallCount;
-				for (b2Fixture* f = body->GetFixtureList(); f; f = f->GetNext()) {
-					auto fix = f->GetFilterData();
-					fix.maskBits = 2; // Quita la colisión con la plataforma momentáneamente
-					f->SetFilterData(fix);
-				}
-				fall = 0;
-			}
-		}
-		if (input->taunt() && onGround)
-		{
-			sdl->soundEffects().at(codeName + "Taunt").play();
-
-			StartMove([this](int f) { Taunt(f); });
-		}
-	}
-
-	//else sdl->soundEffects().at(codeName + "Steps").haltChannel();
-
-	if (input->down() && body->GetFixtureList()->GetFilterData().maskBits != 2) down = true; // Marca que se ha pulsado abajo (para el tema de bajar plataformas)
-
-	if (reactivateColl > 0) reactivateColl--;
-	if (reactivateColl == 0 && body->GetFixtureList()->GetFilterData().maskBits == 2) { // Tras medio segundo reactiva colisión jugador-plataformas
-		for (b2Fixture* f = body->GetFixtureList(); f; f = f->GetNext()) {
-			auto fix = f->GetFilterData();
-			fix.maskBits = 2 | 4;
-			f->SetFilterData(fix);
-		}
-	}
-	//para recuperar escudo
-	if (!shield && shieldCounter < maxShield)
-	{
-		shieldCounter++;
-	}
-	else if (shield)
-	{
-
-		shieldCounter -= 2;
-	}
-
-	//Chequeo de tierra
-	if (GetGround())
-	{
-		jumpCounter = maxJumps;
-		if (!recovery) recovery = true;
-	}
-	//chequeo doble salto
-	if (!input->up() && !jumpCooldown)
-	{
-		jumpCooldown = true;
-	}
-
-	if (stun == 0)
-		body->SetLinearVelocity(b2Vec2(speed, body->GetLinearVelocity().y));
-
-
-	//Si hay un movimiento en ejecucion lo continuamos...
-	if (currentMove != nullptr)
-	{
-		//ejecuta el ataque guardado en la variable
-		(currentMove)(moveFrame);
-		//Actualiza el frame actual del movimiento
-		moveFrame++;
-	}
-
-	// Efectos de estado
-	if (efEstado != none && stateCont < stateDur)
-	{
-		stateCont++;
-		if ((efEstado == fire || efEstado == wElectric) && stateCont % 60 == 0)
-		{
-			Elements();
-		}
-	}
-	else
-	{
-		if (efEstado == water)
-		{
-			maxSpeed += ralentizar;
-			ralentizar = 0;
-		}
-		stateCont = 0;
-		statePower = 0;
-		efEstado = none;
-	}
-
-	anim->update();
-
-	hurtbox.x = manager->b2ToSDLX(body, width);
-	hurtbox.y = manager->b2ToSDLY(body, height);
-
-	if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()))
-	{
-		OnDeath();
-	}
-
-}
-
-bool Makt::GetHit(HitData a, Entity* attacker)
-{
-	if (Character::GetHit(a, attacker))
-	{
-		if (ball == nullptr && !shield) {
-			anim->StartAnimation("stunB");
-		}
-		else if(!shield)
-		{
-			anim->StartAnimation("stun");
-		}
-		anim->update();
-		return true;
-	}
-	return false;
-}
-
-void Makt::StartJump(int frameNumber)
-{
-	if (jumpCounter <= 0 || !jumpCooldown)
-	{
-		currentMove = nullptr;
-		moveFrame = -1;
-	}
-	if (frameNumber < 3)
-	{
-		if (ball == nullptr) {
-			anim->StartAnimation("jumpChargeB");
-		}
-		else {
-			anim->StartAnimation("jumpCharge");
-		}
-		if (input->right())
-		{
-			speed = maxSpeed;
-			dir = 1;
-		}
-		if (input->left())
-		{
-			speed = -maxSpeed;
-			dir = -1;
-		}
-		if (input->right() && input->left())
-		{
-			speed = 0;
-		}
-
-		if (input->special())
-		{
-			ChangeMove([this](int f) { SpecialUpward(f); });
-			moveFrame = -1;
-		}
-		else if (input->basic())
-		{
-			ChangeMove([this](int f) { BasicUpward(f); });
-			moveFrame = -1;
-		}
-	}
-	else if (frameNumber >= 4)
-	{
-		sdl->soundEffects().at(codeName + "Steps").haltChannel();
-
-		if (ball == nullptr) {
-			anim->StartAnimation("jumpB");
-		}
-		else {
-			anim->StartAnimation("jump");
-		}
-		if (!GetGround())
-		{
-			sdl->soundEffects().at("jump1").play();
-
-			jumpCounter--;
-		}
-		else sdl->soundEffects().at("jump0").play();
-
-		jumpCooldown = false;
-		body->SetLinearVelocity(b2Vec2(speed, 0));
-
-		if (input->basic())
-		{
-
-			if (input->up()) //básico arriba
-			{
-				ChangeMove([this](int f) { BasicUpward(f); });
-			}
-			else if (input->down()) //básico abajo
-			{
-				ChangeMove([this](int f) { BasicDownward(f); });
-			}
-			else if (input->right() || input->left()) //básico en movimiento
-			{
-				ChangeMove([this](int f) { BasicForward(f); });
-			}
-			else //básico estático
-			{
-				ChangeMove([this](int f) { BasicNeutral(f); });
-			}
-
-			manager->MoveToFront(this);
-			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
-
-		}
-		else if (input->special())
-		{
-
-			if (input->up()) //especial arriba
-			{
-				ChangeMove([this](int f) { SpecialUpward(f); });
-			}
-			else if (input->down()) //especial abajo
-			{
-				ChangeMove([this](int f) { SpecialDownward(f); });
-			}
-			else if (input->right() || input->left()) //especial en movimiento
-			{
-				ChangeMove([this](int f) { SpecialForward(f); });
-			}
-			else //especial estático
-			{
-				ChangeMove([this](int f) { SpecialNeutral(f); });
-			}
-
-			manager->MoveToFront(this);
-			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
-
-		}
-		else
-		{
-			if (input->up())
-				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
-			else
-				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
-		}
-
-		currentMove = nullptr;
-		moveFrame = -1;
-	}
-}
-
-void Makt::StartShield(int frameNumber)
-{
-	if (frameNumber == 1)
-	{
-		sdl->soundEffects().at("shield").play();
-
-		if (ball == nullptr) {
-			anim->StartAnimation("shieldB");
-		}
-		else {
-			anim->StartAnimation("shield");
-		}
-		shield = true;
-	}
-	if (!input->down() || shieldCounter <= 0)
-	{
-		ChangeMove([this](int f) { EndShield(f); });
-	}
-	if (input->basic())
-	{
-		shield = false;
-		ChangeMove([this](int f) { BasicDownward(f); });
-	}
-	else if (input->special())
-	{
-		shield = false;
-		ChangeMove([this](int f) { SpecialDownward(f); });
-	}
-}
-void Makt::EndShield(int frameNumber)
-{
-	anim->StartAnimation("idle");
-	currentMove = nullptr;
-	moveFrame = -1;
-	shield = false;
-}
-
-void Makt::Dash(int frameNumber)
-{
-
-	switch (frameNumber)
-	{
-	case 0:
-		if (ball == nullptr) {
-			anim->StartAnimation("dashB");
-		}
-		else {
-			anim->StartAnimation("dash");
-		}
-		dash = true;
-		body->SetLinearVelocity(b2Vec2(0, 20));
-		break;
-	case 60:
-		dash = false;
-		currentMove = nullptr;
-		if (ball == nullptr) {
-			anim->StartAnimation("idleB");
-		}
-		else {
-			anim->StartAnimation("idle");
-		}
-		break;
-	}
-	if (onGround)
-	{
-		dash = false;
-		currentMove = nullptr;
-		if (ball == nullptr) {
-			anim->StartAnimation("idleB");
-		}
-		else {
-			anim->StartAnimation("idle");
-		}
-	}
-}
-
-void Makt::Taunt(int frameNumber)
-{
-	if (frameNumber == 1)
-	{
-		anim->StartAnimation("taunt");
-	}
-	if (input->right())
-	{
-		speed = maxSpeed;
-		dir = 1;
-		currentMove = nullptr;
-		moveFrame = -1;
-	}
-	if (input->left())
-	{
-		speed = -maxSpeed;
-		dir = -1;
-		currentMove = nullptr;
-		moveFrame = -1;
-	}
-	if (input->right() && input->left())
-	{
-		speed = 0;
-		currentMove = nullptr;
-		moveFrame = -1;
-	}
-	if (input->basic())
-	{
-
-		if (input->up()) //básico arriba
-		{
-			ChangeMove([this](int f) { BasicUpward(f); });
-		}
-		else if (input->down()) //básico abajo
-		{
-			ChangeMove([this](int f) { BasicDownward(f); });
-		}
-		else if (input->right() || input->left()) //básico en movimiento
-		{
-			ChangeMove([this](int f) { BasicForward(f); });
-		}
-		else //básico estático
-		{
-			ChangeMove([this](int f) { BasicNeutral(f); });
-		}
-
-		manager->MoveToFront(this);
-
-	}
-
-	// Ataque con B (provisional)
-	if (input->special())
-	{
-
-		if (input->up()) //especial arriba
-		{
-			ChangeMove([this](int f) { SpecialUpward(f); });
-		}
-		else if (input->down()) //especial abajo
-		{
-			ChangeMove([this](int f) { SpecialDownward(f); });
-		}
-		else if (input->right() || input->left()) //especial en movimiento
-		{
-			ChangeMove([this](int f) { SpecialForward(f); });
-		}
-		else //especial estático
-		{
-			ChangeMove([this](int f) { SpecialNeutral(f); });
-		}
-
-		manager->MoveToFront(this);
-
-	}
-
-	if (input->down() && onGround && shieldCounter > (maxShield / 3) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
-
-		ChangeMove([this](int f) { StartShield(f); });
-		body->SetLinearVelocity(b2Vec2(0, 0));
-
-	}
-	// salto
-	if (input->up() && !(jumpCounter <= 0 || !jumpCooldown))
-	{
-		ChangeMove([this](int f) { StartJump(f); });
-	}
-
-	else if (frameNumber == attacks["taunt"].totalFrames)
-	{
-		if (ball == nullptr) {
-			anim->StartAnimation("idleB");
-		}
-		else {
-			anim->StartAnimation("idle");
-		}
-		currentMove = nullptr;
-		moveFrame = -1;
-	}
-}
-
-void Makt::drawHUD(int numOfPlayer)
-{
-	Character::drawHUD( numOfPlayer);
-
-}
-
 void Makt::RecoveredBall()
 {
 	if (ball->PickUp())
@@ -993,6 +289,7 @@ void Makt::RecoveredBall()
 		jumpStr = ballJump;
 		maxSpeed = ballSpeed;
 		weight = ballWeight;
+		animAddon = "B";
 		ball = nullptr;
 	}
 }
@@ -1016,4 +313,66 @@ void Makt::ThrowBall(HitData force, int timeHeld)
 	ball = new MaktBall(manager, b2Vec2( body->GetPosition().x + dir, body->GetPosition().y ), aux, b2Vec2(dir, 0), respawnPos);
 	manager->AddEntity(ball);
 	ball->SetOponents(oponents);
+
+	animAddon = "";
+}
+
+void Makt::BuildBoxes()
+{
+	attacks["basicN"].hitBoxes[0].box = 
+		manager->GetSDLCoors(
+		body->GetPosition().x + (dir * .6f),
+		body->GetPosition().y,
+		width * 1.8f,
+		height);
+
+	attacks["basicF"].hitBoxes[0].box = 
+		manager->GetSDLCoors(
+		body->GetPosition().x + (dir * 1.2f),
+		body->GetPosition().y,
+		width * 1.4f,
+		height);
+	attacks["basicF"].hitBoxes[1].box =
+		manager->GetSDLCoors(
+			body->GetPosition().x + (dir * 1.2f),
+			body->GetPosition().y,
+			width * 1.6f,
+			height * 1.2f);
+
+	attacks["basicU"].hitBoxes[0].box = manager->GetSDLCoors(
+		body->GetPosition().x + (dir),
+		body->GetPosition().y - height * .6f,
+		width * 2.f,
+		height * 1.5f);
+
+	attacks["basicD"].hitBoxes[0].box = manager->GetSDLCoors(
+		body->GetPosition().x + (dir * width * 0.7f),
+		body->GetPosition().y + height / 2,
+		width * 2,
+		height / 2);
+	attacks["basicD"].hitBoxes[1].box = manager->GetSDLCoors(
+		body->GetPosition().x - (dir * width * 0.7f),
+		body->GetPosition().y + height / 2,
+		width * 2,
+		height / 2);
+
+	attacks["specialN"].hitBoxes[0].box = manager->GetSDLCoors(
+		body->GetPosition().x + (dir * 1.7f),
+		body->GetPosition().y,
+		width * 1.7f,
+		height);
+
+	attacks["specialU"].hitBoxes[0].box = manager->GetSDLCoors(
+		body->GetPosition().x + (dir * 1.3f),
+		body->GetPosition().y - height * 0.7f,
+		width * 1.5f,
+		height * 1.3f);
+
+	attacks["specialD"].hitBoxes[0].box = manager->GetSDLCoors(
+		body->GetPosition().x,
+		body->GetPosition().y + height * 0.2f,
+		width * 3,
+		height * 0.7f);
+
+
 }

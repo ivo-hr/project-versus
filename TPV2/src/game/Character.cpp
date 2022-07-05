@@ -202,8 +202,8 @@ void Character::update()
 
 
 	if (stun > 0) {
-		if (anim->CurrentAnimation() != "stun")
-			anim->StartAnimation("stun");
+		if (anim->CurrentAnimation() != "stun" + animAddon)
+			anim->StartAnimation("stun" + animAddon);
 
 		if (input->right())
 		{
@@ -252,8 +252,8 @@ void Character::update()
 
 	}
 	if (!recovery) {
-		if (anim->CurrentAnimation() != "dash")
-			anim->StartAnimation("dash");
+		if (anim->CurrentAnimation() != "dash" + animAddon)
+			anim->StartAnimation("dash" + animAddon);
 
 	}
 
@@ -341,25 +341,25 @@ void Character::update()
 
 		if (!GetGround())
 		{
-			if (body->GetLinearVelocity().y > 0.01f && anim->CurrentAnimation() != "airborne")
-				anim->StartAnimation("airborne"); 
-			else if (body->GetLinearVelocity().y < -0.01f && anim->CurrentAnimation() != "jump")
-				anim->StartAnimation("jump");
+			if (body->GetLinearVelocity().y > 0.01f && anim->CurrentAnimation() != "airborne" + animAddon)
+				anim->StartAnimation("airborne" + animAddon);
+			else if (body->GetLinearVelocity().y < -0.01f && anim->CurrentAnimation() != "jump" + animAddon)
+				anim->StartAnimation("jump" + animAddon);
 		}
 		else
 		{
 			if (speed > 0.1f || speed < -0.1f)
 			{
-				if (anim->CurrentAnimation() != "run")
-					anim->StartAnimation("run");
+				if (anim->CurrentAnimation() != "run" + animAddon)
+					anim->StartAnimation("run" + animAddon);
 				sdl->soundEffects().at(codeName + "Steps").play();
 				
 			}
 			//frenarse
 			else
 			{
-				if (anim->CurrentAnimation() != "idle")
-					anim->StartAnimation("idle");
+				if (anim->CurrentAnimation() != "idle" + animAddon)
+					anim->StartAnimation("idle" + animAddon);
 			}
 		}
 
@@ -576,7 +576,7 @@ bool Character::GetHit(HitData a, Entity* attacker)
 			body->SetGravityScale(10.0f);
 			currentMove = nullptr;
 			moveFrame = -1;
-			anim->StartAnimation("stun");
+			anim->StartAnimation("stun" + animAddon);
 			anim->update();
 			float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f))) * 2;
 
@@ -621,7 +621,7 @@ bool Character::GetHit(HitData a, Entity* attacker)
 		body->SetGravityScale(10.0f);
 		currentMove = nullptr;
 		moveFrame = -1;
-		anim->StartAnimation("stun");
+		anim->StartAnimation("stun" + animAddon);
 		anim->update();
 		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
 
@@ -756,7 +756,7 @@ void Character::StartJump(int frameNumber)
 	}
 	if (frameNumber < 3)
 	{
-		anim->StartAnimation("jumpCharge");
+		anim->StartAnimation("jumpCharge" + animAddon);
 		if (input->right())
 		{
 			speed = maxSpeed;
@@ -787,7 +787,7 @@ void Character::StartJump(int frameNumber)
 	{
 		sdl->soundEffects().at(codeName + "Steps").haltChannel();
 
-		anim->StartAnimation("jump");
+		anim->StartAnimation("jump" + animAddon);
 		if (!GetGround())
 		{
 			sdl->soundEffects().at("jump1").play();
@@ -866,7 +866,7 @@ void Character::StartShield(int frameNumber)
 	{
 		sdl->soundEffects().at("shield").play();
 
-		anim->StartAnimation("shield");
+		anim->StartAnimation("shield" + animAddon);
 		shield = true;
 	}
 	if (!input->down() || shieldCounter <= 0 )
@@ -886,7 +886,7 @@ void Character::StartShield(int frameNumber)
 }
 void Character::EndShield(int frameNumber)
 {
-	anim->StartAnimation("idle");
+	anim->StartAnimation("idle" + animAddon);
 	currentMove = nullptr;
 	moveFrame = -1;
 	shield = false;
@@ -898,14 +898,14 @@ void Character::Dash(int frameNumber)
 	switch (frameNumber)
 	{
 	case 0:
-		anim->StartAnimation("dash");
+		anim->StartAnimation("dash" + animAddon);
 		dash = true;
 		body->SetLinearVelocity(b2Vec2(0, 20));
 		break;
 	case 60:
 		dash = false;
 		currentMove = nullptr;
-		anim->StartAnimation("idle");
+		anim->StartAnimation("idle" + animAddon);
 		break;
 	}
 	if (onGround)
@@ -1008,7 +1008,7 @@ void Character::Respawn()
 
 	resetLastCharacter();
 
-	anim->StartAnimation("idle");
+	anim->StartAnimation("idle" + animAddon);
 	r = 0;
 	g = 255;
 
@@ -1021,7 +1021,7 @@ void Character::Respawn()
 void Character::Taunt(int frameNumber) {
 	if (frameNumber == 1)
 	{
-		anim->StartAnimation("taunt");
+		anim->StartAnimation("taunt" + animAddon);
 	}
 	if (input->right())
 	{
@@ -1106,7 +1106,7 @@ void Character::Taunt(int frameNumber) {
 
 	else if (frameNumber == attacks["taunt"].totalFrames)
 	{
-		anim->StartAnimation("idle");
+		anim->StartAnimation("idle" + animAddon);
 		currentMove = nullptr;
 		moveFrame = -1;
 	}

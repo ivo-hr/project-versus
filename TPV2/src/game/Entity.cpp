@@ -247,6 +247,7 @@ void Entity::CheckHits()
 			SDL_Rect hitArea;
 			if (SDL_IntersectRect(&hitboxes[i]->box, oponents[j]->GetHurtbox(), &hitArea) && !isHit[j])
 			{
+				manager->MoveToFront(this);
 				//Le hace daño xddd
 				if (oponents[j]->GetHit(hitboxes[i]->hitdata, this))
 				{

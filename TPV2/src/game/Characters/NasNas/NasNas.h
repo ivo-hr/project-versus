@@ -28,5 +28,5 @@ private:
 	int mana = maxMana;
 	state estado = fire;
 protected:
-	void BuildBoxes() override {};
+	void BuildBoxes() override;
 };

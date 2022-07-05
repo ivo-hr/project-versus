@@ -21,15 +21,6 @@ public:
 	virtual void ThrowRecover(int frameNumber);
 	virtual void BallPickUp(int frameNumber);
 
-	virtual void update() override;
-
-	virtual bool GetHit(HitData a, Entity* attacker) override;
-	virtual void StartJump(int frameNumber) override;
-	virtual void StartShield(int frameNumber) override;
-	virtual void EndShield(int frameNumber) override;
-	virtual void Dash(int frameNumber) override;
-	virtual void Taunt(int frameNumber) override;
-	virtual void drawHUD( int numOfPlayer)override;
 private:
 
 	int baseWeight;
@@ -47,5 +38,5 @@ private:
 
 	MaktBall* ball;
 protected:
-	void BuildBoxes() override {};
+	void BuildBoxes() override;
 };
