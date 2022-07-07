@@ -84,7 +84,8 @@
     { "id" : "blinkContb", "file" : "resources/images/blinkContb.png"},
     { "id" : "ExplosionWF", "file" : "resources/images/WFExplosion.png"},
     { "id" : "ExplosionEF", "file" : "resources/images/EFExplosion.png"},
-    { "id" : "selectcharbg", "file" : "resources/images/selectcharacter.png"}
+    { "id" : "selectcharbg", "file" : "resources/images/selectcharacter.png"},
+    { "id" : "shieldBroken", "file" : "resources/images/EscudoRoto.png"}
   ],
   
   "messages" : [

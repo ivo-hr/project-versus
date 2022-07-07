@@ -200,48 +200,6 @@ void FightManager::Update()
 			i--;
 		}
 	}
-	while (addedDelay > 0)
-	{
-
-		Uint32 startTime = sdl->currRealTime();
-		addedDelay--;
-
-		if (addedDelay % 3 == 0)
-		{
-			hitLagCam.x -= camera.x;
-			hitLagCam.x *= -0.9f;
-			hitLagCam.x += camera.x;
-
-			hitLagCam.y -= camera.y;
-			hitLagCam.y *= -0.9f;
-			hitLagCam.y += camera.y;
-		}
-
-		stage->Update(&hitLagCam);
-
-		for (Character* c : characters)
-		{
-			c->drawHUD( numPlayers);
-		}
-
-		for (int i = entities.size() - 1; i >= 0; i--)
-		{
-			entities[i]->updateParticles();
-			entities[i]->draw(&hitLagCam);
-		}
-
-		HideOutOfBounds();
-
-		// present new frame
-		sdl->presentRenderer();
-
-		double frameTime = sdl->currRealTime() - startTime;
-
-		if (frameTime < (step * 1000))
-		{
-			SDL_Delay((step * 1000));
-		}
-	}
 	
 	HideOutOfBounds();
 
@@ -523,25 +481,8 @@ void FightManager::AddOponnent(Entity* ent, Entity* ignore)
 	}
 }
 
-void FightManager::HitLag(int frames, bool shake)
-{
-	if (addedDelay < frames)
-		addedDelay = frames;
-
-	hitLagCam = camera;
-
-	if (shake)
-	{
-		hitLagCam.x += (addedDelay * 0.1f) * (camera.w * 0.005f);
-
-		hitLagCam.y += addedDelay * 0.05f * (camera.w * 0.005f);
-	}
-}
-
 void FightManager::KillingBlow()
 {
-	HitLag(40);
-
 	sdl->soundEffects().at("hitKill").play();
 }
 

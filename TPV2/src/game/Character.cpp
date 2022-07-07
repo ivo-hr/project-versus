@@ -183,6 +183,16 @@ void Character::update()
 
 	updateParticles();
 
+	if (hitLag > 0)
+	{
+		hitLag--;
+		if (hitLag == 0)
+		{
+			body->SetEnabled(true);
+		}
+		return;
+	}
+
 	if (!alive)
 	{
 		respawnFrames--;
@@ -578,7 +588,7 @@ bool Character::GetHit(HitData a, Entity* attacker)
 			moveFrame = -1;
 			anim->StartAnimation("stun" + animAddon);
 			anim->update();
-			float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f))) * 2;
+			float recoil = ((a.base * 2) + ((damageTaken * a.multiplier) / (weight * .2f)));
 
 			stun = a.GetStun(recoil);
 
@@ -590,6 +600,8 @@ bool Character::GetHit(HitData a, Entity* attacker)
 			if (recoil > 90)
 			{
 				manager->KillingBlow();
+				AddHitLag(50);
+				attacker->AddHitLag(50);
 
 				AddParticle(new Particle(
 					Vector2D(
@@ -602,6 +614,17 @@ bool Character::GetHit(HitData a, Entity* attacker)
 						manager->ToSDL(body->GetPosition().y)),
 					1, "killHit", this));
 			}
+			else
+			{
+				AddHitLag(30);
+				attacker->AddHitLag(30);
+
+				AddParticle(new Particle(
+					Vector2D(
+						manager->ToSDL(body->GetPosition().x),
+						manager->ToSDL(body->GetPosition().y)),
+					1, "shieldBroken", this));
+			}
 
 			aux *= recoil;
 			aux.y *= -1;
@@ -609,6 +632,7 @@ bool Character::GetHit(HitData a, Entity* attacker)
 
 			//Produce el knoback..
 			body->SetLinearVelocity(aux);
+			shieldCounter = 0;
 		}
 		return true;
 	}
@@ -635,6 +659,8 @@ bool Character::GetHit(HitData a, Entity* attacker)
 		if (recoil > 90)
 		{
 			manager->KillingBlow();
+			AddHitLag(40);
+			attacker->AddHitLag(40);
 
 			AddParticle(new Particle(
 				Vector2D(
@@ -926,8 +952,6 @@ void Character::ChangeMove(std::function<void(int)> newMove)
 	currentMove = newMove;
 	moveFrame = -1;
 }
-
-
 
 SDL_Rect* Character::GetHurtbox()
 {

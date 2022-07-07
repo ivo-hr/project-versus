@@ -147,12 +147,16 @@ void AnimationManager::update()
 		dest.y = aux.y - yOffset;
 
 		recorteSheet = { w * (int)SpriteIndex[currIndex].x, h * (int)SpriteIndex[currIndex].y, w, h };
+
+		lookingRight = true;
 	}
 	else {
 		dest.x = aux.x + xOffset - info.sizeXOffset * ent->GetWidth() * ent->GetManager()->GetScreenRatio() / 4.7f;
 		dest.y = aux.y - yOffset;
 
 		recorteSheet = { w * (int)SpriteIndex[currIndex].x, h * (int)SpriteIndex[currIndex].y, w, h };
+
+		lookingRight = false;
 	}
 
 }
@@ -185,7 +189,7 @@ void AnimationManager::render(SDL_Rect* camera)
 	aux.w *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
 	aux.h *= (ent->GetManager()->GetActualHeight() / (float)camera->h);
 
-	if (ent->GetDir() >= 0) {
+	if (lookingRight) {
 		texture->render(recorteSheet, aux);
 	}
 	else {

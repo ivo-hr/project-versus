@@ -11,6 +11,7 @@ protected:
 	int xOffset, yOffset;
 	int framespSprite;
 	int w, h, cont;
+	bool lookingRight;
 
 	std::string currentAnimIndex;
 

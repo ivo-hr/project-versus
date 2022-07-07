@@ -32,6 +32,17 @@ MaktBall::~MaktBall()
 
 void MaktBall::update()
 {
+
+	if (hitLag > 0)
+	{
+		hitLag--;
+		if (hitLag == 0)
+		{
+			body->SetEnabled(true);
+		}
+		return;
+	}
+
 	if (alive)
 	{
 		if (!physic)
@@ -75,7 +86,8 @@ void MaktBall::CheckHits()
 			{
 				if (oponents[j]->GetHit(data, this))
 				{
-					manager->HitLag(lag);
+					oponents[j]->AddHitLag(lag);
+					AddHitLag(lag);
 
 					oponents[j]->AddParticle(new Particle(
 						Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),

@@ -79,6 +79,17 @@ void Entity::updateParticles()
 void Entity::update()
 {
 	updateParticles();
+
+	if (hitLag > 0)
+	{
+		hitLag--;
+		if (hitLag == 0)
+		{
+			body->SetEnabled(true);
+		}
+		return;
+	}
+
 	//Actualizamos la posicion del rect
 	hurtbox.x = manager->b2ToSDLX(body, width);
 	hurtbox.y = manager->b2ToSDLY(body, height);
@@ -220,6 +231,11 @@ void Entity::CheckHits()
 {
 	bool toResetHits = false;
 
+	if (hitLag > 0)
+	{
+		return;
+	}
+
 	for (int i = 0; i < hitboxes.size(); i++)
 	{
 
@@ -251,11 +267,12 @@ void Entity::CheckHits()
 				//Le hace daño xddd
 				if (oponents[j]->GetHit(hitboxes[i]->hitdata, this))
 				{
-					manager->HitLag(hitboxes[i]->GetHitlag());
+					AddHitLag(hitboxes[i]->GetHitlag());
+					oponents[j]->AddHitLag(hitboxes[i]->GetHitlag());
 
 					oponents[j]->setLastCharacer(this);
 
-					if (hitboxes[i]->hitlag >= 15)
+					if (hitboxes[i]->GetHitlag() >= 15)
 					{
 						AddParticle(new Particle(
 							 Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
@@ -285,4 +302,10 @@ void Entity::CheckHits()
 SDL_Rect* Entity::GetHurtbox()
 {
 	return &hurtbox;
+}
+
+void Entity::AddHitLag(uint16 lag)
+{
+	hitLag = lag;
+	body->SetEnabled(false);
 }

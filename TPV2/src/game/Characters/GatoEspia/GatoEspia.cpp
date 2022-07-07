@@ -467,7 +467,8 @@ bool GatoEspia::GetHit(HitData a, Entity* attacker)
 		body->SetTransform(attacker->GetBody()->GetPosition() + b2Vec2(-dir * 2.4f, 0), 0);
 		currentMove = [this](int f) { Counter(f); };
 		moveFrame = -1;
-		manager->HitLag(20, false);
+		AddHitLag(20);
+		attacker->AddHitLag(25);
 		manager->MoveToFront(this);
 		return false;
 	}

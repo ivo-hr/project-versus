@@ -57,7 +57,7 @@ struct HitBoxData
 	HitData hitdata;
 
 	int hitlag = -1;
-	int GetHitlag() { return hitlag <= 0 ? hitdata.damage * 0.6f : hitlag; };
+	int GetHitlag() { return hitlag <= 0 ? hitdata.damage * 0.9f : hitlag; };
 
 	int duration;
 	int outFor = 0;
@@ -105,6 +105,8 @@ protected:
 	int respawnTimer = 0;
 	int respawnFrames;
 
+	uint16 hitLag = 0;
+
 	int lives = 3;
 	b2Vec2 respawnPos;
 
@@ -142,6 +144,8 @@ public:
 	virtual float GetHeight() { return height; };
 	virtual SDL_Rect* GetHurtbox();
 	virtual b2Body* GetBody() { return body; };
+
+	void AddHitLag(uint16 lag);
 
 	Vector2D GetCenterSDL() { return Vector2D(hurtbox.x + (hurtbox.w / 2), hurtbox.y + (hurtbox.h / 2)); };
 

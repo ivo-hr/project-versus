@@ -89,7 +89,8 @@ void Projectile::CheckHits()
 				//Le hace da�o xddd
 				if (oponents[j]->GetHit(data, this))
 				{
-					manager->HitLag(lag);
+					oponents[j]->AddHitLag(lag);
+					AddHitLag(lag);
 
 					oponents[j]->AddParticle(new Particle(
 						Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),

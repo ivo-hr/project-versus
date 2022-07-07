@@ -151,6 +151,20 @@ Particle::Particle(Vector2D position, int dir, std::string id, Entity* ent): ent
 		numSprites = 3;
 		duration = 30;
 	}
+	else if (id == "shieldBroken")
+	{
+		int w = 128;
+		int h = w;
+
+		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
+
+		texture = &manager->GetSDLU()->images().at("shieldBroken");
+
+		numSpritesinX = 1;
+		numSpritesinY = 6;
+		numSprites = 6;
+		duration = 30;
+	}
 	else
 	{
 		int w = 0;
