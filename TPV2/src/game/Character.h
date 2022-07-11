@@ -35,8 +35,8 @@ protected:
 	bool moving;
 	int maxSpeed;
 	int speed;
-	bool shield;
-	int shieldCounter;
+	uint16 shield;
+	uint16 shieldHealth;
 	int maxShield;
 	bool dash;
 	//Variables para el salto (fuerza, maximo numero permitido, y el contador)
@@ -153,6 +153,7 @@ public:
 	virtual void StartShield(int frameNumber);
 	virtual void EndShield(int frameNumber);
 	virtual void Dash(int frameNumber);
+	virtual void DashLanding(int frameNumber);
 	virtual void Taunt(int frameNumber);
 	virtual void Elements();
 

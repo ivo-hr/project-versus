@@ -24,7 +24,7 @@ json Character::ReadJson(std::string filename, spriteSheetData &spData)
 	maxShield = jsonFile["maxShield"];
 	jumpCounter = maxJumps;
 	damageTaken = 0;
-	shieldCounter = maxShield;
+	shieldHealth = maxShield;
 	jumpCooldown = true;
 
 
@@ -142,7 +142,7 @@ Character::Character(FightManager* manager, b2Vec2 pos, char input,int playerPos
 
 	stun = 0;
 	dash = false;
-	shield = false;
+	shield = 0;
 	lives = maxLives;
 	this->input = new InputConfig(input);
 	input_ = input;
@@ -210,6 +210,12 @@ void Character::update()
 		if (!recovery) recovery = true;
 	}
 
+	// bajar plataformas
+	if (down && input->downReleased()) {
+		down = false;
+		fall = maxFallCount; // Activa contador para reconocer el bajar plataformas
+	}
+	if (input->down() && body->GetFixtureList()->GetFilterData().maskBits != 2) down = true; // Marca que se ha pulsado abajo (para el tema de bajar plataformas)
 
 	if (stun > 0) {
 		if (anim->CurrentAnimation() != "stun" + animAddon)
@@ -332,7 +338,7 @@ void Character::update()
 		}
 
 		//Escudo
-		if (input->down() && onGround && shieldCounter > (maxShield/3) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
+		if (input->down() && onGround && shieldHealth > (maxShield / 8) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
 
 			StartMove([this](int f) { StartShield(f); });
 			body->SetLinearVelocity(b2Vec2(0, 0));
@@ -373,11 +379,6 @@ void Character::update()
 			}
 		}
 
-		// bajar plataformas
-		if (down && input->downReleased()) {
-			down = false;
-			fall = maxFallCount; // Activa contador para reconocer el bajar plataformas
-		}
 
 		if (onGround && fall > 0) {
 			fall--;
@@ -401,7 +402,6 @@ void Character::update()
 
 	//else sdl->soundEffects().at(codeName + "Steps").haltChannel();
 
-	if (input->down() && body->GetFixtureList()->GetFilterData().maskBits != 2) down = true; // Marca que se ha pulsado abajo (para el tema de bajar plataformas)
 
 	if (reactivateColl > 0) reactivateColl--;
 	if (reactivateColl == 0 && body->GetFixtureList()->GetFilterData().maskBits == 2) { // Tras medio segundo reactiva colisión jugador-plataformas
@@ -411,14 +411,11 @@ void Character::update()
 			f->SetFilterData(fix);
 		}
 	}
+
 	//para recuperar escudo
-	if (!shield && shieldCounter < maxShield)
+	if (!shield && shieldHealth < maxShield)
 	{
-		shieldCounter++;
-	}
-	else if (shield)
-	{
-		shieldCounter-=2;
+		shieldHealth++;
 	}
 
 	//Chequeo de tierra
@@ -573,16 +570,34 @@ void Character::draw(SDL_Rect* camera)
 
 bool Character::GetHit(HitData a, Entity* attacker)
 {
-	if (shield)
+	if (shield > 0)
 	{
-		//Actualiza el da�o
-		if (!a.shieldBreak)
+		if (shield <= 5)		//Parry
+		{
+			if (!attacker->isProjectile())
+			{
+				AddHitLag(15);
+				attacker->AddHitLag(30);
+			}
+			currentMove = nullptr;
+			moveFrame = 0;
+			shield = 0;
+			//StartAnimation parry
+			return false;
+		}
+
+		if (a.damage > shieldHealth || a.shieldBreak)
+			shieldHealth = 0;
+		else
+			shieldHealth -= a.damage;
+
+		if (shieldHealth > 0)	//A
 		{
 			damageTaken += (int)(a.damage * 0.4f);
 		}
-		else
+		else					//Rompe escudos
 		{
-			shield = false;
+			shield = 0;
 			body->SetGravityScale(10.0f);
 			currentMove = nullptr;
 			moveFrame = -1;
@@ -632,7 +647,7 @@ bool Character::GetHit(HitData a, Entity* attacker)
 
 			//Produce el knoback..
 			body->SetLinearVelocity(aux);
-			shieldCounter = 0;
+			shieldHealth = 0;
 		}
 		return true;
 	}
@@ -888,45 +903,60 @@ void Character::StartJump(int frameNumber)
 
 void Character::StartShield(int frameNumber)
 {
-	if (frameNumber == 1)
+	int shieldStartUp = 0;
+
+	shieldHealth--;
+
+	if (frameNumber >= shieldStartUp)
+	{
+		shield++;
+	}
+	if (frameNumber == shieldStartUp)
 	{
 		sdl->soundEffects().at("shield").play();
 
 		anim->StartAnimation("shield" + animAddon);
-		shield = true;
 	}
-	if (!input->down() || shieldCounter <= 0 )
+	if (!input->down() || shieldHealth <= 0 )
 	{
 		ChangeMove([this](int f) { EndShield(f); });
 	}
 	if (input->basic())
 	{
-		shield = false;
+		shield = 0;
 		ChangeMove([this](int f) { BasicDownward(f); });
 	}
 	else if (input->special())
 	{
-		shield = false;
+		shield = 0;
 		ChangeMove([this](int f) { SpecialDownward(f); });
 	}
 }
 void Character::EndShield(int frameNumber)
 {
-	anim->StartAnimation("idle" + animAddon);
-	currentMove = nullptr;
-	moveFrame = -1;
-	shield = false;
+	if (frameNumber == 0)
+	{
+		shield = 0;
+		anim->StartAnimation("idle" + animAddon);
+	}
+	if (frameNumber >= 15)					//Shield end lag
+	{
+		currentMove = nullptr;
+		moveFrame = -1;
+	}
 }
 
 void Character::Dash(int frameNumber)
 {
-
 	switch (frameNumber)
 	{
 	case 0:
 		anim->StartAnimation("dash" + animAddon);
+		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x / 2, body->GetLinearVelocity().y / 2));
+		break;
+	case 4:
 		dash = true;
-		body->SetLinearVelocity(b2Vec2(0, 20));
+		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, 20));
 		break;
 	case 60:
 		dash = false;
@@ -936,9 +966,18 @@ void Character::Dash(int frameNumber)
 	}
 	if (onGround)
 	{
+		ChangeMove([this](int f) { DashLanding(f); });
 		dash = false;
+	}
+}
+
+void Character::DashLanding(int frameNumber)
+{
+	if (frameNumber >= 10)
+	{
 		currentMove = nullptr;
-		anim->StartAnimation("idle");
+		moveFrame = -1;
+		anim->StartAnimation("idle" + animAddon);
 	}
 }
 
@@ -973,7 +1012,7 @@ void Character::OnDeath()
 	currentMove = nullptr;
 	moveFrame = 0;
 	moving = false;
-	shield = false;
+	shield = 0;
 	dash = false;
 	stun = 0;
 	if (efEstado != none)
@@ -1116,7 +1155,7 @@ void Character::Taunt(int frameNumber) {
 
 	}
 
-	if (input->down() && onGround && shieldCounter > (maxShield / 3) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
+	if (input->down() && onGround && shieldHealth > (maxShield / 8) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
 
 		ChangeMove([this](int f) { StartShield(f); });
 		body->SetLinearVelocity(b2Vec2(0, 0));

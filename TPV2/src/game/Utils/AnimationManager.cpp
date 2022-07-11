@@ -163,7 +163,7 @@ void AnimationManager::update()
 
 void AnimationManager::render()
 {
-	if (ent->GetDir() >= 0) {
+	if (lookingRight) {
 		texture->render(recorteSheet, dest);
 	}
 	else {
