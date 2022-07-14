@@ -102,6 +102,12 @@ public:
 	void SetPNumber(uint16 num);
 
 	virtual void update() override;
+	void UpdateAnimations();
+	void AllowAttack();
+	void AllowMovement(bool changeDirection = false, bool showParticles = false);
+	void AllowMovement(float multiplier, bool changeDirection = false, bool showParticles = false);
+	void StunBehaviour();
+	void DropPlatform();
 	virtual void draw() override;
 	virtual void draw(SDL_Rect* camera) override;
 	virtual void drawHUD(int numOfPlayer) ;

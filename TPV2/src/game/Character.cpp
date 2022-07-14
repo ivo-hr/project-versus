@@ -210,60 +210,63 @@ void Character::update()
 		if (!recovery) recovery = true;
 	}
 
-	// bajar plataformas
-	if (down && input->downReleased()) {
-		down = false;
-		fall = maxFallCount; // Activa contador para reconocer el bajar plataformas
-	}
-	if (input->down() && body->GetFixtureList()->GetFilterData().maskBits != 2) down = true; // Marca que se ha pulsado abajo (para el tema de bajar plataformas)
+	//recuperar escudo
 
-	if (stun > 0) {
-		if (anim->CurrentAnimation() != "stun" + animAddon)
-			anim->StartAnimation("stun" + animAddon);
+	DropPlatform();
 
-		if (input->right())
-		{
-			body->ApplyLinearImpulseToCenter({ 5, 0 }, true);
-		}
-		if (input->left())
-		{
-			body->ApplyLinearImpulseToCenter({ -5, 0 }, true);
-		}
-
-		currentMove = nullptr;
+	if (stun > 0)
+	{
+		StunBehaviour();
 	}
 	else
 	{ 
-		if (currentMove == nullptr || (currentMove != nullptr && !onGround))
+		if (currentMove == nullptr)
 		{
-			if (input->right() && input->left())
+			//allow movement
+			//allow jump
+			//allow attack
+			//allow shield / dash
+			//check ground
+			//animaciones
+		}
+		if (currentMove == nullptr)
+		{
+			if (onGround)
 			{
-				speed = 0;
+				AllowMovement(true, true);
 			}
 			else
 			{
+				AllowMovement(0.7f, true, true);
+			}
 
-				if (input->right())
-				{
-					if (currentMove == nullptr)
-						dir = 1;
+			// salto
+			if (input->up() && !(jumpCounter <= 0 || !jumpCooldown))
+			{
+				StartMove([this](int f) { StartJump(f); });
+			}
 
-					if (speed < 1)
-						AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
+			AllowAttack();
 
-					speed = maxSpeed;
-				}
-				if (input->left())
-				{
-					if (currentMove == nullptr)
-						dir = -1;
+			if (onGround)
+			{
+				//Escudo
+				if (input->down() && shieldHealth > (maxShield / 8) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
 
-					if (speed > -1)
-						AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
+					StartMove([this](int f) { StartShield(f); });
+					body->SetLinearVelocity(b2Vec2(0, 0));
 
-					speed = -maxSpeed;
 				}
 			}
+			else
+			{
+				if (input->down())
+				{
+					StartMove([this](int f) { Dash(f); });
+				}
+			}
+
+			UpdateAnimations();
 		}
 
 	}
@@ -273,143 +276,13 @@ void Character::update()
 
 	}
 
-	if (speed > 4)
-		speed -= 4;
-	else if (speed < -4)
-		speed += 4;
-	else
-		speed = 0;
-
-	if (currentMove == nullptr /*|| currentMove == Taunt())*/ && stun == 0 && recovery)
+	//Si hay un movimiento en ejecucion lo continuamos...
+	if (currentMove != nullptr)
 	{
-
-		// Ataque con A (provisional)
-		
-		if (input->basic())
-		{
-			sdl->soundEffects().at(codeName + "Steps").haltChannel();
-
-			if (input->up()) //básico arriba
-			{
-				StartMove([this](int f) { BasicUpward(f); });
-			}
-			else if (input->down()) //básico abajo
-			{
-				StartMove([this](int f) { BasicDownward(f); });
-			}
-			else if (input->right() || input->left()) //básico en movimiento
-			{
-				StartMove([this](int f) { BasicForward(f); });
-			}
-			else //básico estático
-			{
-				StartMove([this](int f) { BasicNeutral(f); });
-			}
-
-			manager->MoveToFront(this);
-
-		}
-
-		// Ataque con B (provisional)
-		if (input->special())
-		{
-			sdl->soundEffects().at(codeName + "Steps").haltChannel();
-
-
-			if (input->up()) //especial arriba
-			{
-				StartMove([this](int f) { SpecialUpward(f); });
-			}
-			else if (input->down()) //especial abajo
-			{
-				StartMove([this](int f) { SpecialDownward(f); });
-			}
-			else if (input->right() || input->left()) //especial en movimiento
-			{
-				StartMove([this](int f) { SpecialForward(f); });
-			}
-			else //especial estático
-			{
-				StartMove([this](int f) { SpecialNeutral(f); });
-			}
-
-			manager->MoveToFront(this);
-
-		}
-
-		//Escudo
-		if (input->down() && onGround && shieldHealth > (maxShield / 8) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
-
-			StartMove([this](int f) { StartShield(f); });
-			body->SetLinearVelocity(b2Vec2(0, 0));
-
-		}
-		else if (input->down() && !onGround)
-		{
-			StartMove([this](int f) { Dash(f); });
-		}
-
-		// salto
-		if (input->up() && !(jumpCounter <= 0 || !jumpCooldown))
-		{
-			StartMove([this](int f) { StartJump(f); });
-		}
-
-		if (!GetGround())
-		{
-			if (body->GetLinearVelocity().y > 0.01f && anim->CurrentAnimation() != "airborne" + animAddon)
-				anim->StartAnimation("airborne" + animAddon);
-			else if (body->GetLinearVelocity().y < -0.01f && anim->CurrentAnimation() != "jump" + animAddon)
-				anim->StartAnimation("jump" + animAddon);
-		}
-		else
-		{
-			if (speed > 0.1f || speed < -0.1f)
-			{
-				if (anim->CurrentAnimation() != "run" + animAddon)
-					anim->StartAnimation("run" + animAddon);
-				sdl->soundEffects().at(codeName + "Steps").play();
-				
-			}
-			//frenarse
-			else
-			{
-				if (anim->CurrentAnimation() != "idle" + animAddon)
-					anim->StartAnimation("idle" + animAddon);
-			}
-		}
-
-
-		if (onGround && fall > 0) {
-			fall--;
-			if (input->down()) { // Va a atravesar la plataforma
-				reactivateColl = maxFallCount; 
-				for (b2Fixture* f = body->GetFixtureList(); f; f = f->GetNext()) {
-					auto fix = f->GetFilterData();
-					fix.maskBits = 2; // Quita la colisión con la plataforma momentáneamente
-					f->SetFilterData(fix);
-				}
-				fall = 0;
-			}
-		}
-		if (input->taunt() && onGround) 
-		{
-			sdl->soundEffects().at(codeName + "Taunt").play();
-
-			StartMove([this](int f) { Taunt(f); });
-		}
-	}
-
-	//else sdl->soundEffects().at(codeName + "Steps").haltChannel();
-
-
-	if (reactivateColl > 0) reactivateColl--;
-	if (reactivateColl == 0 && body->GetFixtureList()->GetFilterData().maskBits == 2) { // Tras medio segundo reactiva colisión jugador-plataformas
-		for (b2Fixture* f = body->GetFixtureList(); f; f = f->GetNext()) {
-			auto fix = f->GetFilterData();
-			fix.maskBits = 2 | 4;
-			f->SetFilterData(fix);
-		}
+		//ejecuta el ataque guardado en la variable
+		(currentMove)(moveFrame);
+		//Actualiza el frame actual del movimiento
+		moveFrame++;
 	}
 
 	//para recuperar escudo
@@ -424,6 +297,7 @@ void Character::update()
 		jumpCounter = maxJumps;
 		if (!recovery) recovery = true;
 	}
+
 	//chequeo doble salto
 	if (!input->up() && !jumpCooldown)
 	{
@@ -433,15 +307,13 @@ void Character::update()
 	if (stun == 0)
 		body->SetLinearVelocity(b2Vec2(speed, body->GetLinearVelocity().y));
 
+	if (speed > 4)
+		speed -= 4;
+	else if (speed < -4)
+		speed += 4;
+	else
+		speed = 0;
 
-	//Si hay un movimiento en ejecucion lo continuamos...
-	if (currentMove != nullptr)
-	{
-		//ejecuta el ataque guardado en la variable
-		(currentMove)(moveFrame);
-		//Actualiza el frame actual del movimiento
-		moveFrame++;
-	}
 
 	// Efectos de estado
 	if (efEstado != none && stateCont < stateDur)
@@ -474,6 +346,218 @@ void Character::update()
 		OnDeath();
 	}
 
+}
+
+void Character::UpdateAnimations()
+{
+
+	if (!GetGround())
+	{
+		if (body->GetLinearVelocity().y > 0.01f && anim->CurrentAnimation() != "airborne" + animAddon)
+			anim->StartAnimation("airborne" + animAddon);
+		else if (body->GetLinearVelocity().y < -0.01f && anim->CurrentAnimation() != "jump" + animAddon)
+			anim->StartAnimation("jump" + animAddon);
+	}
+	else
+	{
+		if (speed > 0.1f || speed < -0.1f)
+		{
+			if (anim->CurrentAnimation() != "run" + animAddon)
+				anim->StartAnimation("run" + animAddon);
+			sdl->soundEffects().at(codeName + "Steps").play();
+
+		}
+		//frenarse
+		else
+		{
+			if (anim->CurrentAnimation() != "idle" + animAddon)
+				anim->StartAnimation("idle" + animAddon);
+		}
+	}
+}
+
+void Character::AllowAttack()
+{
+	// Ataque con A (provisional)
+
+	if (input->basic())
+	{
+		sdl->soundEffects().at(codeName + "Steps").haltChannel();
+
+		if (input->up()) //básico arriba
+		{
+			StartMove([this](int f) { BasicUpward(f); });
+		}
+		else if (input->down()) //básico abajo
+		{
+			StartMove([this](int f) { BasicDownward(f); });
+		}
+		else if (input->right() || input->left()) //básico en movimiento
+		{
+			StartMove([this](int f) { BasicForward(f); });
+		}
+		else //básico estático
+		{
+			StartMove([this](int f) { BasicNeutral(f); });
+		}
+
+		manager->MoveToFront(this);
+
+	}
+
+	// Ataque con B (provisional)
+	if (input->special())
+	{
+		sdl->soundEffects().at(codeName + "Steps").haltChannel();
+
+
+		if (input->up()) //especial arriba
+		{
+			StartMove([this](int f) { SpecialUpward(f); });
+		}
+		else if (input->down()) //especial abajo
+		{
+			StartMove([this](int f) { SpecialDownward(f); });
+		}
+		else if (input->right() || input->left()) //especial en movimiento
+		{
+			StartMove([this](int f) { SpecialForward(f); });
+		}
+		else //especial estático
+		{
+			StartMove([this](int f) { SpecialNeutral(f); });
+		}
+
+		manager->MoveToFront(this);
+
+	}
+
+	if (input->taunt() && onGround)
+	{
+		sdl->soundEffects().at(codeName + "Steps").haltChannel();
+		sdl->soundEffects().at(codeName + "Taunt").play();
+
+		StartMove([this](int f) { Taunt(f); });
+
+		manager->MoveToFront(this);
+	}
+}
+
+void Character::AllowMovement(bool changeDirection, bool showParticles)
+{
+
+	if (input->right() && input->left())
+	{
+		speed = 0;
+	}
+	else
+	{
+
+		if (input->right())
+		{
+			if (changeDirection)
+				dir = 1;
+
+			if (showParticles && speed < 1)
+				AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
+
+			speed = maxSpeed;
+		}
+		if (input->left())
+		{
+			if (changeDirection)
+				dir = -1;
+
+			if (showParticles && speed > -1)
+				AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
+
+			speed = -maxSpeed;
+		}
+	}
+}
+
+void Character::AllowMovement(float multiplier, bool changeDirection, bool showParticles)
+{
+
+	if (input->right() && input->left())
+	{
+		speed = 0;
+	}
+	else
+	{
+
+		if (input->right())
+		{
+			if (changeDirection)
+				dir = 1;
+
+			if (showParticles && speed < 1)
+				AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
+
+			speed = maxSpeed * multiplier;
+		}
+		if (input->left())
+		{
+			if (changeDirection)
+				dir = -1;
+
+			if (showParticles && speed > -1)
+				AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
+
+			speed = -maxSpeed * multiplier;
+		}
+	}
+}
+
+void Character::StunBehaviour()
+{
+
+	if (anim->CurrentAnimation() != "stun" + animAddon)
+		anim->StartAnimation("stun" + animAddon);
+
+	if (input->right())
+	{
+		body->ApplyLinearImpulseToCenter({ 5, 0 }, true);
+	}
+	if (input->left())
+	{
+		body->ApplyLinearImpulseToCenter({ -5, 0 }, true);
+	}
+
+	currentMove = nullptr;
+}
+
+void Character::DropPlatform()
+{
+
+	// bajar plataformas
+	if (down && input->downReleased()) {
+		down = false;
+		fall = maxFallCount; // Activa contador para reconocer el bajar plataformas
+	}
+	if (input->down() && body->GetFixtureList()->GetFilterData().maskBits != 2) down = true; // Marca que se ha pulsado abajo (para el tema de bajar plataformas)
+
+	if (onGround && fall > 0) {
+		fall--;
+		if (input->down()) { // Va a atravesar la plataforma
+			reactivateColl = maxFallCount;
+			for (b2Fixture* f = body->GetFixtureList(); f; f = f->GetNext()) {
+				auto fix = f->GetFilterData();
+				fix.maskBits = 2; // Quita la colisión con la plataforma momentáneamente
+				f->SetFilterData(fix);
+			}
+			fall = 0;
+		}
+	}
+
+	if (reactivateColl > 0) reactivateColl--;
+	if (reactivateColl == 0 && body->GetFixtureList()->GetFilterData().maskBits == 2) { // Tras medio segundo reactiva colisión jugador-plataformas
+		for (b2Fixture* f = body->GetFixtureList(); f; f = f->GetNext()) {
+			auto fix = f->GetFilterData();
+			fix.maskBits = 2 | 4;
+			f->SetFilterData(fix);
+		}
+	}
 }
 
 void Character::draw()

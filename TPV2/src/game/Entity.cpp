@@ -37,7 +37,7 @@ Entity::Entity(FightManager* mngr, b2Vec2 position, float w, float h) : manager(
 
 	body->SetLinearDamping(0.f);
 
-	dynamicBox.SetAsBox(width / 3, height / 8, b2Vec2(0, + height / 2), 0);
+	dynamicBox.SetAsBox(width / 2, 0.05f, b2Vec2(0, + height / 2), 0);
 	fixtureDef.isSensor = true;
 	b2Fixture* footSensorFixture = body->CreateFixture(&fixtureDef);
 
