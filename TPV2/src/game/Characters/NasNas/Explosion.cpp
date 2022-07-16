@@ -10,19 +10,19 @@ Explosion::Explosion(FightManager* manager, b2Vec2 pos, int power, int type) :
 
 	//this->SetOponents(manager->GetEntities(this));
 	hurtbox = manager->GetSDLCoors(body, width, height);
-	data.direction = b2Vec2(1 , 1.8);
+	data.direction = b2Vec2(1 , 1.8f);
 	//agua y fuego
 	if (type == 0)
 	{
-		data.base = power / 2;
+		data.base = power;
 		data.damage = 10;
-		data.multiplier = 0.4;
+		data.multiplier = 0.8f;
 		texture = &sdl->images().at("ExplosionWF");
 	}
 	else{
 		data.base = 10;
-		data.damage = power / 2;
-		data.multiplier = 0.4;
+		data.damage = power;
+		data.multiplier = 0.4f;
 		texture = &sdl->images().at("ExplosionEF");
 	}
 
@@ -61,14 +61,20 @@ void Explosion::update()
 }
 void Explosion::CheckHits()
 {
-	for (int j = 0; j < oponents.size(); j++)
+	if (time >= 3)
 	{
-		SDL_Rect hitArea;
-		if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea) && !isHit[j])
+		for (int j = 0; j < oponents.size(); j++)
 		{
-			if (oponents[j]->GetHit(data, this))
-			{		
-				isHit[j] = true;
+			SDL_Rect hitArea;
+			if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea) && !isHit[j])
+			{
+				if (oponents[j]->GetHit(data, this))
+				{
+					AddHitLag(20);
+					oponents[j]->AddHitLag(20);
+
+					isHit[j] = true;
+				}
 			}
 		}
 	}

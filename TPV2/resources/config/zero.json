@@ -24,7 +24,7 @@
             "stun": -1,
             "shieldBreak": true
           },
-          "hitlag": -1,
+          "hitlag": 30,
           "duration": 6
         }
       ],
@@ -44,7 +44,7 @@
             "stun": -1,
             "shieldBreak": false
           },
-          "hitlag": -1,
+          "hitlag": 15,
           "duration": 6
         }
       ],

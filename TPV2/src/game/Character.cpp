@@ -324,9 +324,25 @@ void Character::update()
 	if (efEstado != none && stateCont < stateDur)
 	{
 		stateCont++;
-		if ((efEstado == fire|| efEstado == wElectric) && stateCont % 60 == 0)
+		if (stateCont % 60 == 0)
 		{
-			Elements();
+			if ((efEstado == fire || efEstado == wElectric))
+			{
+				Elements();
+			}
+
+			if (efEstado == fire)
+			{
+				AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "fire", this));
+			}
+			else if (efEstado == water)
+			{
+				AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "water", this));
+			}
+			else if (efEstado == wElectric)
+			{
+				AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "electric", this));
+			}
 		}
 	}
 	else
@@ -870,7 +886,7 @@ bool Character::GetHit(HitData a, Entity* attacker)
 				statePower = a.power;
 				if (efEstado == electric)
 				{
-					stun += statePower * 1.5;
+					stun += statePower * 1.5f;
 				}
 			}
 			//efecto de estado básico
@@ -880,7 +896,7 @@ bool Character::GetHit(HitData a, Entity* attacker)
 				statePower = a.power;
 				if (efEstado == electric)
 				{
-					stun += statePower * 1.5;
+					stun += statePower * 1.5f;
 
 					AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "electric", this));
 				}

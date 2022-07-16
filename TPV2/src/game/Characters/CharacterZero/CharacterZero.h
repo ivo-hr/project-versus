@@ -22,6 +22,6 @@ public:
 
 	virtual void drawHUD( int numOfPlayer)override;
 protected:
-	void BuildBoxes() override {};
+	void BuildBoxes() override;
 
 };

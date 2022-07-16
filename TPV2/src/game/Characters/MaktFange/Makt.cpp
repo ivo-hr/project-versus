@@ -165,13 +165,20 @@ void Makt::SpecialNeutral(int frameNumber)
 
 	if (!onGround)
 	{
-		if (frameNumber > attacks["specialN"].keyFrames[0])
+		if (frameNumber < attacks["specialN"].keyFrames[0])
 		{
 			AllowMovement(0.5f, true, false);
 		}
 		else
 		{
 			AllowMovement(0.5f);
+		}
+	}
+	else
+	{
+		if (frameNumber < attacks["specialN"].keyFrames[0])
+		{
+			AllowMovement(0, true, false);
 		}
 	}
 
@@ -352,7 +359,7 @@ void Makt::RecoveredBall()
 	if (ball->PickUp())
 	{
 		jumpStr = ballJump;
-		maxSpeed = ballSpeed;
+		maxSpeed = ballSpeed - ralentizar;
 		weight = ballWeight;
 		animAddon = "B";
 		ball = nullptr;
@@ -367,7 +374,7 @@ void Makt::ThrowBall(HitData force, int timeHeld)
 	}
 
 	jumpStr = baseJump;
-	maxSpeed = baseSpeed;
+	maxSpeed = baseSpeed - ralentizar;
 	weight = baseWeight;
 
 	HitData aux = force;

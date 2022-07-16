@@ -31,54 +31,28 @@ void CharacterZero::draw()
 
 void CharacterZero::BasicNeutral(int frameNumber)
 {
-
-	//Dependiendo del frame en el que esté, hara una cosa u otra..
-
-	switch (frameNumber)
+	if (!onGround)
 	{
-	case 0:
-		sdl->soundEffects().at("zeroSpecN").play();
-		//Empieza el ataque :v
-		anim->StartAnimation("big");
-		break;
-	case 56:
-	{
-		//Al frame 90, crea un rect y si el oponente colisiona con ello...
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.w /= 2;
-		hitbox.h /= 2;
-
-		hitbox.x += hitbox.w / 2;
-
-		hitbox.y += hitbox.h / 2;
-
-		hitbox.x += dir * 60;
-		
-		/*hitboxes.push_back(new Hitbox(hitbox, 
-			attacks["fuerte"],
-			1, OnHitData(20, false, false)));*/
-
+		AllowMovement(0.7f, true, false);
 	}
-	break;
-	case 100:
+	else
+	{
+		AllowMovement(1, true, false);
+	}
 
-		//Al ultimo frame...
-
-		//SDL_DestroyRenderer(sdl->renderer());
-		//char a = 'a';
-		//SDL_ShowSimpleMessageBox(1, &a, &a, SDL_CreateWindow(&a, 10, 10, 10, 10, 1));
-		//SDL_DestroyWindow(sdl->window());
-		//SDL_Quit();
-
-
-		//Vacia current move para que Character sepa que ha acabado
+	if (frameNumber == 0)
+	{
+		anim->StartAnimation("big");
+		sdl->soundEffects().at("zeroSpecN").play();
+	}
+	else if (frameNumber == attacks["fuerte"].keyFrames[0])
+	{
+		CreateHitBox(&attacks["fuerte"].hitBoxes[0]);
+	}
+	else if (frameNumber == attacks["fuerte"].totalFrames)
+	{
 		currentMove = nullptr;
-
-		//Reinicia moveFrame para el siguiente
 		moveFrame = -1;
-
-		break;
 	}
 }
 
@@ -102,28 +76,28 @@ void CharacterZero::BasicDownward(int frameNumber)
 //Lo mismo que el de arriba pero mas lento y fuerte xd
 void CharacterZero::SpecialNeutral(int frameNumber)
 {
-	
-	switch (frameNumber)
+
+	if (!onGround)
 	{
-	case 0:
-		anim->StartAnimation("small");
-		break;
-	case 12:
-	{
-		SDL_Rect hitbox = manager->GetSDLCoors(body, width, height);
-
-		hitbox.x += dir * 30;
-
-		//hitboxes.push_back(new Hitbox(hitbox, 
-		//	attacks["debil"], 
-		//	1));
-
+		AllowMovement(0.7f);
 	}
-	break;
-	case 20:
+	else
+	{
+		AllowMovement();
+	}
+
+	if (frameNumber == 0)
+	{
+		anim->StartAnimation("small");
+	}
+	else if (frameNumber == attacks["debil"].keyFrames[0])
+	{
+		CreateHitBox(&attacks["debil"].hitBoxes[0]);
+	}
+	else if (frameNumber == attacks["debil"].totalFrames)
+	{
 		currentMove = nullptr;
 		moveFrame = -1;
-		break;
 	}
 }
 
@@ -145,5 +119,23 @@ void CharacterZero::SpecialDownward(int frameNumber)
 void CharacterZero::drawHUD( int numOfPlayer )
 {
 	Character::drawHUD(numOfPlayer);
+
+}
+
+void CharacterZero::BuildBoxes()
+{
+	attacks["debil"].hitBoxes[0].box =
+		manager->GetSDLCoors(
+			body->GetPosition().x + (dir * .8f),
+			body->GetPosition().y,
+			width * 0.8f,
+			height);
+	
+	attacks["fuerte"].hitBoxes[0].box =
+		manager->GetSDLCoors(
+			body->GetPosition().x + width,
+			body->GetPosition().y,
+			width * 0.5f,
+			height * 0.5f);
 
 }
