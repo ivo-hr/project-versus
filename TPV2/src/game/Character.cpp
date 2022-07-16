@@ -828,6 +828,11 @@ bool Character::GetHit(HitData a, Entity* attacker)
 		aux.y *= -1;
 		aux.x *= attacker->GetDir();
 
+		if (onGround && aux.y > 0)
+		{
+			aux.y *= -0.9f;
+		}
+
 		// Estados y combinaciones de estado
 		if (a.estado != none)
 		{
