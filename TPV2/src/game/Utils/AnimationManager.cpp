@@ -229,5 +229,10 @@ void AnimationManager::StartAnimation(std::string index)
 	}
 }
 
+int AnimationManager::GetAnimationDuration()
+{
+	return currentAnim->totalFrames;
+}
+
 
 

@@ -30,6 +30,12 @@ Togo::~Togo()
 //Lo mismo que el de arriba pero mas rapido y debil xd
 void Togo::BasicNeutral(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("basicN");
@@ -48,6 +54,12 @@ void Togo::BasicNeutral(int frameNumber)
 
 void Togo::BasicForward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		if (!lanza) {
@@ -75,6 +87,19 @@ void Togo::BasicForward(int frameNumber)
 
 void Togo::BasicUpward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		if (frameNumber > attacks["basicU"].keyFrames[0] && frameNumber < attacks["basicU"].keyFrames[4])
+		{
+			AllowMovement(0.4f);
+		}
+		else
+		{
+			AllowMovement(0.7f);
+		}
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -84,6 +109,8 @@ void Togo::BasicUpward(int frameNumber)
 	else if (frameNumber == attacks["basicU"].keyFrames[0])
 	{
 		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, body->GetLinearVelocity().y / 5 });
+
+		speed /= 2;
 
 		if (!onGround) {
 			body->SetGravityScale(0.0f);
@@ -117,6 +144,12 @@ void Togo::BasicUpward(int frameNumber)
 
 void Togo::BasicDownward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -194,10 +227,9 @@ void Togo::SpecialForward(int frameNumber)
 	else if (frameNumber < attacks["specialL"].totalFrames)
 	{
 
-		
 		moving = false;
 		body->SetLinearVelocity(b2Vec2(dir*30, 0));
-		body->ApplyLinearImpulseToCenter(b2Vec2(dir*20,0), true);
+		speed = dir * 34;
 
 		if (frameNumber >= attacks["specialL"].keyFrames[0] && frameNumber < attacks["specialL"].totalFrames-10) {
 			bite = manager->GetSDLCoors(
@@ -235,6 +267,12 @@ void Togo::SpecialForward(int frameNumber)
 
 void Togo::SpecialUpward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.4f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -268,6 +306,12 @@ void Togo::SpecialUpward(int frameNumber)
 
 void Togo::SpecialDownward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.2f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -300,6 +344,12 @@ void Togo::SetSpear(bool spear)
 
 void Togo::SpecialLHit(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.4f);
+	}
+
 	if (frameNumber == 0) {
 		anim->StartAnimation("especialLHit");
 		moving = false;

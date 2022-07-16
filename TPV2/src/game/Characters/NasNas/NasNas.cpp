@@ -29,6 +29,12 @@ NasNas::~NasNas()
 //Lo mismo que el de arriba pero mas rapido y debil xd
 void NasNas::BasicNeutral(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("basicN");
@@ -47,6 +53,9 @@ void NasNas::BasicNeutral(int frameNumber)
 }
 void NasNas::BasicForward(int frameNumber)
 {
+
+	AllowMovement(0.4f, false, true);
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -62,29 +71,15 @@ void NasNas::BasicForward(int frameNumber)
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
-	if (input->right() && dir == 1)
-	{
-		if (currentMove == nullptr)
-			dir = 1;
-
-		if (speed < 1)
-			AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
-
-		speed = maxSpeed-10;
-	}
-	if (input->left() && dir == -1)
-	{
-		if (currentMove == nullptr)
-			dir = -1;
-
-		if (speed > -1)
-			AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
-
-		speed = -maxSpeed+10;
-	}
 }
 void NasNas::BasicUpward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -104,6 +99,12 @@ void NasNas::BasicUpward(int frameNumber)
 
 void NasNas::BasicDownward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -126,6 +127,11 @@ void NasNas::BasicDownward(int frameNumber)
 
 void NasNas::SpecialNeutral(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
 
 	if (frameNumber == 0)
 	{
@@ -177,6 +183,12 @@ void NasNas::SpecialNeutral(int frameNumber)
 
 void NasNas::SpecialForward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		if (mana < 300) {
@@ -221,6 +233,12 @@ void NasNas::SpecialForward(int frameNumber)
 
 void NasNas::SpecialUpward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.5f);
+	}
+
 	if (frameNumber == 0)
 	{
 		if (mana < 450) {
@@ -255,6 +273,12 @@ void NasNas::SpecialUpward(int frameNumber)
 
 void NasNas::SpecialDownward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.1f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -289,6 +313,12 @@ void NasNas::SpecialDownward(int frameNumber)
 
 void NasNas::SpecialUpHit(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.9f);
+	}
+
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("especialUHit");

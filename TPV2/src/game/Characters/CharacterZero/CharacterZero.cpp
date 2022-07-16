@@ -82,6 +82,21 @@ void CharacterZero::BasicNeutral(int frameNumber)
 	}
 }
 
+void CharacterZero::BasicForward(int frameNumber)
+{
+	ChangeMove([this](int f) { BasicNeutral(f); });
+}
+
+void CharacterZero::BasicUpward(int frameNumber)
+{
+	ChangeMove([this](int f) { BasicNeutral(f); });
+}
+
+void CharacterZero::BasicDownward(int frameNumber)
+{
+	ChangeMove([this](int f) { BasicNeutral(f); });
+}
+
 
 
 //Lo mismo que el de arriba pero mas lento y fuerte xd
@@ -110,6 +125,21 @@ void CharacterZero::SpecialNeutral(int frameNumber)
 		moveFrame = -1;
 		break;
 	}
+}
+
+void CharacterZero::SpecialForward(int frameNumber)
+{
+	ChangeMove([this](int f) { SpecialNeutral(f); });
+}
+
+void CharacterZero::SpecialUpward(int frameNumber)
+{
+	ChangeMove([this](int f) { SpecialNeutral(f); });
+}
+
+void CharacterZero::SpecialDownward(int frameNumber)
+{
+	ChangeMove([this](int f) { SpecialNeutral(f); });
 }
 
 void CharacterZero::drawHUD( int numOfPlayer )

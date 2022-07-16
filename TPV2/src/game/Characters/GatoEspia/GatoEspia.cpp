@@ -31,6 +31,12 @@ GatoEspia::~GatoEspia()
 //Lo mismo que el de arriba pero mas rapido y debil xd
 void GatoEspia::BasicNeutral(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("basicN");
@@ -49,6 +55,12 @@ void GatoEspia::BasicNeutral(int frameNumber)
 
 void GatoEspia::BasicForward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -70,6 +82,12 @@ void GatoEspia::BasicForward(int frameNumber)
 
 void GatoEspia::BasicDownward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -90,6 +108,12 @@ void GatoEspia::BasicDownward(int frameNumber)
 
 void GatoEspia::BasicUpward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -111,6 +135,12 @@ void GatoEspia::BasicUpward(int frameNumber)
 
 void GatoEspia::SpecialNeutral(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -169,6 +199,12 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 
 void GatoEspia::SpecialNeutralU(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -235,6 +271,12 @@ void GatoEspia::SpecialNeutralU(int frameNumber)
 
 void GatoEspia::SpecialNeutralD(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -293,6 +335,12 @@ void GatoEspia::SpecialNeutralD(int frameNumber)
 
 void GatoEspia::SpecialForward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.4f);
+	}
+
 	if (frameNumber == 0)
 	{
 		if (blinks < 1.0f) {
@@ -333,6 +381,11 @@ void GatoEspia::SpecialForward(int frameNumber)
 
 void GatoEspia::SpecialUpward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.4f);
+	}
 
 	if (frameNumber == 0)
 	{
@@ -396,6 +449,12 @@ void GatoEspia::SpecialUpward(int frameNumber)
 
 void GatoEspia::SpecialDownward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.3f);
+	}
+
 	if (frameNumber == 0)
 	{
 		if (blinks < 1.0f) {
@@ -428,6 +487,12 @@ void GatoEspia::SpecialDownward(int frameNumber)
 
 void GatoEspia::TpAtack(int frameNumber)
 {
+
+	if (!onGround && frameNumber >= attacks["specialLHit"].keyFrames[0])
+	{
+		speed = maxSpeed * dir * 0.7f;
+	}
+
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("especialLHit");
@@ -477,6 +542,12 @@ bool GatoEspia::GetHit(HitData a, Entity* attacker)
 
 void GatoEspia::Counter(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.3f);
+	}
+
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("especialDGolpe");
@@ -572,6 +643,10 @@ void GatoEspia::BuildBoxes()
 	attacks["specialLHit"].hitBoxes[0].box = 
 		manager->GetSDLCoors(body, width * 1.8f, height * 0.6f);
 
-	attacks["specialDHit"].hitBoxes[0].box = 
-		manager->GetSDLCoors(body, width * 2, height);
+	attacks["specialDHit"].hitBoxes[0].box =
+		manager->GetSDLCoors(
+			body->GetPosition().x + (dir * 2.4f),
+			body->GetPosition().y,
+			1,
+			1);
 }

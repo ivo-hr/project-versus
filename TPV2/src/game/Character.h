@@ -103,7 +103,7 @@ public:
 
 	virtual void update() override;
 	void UpdateAnimations();
-	void AllowAttack();
+	void AllowAttack(bool isInMove = true, bool includeTaunt = true);
 	void AllowMovement(bool changeDirection = false, bool showParticles = false);
 	void AllowMovement(float multiplier, bool changeDirection = false, bool showParticles = false);
 	void StunBehaviour();

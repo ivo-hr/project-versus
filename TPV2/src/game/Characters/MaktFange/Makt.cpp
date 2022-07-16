@@ -43,6 +43,12 @@ Makt::~Makt()
 
 void Makt::BasicNeutral(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("basicN" + animAddon);
@@ -61,6 +67,12 @@ void Makt::BasicNeutral(int frameNumber)
 
 void Makt::BasicForward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -90,6 +102,12 @@ void Makt::BasicForward(int frameNumber)
 
 void Makt::BasicUpward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;
@@ -114,6 +132,12 @@ void Makt::BasicUpward(int frameNumber)
 
 void Makt::BasicDownward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		if (ball == nullptr) {
@@ -138,6 +162,19 @@ void Makt::BasicDownward(int frameNumber)
 
 void Makt::SpecialNeutral(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		if (frameNumber > attacks["specialN"].keyFrames[0])
+		{
+			AllowMovement(0.5f, true, false);
+		}
+		else
+		{
+			AllowMovement(0.5f);
+		}
+	}
+
 	if (frameNumber == 0)
 	{
 		if (ball != nullptr)
@@ -163,6 +200,11 @@ void Makt::SpecialNeutral(int frameNumber)
 
 void Makt::SpecialForward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
 
 	if (frameNumber == 0)
 	{
@@ -201,6 +243,12 @@ void Makt::SpecialForward(int frameNumber)
 
 void Makt::SpecialUpward(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.8f);
+	}
+
 	if (frameNumber == 0)
 	{
 		if (ball != nullptr)
@@ -231,6 +279,11 @@ void Makt::SpecialUpward(int frameNumber)
 void Makt::SpecialDownward(int frameNumber)
 {
 
+	if (!onGround)
+	{
+		AllowMovement(0.2f);
+	}
+
 	if (frameNumber == 0)
 	{
 		if (ball != nullptr)
@@ -255,6 +308,12 @@ void Makt::SpecialDownward(int frameNumber)
 
 void Makt::ThrowRecover(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber >= attacks["specialL"].totalFrames)
 	{
 		currentMove = nullptr;
@@ -263,6 +322,12 @@ void Makt::ThrowRecover(int frameNumber)
 
 void Makt::BallPickUp(int frameNumber)
 {
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
 	if (frameNumber == 0)
 	{
 		moving = false;

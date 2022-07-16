@@ -231,6 +231,7 @@ void Character::update()
 		}
 		if (currentMove == nullptr)
 		{
+			//----------------Movimiento
 			if (onGround)
 			{
 				AllowMovement(true, true);
@@ -240,33 +241,37 @@ void Character::update()
 				AllowMovement(0.7f, true, true);
 			}
 
-			// salto
-			if (input->up() && !(jumpCounter <= 0 || !jumpCooldown))
+			if (recovery)
 			{
-				StartMove([this](int f) { StartJump(f); });
-			}
-
-			AllowAttack();
-
-			if (onGround)
-			{
-				//Escudo
-				if (input->down() && shieldHealth > (maxShield / 8) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
-
-					StartMove([this](int f) { StartShield(f); });
-					body->SetLinearVelocity(b2Vec2(0, 0));
-
-				}
-			}
-			else
-			{
-				if (input->down())
+				//----------------Salto
+				if (input->up() && !(jumpCounter <= 0 || !jumpCooldown))
 				{
-					StartMove([this](int f) { Dash(f); });
+					StartMove([this](int f) { StartJump(f); });
 				}
-			}
 
-			UpdateAnimations();
+				//----------------Atacar
+				AllowAttack(false);
+
+				if (onGround)
+				{
+					//Escudo
+					if (input->down() && shieldHealth > (maxShield / 8) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
+
+						StartMove([this](int f) { StartShield(f); });
+						body->SetLinearVelocity(b2Vec2(0, 0));
+
+					}
+				}
+				else
+				{
+					if (input->down())
+					{
+						StartMove([this](int f) { Dash(f); });
+					}
+				}
+
+				UpdateAnimations();
+			}
 		}
 
 	}
@@ -376,7 +381,7 @@ void Character::UpdateAnimations()
 	}
 }
 
-void Character::AllowAttack()
+void Character::AllowAttack(bool isInMove, bool includeTaunt)
 {
 	// Ataque con A (provisional)
 
@@ -386,19 +391,31 @@ void Character::AllowAttack()
 
 		if (input->up()) //básico arriba
 		{
-			StartMove([this](int f) { BasicUpward(f); });
+			if (isInMove)
+				ChangeMove([this](int f) { BasicUpward(f); });
+			else
+				StartMove([this](int f) { BasicUpward(f); });
 		}
 		else if (input->down()) //básico abajo
 		{
-			StartMove([this](int f) { BasicDownward(f); });
+			if (isInMove)
+				ChangeMove([this](int f) { BasicDownward(f); });
+			else
+				StartMove([this](int f) { BasicDownward(f); });
 		}
 		else if (input->right() || input->left()) //básico en movimiento
 		{
-			StartMove([this](int f) { BasicForward(f); });
+			if (isInMove)
+				ChangeMove([this](int f) { BasicForward(f); });
+			else
+				StartMove([this](int f) { BasicForward(f); });
 		}
 		else //básico estático
 		{
-			StartMove([this](int f) { BasicNeutral(f); });
+			if (isInMove)
+				ChangeMove([this](int f) { BasicNeutral(f); });
+			else
+				StartMove([this](int f) { BasicNeutral(f); });
 		}
 
 		manager->MoveToFront(this);
@@ -413,33 +430,51 @@ void Character::AllowAttack()
 
 		if (input->up()) //especial arriba
 		{
-			StartMove([this](int f) { SpecialUpward(f); });
+			if (isInMove)
+				ChangeMove([this](int f) { SpecialUpward(f); });
+			else
+				StartMove([this](int f) { SpecialUpward(f); });
 		}
 		else if (input->down()) //especial abajo
 		{
-			StartMove([this](int f) { SpecialDownward(f); });
+			if (isInMove)
+				ChangeMove([this](int f) { SpecialDownward(f); });
+			else
+				StartMove([this](int f) { SpecialDownward(f); });
 		}
 		else if (input->right() || input->left()) //especial en movimiento
 		{
-			StartMove([this](int f) { SpecialForward(f); });
+			if (isInMove)
+				ChangeMove([this](int f) { SpecialForward(f); });
+			else
+				StartMove([this](int f) { SpecialForward(f); });
 		}
 		else //especial estático
 		{
-			StartMove([this](int f) { SpecialNeutral(f); });
+			if (isInMove)
+				ChangeMove([this](int f) { SpecialNeutral(f); });
+			else
+				StartMove([this](int f) { SpecialNeutral(f); });
 		}
 
 		manager->MoveToFront(this);
 
 	}
 
-	if (input->taunt() && onGround)
+	if (includeTaunt)
 	{
-		sdl->soundEffects().at(codeName + "Steps").haltChannel();
-		sdl->soundEffects().at(codeName + "Taunt").play();
+		if (input->taunt() && onGround)
+		{
+			sdl->soundEffects().at(codeName + "Steps").haltChannel();
+			sdl->soundEffects().at(codeName + "Taunt").play();
 
-		StartMove([this](int f) { Taunt(f); });
+			if (isInMove)
+				ChangeMove([this](int f) { Taunt(f); });
+			else
+				StartMove([this](int f) { Taunt(f); });
 
-		manager->MoveToFront(this);
+			manager->MoveToFront(this);
+		}
 	}
 }
 
@@ -717,13 +752,13 @@ bool Character::GetHit(HitData a, Entity* attacker)
 			{
 				AddHitLag(30);
 				attacker->AddHitLag(30);
-
-				AddParticle(new Particle(
-					Vector2D(
-						manager->ToSDL(body->GetPosition().x),
-						manager->ToSDL(body->GetPosition().y)),
-					1, "shieldBroken", this));
 			}
+
+			AddParticle(new Particle(
+				Vector2D(
+					manager->ToSDL(body->GetPosition().x),
+					manager->ToSDL(body->GetPosition().y)),
+				1, "shieldBroken", this));
 
 			aux *= recoil;
 			aux.y *= -1;
@@ -1090,6 +1125,7 @@ void Character::OnDeath()
 	alive = false;
 	lives--;
 
+	recovery = true;
 	AddDeathParticle();
 	body->SetTransform(respawnPos, 0);
 	body->SetAwake(false);
@@ -1165,95 +1201,53 @@ void Character::Respawn()
 	invencibleCont = SDL_GetTicks();
 }
 
-void Character::Taunt(int frameNumber) {
-	if (frameNumber == 1)
+void Character::Taunt(int frameNumber)
+{
+	//----------------Movimiento
+	if (onGround)
 	{
-		anim->StartAnimation("taunt" + animAddon);
+		AllowMovement(true, true);
 	}
-	if (input->right())
+	else
 	{
-		speed = maxSpeed;
-		dir = 1;
-		currentMove = nullptr;
-		moveFrame = -1;
-	}
-	if (input->left())
-	{
-		speed = -maxSpeed;
-		dir = -1;
-		currentMove = nullptr;
-		moveFrame = -1;
-	}
-	if (input->right() && input->left())
-	{
-		speed = 0;
-		currentMove = nullptr;
-		moveFrame = -1;
-	}
-	if (input->basic())
-	{
-
-		if (input->up()) //básico arriba
-		{
-			ChangeMove([this](int f) { BasicUpward(f); });
-		}
-		else if (input->down()) //básico abajo
-		{
-			ChangeMove([this](int f) { BasicDownward(f); });
-		}
-		else if (input->right() || input->left()) //básico en movimiento
-		{
-			ChangeMove([this](int f) { BasicForward(f); });
-		}
-		else //básico estático
-		{
-			ChangeMove([this](int f) { BasicNeutral(f); });
-		}
-
-		manager->MoveToFront(this);
-
+		AllowMovement(0.7f, true, true);
 	}
 
-	// Ataque con B (provisional)
-	if (input->special())
-	{
-
-		if (input->up()) //especial arriba
-		{
-			ChangeMove([this](int f) { SpecialUpward(f); });
-		}
-		else if (input->down()) //especial abajo
-		{
-			ChangeMove([this](int f) { SpecialDownward(f); });
-		}
-		else if (input->right() || input->left()) //especial en movimiento
-		{
-			ChangeMove([this](int f) { SpecialForward(f); });
-		}
-		else //especial estático
-		{
-			ChangeMove([this](int f) { SpecialNeutral(f); });
-		}
-
-		manager->MoveToFront(this);
-
-	}
-
-	if (input->down() && onGround && shieldHealth > (maxShield / 8) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
-
-		ChangeMove([this](int f) { StartShield(f); });
-		body->SetLinearVelocity(b2Vec2(0, 0));
-
-	}
-	// salto
+	//----------------Salto
 	if (input->up() && !(jumpCounter <= 0 || !jumpCooldown))
 	{
 		ChangeMove([this](int f) { StartJump(f); });
 	}
 
-	else if (frameNumber == attacks["taunt"].totalFrames)
+	//----------------Atacar
+	AllowAttack(true, false);
+
+	if (onGround)
 	{
-		anim->StartAnimation("idle" + animAddon);
+		//Escudo
+		if (input->down() && shieldHealth > (maxShield / 8) && (body->GetLinearVelocity().y > -0.1f && body->GetLinearVelocity().y < 0.1f)) {
+
+			ChangeMove([this](int f) { StartShield(f); });
+			body->SetLinearVelocity(b2Vec2(0, 0));
+
+		}
+	}
+	else
+	{
+		if (input->down())
+		{
+			ChangeMove([this](int f) { Dash(f); });
+		}
+	}
+
+	UpdateAnimations();
+
+	if (frameNumber == 0)
+	{
+		anim->StartAnimation("taunt" + animAddon);
+	}
+	else if (frameNumber >= anim->GetAnimationDuration())
+	{
 		currentMove = nullptr;
 		moveFrame = -1;
 	}

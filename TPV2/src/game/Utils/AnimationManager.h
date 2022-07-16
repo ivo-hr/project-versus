@@ -41,4 +41,6 @@ public:
 	std::string CurrentAnimation() { return currentAnimIndex; };
 
 	void ChangeSheet(Texture* textura) { texture = textura; };
+
+	int GetAnimationDuration();
 };

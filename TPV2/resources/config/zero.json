@@ -13,22 +13,42 @@
   "attacksData": [
     {
       "id": "fuerte",
-      "b2vecX": 1,
-      "b2vecY": 2,
-      "base": 40,
-      "damage": 150,
-      "multiplier": 1.8,
-      "startUp": 35,
-      "totalFrames": 70
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": 2,
+            "base": 70,
+            "damage": 150,
+            "multiplier": 1.8,
+            "stun": -1,
+            "shieldBreak": true
+          },
+          "hitlag": -1,
+          "duration": 6
+        }
+      ],
+      "keyFrames": [60],
+      "totalFrames": 100
     },
     {
       "id": "debil",
-      "b2vecX": 1,
-      "b2vecY": 4,
-      "base": 20,
-      "damage": 50,
-      "multiplier": 0.2,
-      "startUp": 12,
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": 4,
+            "base": 20,
+            "damage": 50,
+            "multiplier": 0.2,
+            "stun": -1,
+            "shieldBreak": false
+          },
+          "hitlag": -1,
+          "duration": 6
+        }
+      ],
+      "keyFrames": [6],
       "totalFrames": 20
     }
   ],
@@ -46,7 +66,7 @@
         "id" : "idle",
         "iniSprite" :0,
         "totalSprites" : 2,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames": 35,
         "loop" :true
@@ -55,7 +75,7 @@
         "id" : "run",
         "iniSprite" :0,
         "totalSprites" : 2,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames": 15,
         "loop" :true
@@ -64,7 +84,7 @@
         "id" : "airborne",
         "iniSprite" : 4,
         "totalSprites" : 1,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames": 0,
         "loop" : true
@@ -73,7 +93,7 @@
         "id" : "shield",
         "iniSprite" : 19,
         "totalSprites" : 1,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames": 0,
         "loop" :true
@@ -82,7 +102,7 @@
         "id" : "dash",
         "iniSprite" : 4,
         "totalSprites" : 1,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames": 0,
         "loop" :true
@@ -91,7 +111,7 @@
         "id" : "small",
         "iniSprite" :2,
         "totalSprites" : 4,
-        "keySprite" : 2,
+        "keySprite" : [2],
         "attack": "debil",
         "totalFrames": 0,
         "loop" :false
@@ -100,7 +120,7 @@
         "id" : "big",
         "iniSprite" :6,
         "totalSprites" : 13,
-        "keySprite" : 9,
+        "keySprite" : [9],
         "attack": "fuerte",
         "totalFrames": 0,
         "loop" :false
@@ -109,7 +129,7 @@
         "id" : "taunt",
         "iniSprite" :19,
         "totalSprites" : 1,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames": 45,
         "loop" : false
@@ -118,7 +138,7 @@
         "id" : "stun",
         "iniSprite" : 5,
         "totalSprites" : 1,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames": 0,
         "loop" : true
@@ -127,7 +147,7 @@
         "id" : "jump",
         "iniSprite" : 4,
         "totalSprites" : 1,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames": 0,
         "loop" : true
@@ -136,7 +156,7 @@
         "id" : "jumpCharge",
         "iniSprite" : 4,
         "totalSprites" : 1,
-        "keySprite" : -1,
+        "keySprite" : [],
         "attack": "",
         "totalFrames": 0,
         "loop" : true

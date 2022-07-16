@@ -31,16 +31,6 @@ Spear::~Spear()
 void Spear::update()
 {
 
-	if (hitLag > 0)
-	{
-		hitLag--;
-		if (hitLag == 0)
-		{
-			body->SetEnabled(true);
-		}
-		return;
-	}
-
 	outFor++;
 	if (outFor <= duration)
 	{
@@ -76,8 +66,6 @@ void Spear::CheckHits()
 				if (oponents[j]->GetHit(data, this))
 				{
 					hitDelay = 0;
-					oponents[j]->AddHitLag(lag);
-					AddHitLag(lag);
 
 					oponents[j]->AddParticle(new Particle(
 						Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
