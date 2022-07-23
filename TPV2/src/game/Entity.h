@@ -113,6 +113,8 @@ protected:
 	int kills;
 	Entity* lastCharacter; // El ultimo jugador que golpeo a este
 
+	Vector2D shakeValue;
+
 	bool toDelete = false;
 
 public:
@@ -135,7 +137,7 @@ public:
 
 	virtual void CheckHits();
 	virtual void OnDeath() { toDelete = true; };
-	virtual bool GetHit(HitData a, Entity* attacker) { return false; };
+	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) { return false; };
 
 	FightManager* GetManager() { return manager; };
 
@@ -165,4 +167,6 @@ public:
 	//virtual void SendToHUD(Texture* tex);
 	bool ToDelete() { return toDelete; };
 	virtual bool isCharacter() { return false; };
+
+	void SetShake(Vector2D dir, uint16 value);
 };

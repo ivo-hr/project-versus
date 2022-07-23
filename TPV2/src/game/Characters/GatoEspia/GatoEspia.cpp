@@ -523,7 +523,7 @@ void GatoEspia::Respawn()
 	body->SetGravityScale(10.f);
 }
 
-bool GatoEspia::GetHit(HitData a, Entity* attacker)
+bool GatoEspia::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)
 {
 	if (counter && !attacker->isProjectile()) {
 		anim->StartAnimation("counter");
@@ -535,9 +535,10 @@ bool GatoEspia::GetHit(HitData a, Entity* attacker)
 		AddHitLag(20);
 		attacker->AddHitLag(25);
 		manager->MoveToFront(this);
+		controlHitLag = controlHitLag = controlCamShake = true;
 		return false;
 	}
-	Character::GetHit(a, attacker);
+	Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
 }
 
 void GatoEspia::Counter(int frameNumber)

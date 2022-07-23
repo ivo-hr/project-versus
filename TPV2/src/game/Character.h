@@ -112,7 +112,7 @@ public:
 	virtual void draw(SDL_Rect* camera) override;
 	virtual void drawHUD(int numOfPlayer) ;
 
-	virtual bool GetHit(HitData a, Entity* attacker) override;
+	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
 	virtual SDL_Rect* GetHurtbox();
 	Texture* getPortrait() { return portrait; };
 

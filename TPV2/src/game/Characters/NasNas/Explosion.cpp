@@ -68,10 +68,17 @@ void Explosion::CheckHits()
 			SDL_Rect hitArea;
 			if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea) && !isHit[j])
 			{
-				if (oponents[j]->GetHit(data, this))
+				bool controlHitLag = false;
+				bool controlShake = false;
+				bool controlCamShake = false;
+
+				if (oponents[j]->GetHit(data, this, controlHitLag, controlShake, controlCamShake))
 				{
-					AddHitLag(20);
-					oponents[j]->AddHitLag(20);
+					if (!controlHitLag)
+					{
+						oponents[j]->AddHitLag(20);
+						AddHitLag(20);
+					}
 
 					isHit[j] = true;
 				}

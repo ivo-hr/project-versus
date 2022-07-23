@@ -165,21 +165,7 @@ void Makt::SpecialNeutral(int frameNumber)
 
 	if (!onGround)
 	{
-		if (frameNumber < attacks["specialN"].keyFrames[0])
-		{
-			AllowMovement(0.5f, true, false);
-		}
-		else
-		{
-			AllowMovement(0.5f);
-		}
-	}
-	else
-	{
-		if (frameNumber < attacks["specialN"].keyFrames[0])
-		{
-			AllowMovement(0, true, false);
-		}
+		AllowMovement(0.3f);
 	}
 
 	if (frameNumber == 0)

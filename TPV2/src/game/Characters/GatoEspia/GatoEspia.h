@@ -23,7 +23,7 @@ public:
 
 	virtual void update() override;
 	virtual void Respawn() override;
-	virtual bool GetHit(HitData a, Entity* attacker) override;
+	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
 	void Counter(int frameNumber);
 
 	virtual void drawHUD( int numOfPlayer)override;

@@ -73,16 +73,26 @@ void FightManager::MoveCamera()
 		cameraEnd.y = sdl->height() * screenAdjust - cameraEnd.h;
 	}
 
-	camera.x += (cameraEnd.x - camera.x) * 0.2f;
-	camera.y += (cameraEnd.y - camera.y) * 0.2f;
-	camera.w += (cameraEnd.w - camera.w) * 0.2f;
-	camera.h = camera.w * ((float)(sdl->height()) / (float)(sdl->width()));
-	
-	//camera.x = cameraEnd.x;
-	//camera.y = cameraEnd.y;
-	//camera.w = cameraEnd.w;
-	//camera.h = cameraEnd.h;
+	auxCam.x += (cameraEnd.x - auxCam.x) * 0.2f;
+	auxCam.y += (cameraEnd.y - auxCam.y) * 0.2f;
+	auxCam.w += (cameraEnd.w - auxCam.w) * 0.2f;
+	auxCam.h = auxCam.w * ((float)(sdl->height()) / (float)(sdl->width()));
 
+	camera = auxCam;
+
+	camera.x += camShake.getX();
+	camera.y += camShake.getY();
+
+	if (shakeDuration % 4 == 1)
+		camShake = { camShake.getX() * -0.9f, camShake.getY() * -0.9f };
+
+	if (shakeDuration > 0)
+		shakeDuration--;
+	else
+	{
+		camShake = { 0, 0 };
+	}
+	
 }
 
 
@@ -93,7 +103,8 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 	listener = new MyListener();
 	stage = new Stage(sdl, listener, step);
 
-	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust)};
+	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
+	auxCam = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
 
 	this->screenAdjust = screenAdjust;
 
@@ -148,8 +159,6 @@ void FightManager::Update()
 		}
 	}
 
-	MoveCamera();
-
 	stage->Update(&camera);
 
 	stage->GetWorld()->Step(step, 1, 1);
@@ -163,6 +172,8 @@ void FightManager::Update()
 	}
 	else
 	{
+		MoveCamera();
+
 		//update
 		for (auto i = 0u; i < entities.size(); i++)
 		{
@@ -190,14 +201,19 @@ void FightManager::Update()
  			if (!entities[i]->isCharacter())
 			{
 				RemoveEntity(entities[i]);
+				if (entities.size() > 1)
+					i--;
 			}
 			else
 			{
-				Character* aux = static_cast<Character*>(entities[i]);
-				RemoveCharacter(aux);
+				if (characters.size() > 1)
+				{
+					Character* aux = static_cast<Character*>(entities[i]);
+					RemoveCharacter(aux);
+					if (entities.size() > 1)
+						i--;
+				}
 			}
-			if(entities.size()>1)
-			i--;
 		}
 	}
 	
@@ -570,6 +586,11 @@ void FightManager::onNewGame()
 	int scount = 4;
 	int startticks = 0;
 
+}
+void FightManager::SetShake(const Vector2D& dir, uint16 duration)
+{
+	camShake = dir;
+	shakeDuration = duration;
 }
 void FightManager::startCount()
 {

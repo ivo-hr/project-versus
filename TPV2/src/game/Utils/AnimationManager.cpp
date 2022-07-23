@@ -197,6 +197,30 @@ void AnimationManager::render(SDL_Rect* camera)
 	}
 }
 
+void AnimationManager::render(SDL_Rect* camera, const Vector2D& offset)
+{
+	SDL_Rect aux = dest;
+
+	aux.x -= camera->x;
+	aux.x *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
+
+	aux.y -= camera->y;
+	aux.y *= (ent->GetManager()->GetActualHeight() / (float)camera->h);		//Se puede cambiar por width y sigue siendo la misma proporcion
+
+	aux.w *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
+	aux.h *= (ent->GetManager()->GetActualHeight() / (float)camera->h);
+
+	aux.x += offset.getX();
+	aux.y += offset.getY();
+
+	if (lookingRight) {
+		texture->render(recorteSheet, aux);
+	}
+	else {
+		texture->render(recorteSheet, aux, 0., nullptr, SDL_FLIP_HORIZONTAL);
+	}
+}
+
 void AnimationManager::StartAnimation(std::string index)
 {
 	currentAnimIndex = index;

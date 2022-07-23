@@ -117,6 +117,11 @@ void Entity::setLastCharacer(Entity* chrcter)
 	lastCharacter = chrcter;
 }
 
+void Entity::SetShake(Vector2D dir, uint16 value)
+{
+	shakeValue = dir * value;
+}
+
 void Entity::draw()
 {
 	for (Particle* ent : particulas)
@@ -264,11 +269,25 @@ void Entity::CheckHits()
 			if (SDL_IntersectRect(&hitboxes[i]->box, oponents[j]->GetHurtbox(), &hitArea) && !isHit[j])
 			{
 				manager->MoveToFront(this);
+				bool hitLagApplied = false, shakeApplied = false, camShakeApplied = false;
 				//Le hace daño xddd
-				if (oponents[j]->GetHit(hitboxes[i]->hitdata, this))
+				if (oponents[j]->GetHit(hitboxes[i]->hitdata, this, hitLagApplied, shakeApplied, camShakeApplied))
 				{
-					AddHitLag(hitboxes[i]->GetHitlag());
-					oponents[j]->AddHitLag(hitboxes[i]->GetHitlag());
+					if (!hitLagApplied)
+					{
+						AddHitLag(hitboxes[i]->GetHitlag());
+						oponents[j]->AddHitLag(hitboxes[i]->GetHitlag());
+					}
+
+					if (!shakeApplied)
+					{
+						oponents[j]->SetShake(Vector2D(hitboxes[i]->hitdata.direction.x, hitboxes[i]->hitdata.direction.y), hitboxes[i]->GetHitlag());
+					}
+
+					if (!camShakeApplied)
+					{
+						manager->SetShake(Vector2D(hitboxes[i]->hitdata.direction.x * -hitboxes[i]->GetHitlag() * 0.3f, hitboxes[i]->hitdata.direction.y * hitboxes[i]->GetHitlag() * 0.1f), hitboxes[i]->GetHitlag());
+					}
 
 					oponents[j]->setLastCharacer(this);
 

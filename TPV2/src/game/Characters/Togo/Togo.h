@@ -18,7 +18,7 @@ public:
 	virtual void SpecialUpward(int frameNumber) override;
 	virtual void SpecialDownward(int frameNumber) override;
 
-	virtual bool GetHit(HitData a, Entity* attacker) override;
+	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
 	virtual void update() override;
 	virtual void SetSpear(bool spear);
 	void SpecialLHit(int frameNumber);

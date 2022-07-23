@@ -67,9 +67,11 @@ class FightManager :public StateMachine
 	Stage* stage;
 
 	SDL_Rect camera; 
-	SDL_Rect hitLagCam;
+	SDL_Rect auxCam;
 
 	int cameraOffset = 75;
+	Vector2D camShake;
+	uint16 shakeDuration;
 
 	void MoveCamera();
 
@@ -138,5 +140,7 @@ public:
 	void onNewGame();
 
 	bool getTeammode() { return teammode; }
+
+	void SetShake(const Vector2D& dir, uint16 duration);
 
 };

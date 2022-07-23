@@ -515,6 +515,15 @@
           "attack": "",
           "totalFrames": 45,
           "loop" :false
+        },
+        {
+          "id" : "tauntB",
+          "iniSprite" :63,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames": 45,
+          "loop" :false
         }
   
       ]

@@ -370,14 +370,14 @@ void Togo::drawHUD(int numOfPlayer)
 	Character::drawHUD(numOfPlayer);
 }
 
-bool Togo::GetHit(HitData a, Entity* attacker)
+bool Togo::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)
 {
 	if (dShield != nullptr)
 	{
 		dShield->setToDelete();
 		dShield = nullptr;
 	}
-	Character::GetHit(a, attacker);
+	Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
 	return true;
 }
 

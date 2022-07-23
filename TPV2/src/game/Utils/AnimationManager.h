@@ -36,6 +36,7 @@ public:
 	void update();
 	void render();
 	void render(SDL_Rect* camera);
+	void render(SDL_Rect* camera, const Vector2D& offset);
 
 	void StartAnimation(std::string index);
 	std::string CurrentAnimation() { return currentAnimIndex; };

@@ -84,10 +84,17 @@ void MaktBall::CheckHits()
 			SDL_Rect hitArea;
 			if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea))
 			{
-				if (oponents[j]->GetHit(data, this))
+				bool controlHitLag = false;
+				bool controlShake = false;
+				bool controlCamShake = false;
+
+				if (oponents[j]->GetHit(data, this, controlHitLag, controlShake, controlCamShake))
 				{
-					oponents[j]->AddHitLag(lag);
-					AddHitLag(lag);
+					if (!controlHitLag)
+					{
+						oponents[j]->AddHitLag(lag);
+						AddHitLag(lag);
+					}
 
 					oponents[j]->AddParticle(new Particle(
 						Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),

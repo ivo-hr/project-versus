@@ -63,7 +63,11 @@ void Spear::CheckHits()
 			SDL_Rect hitArea;
 			if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea))
 			{
-				if (oponents[j]->GetHit(data, this))
+				bool controlHitLag = false;
+				bool controlShake = false;
+				bool controlCamShake = false;
+
+				if (oponents[j]->GetHit(data, this, controlHitLag, controlShake, controlCamShake))
 				{
 					hitDelay = 0;
 

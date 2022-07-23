@@ -183,12 +183,16 @@ void Character::update()
 
 	updateParticles();
 
+	if (hitLag % 3 == 1)
+		shakeValue = { shakeValue.getX() * -0.9f, shakeValue.getY() * -0.9f };
+
 	if (hitLag > 0)
 	{
 		hitLag--;
 		if (hitLag == 0)
 		{
 			body->SetEnabled(true);
+			shakeValue = { 0, 0 };
 		}
 		return;
 	}
@@ -220,15 +224,6 @@ void Character::update()
 	}
 	else
 	{ 
-		if (currentMove == nullptr)
-		{
-			//allow movement
-			//allow jump
-			//allow attack
-			//allow shield / dash
-			//check ground
-			//animaciones
-		}
 		if (currentMove == nullptr)
 		{
 			//----------------Movimiento
@@ -357,10 +352,10 @@ void Character::update()
 		efEstado = none;
 	}
 
-	anim->update();
-
 	hurtbox.x = manager->b2ToSDLX(body, width);
 	hurtbox.y = manager->b2ToSDLY(body, height);
+
+	anim->update();
 
 	if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()))
 	{
@@ -651,7 +646,7 @@ void Character::draw(SDL_Rect* camera)
 
 		if (!alive) return;
 
-		anim->render(camera);
+		anim->render(camera, &shakeValue);
 
 	}
 	SDL_Rect aux = hurtbox;
@@ -703,7 +698,7 @@ void Character::draw(SDL_Rect* camera)
 }
 
 
-bool Character::GetHit(HitData a, Entity* attacker)
+bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)
 {
 	if (shield > 0)
 	{
@@ -718,6 +713,7 @@ bool Character::GetHit(HitData a, Entity* attacker)
 			moveFrame = 0;
 			shield = 0;
 			//StartAnimation parry
+			controlHitLag = true;
 			return false;
 		}
 
@@ -729,6 +725,7 @@ bool Character::GetHit(HitData a, Entity* attacker)
 		if (shieldHealth > 0)	//A
 		{
 			damageTaken += (int)(a.damage * 0.4f);
+			controlHitLag = false;
 		}
 		else					//Rompe escudos
 		{
@@ -752,6 +749,13 @@ bool Character::GetHit(HitData a, Entity* attacker)
 				manager->KillingBlow();
 				AddHitLag(50);
 				attacker->AddHitLag(50);
+				controlHitLag = true;
+
+				SetShake(Vector2D(a.direction.x, a.direction.y), 50);
+				controlShake = true;
+
+				manager->SetShake(Vector2D(a.direction.x * -15, a.direction.y * 10), 50);
+				controlCamShake = true;
 
 				AddParticle(new Particle(
 					Vector2D(
@@ -768,6 +772,13 @@ bool Character::GetHit(HitData a, Entity* attacker)
 			{
 				AddHitLag(30);
 				attacker->AddHitLag(30);
+				controlHitLag = true;
+
+				SetShake(Vector2D(a.direction.x, a.direction.y), 30);
+				controlShake = true;
+
+				manager->SetShake(Vector2D(a.direction.x * -15, a.direction.y * 7), 30);
+				controlCamShake = true;
 			}
 
 			AddParticle(new Particle(
@@ -780,9 +791,15 @@ bool Character::GetHit(HitData a, Entity* attacker)
 			aux.y *= -1;
 			aux.x *= attacker->GetDir();
 
+			if (onGround && aux.y > 0)
+			{
+				aux.y *= -0.9f;
+			}
+
 			//Produce el knoback..
 			body->SetLinearVelocity(aux);
 			shieldHealth = 0;
+			controlHitLag = true;
 		}
 		return true;
 	}
@@ -792,6 +809,8 @@ bool Character::GetHit(HitData a, Entity* attacker)
 	}
 	else if (!shield && !dash && !attacker->ToDelete())
 	{
+		hitboxes.clear();
+
 		body->SetGravityScale(10.0f);
 		currentMove = nullptr;
 		moveFrame = -1;
@@ -806,11 +825,21 @@ bool Character::GetHit(HitData a, Entity* attacker)
 		
 		b2Vec2 aux = a.direction;
 
+		controlHitLag = false;
+
 		if (recoil > 90)
 		{
 			manager->KillingBlow();
+
 			AddHitLag(40);
 			attacker->AddHitLag(40);
+			controlHitLag = true;
+
+			SetShake(Vector2D(a.direction.x, a.direction.y), 20);
+			controlShake = true;
+
+			manager->SetShake(Vector2D(a.direction.x * -15, a.direction.y * 10), 30);
+			controlCamShake = true;
 
 			AddParticle(new Particle(
 				Vector2D(
@@ -1154,7 +1183,7 @@ void Character::OnDeath()
 	moveFrame = 0;
 	moving = false;
 	shield = 0;
-	dash = false;
+	dash = true;
 	stun = 0;
 	if (efEstado != none)
 	{
