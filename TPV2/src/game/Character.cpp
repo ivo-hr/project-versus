@@ -476,9 +476,6 @@ void Character::AllowAttack(bool isInMove, bool includeTaunt)
 	{
 		if (input->taunt() && onGround)
 		{
-			sdl->soundEffects().at(codeName + "Steps").haltChannel();
-			sdl->soundEffects().at(codeName + "Taunt").play();
-
 			if (isInMove)
 				ChangeMove([this](int f) { Taunt(f); });
 			else
@@ -1108,7 +1105,7 @@ void Character::EndShield(int frameNumber)
 		shield = 0;
 		anim->StartAnimation("idle" + animAddon);
 	}
-	if (frameNumber >= 15)					//Shield end lag
+	if (frameNumber >= 5)					//Shield end lag
 	{
 		currentMove = nullptr;
 		moveFrame = -1;
@@ -1290,11 +1287,19 @@ void Character::Taunt(int frameNumber)
 		}
 	}
 
-	UpdateAnimations();
+	//UpdateAnimations();
+	if (input->left() || input->right())
+	{
+		currentMove = nullptr;
+		moveFrame = -1;
+		return;
+	}
 
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("taunt" + animAddon);
+		sdl->soundEffects().at(codeName + "Steps").haltChannel();
+		sdl->soundEffects().at(codeName + "Taunt").play();
 	}
 	else if (frameNumber >= anim->GetAnimationDuration())
 	{
