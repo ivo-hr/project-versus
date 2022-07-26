@@ -160,6 +160,15 @@
         "attack": "",
         "totalFrames": 0,
         "loop" : true
+      },
+      {
+        "id" : "parry",
+        "iniSprite" : 19,
+        "totalSprites" : 1,
+        "keySprite" : [],
+        "attack": "",
+        "totalFrames": 0,
+        "loop" : true
       }
     ]
     

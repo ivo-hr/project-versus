@@ -307,10 +307,10 @@ void Character::update()
 	if (stun == 0)
 		body->SetLinearVelocity(b2Vec2(speed, body->GetLinearVelocity().y));
 
-	if (speed > 4)
-		speed -= 4;
-	else if (speed < -4)
-		speed += 4;
+	if (speed > maxSpeed * 0.2f)
+		speed -= maxSpeed * 0.2f;
+	else if (speed < -maxSpeed * 0.2f)
+		speed += maxSpeed * 0.2f;
 	else
 		speed = 0;
 
@@ -501,7 +501,7 @@ void Character::AllowMovement(bool changeDirection, bool showParticles)
 			if (changeDirection)
 				dir = 1;
 
-			if (showParticles && speed < 1)
+			if (showParticles && speed < 0.01f)
 				AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
 
 			speed = maxSpeed;
@@ -511,7 +511,7 @@ void Character::AllowMovement(bool changeDirection, bool showParticles)
 			if (changeDirection)
 				dir = -1;
 
-			if (showParticles && speed > -1)
+			if (showParticles && speed > -0.01f)
 				AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
 
 			speed = -maxSpeed;
@@ -534,7 +534,7 @@ void Character::AllowMovement(float multiplier, bool changeDirection, bool showP
 			if (changeDirection)
 				dir = 1;
 
-			if (showParticles && speed < 1)
+			if (showParticles && speed < 0.01f)
 				AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
 
 			speed = maxSpeed * multiplier;
@@ -544,7 +544,7 @@ void Character::AllowMovement(float multiplier, bool changeDirection, bool showP
 			if (changeDirection)
 				dir = -1;
 
-			if (showParticles && speed > -1)
+			if (showParticles && speed > -0.01f)
 				AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
 
 			speed = -maxSpeed * multiplier;
@@ -729,9 +729,6 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 		else					//Rompe escudos
 		{
 			shield = 0;
-			body->SetGravityScale(10.0f);
-			currentMove = nullptr;
-			moveFrame = -1;
 			anim->StartAnimation("stun" + animAddon);
 			anim->update();
 			float recoil = ((a.base * 2) + ((damageTaken * a.multiplier) / (weight * .2f)));
@@ -1168,7 +1165,6 @@ SDL_Rect* Character::GetHurtbox()
 
 void Character::OnDeath()
 {
-
 	//Canal 1 , (antes a veces no se escucha)
 	sdl->soundEffects().at("death").play(0,1);
 
@@ -1251,6 +1247,13 @@ void Character::Respawn()
 	invencibleCont = SDL_GetTicks();
 }
 
+void Character::ResetChar()
+{
+	body->SetGravityScale(10.0f);
+	currentMove = nullptr;
+	moveFrame = -1;
+}
+
 void Character::Taunt(int frameNumber)
 {
 	//----------------Movimiento
@@ -1319,7 +1322,8 @@ void Character::Elements()
 	else if (efEstado == wElectric)
 	{
 		stun += (statePower / (stateDur / 60))*1.5;
-		body->SetLinearVelocity({ 0, 0 });
+		body->SetLinearVelocity({ 0, 0 }); 
+		ResetChar();
 	}
 }
 void Character::drawHUD(int numOfPlayer)

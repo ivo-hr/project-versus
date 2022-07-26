@@ -25,7 +25,6 @@ protected:
 	Texture* arrowsTex;
 	Texture* portrait;
 	SDL_Rect arrowSrc;
-
 	int stun;
 	int lives;
 
@@ -34,7 +33,8 @@ protected:
 	string codeName;
 	bool moving;
 	int maxSpeed;
-	int speed;
+	float speed;
+
 	uint16 shield;
 	uint16 shieldHealth;
 	int maxShield;
@@ -119,6 +119,8 @@ public:
 	virtual void OnDeath() override;
 	void AddDeathParticle();
 	virtual void Respawn();
+
+	virtual void ResetChar();
 
 	virtual void BasicNeutral(int frameNumber) {
 		currentMove = nullptr;

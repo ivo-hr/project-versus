@@ -48,8 +48,9 @@ void Spell::draw(SDL_Rect* camera)
 	aux.h *= (manager->GetActualHeight() / (float)camera->h);
 
 	SDL_Rect src = { 0 + sprite, 1264, 35, 16 };
+
 	if (dir < 0)
-		texture->render(src, aux, ang, nullptr, SDL_FLIP_HORIZONTAL);
+		texture->render(src, aux, 0, nullptr, SDL_FLIP_HORIZONTAL);
 	else
 		texture->render(src, aux);
 
