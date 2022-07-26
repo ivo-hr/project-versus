@@ -468,12 +468,14 @@ void GatoEspia::SpecialDownward(int frameNumber)
 	}
 	else if (frameNumber == attacks["specialD"].keyFrames[0])
 	{
-		dash = true;	
 		counter = true;
 	}
-	else if (frameNumber == attacks["specialD"].totalFrames) {
-		dash = false;
+	else if (frameNumber == attacks["specialD"].keyFrames[1])
+	{
 		counter = false;
+	}
+	else if (frameNumber == attacks["specialD"].totalFrames)
+	{
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
@@ -536,9 +538,11 @@ bool GatoEspia::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 		attacker->AddHitLag(25);
 		manager->MoveToFront(this);
 		controlHitLag = controlHitLag = controlCamShake = true;
+		counter = false;
 		return false;
 	}
-	Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
+	counter = false;
+	return Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
 }
 
 void GatoEspia::Counter(int frameNumber)

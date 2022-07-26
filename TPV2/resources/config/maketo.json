@@ -215,7 +215,7 @@
       "sizeXOffset": 180,
       "sizeYOffset": 70,
       "spritesInX": 11,
-      "spritesInY": 13
+      "spritesInY": 14
     },
     "animationData":{
       "anim":[
@@ -524,6 +524,24 @@
           "attack": "",
           "totalFrames": 45,
           "loop" :false
+        },
+        {
+          "id" : "parryB",
+          "iniSprite" : 142,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "parry",
+          "iniSprite" : 143,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
         }
   
       ]

@@ -113,7 +113,7 @@
       "id": "specialL",
       "hitBoxes": [
       ],
-      "keyFrames": [6],
+      "keyFrames": [6, 30],
       "totalFrames": 40
     },
     {
@@ -288,21 +288,12 @@
         "loop" : true
       },
       {
-        "id" : "especialLEntrada",
+        "id" : "especialL",
         "iniSprite" : 67,
-        "totalSprites" : 10,
-        "keySprite" : [4],
+        "totalSprites" : 15,
+        "keySprite" : [4, 10],
         "attack": "specialL",
         "totalFrames" : 25,
-        "loop" : false
-      },
-      {
-        "id" : "especialLSalida",
-        "iniSprite" : 77,
-        "totalSprites" : 5,
-        "keySprite" : [],
-        "attack": "",
-        "totalFrames" : 15,
         "loop" : false
       },
       {
@@ -367,6 +358,15 @@
         "attack": "",
         "totalFrames": 45,
         "loop" :false
+      },
+      {
+        "id" : "parry",
+        "iniSprite" : 101,
+        "totalSprites" : 1,
+        "keySprite" : [],
+        "attack": "",
+        "totalFrames" : 50,
+        "loop" : true
       }
 
     ]

@@ -220,45 +220,47 @@ void Togo::SpecialNeutral(int frameNumber)
 
 void Togo::SpecialForward(int frameNumber)
 {
+
+	if (frameNumber < attacks["specialL"].keyFrames[0])
+	{
+		speed = dir * 34;
+	}
+
 	if (frameNumber <= 0) {
-		anim->StartAnimation("especialLEntrada");
+		anim->StartAnimation("especialL");
 		sdl->soundEffects().at("dinoSpecS").play();
 	}
-	else if (frameNumber < attacks["specialL"].totalFrames)
+	else if (frameNumber >= attacks["specialL"].keyFrames[0] && frameNumber < attacks["specialL"].keyFrames[1])
 	{
-
 		moving = false;
-		body->SetLinearVelocity(b2Vec2(dir*30, 0));
+		body->SetLinearVelocity(b2Vec2(dir * 30, 0));
 		speed = dir * 34;
+		
+		bite = manager->GetSDLCoors(
+			body->GetPosition().x + (dir * width * 1.2f),
+			body->GetPosition().y - height * 0.2f,
+			width * 4,
+			height * 0.7f);
 
-		if (frameNumber >= attacks["specialL"].keyFrames[0] && frameNumber < attacks["specialL"].totalFrames-10) {
-			bite = manager->GetSDLCoors(
-				body->GetPosition().x + (dir * width * 1.8f),
-				body->GetPosition().y - height * 0.2f,
-				width * 4,
-				height * 0.7f);
-
-			for (int i = 0; i < oponents.size(); i++) {
-				if (SDL_HasIntersection(&bite, oponents[i]->GetHurtbox())) {
-					ChangeMove([this](int f) { SpecialLHit(f); });
-				}
+		for (int i = 0; i < oponents.size(); i++) {
+			if (SDL_HasIntersection(&bite, oponents[i]->GetHurtbox())) {
+				ChangeMove([this](int f) { SpecialLHit(f); });
 			}
+		}
 
 #ifdef _DEBUG
 
-			SDL_RenderDrawRect(sdl->renderer(), &bite);
+		SDL_RenderDrawRect(sdl->renderer(), &bite);
 
 #endif // _DEBUG
 
-		}
-		else if (frameNumber == attacks["specialL"].totalFrames-10)
-		{
-			anim->StartAnimation("especialLSalida");
-		}
+	}
+	else if (frameNumber == attacks["specialL"].keyFrames[1])
+	{
+		bite = { 0, 0, 0, 0 };
 	}
 	else if (frameNumber == attacks["specialL"].totalFrames)
 	{
-		bite = { 0, 0, 0, 0 };
 		recovery = false;
 		currentMove = nullptr;
 		moveFrame = -1;
@@ -377,8 +379,7 @@ bool Togo::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& contro
 		dShield->setToDelete();
 		dShield = nullptr;
 	}
-	Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
-	return true;
+	return Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
 }
 
 void Togo::update()
@@ -419,7 +420,7 @@ void Togo::BuildBoxes()
 		height * 0.4f);
 
 	attacks["specialLHit"].hitBoxes[0].box = manager->GetSDLCoors(
-		body->GetPosition().x + (dir * width * 1.8f),
+		body->GetPosition().x + (dir * width * 1.2f),
 		body->GetPosition().y - height * 0.2f,
 		width * 4.5f,
 		height * 0.9f);

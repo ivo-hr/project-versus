@@ -173,8 +173,8 @@
       "id": "specialD",
       "hitBoxes": [
       ],
-      "keyFrames": [3, 14],
-      "totalFrames": 50
+      "keyFrames": [3, 24],
+      "totalFrames": 60
     },
     {
       "id": "specialDHit",
@@ -204,8 +204,8 @@
     "upOffset": 14,
     "sizeXOffset": 72,
     "sizeYOffset": 16,
-    "spritesInX": 6,
-    "spritesInY": 13
+    "spritesInX": 9,
+    "spritesInY": 9
   },
   "animationData":{
     "anim":[
@@ -330,7 +330,7 @@
       },
       {
         "id" : "especialLHit",
-        "iniSprite" : 52,
+        "iniSprite" : 51,
         "totalSprites" : 8,
         "keySprite" : [3],
         "attack": "specialLHit",
@@ -339,16 +339,16 @@
       },
       {
         "id" : "especialD",
-        "iniSprite" : 68,
-        "totalSprites" : 5,
-        "keySprite" : [2, 2],
+        "iniSprite" : 66,
+        "totalSprites" : 9,
+        "keySprite" : [2, 6],
         "attack": "specialD",
         "totalFrames" : 4,
         "loop" : false
       },
       {
         "id" : "counter",
-        "iniSprite" : 73,
+        "iniSprite" : 75,
         "totalSprites" : 1,
         "keySprite" : [],
         "attack": "",
@@ -357,7 +357,7 @@
       },
       {
         "id" : "especialDGolpe",
-        "iniSprite" : 52,
+        "iniSprite" : 53,
         "totalSprites" : 6,
         "keySprite" : [3],
         "attack": "specialDHit",
@@ -366,7 +366,7 @@
       },
       {
         "id" : "especialU",
-        "iniSprite" : 60,
+        "iniSprite" : 59,
         "totalSprites" : 8,
         "keySprite" : [3, 3, 3],
         "attack": "specialU",
@@ -408,6 +408,15 @@
         "attack": "",
         "totalFrames": 45,
         "loop" :false
+      },
+      {
+        "id" : "parry",
+        "iniSprite" : 76,
+        "totalSprites" : 1,
+        "keySprite" : [],
+        "attack": "",
+        "totalFrames" : 50,
+        "loop" : false
       }
 
     ]

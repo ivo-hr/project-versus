@@ -699,17 +699,19 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 {
 	if (shield > 0)
 	{
-		if (shield <= 5)		//Parry
+		if (shield <= 7)		//Parry
 		{
 			if (!attacker->isProjectile())
 			{
-				AddHitLag(15);
-				attacker->AddHitLag(30);
+				AddHitLag(25);
+				attacker->AddHitLag(35);
 			}
 			currentMove = nullptr;
 			moveFrame = 0;
 			shield = 0;
-			//StartAnimation parry
+			anim->StartAnimation("parry" + animAddon);
+			anim->update();
+			manager->MoveToFront(this);
 			controlHitLag = true;
 			return false;
 		}
@@ -807,6 +809,7 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 	else if (!shield && !dash && !attacker->ToDelete())
 	{
 		hitboxes.clear();
+		resetHit();
 
 		body->SetGravityScale(10.0f);
 		currentMove = nullptr;
