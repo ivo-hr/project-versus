@@ -38,10 +38,6 @@ bool Button::mouseClick()
 				pressed = false;
 				return false;
 			}
-			if (pressed)
-			{
-				return true;
-			}
 			if (ih.getMouseButtonState(ih.LEFT) && !pressed) {
 				pressed = true;
 				rendered = false;

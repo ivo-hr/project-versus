@@ -114,7 +114,14 @@ void ConfigurationState::update() {
     }
     else if (fullSCheck->mouseClick() || fullSCheck->pointerClick(p1->getRect()) && enter && keyRelease)
     {
+        SDL_MaximizeWindow(sdl->window());
         sdl->toggleFullScreen();
+
+        auto flags = SDL_GetWindowFlags(sdl->window());
+        if (!(flags & SDL_WINDOW_FULLSCREEN))
+        {
+            SDL_SetWindowResizable(sdl->window(), SDL_TRUE);
+        }
 
         keyRelease = false;
         toReDraw = true;
@@ -162,57 +169,54 @@ void ConfigurationState::update() {
 }
 void ConfigurationState::draw() {
 
-    if (toReDraw)
+    int w = fmngr->GetActualWidth();
+    int h = fmngr->GetActualHeight();
+
+    backgr->render({ 0,0,w,h });
+
+    SDL_Rect instruRect = { (int)((w / 16) + (w / 2)), (int)(h / 4), (int)(w / 3), (int)(h * 0.7f) };
+
+    int fontSiz = h / 32;
+
+    showText("BGM", fontSiz, (int)(w * 27 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+
+    music->render({ (int)(w - (w * 5 / 6 + w / 16)), (int)h / 4, (int)w / 25, (int)w / 25 });
+
+    showText(to_string(musicV), fontSiz, (int)(w * 31 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+
+
+    showText("SFX", fontSiz, (int)(w * 27 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+
+    sfx->render({ (int)(w - (w * 5 / 6 + w / 16)), (int)(h * 1.3f / 4), (int)w / 25, (int)w / 25 });
+
+    showText(to_string(sfxV), fontSiz, (int)(w * 31 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+
+
+    showText("FULLSCREEN", fontSiz, (int)(w - (w * 5 / 6 + w / 16)), (int)h * 1.2f / 2 - fontSiz / 2, build_sdlcolor(0x33FFFC00));
+
+    auto flags = SDL_GetWindowFlags(sdl->window());
+    if (flags & SDL_WINDOW_FULLSCREEN)
     {
-        int w = fmngr->GetActualWidth();
-        int h = fmngr->GetActualHeight();
-
-        backgr->render({ 0,0,w,h });
-
-        SDL_Rect instruRect = { (int)((w / 16) + (w / 2)), (int)(h / 4), (int)(w / 3), (int)(h * 0.7f) };
-
-        int fontSiz = h / 32;
-
-        showText("BGM", fontSiz, (int)(w * 27 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
-
-        music->render({ (int)(w - (w * 5 / 6 + w / 16)), (int)h / 4, (int)w / 25, (int)w / 25 });
-
-        showText(to_string(musicV), fontSiz, (int)(w * 31 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+        fullSCheck->render({ 0, 32, 32, 32 });
+    }
+    else
+    {
+        fullSCheck->render({ 0, 0, 32, 32 });
+    }
 
 
-        showText("SFX", fontSiz, (int)(w * 27 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+    instru->render(instruRect);
 
-        sfx->render({ (int)(w - (w * 5 / 6 + w / 16)), (int)(h * 1.3f / 4), (int)w / 25, (int)w / 25 });
+    sfxm->render();
+    sfxp->render();
+    muscm->render();
+    muscp->render();
+    exit->render();
+    back->render();
 
-        showText(to_string(sfxV), fontSiz, (int)(w * 31 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+    p1->render();
+    sdl->presentRenderer();
 
-
-        showText("FULLSCREEN", fontSiz, (int)(w - (w * 5 / 6 + w / 16)), (int)h * 1.2f / 2 - fontSiz / 2, build_sdlcolor(0x33FFFC00));
-
-        auto flags = SDL_GetWindowFlags(sdl->window());
-        if (flags & SDL_WINDOW_FULLSCREEN)
-        {
-            fullSCheck->render({ 0, 32, 32, 32 });
-        }
-        else
-        {
-            fullSCheck->render({ 0, 0, 32, 32 });
-        }
-
-
-        instru->render(instruRect);
-
-        sfxm->render();
-        sfxp->render();
-        muscm->render();
-        muscp->render();
-        exit->render();
-        back->render();
-
-        p1->render();
-        sdl->presentRenderer();
-
-       }
     toReDraw = false;
 }
 
