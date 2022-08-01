@@ -18,9 +18,10 @@ ConfigurationState::ConfigurationState(FightManager* game ,int pI) : State(game)
     muscm = new Button(&sdl->images().at("minusB"), (int)(w * 29 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - butW / 2), butW, butW);
     muscp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - butW / 2), butW, butW);
   
-    sfxm = new Button(&sdl->images().at("minusB"), (int)(w * 29 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.5f / 4) + w / 50 - butW / 2), butW, butW);
-    sfxp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.5f / 4) + w / 50 - butW / 2), butW, butW);
+    sfxm = new Button(&sdl->images().at("minusB"), (int)(w * 29 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - butW / 2), butW, butW);
+    sfxp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - butW / 2), butW, butW);
 
+    fullSCheck = new Button(&sdl->images().at("check"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)(h * 1.2f / 2 - butW), butW * 2, butW * 2);
     
     p1 = new PlayerPointer(&sdl->images().at("P1P"), w/2, h/2, w / 64, w / 64, w, h);
     p1->setActive(true);
@@ -36,6 +37,7 @@ ConfigurationState::~ConfigurationState()
     delete exit;
     delete back;
     delete p1;
+    delete fullSCheck;
 }
 
 
@@ -110,6 +112,14 @@ void ConfigurationState::update() {
 
         }
     }
+    else if (fullSCheck->mouseClick() || fullSCheck->pointerClick(p1->getRect()) && enter && keyRelease)
+    {
+        sdl->toggleFullScreen();
+
+        keyRelease = false;
+        toReDraw = true;
+
+    }
     if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent() || back->mouseClick() || back->pointerClick(p1->getRect()) && enter && keyRelease) {
         keyRelease = false;
         toReDraw = true;
@@ -170,11 +180,24 @@ void ConfigurationState::draw() {
         showText(to_string(musicV), fontSiz, (int)(w * 31 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
 
 
-        showText("SFX", fontSiz, (int)(w * 27 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.5f / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+        showText("SFX", fontSiz, (int)(w * 27 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
 
-        sfx->render({ (int)(w - (w * 5 / 6 + w / 16)), (int)(h * 1.5f / 4), (int)w / 25, (int)w / 25 });
+        sfx->render({ (int)(w - (w * 5 / 6 + w / 16)), (int)(h * 1.3f / 4), (int)w / 25, (int)w / 25 });
 
-        showText(to_string(sfxV), fontSiz, (int)(w * 31 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.5f / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+        showText(to_string(sfxV), fontSiz, (int)(w * 31 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+
+
+        showText("FULLSCREEN", fontSiz, (int)(w - (w * 5 / 6 + w / 16)), (int)h * 1.2f / 2 - fontSiz / 2, build_sdlcolor(0x33FFFC00));
+
+        auto flags = SDL_GetWindowFlags(sdl->window());
+        if (flags & SDL_WINDOW_FULLSCREEN)
+        {
+            fullSCheck->render({ 0, 32, 32, 32 });
+        }
+        else
+        {
+            fullSCheck->render({ 0, 0, 32, 32 });
+        }
 
 
         instru->render(instruRect);
@@ -188,7 +211,8 @@ void ConfigurationState::draw() {
 
         p1->render();
         sdl->presentRenderer();
-    }
+
+       }
     toReDraw = false;
 }
 

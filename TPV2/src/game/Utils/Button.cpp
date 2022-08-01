@@ -13,6 +13,18 @@ void Button::render()
 	}
 }
 
+void Button::render(const SDL_Rect& recorte)
+{
+	rendered = true;
+	if (!activated && destex != nullptr) {
+		destex->render(recorte, { x,y,w,h });
+	}
+	else
+	{
+		tex->render(recorte, { x,y,w,h });
+	}
+}
+
 bool Button::mouseClick()
 {
 	if (rendered) {

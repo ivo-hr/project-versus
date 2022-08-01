@@ -31,6 +31,7 @@ public:
 	void setW(int w0) { w = w0; };
 	void setH(int h0) { h = h0; };
 	virtual void render();
+	virtual void render(const SDL_Rect& recorte);
 	bool mouseClick();
 	void setUnrendered() { rendered = false; };
 	bool pointerClick(SDL_Rect rect);

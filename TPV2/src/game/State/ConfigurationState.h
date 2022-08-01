@@ -5,7 +5,7 @@
 
 class ConfigurationState : public State {
     Texture* backgr, * sfx, * music, * c1, * c2,*instru;
-    Button* sfxp, * sfxm, * muscp, * muscm;
+    Button* sfxp, * sfxm, * muscp, * muscm, * fullSCheck;
     Button* exit , *back;
     PlayerPointer *p1;
 
