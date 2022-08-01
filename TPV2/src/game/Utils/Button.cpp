@@ -19,7 +19,7 @@ bool Button::mouseClick()
 		int mx = ih.getMousePos().first;
 		int my = ih.getMousePos().second;
 
-		if ((mx > x) && (mx < x + w) && (my > y) && (my < y + h))
+		if ((mx > x - (w / 20)) && (mx < (x - (w / 20)) + (w + (w / 10))) && (my > y - (h / 20)) && (my < (y - (h / 20)) + (h + h / 10)))
 		{
 			if (!ih.mouseButtonEvent())
 			{
@@ -50,7 +50,7 @@ SDL_Rect Button::getRect()
 bool Button::pointerClick(SDL_Rect rect)
 {
 	if (rendered) {
-		SDL_Rect r = build_sdlrect(x, y, w, h);
+		SDL_Rect r = build_sdlrect(x - w / 20, y - h / 20, w + w / 10, h + h / 10);
 		return SDL_HasIntersection(&r, &rect);
 		rendered = false;
 	}

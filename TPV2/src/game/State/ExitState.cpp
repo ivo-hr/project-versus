@@ -4,21 +4,24 @@
 
 ExitState::ExitState(FightManager* game) : State(game) {
 
-    string fontstring = "nes" + to_string((int)ts(8));
+    int w = fmngr->GetActualWidth();
+    int h = fmngr->GetActualHeight();
+
+    string fontstring = "nes" + to_string((int)h / 42);
     auto& font = sdl->fonts().at(fontstring);
     SDL_Color c = build_sdlcolor(0xFF333300);
     string key = fontstring + "YES" + to_string(c.r) + to_string(c.g) + to_string(c.b);
     if (sdl->msgs().count(key) == 0) {
         sdl->msgs().emplace(key, Texture(sdl->renderer(), "YES", font, c));
     }
-    yes = new Button(&sdl->msgs().at(key), ts(290), ts(150), ts(30), ts(30));
+    yes = new Button(&sdl->msgs().at(key), w / 2 + w / 20, (h * 2 / 3) - w / 20, w / 20, w / 20);
 
     c = build_sdlcolor(0x33FFFC00);
     key = fontstring + "NO" + to_string(c.r) + to_string(c.g) + to_string(c.b);
     if (sdl->msgs().count(key) == 0) {
         sdl->msgs().emplace(key, Texture(sdl->renderer(), "NO", font, c));
     }
-    no = new Button(&sdl->msgs().at(key), ts(190), ts(150), ts(30), ts(30));
+    no = new Button(&sdl->msgs().at(key), w / 2 - w / 10, (h * 2 / 3) - w / 20, w / 20, w / 20);
 }
 
 ExitState::~ExitState()
@@ -33,7 +36,6 @@ void ExitState::update() {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent() || no->mouseClick()) {
-        std::cout << "unpause" << std::endl;
         State* tmp = fmngr->getState();
         State* saved = fmngr->getExitState();
         fmngr->setState(saved);
@@ -41,21 +43,10 @@ void ExitState::update() {
         delete tmp;
         return;
     }
-    if (ih.getMousePos().first < (w / 2 - ts(125)) || ih.getMousePos().first >(w / 2 - ts(125))) {
-        if (ih.getMousePos().second < (h / 2 - ts(50)) || ih.getMousePos().second >(h / 2 + ts(50))) {
-            if (ih.getMouseButtonState(ih.LEFT)) {
-                State* tmp = fmngr->getState();
-                State* saved = fmngr->getExitState();
-                fmngr->setState(saved);
-                fmngr->clearExitState();
-                delete tmp;
-                return;
-            }
-        }
-    }
-    int i1 = (w / 2 - ts(125));
-    int i2 = (w / 2 + ts(125));
-    if (ih.getMousePos().first < i1 || ih.getMousePos().first > i2) {
+
+    int i1 = (w / 3);
+    int i2 = (w * 2 / 3);
+    if (ih.getMousePos().first < i1 || ih.getMousePos().first > i2 || ih.getMousePos().second < (h / 3) || ih.getMousePos().second >(h * 2 / 3)) {
         if (ih.getMouseButtonState(ih.LEFT)) {
             State* tmp = fmngr->getState();
             State* saved = fmngr->getExitState();
@@ -64,7 +55,6 @@ void ExitState::update() {
             delete tmp;
             return;
         }
-       
     }
     
     if (yes->mouseClick()) {
@@ -75,12 +65,16 @@ void ExitState::update() {
     }
 }
 
-void ExitState::draw() {
+void ExitState::draw() 
+{
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
+
     Texture* p = &sdl->images().at("Exitbg");
-    p->render({(int)(w/2-ts(125)),(int)(h/2-ts(50)),(int)ts(250),(int)ts(100) });
-    showText("DO U WANNA EXIT THE GAME", ts(8), ts(160), ts(100), build_sdlcolor(0x33FFFC00));
+    p->render({(int)(w * 0.3f),(int)(h * 0.3f),(int)(w * 0.4f),(int)(h * 0.4f) });
+
+    showText("DO YOU WANNA EXIT THE GAME?", (w * 0.0145f), (int)(w * 0.311f), (int)(h * 0.32f), build_sdlcolor(0x33FFFC00));
+
     yes->render();
     no->render();
     sdl->presentRenderer();

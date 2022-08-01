@@ -385,7 +385,7 @@
           "id" : "especialN",
           "iniSprite" : 22,
           "totalSprites" : 14,
-          "keySprite" : [9],
+          "keySprite" : [8],
           "attack": "specialN",
           "totalFrames" : 60,
           "loop" : false

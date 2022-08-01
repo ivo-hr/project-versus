@@ -12,8 +12,8 @@ void Stage::reset()
 
 }
 
-Stage::Stage(SDLUtils* sdl, MyListener* _listener, float step) :
-	world(new b2World(b2Vec2(0.f, 15.f))), sdl(sdl), step(step)
+Stage::Stage(FightManager* mngr, SDLUtils* sdl, MyListener* _listener, float step) :
+	mngr(mngr), world(new b2World(b2Vec2(0.f, 15.f))), sdl(sdl), step(step)
 {
 	listener = _listener;
 
@@ -36,15 +36,16 @@ void Stage::UnLoadStage()
 	playerSpawns.clear();
 }
 
-void Stage::LoadJsonStage(std::string fileName, double screenAdjust)
+void Stage::LoadJsonStage(std::string fileName, int width, int height)
 {
 	std::ifstream file(fileName);
 	json jsonFile;
 	file >> jsonFile;
 
-	deathzoneSize = jsonFile["deathZoneSize"];
+	deathzoneSize.x = jsonFile["deathZoneSizeX"];
+	deathzoneSize.y = jsonFile["deathZoneSizeY"];
 
-	b2ToSDL = (sdl->width() * screenAdjust) / deathzoneSize;
+	b2ToSDL = width / deathzoneSize.x;
 
 	background = &sdl->images().at(jsonFile["background"]);
 	platformTexture = &sdl->images().at(jsonFile["platform"]);
@@ -98,7 +99,7 @@ void Stage::LoadJsonStage(std::string fileName, double screenAdjust)
 	//Creo las cajas que representaran a los objetos
 	stageRect = GetSDLCoors(stage, floorW, floorH);
 
-	deathZone = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
+	deathZone = { 0, 0, (int)(deathzoneSize.x * b2ToSDL), (int)(deathzoneSize.y * b2ToSDL) };
 
 	auto player = jsonFile["playerSpawns"];
 	assert(player.is_array());
@@ -111,7 +112,7 @@ void Stage::LoadJsonStage(std::string fileName, double screenAdjust)
 
 int Stage::GetPlayerDir(int index)
 {
-	return playerSpawns[index].x < deathzoneSize / 2 ?1: -1 ;
+	return playerSpawns[index].x < deathzoneSize.x / 2 ? 1: -1 ;
 }
 
 void Stage::Update()
@@ -155,7 +156,7 @@ void Stage::Update(SDL_Rect* camera)
 	auxDeath.x += deathZone.w / 2;
 	auxDeath.x -= (auxDeath.w * 0.5f);
 
-	auxDeath.y = (camCenter.getY() - deathZone.h / 2) * -0.2f;
+	auxDeath.y = (camCenter.getX() - deathZone.w / 2) * -0.2f;
 	auxDeath.y += deathZone.h / 2;
 	auxDeath.y -= (auxDeath.h * 0.5f);
 
@@ -166,13 +167,13 @@ void Stage::Update(SDL_Rect* camera)
 		SDL_Rect auxPlat = aaa;
 
 		auxPlat.x -= camera->x;
-		auxPlat.x *= (deathZone.w / (float)camera->w);
+		auxPlat.x *= (mngr->GetActualWidth() / (float)camera->w);
 
 		auxPlat.y -= camera->y;
-		auxPlat.y *= (deathZone.h / (float)camera->h);
+		auxPlat.y *= (mngr->GetActualWidth() / (float)camera->w);
 
-		auxPlat.w *= (deathZone.w / (float)camera->w);
-		auxPlat.h *= (deathZone.h / (float)camera->h);
+		auxPlat.w *= (mngr->GetActualWidth() / (float)camera->w);
+		auxPlat.h *= (mngr->GetActualWidth() / (float)camera->w);
 
 		platformTexture->render(auxPlat);
 	}
@@ -180,13 +181,13 @@ void Stage::Update(SDL_Rect* camera)
 	SDL_Rect auxStage = stageRect;
 
 	auxStage.x -= camera->x;
-	auxStage.x *= (deathZone.w / (float)camera->w);
+	auxStage.x *= (mngr->GetActualWidth() / (float)camera->w);
 
 	auxStage.y -= camera->y;
-	auxStage.y *= (deathZone.h / (float)camera->h);
+	auxStage.y *= (mngr->GetActualWidth() / (float)camera->w);
 
-	auxStage.w *= (deathZone.w / (float)camera->w);
-	auxStage.h *= (deathZone.h / (float)camera->h);
+	auxStage.w *= (mngr->GetActualWidth() / (float)camera->w);
+	auxStage.h *= (mngr->GetActualWidth() / (float)camera->w);
 
 	platformTexture->render(auxStage);
 
@@ -201,25 +202,25 @@ void Stage::Update(SDL_Rect* camera)
 		SDL_Rect auxPlat = aaa;
 
 		auxPlat.x -= camera->x;
-		auxPlat.x *= (deathZone.w / (float)camera->w);
+		auxPlat.x *= (mngr->GetActualWidth() / (float)camera->w);
 
 		auxPlat.y -= camera->y;
-		auxPlat.y *= (deathZone.h / (float)camera->h);
+		auxPlat.y *= (mngr->GetActualWidth() / (float)camera->w);
 
-		auxPlat.w *= (deathZone.w / (float)camera->w);
-		auxPlat.h *= (deathZone.h / (float)camera->h);
+		auxPlat.w *= (mngr->GetActualWidth() / (float)camera->w);
+		auxPlat.h *= (mngr->GetActualWidth() / (float)camera->w);
 
 		SDL_RenderDrawRect(sdl->renderer(), &auxPlat);
 	}
 	auxDeath = deathZone;
 	auxDeath.x -= camera->x;
-	auxDeath.x *= (deathZone.w / (float)camera->w);
+	auxDeath.x *= (mngr->GetActualWidth() / (float)camera->w);
 
 	auxDeath.y -= camera->y;
-	auxDeath.y *= (deathZone.h / (float)camera->h);
+	auxDeath.y *= (mngr->GetActualWidth() / (float)camera->w);
 
-	auxDeath.w *= (deathZone.w / (float)camera->w);
-	auxDeath.h *= (deathZone.h / (float)camera->h);
+	auxDeath.w *= (mngr->GetActualWidth() / (float)camera->w);
+	auxDeath.h *= (mngr->GetActualWidth() / (float)camera->w);
 	SDL_RenderDrawRect(sdl->renderer(), &auxDeath);
 
 #endif // _DEBUG

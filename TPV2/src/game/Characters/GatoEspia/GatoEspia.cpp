@@ -576,8 +576,8 @@ void GatoEspia::drawHUD(int numOfPlayer)
 {
 	Character::drawHUD(numOfPlayer);
 
-	int w_ = manager->GetDeathZone()->w;
-	int h_ = manager->GetDeathZone()->h;
+	int w_ = manager->GetActualWidth();
+	int h_ = manager->GetActualHeight();
 	int dist = w_ / numOfPlayer;
 	int offset = (w_ / 2) / numOfPlayer - w_ / 30;
 	int x = (int)(playerPosition * dist + offset) - (w_ / 30);

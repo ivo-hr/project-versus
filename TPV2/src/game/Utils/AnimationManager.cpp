@@ -184,10 +184,10 @@ void AnimationManager::render(SDL_Rect* camera)
 	aux.x *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
 
 	aux.y -= camera->y;
-	aux.y *= (ent->GetManager()->GetActualHeight() / (float)camera->h);		//Se puede cambiar por width y sigue siendo la misma proporcion
+	aux.y *= (ent->GetManager()->GetActualWidth() / (float)camera->w);		//Se puede cambiar por width y sigue siendo la misma proporcion
 
 	aux.w *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
-	aux.h *= (ent->GetManager()->GetActualHeight() / (float)camera->h);
+	aux.h *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
 
 	if (lookingRight) {
 		texture->render(recorteSheet, aux);
@@ -205,10 +205,10 @@ void AnimationManager::render(SDL_Rect* camera, const Vector2D& offset)
 	aux.x *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
 
 	aux.y -= camera->y;
-	aux.y *= (ent->GetManager()->GetActualHeight() / (float)camera->h);		//Se puede cambiar por width y sigue siendo la misma proporcion
+	aux.y *= (ent->GetManager()->GetActualWidth() / (float)camera->w);		//Se puede cambiar por width y sigue siendo la misma proporcion
 
 	aux.w *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
-	aux.h *= (ent->GetManager()->GetActualHeight() / (float)camera->h);
+	aux.h *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
 
 	aux.x += offset.getX();
 	aux.y += offset.getY();

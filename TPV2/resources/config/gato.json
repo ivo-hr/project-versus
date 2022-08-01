@@ -89,9 +89,9 @@
           "hitData": {
             "b2vecX": 1,
             "b2vecY": 9,
-            "base": 20,
+            "base": 40,
             "damage": 9,
-            "multiplier": 0.4,
+            "multiplier": 0.5,
             "stun": -1,
             "shieldBreak": false
           },
@@ -143,7 +143,7 @@
             "shieldBreak": true
           },
           "hitlag": -1,
-          "duration": 12
+          "duration": 8
         }
       ],
       "keyFrames": [3],
@@ -322,8 +322,8 @@
       {
         "id" : "especialL",
         "iniSprite" : 46,
-        "totalSprites" : 6,
-        "keySprite" : [4, 5],
+        "totalSprites" : 5,
+        "keySprite" : [2, 4],
         "attack": "specialL",
         "totalFrames" : 15,
         "loop" : false

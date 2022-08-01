@@ -73,7 +73,9 @@ public:
 
 		clearState();
 		while (SDL_PollEvent(&event))
+		{
 			update(event);
+		}
 	}
 
 	// keyboard

@@ -12,7 +12,9 @@ class ConfigurationState : public State {
     int musicV = 10;
     int sfxV = 10;
     int pInput = -3;
-    bool keyRelease=true;
+    bool keyRelease = true;
+
+    bool toReDraw = true;
 public:
 
     ConfigurationState(FightManager* fmngr ,int pI);

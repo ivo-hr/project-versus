@@ -7,19 +7,23 @@
 
 GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures, vector<vector<int>>gameStats, int playersInput, vector<int>playersInputV) : State(game) {
 
+    //ts(15) = w / 64
+
     background = &sdl->images().at("gameoverscreen1");
     //fmngr = game;
     winnersTextures_ = winnersTextures;
-    playAgain = new Button(&sdl->images().at("playagain"), ts(180), ts(70), ts(150), ts(100));
 
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
+
+    playAgain = new Button(&sdl->images().at("playagain"), w / 3, h / 4, w/3, h/4);
+
     int winnerInput=1;
     for (auto i = 0u; i < playersInputV.size(); i++) {
         if (playersInputV[i] == playersInput)winnerInput = i+1;
     }
     string inputString = "P" + to_string(winnerInput) + "P";
-    pointer = new PlayerPointer(&sdl->images().at(inputString), ts(200), ts(150), ts(15), ts(15), w, h);
+    pointer = new PlayerPointer(&sdl->images().at(inputString), w / 2 - w / 64 / 2, h / 2 - w / 64 / 2, w / 64, w / 64, w, h);
     pointer->setActive(true);
     playersInput_ = playersInput;
     gameStats_ = gameStats;
@@ -70,10 +74,12 @@ void GameOverState::update() {
         if (ih.xboxGetButtonState(playersInput_, SDL_CONTROLLER_BUTTON_B))enter = true;
         break;
     }
-    if (playAgain->pointerClick(pointer->getRect()) && enter) {
+
+    if ((playAgain->pointerClick(pointer->getRect()) && enter) || playAgain->mouseClick()) {
         fmngr->getState()->next();
         return;
     }
+
     if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
         if (fmngr->getExitState() == nullptr) {
             //pause
@@ -107,24 +113,33 @@ void GameOverState::drawGameStats()
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     int numOfplayer = gameStats_.size();
-    int dist = (w ) / numOfplayer;
-    int offset = (w/2) / numOfplayer -ts(50);
+    int dist = w / numOfplayer;
+    int offset = (w/2) / numOfplayer - w / 13;
+
     if (fmngr->getTeammode()) {
-        showText("1", ts(16), (int)(dist / 2 + 3 * offset), (int)ts(190), build_sdlcolor(0x00000000));
-        showText("2", ts(16), (int)(10 / 3 * dist - 2 * offset), (int)ts(190), build_sdlcolor(0x00000000));
+        showText("1", (h / 12), (int)(dist / 2 + 3 * offset), (int)(h * 2.5f / 5), build_sdlcolor(0x00000000));
+        showText("2", (h / 12), (int)(10 / 3 * dist - 2 * offset), (int)(h * 2.5f / 5), build_sdlcolor(0x00000000));
     }
     for (auto i = 0u; i < numOfplayer; i++) {
-        winnersTextures_[numOfplayer - i - 1]->render({ (int)(i * dist + offset), (int)ts(200), (int)ts(50), (int)ts(50) });
+        winnersTextures_[numOfplayer - i - 1]->render({ (int)(i * dist + offset), (int)(h * 3 / 5), (int)w / 12, (int)w / 12 });
 
-        if (!fmngr->getTeammode())showText(to_string(i + 1), ts(16), (int)(i * dist + offset), (int)ts(190), build_sdlcolor(0x00000000));
+        if (!fmngr->getTeammode())
+        {
+            SDL_Color col;
+            if (i == 0) { col = build_sdlcolor(0xEAD90A00); }
+            else if (i == 1) { col = build_sdlcolor(0xC8CACA00); }
+            else if (i == 2) { col = build_sdlcolor(0xA77A1900); }
+            else { col = build_sdlcolor(0x69696900); }
+            showText(to_string(i + 1), (h / 12), (int)(i * dist + offset), (int)(h * 2.5f / 5), col);
+        }
 
-        showText("Kills: ", ts(6), (int)(i * dist + offset + ts(0)), (int)ts(255), build_sdlcolor(0x00000000));
-        showText(to_string(gameStats_[numOfplayer - i - 1][2]), ts(6), (int)(i * dist + offset + ts(100)), (int)ts(255), build_sdlcolor(0x00000000));
+        showText("Kills: ", (h / 42), (int)(i * dist + offset), (int)h * 3.9f / 5, build_sdlcolor(0x00000000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][2]), (h / 42), (int)(i * dist + offset + w / 6), (int)h * 3.9f / 5, build_sdlcolor(0x00000000));
 
-        showText("Deaths: ", ts(6), (int)(i * dist + offset + ts(0)), (int)ts(265), build_sdlcolor(0x00000000));
-        showText(to_string(gameStats_[numOfplayer - i - 1][0]), ts(6), (int)(i * dist + offset + ts(100)), (int)ts(265), build_sdlcolor(0x00000000));
+        showText("Deaths: ", (h / 42), (int)(i * dist + offset), (int)h * 4.05f / 5, build_sdlcolor(0x00000000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][0]), (h / 42), (int)(i * dist + offset + w / 6), (int)h * 4.05f / 5, build_sdlcolor(0x00000000));
 
-        showText("Damage taken: ", ts(6), (int)(i * dist + offset + ts(0)), (int)ts(275), build_sdlcolor(0x00000000));
-        showText(to_string(gameStats_[numOfplayer - i - 1][1]), ts(6), (int)(i * dist + offset + ts(100)), (int)ts(275), build_sdlcolor(0x00000000));
+        showText("Damage taken: ", (h / 42), (int)(i * dist + offset), (int)h * 4.2f / 5, build_sdlcolor(0x00000000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][1]), (h / 42), (int)(i * dist + offset + w / 6), (int)h * 4.2f / 5, build_sdlcolor(0x00000000));
     }
 }

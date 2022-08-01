@@ -230,10 +230,10 @@ void Particle::draw(SDL_Rect* camera)
 	aux.x *= (manager->GetActualWidth() / (float)camera->w);
 
 	aux.y -= camera->y;
-	aux.y *= (manager->GetActualHeight() / (float)camera->h);
+	aux.y *= (manager->GetActualWidth() / (float)camera->w);
 
 	aux.w *= (manager->GetActualWidth() / (float)camera->w);
-	aux.h *= (manager->GetActualHeight() / (float)camera->h);
+	aux.h *= (manager->GetActualWidth() / (float)camera->w);
 
 	if (dir < 0)
 	{

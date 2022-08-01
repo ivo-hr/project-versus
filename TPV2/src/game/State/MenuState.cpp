@@ -10,9 +10,9 @@ MenuState::MenuState(FightManager* game) : State(game) {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     background = &sdl->images().at("menu");
-    exit = new Button( &sdl->images().at("ExitBut"),0,h -ts(20),ts(40),ts(20));
+    exit = new Button( &sdl->images().at("ExitBut"), 0, h * 11 / 12, w / 12, h / 12);
     sdl->musics().at("main").play();
-    config = new Button(&sdl->images().at("ConfigBut"), w-ts(20), h - ts(21), ts(20), ts(20));
+    config = new Button(&sdl->images().at("ConfigBut"), w * 15 / 16, h - w / 16, w / 16, w / 16);
 }
 
 MenuState::~MenuState()
@@ -77,9 +77,9 @@ void MenuState::draw() {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
-    background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
+    background->render({ 0,0,w,h });
     if (drawText)
-        showText("PRESS ARROW UP / JOYSTICK UP / W TO START", ts(7) , ts(120), ts(220), build_sdlcolor(0xFFFFFFff));
+        showText("PRESS ARROW UP / JOYSTICK UP / W TO START", h / 42 , w / 2 - (h / 42 * 20), h * 3 / 4 - h / 42, build_sdlcolor(0xFFFFFFff));
     exit->render();
     config->render();
     sdl->presentRenderer();  

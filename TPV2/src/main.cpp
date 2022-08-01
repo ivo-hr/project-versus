@@ -24,9 +24,10 @@ int main(int ac, char **av) {
 
 	auto& sdl = *SDLUtils::instance();
 
-	//Obtenemos el tama�o de la pantalla
 	SDL_DisplayMode DM;
 	SDL_GetDesktopDisplayMode(0, &DM);
+
+	//Obtenemos el tama�o de la pantalla
 
 	/*
 	float scaleX = (float)DM.w / sdl.width();
@@ -36,20 +37,32 @@ int main(int ac, char **av) {
 	*/
 
 	//Escalamos toda la ventana para que se ajuste al tama�o de la pantalla
-	SDL_RenderSetLogicalSize(sdl.renderer(), DM.w, DM.h);
 
 	//Cambiamos el tama�o de la ventana
-	SDL_SetWindowSize(sdl.window(), DM.w, DM.h);
 
-	SDL_SetWindowPosition(sdl.window(), 0, 5);
-
+	//SDL_SetWindowPosition(sdl.window(), 0, 5);
 	//Ponemos en pantalla completa
+
+	SDL_MaximizeWindow(sdl.window());
+	SDL_SetWindowSize(sdl.window(), DM.w, DM.h);
+	SDL_RenderSetLogicalSize(sdl.renderer(), DM.w, DM.h);
+	sdl.toggleFullScreen();
 
 #ifndef _DEBUG
 
-	sdl.toggleFullScreen();
-
 #endif // !_DEBUG
+#ifdef _DEBUG
+
+	sdl.toggleFullScreen();
+	//SDL_MaximizeWindow(sdl.window());
+	int w, h;
+	SDL_GetWindowSize(sdl.window(), &w, &h);
+	SDL_RenderSetLogicalSize(sdl.renderer(), w, h);
+
+#endif // _DEBUG
+
+	SDL_SetWindowResizable(sdl.window(), SDL_TRUE);
+
 
 	//show the cursor
 	sdl.showCursor();
@@ -60,22 +73,21 @@ int main(int ac, char **av) {
 	ih.initialiseJoysticks();
 	//------------------------------------------------------------------------------------------
 
-	//Dependiendo de la resolucion con respecto a 16 : 9 tiene que ajustarse al ancho o al alto
+	FightManager* fghtmngr = nullptr;
 
-	float ancho = (float)DM.w / (float)sdl.width();
-	float alto = (float)DM.h / (float)sdl.height();
-
-	double ratioFin;
-
-	if (ancho <= alto)
+	try
 	{
-		ratioFin = ancho;
+		fghtmngr = new FightManager(&sdl);
+		delete fghtmngr;
 	}
-	else 
-		ratioFin = alto;
-	FightManager* fghtmngr = new FightManager(&sdl, ratioFin);
+	catch (const char* s)
+	{
+		const char* title = "The game crashed :(     ";
 
-	delete fghtmngr;
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title, s, nullptr);
+
+		delete fghtmngr;
+	}
 
 	SDL_Quit();
 

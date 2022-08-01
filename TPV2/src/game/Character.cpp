@@ -652,10 +652,10 @@ void Character::draw(SDL_Rect* camera)
 	aux.x *= (manager->GetActualWidth() / (float)camera->w);
 
 	aux.y -= camera->y;
-	aux.y *= (manager->GetActualHeight() / (float)camera->h);
+	aux.y *= (manager->GetActualWidth() / (float)camera->w);
 
 	aux.w *= (manager->GetActualWidth() / (float)camera->w);
-	aux.h *= (manager->GetActualHeight() / (float)camera->h);
+	aux.h *= (manager->GetActualWidth() / (float)camera->w);
 
 	int xpos = aux.x + (aux.w / 2);
 
@@ -1114,15 +1114,22 @@ void Character::EndShield(int frameNumber)
 
 void Character::Dash(int frameNumber)
 {
+
+	if (frameNumber > 0)
+	{
+		if (frameNumber < 6)
+			body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, 10));
+		if (frameNumber < 60)
+			AllowMovement(0.5f);
+	}
 	switch (frameNumber)
 	{
 	case 0:
 		anim->StartAnimation("dash" + animAddon);
-		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x / 2, body->GetLinearVelocity().y / 2));
 		break;
-	case 4:
+	case 6:
 		dash = true;
-		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, 20));
+		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, 30));
 		break;
 	case 60:
 		dash = false;
@@ -1329,8 +1336,8 @@ void Character::Elements()
 void Character::drawHUD(int numOfPlayer)
 {
 	//Portrait y posiciones
-	int w_ = manager->GetDeathZone()->w;
-	int h_ = manager->GetDeathZone()->h;
+	int w_ = manager->GetActualWidth();
+	int h_ = manager->GetActualHeight();
 	int dist = w_/ numOfPlayer;
 	int offset = (w_ / 2) / numOfPlayer - w_/30;
 	int x = (int)(playerPosition * dist + offset);

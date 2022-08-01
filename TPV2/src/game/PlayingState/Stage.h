@@ -13,6 +13,7 @@ class MyListener;
 
 class Stage
 {
+	FightManager* mngr;
 	b2Body* stage;
 	SDL_Rect stageRect;
 
@@ -31,17 +32,17 @@ class Stage
 	Texture* background;
 	Texture* platformTexture;
 
-	float deathzoneSize;
+	b2Vec2 deathzoneSize;
 	float step;
 	void reset();
 
 public:
-	Stage(SDLUtils* sdl, MyListener* _listener, float step);
+	Stage(FightManager* mngr, SDLUtils* sdl, MyListener* _listener, float step);
 	virtual ~Stage();
 
 	void UnLoadStage();
 
-	void LoadJsonStage(std::string file, double screenAdjust);
+	void LoadJsonStage(std::string file, int width, int height);
 
 	b2Vec2 GetPlayerSpawns(int index) { return playerSpawns[index]; };
 	int GetPlayerDir(int index);

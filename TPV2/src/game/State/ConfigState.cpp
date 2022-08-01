@@ -8,13 +8,13 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     initcharact();
-    plusB = new Button(&sdl->images().at("pB"), ts(480), ts(210), ts(30), ts(30));
-    minusB = new Button(&sdl->images().at("mB"), ts(480), ts(240), ts(30), ts(30));
+    plusB = new Button(&sdl->images().at("pB"), w * 14 / 15, h - w * 2.4f / 15, w / 15, w / 15);
+    minusB = new Button(&sdl->images().at("mB"), w * 14 / 15, h - w * 1.2f / 15, w / 15, w / 15);
     play = new PlayButton(&sdl->images().at("play"), 0, 0, w, h);
-    normalmode = new Button(&sdl->images().at("MNormalC"), &sdl->images().at("MNormalB"), ts(350), ts(2), ts(40), ts(20));
+    normalmode = new Button(&sdl->images().at("MNormalC"), &sdl->images().at("MNormalB"), (w / 2) + (h / 168), h / 168, h / 7, h / 14);
     normalmode->active(true);
-    teammode = new Button(&sdl->images().at("MTeamC"), &sdl->images().at("MTeamB"), ts(400), ts(2), ts(40), ts(20));
-    config = new Button(&sdl->images().at("ConfigBut"), w - ts(25), ts(3) , ts(20), ts(20));
+    teammode = new Button(&sdl->images().at("MTeamC"), &sdl->images().at("MTeamB"), (w / 2) + h / 84 + h / 7, h / 168, h / 7, h / 14);
+    config = new Button(&sdl->images().at("ConfigBut"), w * 20 / 21, 0 , w / 21, w / 21);
  
     configTeamChoose();
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P1")));
@@ -36,13 +36,13 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     else if (fInput == -2) { usedKeyboard[1] = true; playerTexture[0]->setFront(&sdl->images().at("k2"));
     }
 
-    int pointerSize = 15;
-    int dist = (w - ts(50)) / numOfplayer;
-    int offset = dist - ts(60);
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P1P"), 0u * dist + offset, 676, ts(pointerSize), ts(pointerSize),w,h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P2P"), 1u, 676, ts(pointerSize), ts(pointerSize), w, h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P3P"), 2u, 676, ts(pointerSize), ts(pointerSize), w, h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P4P"), 3u, 676, ts(pointerSize), ts(pointerSize), w, h));
+    int pointerSize = w / 64;
+    int dist = (w * 12 / 13) / numOfplayer;
+    int offset = dist - w / 13;
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P1P"), 0u * dist + offset, 676, pointerSize, pointerSize,w,h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P2P"), 1u, 676, pointerSize, pointerSize, w, h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P3P"), 2u, 676, pointerSize, pointerSize, w, h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P4P"), 3u, 676, pointerSize, pointerSize, w, h));
     playerPointers[0]->setActive(true);
     sdl->musics().at("sawtines").play();
 }
@@ -72,7 +72,7 @@ ConfigState::~ConfigState()
 }
 
 void ConfigState::update() {
-   
+
     if (!selectMap)
     {
         searchInput();
@@ -171,19 +171,23 @@ void ConfigState::next() {
 void ConfigState::setPointer()
 {
     int w = fmngr->GetActualWidth();
-    int dist = (w - ts(50)) / numOfplayer;
-    int offset = dist - ts(60);
+    int dist = (w * 12 / 13) / numOfplayer;
+    int offset = dist - w / 13;
     playerPointers[playerInput.size() - 1]->setActive(true);
     playerPointers[playerInput.size() - 1]->setPosition((playerInput.size() - 1) * dist + offset, 676);
 }
 void ConfigState::configTeamChoose()
 {
+
+    int w = fmngr->GetActualWidth();
+    int h = fmngr->GetActualHeight();
+
     charactersTeam.resize(4);
     for (int i = 0; i < 4; i++)
     {
         vector<Button*> p1;
-        p1.push_back(new Button(&sdl->images().at("T1C"), &sdl->images().at("T1B"), ts(350), ts(2), ts(20), ts(20)));
-        p1.push_back(new Button(&sdl->images().at("T2C"), &sdl->images().at("T2B"), ts(350), ts(2), ts(20), ts(20)));
+        p1.push_back(new Button(&sdl->images().at("T1C"), &sdl->images().at("T1B"), 0, 0, w / 30, w / 30));
+        p1.push_back(new Button(&sdl->images().at("T2C"), &sdl->images().at("T2B"), 0, 0, w / 30, w / 30));
         p.push_back(p1);
     }
     for (int i = 0; i < 4; i++) {
@@ -579,22 +583,20 @@ void ConfigState::playerMenuRender()
     int h = fmngr->GetActualHeight();
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
-    for (auto c = 0u; c < 8; c++) {
-        int dist = (w - ts(50)) / 4;
-        int offset = dist - ts(50);
-        int j = 0;
-        if (c >= 4) {
-            j = 1;
-        } 
-        charselbg->render({ (int)(c%4 * dist + offset),(int)((ts(80)*j)+ts(50)),(int)ts(40),(int)ts(40)});
-        showText(charName[c], ts(8), (int)(c % 4 * dist + offset)-ts(30), (int)((ts(80) * j) + ts(100)), build_sdlcolor(0x33FFE900));
+    for (auto c = 0u; c < 10; c++) {
+        int dist = (w * 9 / 10) / 5;
+        int offset = dist - w / 10;
+        int j = c / 5;
+
+        charselbg->render({ (int)(c % 5 * dist + offset), (int)(((w * 3 / 24) * j) + w / 12), (int)w / 12, (int)w / 12 });
+        showText(charName[c], w / 80, (int)(c % 5 * dist + offset) - w / 24, (int)((((w * 3 / 24) * j) + w * 1.02f / 6)), build_sdlcolor(0x33FFE900));
     }
-    int dist = (w - ts(50)) / numOfplayer;
-    int offset = dist - ts(110);
+    int dist = (w * 9 / 10) / numOfplayer;
+    int offset = dist - (int)w / 5;
     for (auto i = 0u; i < numOfplayer; i++) {
-        playerTexture[i]->render((int)(i * dist + offset), (int)ts(200), (int)ts(110), (int)ts(80));
+        playerTexture[i]->render((int)(i * dist + offset), (int)h * 2 / 3 + h / 24, (int)w / 5, (int)h / 4);
         if (selected[i])
-            showText("Selected", ts(8), (int)(i * dist + offset + ts(25)), (int)ts(250), build_sdlcolor(0x00FF0000));
+            showText("Selected", w / 70, (int)(i * dist + offset + w / 25), (int)h * 2 / 24 + h * 2 / 3, build_sdlcolor(0x00FF0000));
     }
 
     if (TeamModebool) {
@@ -602,8 +604,8 @@ void ConfigState::playerMenuRender()
 
             for (int j = 0; j < 2; j++)
             {
-                p[i][j]->setX((i * dist + offset + ts(30) + j * ts(30)));
-                p[i][j]->setY((int)ts(260));
+                p[i][j]->setX((i * dist + offset + w / 17.5f + j * (w / 20)));
+                p[i][j]->setY((int)h * 18 / 20);
                 p[i][j]->render();
             }
         }
@@ -629,12 +631,21 @@ void ConfigState::playerMenuRender()
 
 void ConfigState::initMapBut()
 {
+
+    int imgW = fmngr->GetActualWidth() / 6, imgH = fmngr->GetActualWidth() / 8;
+
+    int totalW = (fmngr->GetActualWidth() * 3 / 5) + imgW;
+    int offsetX = (fmngr->GetActualWidth() - totalW) / 2;
+
+    int totalH = (fmngr->GetActualHeight() * 2 / 4) + imgH;
+    int offsetY = (fmngr->GetActualHeight() - totalH) / 2;
+
     int i = 0;
-    maps.push_back(new Button(&sdl->images().at("fondo"), ts(50+i*150), ts(50), ts(100), ts(80)));
+    maps.push_back(new Button(&sdl->images().at("fondo"), offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH));
     i++;
-    maps.push_back(new Button(&sdl->images().at("mazmorra"), ts(50 + i * 150), ts(50), ts(100), ts(80)));
+    maps.push_back(new Button(&sdl->images().at("mazmorra"), offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH));
     i++;
-    maps.push_back(new Button(&sdl->images().at("night"), ts(50 + i * 150), ts(50), ts(100), ts(80)));
+    maps.push_back(new Button(&sdl->images().at("night"), offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH));
 }
 
 
@@ -645,8 +656,8 @@ void ConfigState::mapMenuRender()
     int h = fmngr->GetActualHeight();
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
     background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
-    int dist = (w - ts(50)) / numOfplayer;
-    int offset = dist - ts(110);
+    int dist = (w * 12 / 13) / numOfplayer;
+    int offset = dist - w / 7;
     for(auto e: maps)
     {
         e->render();
@@ -731,24 +742,34 @@ void ConfigState::initcharact()
 {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
-    int dist = (w - ts(50)) / 4;
-    int offset = dist - ts(50)+ts(7) ;
+    int dist = (w * 9 / 10) / 5;
+    int offset = dist - w / 10 + w / 65;
+
+    int distY = (w * 3 / 24);
+    int offsetY = w / 12 + w / 70;
     //c % 4 * dist + offset), (int)((ts(80) * j) + ts(50));
+
+   // { 
+   // (int)(c % 5 * dist + offset), 
+   // (int)(((w * 3 / 24) * j) + w / 12), 
+   //     (int)w / 12, (int)w / 12 }
  
     nasnas = nullptr;
-    zero = new Button(&sdl->images().at("nasNasSelect"), offset , ts(56), ts(30), ts(30));
+    zero = new Button(&sdl->images().at("nasNasSelect"), offset , offsetY, (int)w / 16, (int)w / 16);
     charName.push_back("    NasNas");
-    gatoespia = new Button(&sdl->images().at("blinkMasterSelect"), dist + offset, ts(56), ts(30), ts(30));
+    gatoespia = new Button(&sdl->images().at("blinkMasterSelect"), dist + offset, offsetY, (int)w / 16, (int)w / 16);
     charName.push_back(" Blink Master");
-    maketo = new Button(&sdl->images().at("maktSelect"), dist*2 + offset, ts(56), ts(30), ts(30));
+    maketo = new Button(&sdl->images().at("maktSelect"), dist*2 + offset, offsetY, (int)w / 16, (int)w / 16);
     charName.push_back("  Makt Fange");
-    togo = new Button(&sdl->images().at("dinoSoulsSelect"), dist*3 + offset, ts(56), ts(30), ts(30));
-    charName.push_back("    Togo");
+    togo = new Button(&sdl->images().at("dinoSoulsSelect"), dist*3 + offset, offsetY, (int)w / 16, (int)w / 16);
+    charName.push_back("     Togo");
 
     charName.push_back(" Coming Soon");
     charName.push_back(" Coming Soon");
     charName.push_back(" Coming Soon");
+    charName.push_back(" Coming Soon");
+    charName.push_back(" Coming Soon");
+
+    aleatorio = new Button(&sdl->images().at("aleatorioSelect"), dist * 4 + offset, (distY + offsetY), (int)w / 16, (int)w / 16);
     charName.push_back("    Random");
-
-    aleatorio = new Button(&sdl->images().at("aleatorioSelect"), dist * 3 + offset, ts(50)+ts(86), ts(30), ts(30));;
 }

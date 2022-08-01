@@ -17,7 +17,6 @@
 #include "../State/ConfigurationState.h"
 
 
-
 class Entity;
 class Character;
 class Particle;
@@ -50,7 +49,8 @@ class FightManager :public StateMachine
 
 	Entity* winner;
 
-	double screenAdjust;
+	int width, height;
+	float sizeDiff;
 
 	bool fightEnded = false;
 
@@ -88,16 +88,15 @@ class FightManager :public StateMachine
 	int startticks=0;
 public:
 
-	FightManager(SDLUtils* sdl, double screenAdjust);
+	FightManager(SDLUtils* sdl);
 	virtual ~FightManager();
 
 	bool isExit() { return exit_; };
 	bool isFinish() { return fightEnded; };
 	void Update();
 
-	void HideOutOfBounds();
-
 	void LoadStage(std::string file);
+	void InitCamera();
 	int StartFight(std::vector<Character*> ent);
 	int StartFight(std::vector<Character*> team1, std::vector<Character*> team2);
 

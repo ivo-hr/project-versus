@@ -10,17 +10,19 @@ ConfigurationState::ConfigurationState(FightManager* game ,int pI) : State(game)
     music = &sdl->images().at("BgmT");
     sfx = &sdl->images().at("SfxT");
     instru = &sdl->images().at("instru");
-    exit = new Button(&sdl->images().at("backToMenu"), ts(10), h - ts(40), ts(30), ts(40));
-    back = new Button(&sdl->images().at("BackBut"), ts(15), ts(15), ts(15), ts(15));
+    exit = new Button(&sdl->images().at("backToMenu"), 0, h - w / 12, w / 16, w / 12);
+    back = new Button(&sdl->images().at("BackBut"), 0, 0, w / 12, w / 12);
 
-    muscm = new Button(&sdl->images().at("minusB"), ts(120), ts(105), ts(10), ts(10));
-    muscp = new Button(&sdl->images().at("plusB"), ts(180),ts(105), ts(10), ts(10));
+    int butW = w / 50;
+
+    muscm = new Button(&sdl->images().at("minusB"), (int)(w * 29 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - butW / 2), butW, butW);
+    muscp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - butW / 2), butW, butW);
   
-    sfxm = new Button(&sdl->images().at("minusB"), ts(120), ts(155), ts(10), ts(10));
-    sfxp = new Button(&sdl->images().at("plusB"), ts(180), ts(155), ts(10), ts(10));
+    sfxm = new Button(&sdl->images().at("minusB"), (int)(w * 29 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.5f / 4) + w / 50 - butW / 2), butW, butW);
+    sfxp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.5f / 4) + w / 50 - butW / 2), butW, butW);
 
     
-    p1 = new PlayerPointer(&sdl->images().at("P1P"), w/2, h/2, ts(15), ts(15), w, h);
+    p1 = new PlayerPointer(&sdl->images().at("P1P"), w/2, h/2, w / 64, w / 64, w, h);
     p1->setActive(true);
     pInput = pI;
 }
@@ -44,25 +46,25 @@ void ConfigurationState::update() {
     switch (pInput)
     {
     case -1:
-        if (ih.isKeyDown(SDLK_w))p1->move(0);
-        if (ih.isKeyDown(SDLK_s))p1->move(1);
-        if (ih.isKeyDown(SDLK_a))p1->move(2);
-        if (ih.isKeyDown(SDLK_d))p1->move(3);
-        if (ih.isKeyDown(SDLK_e))enter = true;
+        if (ih.isKeyDown(SDLK_w)) { p1->move(0); toReDraw = true; }
+        if (ih.isKeyDown(SDLK_s)){ p1->move(1); toReDraw = true; }
+        if (ih.isKeyDown(SDLK_a)) { p1->move(2); toReDraw = true; }
+        if (ih.isKeyDown(SDLK_d)) { p1->move(3); toReDraw = true; }
+        if (ih.isKeyDown(SDLK_e)) { enter = true; toReDraw = true; }
         break;
     case -2:
-        if (ih.isKeyDown(SDLK_UP))p1->move(0);
-        if (ih.isKeyDown(SDLK_DOWN))p1->move(1);
-        if (ih.isKeyDown(SDLK_LEFT))p1->move(2);
-        if (ih.isKeyDown(SDLK_RIGHT))p1->move(3);
-        if (ih.isKeyDown(SDLK_l))enter = true;
+        if (ih.isKeyDown(SDLK_UP)) { p1->move(0); toReDraw = true; }
+        if (ih.isKeyDown(SDLK_DOWN)) { p1->move(1); toReDraw = true; }
+        if (ih.isKeyDown(SDLK_LEFT)) { p1->move(2); toReDraw = true; }
+        if (ih.isKeyDown(SDLK_RIGHT)) { p1->move(3); toReDraw = true; }
+        if (ih.isKeyDown(SDLK_l)) { enter = true; toReDraw = true; }
         break;
     default:
-        if (ih.xboxGetAxesState(pInput, 1) == -1 || ih.xboxGetDpadState(pInput, 0))p1->move(0);
-        if (ih.xboxGetAxesState(pInput, 1) == 1 || ih.xboxGetDpadState(pInput, 2))p1->move(1);
-        if (ih.xboxGetAxesState(pInput, 0) == -1 || ih.xboxGetDpadState(pInput, 3))p1->move(2);
-        if (ih.xboxGetAxesState(pInput, 0) == 1 || ih.xboxGetDpadState(pInput, 1))p1->move(3);
-        if (ih.xboxGetButtonState(pInput, SDL_CONTROLLER_BUTTON_B))enter = true;
+        if (ih.xboxGetAxesState(pInput, 1) == -1 || ih.xboxGetDpadState(pInput, 0)) { p1->move(0); toReDraw = true; }
+        if (ih.xboxGetAxesState(pInput, 1) == 1 || ih.xboxGetDpadState(pInput, 2)) { p1->move(1); toReDraw = true; }
+        if (ih.xboxGetAxesState(pInput, 0) == -1 || ih.xboxGetDpadState(pInput, 3)) { p1->move(2); toReDraw = true; }
+        if (ih.xboxGetAxesState(pInput, 0) == 1 || ih.xboxGetDpadState(pInput, 1)) { p1->move(3); toReDraw = true; }
+        if (ih.xboxGetButtonState(pInput, SDL_CONTROLLER_BUTTON_B)) { enter = true; toReDraw = true; }
         break;
     }
     if (muscm->mouseClick() || muscm->pointerClick(p1->getRect())&&enter && keyRelease ) {
@@ -70,6 +72,7 @@ void ConfigurationState::update() {
             musicV--;
             Music::setMusicVolume((int)(128 * musicV) / 10);
             keyRelease = false;
+            toReDraw = true;
         }
     }
     else if (muscp->mouseClick()  || muscp->pointerClick(p1->getRect()) && enter && keyRelease) {
@@ -77,6 +80,7 @@ void ConfigurationState::update() {
             musicV++;
             Music::setMusicVolume((int)(128 * musicV) / 10);
             keyRelease = false;
+            toReDraw = true;
         }
 
     }
@@ -89,6 +93,7 @@ void ConfigurationState::update() {
             keyRelease = false;
 
             sdl->soundEffects().at("uiSelect").play(1);
+            toReDraw = true;
 
         }
     }
@@ -101,11 +106,13 @@ void ConfigurationState::update() {
             keyRelease = false;
 
             sdl->soundEffects().at("uiSelect").play(1);
+            toReDraw = true;
 
         }
     }
     if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent() || back->mouseClick() || back->pointerClick(p1->getRect()) && enter && keyRelease) {
         keyRelease = false;
+        toReDraw = true;
         std::cout << "unpause" << std::endl;
         State* tmp = fmngr->getState();
         State* saved = fmngr->getSavedState();
@@ -117,6 +124,7 @@ void ConfigurationState::update() {
     }
     if (exit->mouseClick() || exit->pointerClick(p1->getRect()) && enter && keyRelease) {
         keyRelease = false;
+        toReDraw = true;
         std::cout << "unpause" << std::endl;
         State* tmp = fmngr->getState();
         State* saved = fmngr->getSavedState();
@@ -143,28 +151,45 @@ void ConfigurationState::update() {
     }
 }
 void ConfigurationState::draw() {
-    int w = fmngr->GetActualWidth();
-    int h = fmngr->GetActualHeight();
-  
-    backgr->render({ 0,0,w,h });
-    showText("BGM", ts(8), ts(80), ts(107), build_sdlcolor(0x33FFFC00));
-    music->render({ (int)ts(50),(int)ts(100),(int)ts(20),(int)ts(20) });
-    showText(to_string(musicV), ts(8), ts(145), ts(107), build_sdlcolor(0x33FFFC00));
-   
-    showText("SFX", ts(8), ts(80), ts(157), build_sdlcolor(0x33FFFC00));
-    sfx->render({ (int)ts(50),(int)ts(150),(int)ts(20),(int)ts(20) });
-    showText(to_string(sfxV), ts(8), ts(145), ts(157), build_sdlcolor(0x33FFFC00));
-    instru->render({ (int)ts(250),(int)ts(50),(int)ts(200),(int)ts(250) });
-   
-    sfxm->render();
-    sfxp->render();
-    muscm->render();
-    muscp->render();
-    exit->render();
-    back->render();
-    
-    p1->render();
-    sdl->presentRenderer();
+
+    if (toReDraw)
+    {
+        int w = fmngr->GetActualWidth();
+        int h = fmngr->GetActualHeight();
+
+        backgr->render({ 0,0,w,h });
+
+        SDL_Rect instruRect = { (int)((w / 16) + (w / 2)), (int)(h / 4), (int)(w / 3), (int)(h * 0.7f) };
+
+        int fontSiz = h / 32;
+
+        showText("BGM", fontSiz, (int)(w * 27 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+
+        music->render({ (int)(w - (w * 5 / 6 + w / 16)), (int)h / 4, (int)w / 25, (int)w / 25 });
+
+        showText(to_string(musicV), fontSiz, (int)(w * 31 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+
+
+        showText("SFX", fontSiz, (int)(w * 27 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.5f / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+
+        sfx->render({ (int)(w - (w * 5 / 6 + w / 16)), (int)(h * 1.5f / 4), (int)w / 25, (int)w / 25 });
+
+        showText(to_string(sfxV), fontSiz, (int)(w * 31 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.5f / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+
+
+        instru->render(instruRect);
+
+        sfxm->render();
+        sfxp->render();
+        muscm->render();
+        muscp->render();
+        exit->render();
+        back->render();
+
+        p1->render();
+        sdl->presentRenderer();
+    }
+    toReDraw = false;
 }
 
 void ConfigurationState::next() {

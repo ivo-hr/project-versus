@@ -2,28 +2,29 @@
     "codeName": "stage3",
     "background": "night",
     "platform": "nubePlat",
-    "deathZoneSize": 90,
+    "deathZoneSizeX": 90,
+    "deathZoneSizeY": 60,
     "groundX": 45.0,
-    "groundY": 35.0,
+    "groundY": 45.0,
     "groundW": 40.0,
     "groundH": 10.0,
 
     "platformData": [
         {
         "platformX": 32.5,
-        "platformY": 25.0,
+        "platformY": 35.0,
         "platformW": 8.0,
         "platformH": 0.5
         },
         {
         "platformX": 57.5,
-        "platformY": 25.0,
+        "platformY": 35.0,
         "platformW": 8.0,
         "platformH": 0.5
         },
         {
         "platformX": 45,
-        "platformY": 20.0,
+        "platformY": 30.0,
         "platformW": 8.0,
         "platformH": 0.5
         }],

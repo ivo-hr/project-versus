@@ -35,48 +35,60 @@ void FightManager::MoveCamera()
 		}
 	}
 
-	if (maxX - minX >= (maxY - minY) * ((float)(sdl->width()) / (float)(sdl->height())))
+	if (maxX - minX >= (maxY - minY) * (float)((float)width / (float)height))
 	{
 		cameraEnd.x = minX - cameraOffset;
 		cameraEnd.w = (maxX - minX) + cameraOffset * 2;
-		cameraEnd.h = cameraEnd.w * ((float)((float)(sdl->height()) / (float)(sdl->width())));
+		cameraEnd.h = cameraEnd.w * (float)((float)height / (float)width);
 		cameraEnd.y = minY - (cameraEnd.h - (maxY - minY)) / 2;
 	}
 	else
 	{
-		cameraEnd.y = minY - cameraOffset * (float)((float)(sdl->height()) / (float)(sdl->width()));
-		cameraEnd.h = (maxY - minY) + cameraOffset * 2 * (float)((float)(sdl->height()) / (float)(sdl->width()));
-		cameraEnd.w = cameraEnd.h * ((float)((float)(sdl->width()) / (float)(sdl->height())));
+		cameraEnd.y = minY - cameraOffset * (float)((float)height / (float)width);
+		cameraEnd.h = (maxY - minY) + cameraOffset * 2 * (float)((float)height / (float)width);
+		cameraEnd.w = cameraEnd.h * ((float)((float)width / (float)height));
 		cameraEnd.x = minX - (cameraEnd.w - (maxX - minX)) / 2;
 	}
 
-	if (cameraEnd.w > sdl->width() * screenAdjust)
+	if (cameraEnd.w > width || cameraEnd.h > height)
 	{
-		cameraEnd.w = sdl->width() * screenAdjust;
-		cameraEnd.h = sdl->height() * screenAdjust;
+		cameraEnd.w = width;
+		cameraEnd.h = height;
 	}
+
+	if (cameraEnd.w > stage->GetDeathZone()->w)
+	{
+		cameraEnd.w = stage->GetDeathZone()->w;
+		cameraEnd.h = stage->GetDeathZone()->w * (float)((float)height / (float)width);
+	}
+	if (cameraEnd.h > stage->GetDeathZone()->h)
+	{
+		cameraEnd.h = stage->GetDeathZone()->h;
+		cameraEnd.w = stage->GetDeathZone()->h * (float)((float)width / (float)height);
+	}
+
 	if (cameraEnd.x < 0)
 	{
 		cameraEnd.x = 0;
 	}
-	else if (cameraEnd.x + cameraEnd.w > sdl->width() * screenAdjust)
+	if (cameraEnd.x + cameraEnd.w > stage->GetDeathZone()->w)
 	{
-		cameraEnd.x = sdl->width() * screenAdjust - cameraEnd.w;
+		cameraEnd.x = stage->GetDeathZone()->w - cameraEnd.w;
 	}
 
 	if (cameraEnd.y < 0)
 	{
 		cameraEnd.y = 0;
 	}
-	else if (cameraEnd.y + cameraEnd.h > sdl->height() * screenAdjust)
+	if (cameraEnd.y + cameraEnd.h > stage->GetDeathZone()->h)
 	{
-		cameraEnd.y = sdl->height() * screenAdjust - cameraEnd.h;
+		cameraEnd.y = stage->GetDeathZone()->h - cameraEnd.h;
 	}
 
 	auxCam.x += (cameraEnd.x - auxCam.x) * 0.2f;
 	auxCam.y += (cameraEnd.y - auxCam.y) * 0.2f;
 	auxCam.w += (cameraEnd.w - auxCam.w) * 0.2f;
-	auxCam.h = auxCam.w * ((float)(sdl->height()) / (float)(sdl->width()));
+	auxCam.h = auxCam.w * (float)((float)height / (float)width);
 
 	camera = auxCam;
 
@@ -97,18 +109,19 @@ void FightManager::MoveCamera()
 
 
 
-FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
+FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 {
 
+	SDL_GetWindowSize(sdl->window(), &width, &height);
+
 	listener = new MyListener();
-	stage = new Stage(sdl, listener, step);
+	stage = new Stage(this, sdl, listener, step);
+	
 
-	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
-	auxCam = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
+	sizeDiff = width / sdl->width() < height / sdl->height() ? 
+		width / sdl->width() : height / sdl->height();
 
-	this->screenAdjust = screenAdjust;
-
-	cameraOffset *= screenAdjust;
+	cameraOffset *= sizeDiff;
 
 	
 	for (auto i = 0u; i < 1000; i++) {
@@ -118,8 +131,20 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 
 	setState(new MenuState(this));
 	while (!exit_) {
-		ih.refresh();
+
+		SDL_Event e;
+		ih.clearState();
+		while (SDL_PollEvent(&e))
+		{
+			ih.update(e);
+			if (e.type == SDL_QUIT)
+			{
+				userExit();
+			}
+		}
+
 		getState()->update();
+
 		if (!exit_) {
 			getState()->draw();
 		}
@@ -131,18 +156,18 @@ FightManager::FightManager(SDLUtils * sdl, double screenAdjust) :  sdl(sdl)
 
 FightManager::~FightManager()
 {
-	delete stage;
 	delete listener;
 	for (auto e : entities)
 		delete e;
 	entities.clear();
+	delete stage;
 	delete getSavedState();
 }
 
 void FightManager::Update()
 {
-
 	Uint32 startTime = sdl->currRealTime();
+
 	if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
 		if (getSavedState() == nullptr) {
 			//pause
@@ -216,8 +241,6 @@ void FightManager::Update()
 			}
 		}
 	}
-	
-	HideOutOfBounds();
 
 	// present new frame
 	sdl->presentRenderer();
@@ -236,35 +259,38 @@ void FightManager::Update()
 
 }
 
-void FightManager::HideOutOfBounds()
-{
-	int w, h;
-	SDL_GetWindowSize(sdl->window(), &w, &h);
-
-	if (sdl->width() * screenAdjust < w)
-	{
-		SDL_Rect camOOBX = { sdl->width() * screenAdjust, 0, w - (sdl->width() * screenAdjust), h };
-
-		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 0, 255);
-		SDL_RenderFillRect(sdl->renderer(), &camOOBX);
-	}
-	else if (sdl->height() * screenAdjust < h)
-	{
-		SDL_Rect camOOBY = { 0, sdl->height() * screenAdjust, w, h - (sdl->height() * screenAdjust) };
-
-		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 0, 255);
-		SDL_RenderFillRect(sdl->renderer(), &camOOBY);
-	}
-}
-
 void FightManager::LoadStage(std::string file)
 {
-	stage->LoadJsonStage(file, screenAdjust);
+	stage->LoadJsonStage(file, width, height);
+}
+
+void FightManager::InitCamera()
+{
+
+	if (stage->GetDeathZone()->w < stage->GetDeathZone()->h * (width / height))
+	{
+		camera = {
+			0,
+			(stage->GetDeathZone()->h / 2) - (stage->GetDeathZone()->w * (height / width) / 2),
+			stage->GetDeathZone()->w,
+			stage->GetDeathZone()->w * (height / width) };
+		auxCam = camera;
+	}
+	else
+	{
+		camera = {
+			(stage->GetDeathZone()->w / 2) - (stage->GetDeathZone()->h * (width / height) / 2),
+			0,
+			stage->GetDeathZone()->h * (width / height),
+			stage->GetDeathZone()->h };
+		auxCam = camera;
+	}
 }
 
 int FightManager::StartFight(std::vector<Character*> ent)
 {
-	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
+
+	InitCamera();
 	
 	//onNewGame();
 	teammode = false;
@@ -305,7 +331,9 @@ int FightManager::StartFight(std::vector<Character*> ent)
 }
 int FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Character*> ateam2)
 {
-	camera = { 0, 0, (int)(sdl->width() * screenAdjust), (int)(sdl->height() * screenAdjust) };
+
+	InitCamera();
+
 	//onNewGame();
 	teammode = true;
 	std::vector<Entity*> aux1;
@@ -605,20 +633,20 @@ void FightManager::startCount()
 	if (scount > 0)
 	{
 		s = to_string(scount);
-		string fontstring = "nes" + to_string((int)(120 * screenAdjust));
+		string fontstring = "nes" + to_string((int)(120 * sizeDiff));
 		auto& font = sdl->fonts().at(fontstring);
 		count = new Texture(sdl->renderer(), s, font, build_sdlcolor(0x00F7FF00));
-		x = 200 * screenAdjust;
-		y = 100 * screenAdjust;
+		x = (width / 2) - count->width() / 2;
+		y = (height / 2) - count->height() / 2;
 	}
 	else
 	{
 		s = "FIGHT!";
-		string fontstring = "nes" + to_string((int)(80 * screenAdjust));
+		string fontstring = "nes" + to_string((int)(80 * sizeDiff));
 		auto& font = sdl->fonts().at(fontstring);
 		count = new Texture(sdl->renderer(), s, font, build_sdlcolor(0xFF000000));
-		x = 20 * screenAdjust;
-		y = 100 * screenAdjust;
+		x = (width / 2) - count->width() / 2;
+		y = (height / 2) - count->height() / 2;
 	}
 	count->render(x,y);
 	delete count;
@@ -653,12 +681,12 @@ int FightManager::ToSDL(float x)
 
 int FightManager::GetActualWidth()
 {
-	return sdl->width() * screenAdjust;
+	return width;
 }
 
 int FightManager::GetActualHeight()
 {
-	return sdl->height() * screenAdjust;
+	return height;
 }
 
 double FightManager::GetScreenRatio()
@@ -668,5 +696,5 @@ double FightManager::GetScreenRatio()
 
 double FightManager::GetScreeAdjust()
 {
-	return screenAdjust;
+	return sizeDiff;
 }
