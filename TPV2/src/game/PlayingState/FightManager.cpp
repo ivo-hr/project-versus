@@ -132,6 +132,8 @@ FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 	setState(new MenuState(this));
 	while (!exit_) {
 
+		Uint32 startTime = sdl->currRealTime();
+
 		SDL_Event e;
 		ih.clearState();
 		while (SDL_PollEvent(&e))
@@ -147,6 +149,13 @@ FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 
 		if (!exit_) {
 			getState()->draw();
+		}
+
+		double frameTime = sdl->currRealTime() - startTime;
+
+		if (frameTime < (step * 1000))
+		{
+			SDL_Delay((step * 1000));
 		}
 	}
 	// En ExitState se borran el state y el exitState, el savedState se borra en esta destructora
@@ -166,7 +175,6 @@ FightManager::~FightManager()
 
 void FightManager::Update()
 {
-	Uint32 startTime = sdl->currRealTime();
 
 	if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
 		if (getSavedState() == nullptr) {
@@ -244,13 +252,6 @@ void FightManager::Update()
 
 	// present new frame
 	sdl->presentRenderer();
-
-	double frameTime = sdl->currRealTime() - startTime;
-
-	if (frameTime < (step * 1000))
-	{
-		SDL_Delay((step * 1000));
-	}
 	
 	if (endGameTimer + 1000 < SDL_GetTicks() && endGame) {
 

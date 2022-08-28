@@ -8,11 +8,14 @@ void PlayerPointer::render()
 
 void PlayerPointer::move(int dir)
 {
+	//SDL_GetWindowSize(sdl->window(), &ww, &wh);
+	vel = ((float)ww / 200.f) + 1;
+
 	if (active)
 	switch (dir)
 	{
 	case 0:
-		if(y>0)
+		if (y > 0)
 		y = y - vel;
 		break;
 	case 1:
@@ -24,7 +27,7 @@ void PlayerPointer::move(int dir)
 		x = x - vel;
 		break;
 	case 3:
-		if (x+w< ww)
+		if (x+w < ww)
 		x = x + vel;
 		break;
 	default:
