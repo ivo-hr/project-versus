@@ -140,11 +140,11 @@ void NasNas::SpecialNeutral(int frameNumber)
 			moveFrame = -1;
 			return;
 		}
-		else mana -= 150;
 		anim->StartAnimation("especialN");
 	}
 	else if (frameNumber == attacks["specialN"].keyFrames[0])
 	{
+		mana -= 150;
 		Spell* spell = nullptr;
 		if (estado == fire)
 		{
@@ -196,7 +196,6 @@ void NasNas::SpecialForward(int frameNumber)
 			moveFrame = -1;
 			return;
 		}
-		mana -= 300;
 		moving = false;
 		anim->StartAnimation("especialF");
 
@@ -221,8 +220,7 @@ void NasNas::SpecialForward(int frameNumber)
 
 			CreateHitBox(&attacks["specialF"].hitBoxes[2]);
 		}
-
-	
+		mana -= 300;
 	}
 	else if (frameNumber == attacks["specialF"].totalFrames)
 	{
@@ -246,7 +244,6 @@ void NasNas::SpecialUpward(int frameNumber)
 			moveFrame = -1;
 			return;
 		}
-		mana -= 450;
 		moving = false;
 		anim->StartAnimation("especialU");
 
@@ -263,6 +260,7 @@ void NasNas::SpecialUpward(int frameNumber)
 	}
 	else if (frameNumber > attacks["specialU"].keyFrames[1] && onGround)
 	{
+		mana -= 450;
 		ChangeMove([this](int f) { SpecialUpHit(f); });
 	}
 	if (body->GetLinearVelocity().x > 0 || body->GetLinearVelocity().x < 0)
@@ -342,7 +340,7 @@ void NasNas::SpecialUpHit(int frameNumber)
 		else if (estado == electric)
 		{
 			attacks["specialUHit"].hitBoxes[0].hitdata.damage = 20;
-			attacks["specialUHit"].hitBoxes[0].hitdata.base = 0.1;
+			attacks["specialUHit"].hitBoxes[0].hitdata.base = 0;
 			attacks["specialUHit"].hitBoxes[0].hitdata.estado = electric;
 		}
 		CreateHitBox(&attacks["specialUHit"].hitBoxes[0]);
@@ -361,7 +359,7 @@ void NasNas::update()
 		mana = 0;
 	}
 	if (mana < maxMana) {
-		mana ++;
+		mana += manaRecoverRate;
 	}
 }
 

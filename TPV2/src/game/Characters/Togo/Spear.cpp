@@ -82,8 +82,8 @@ void Spear::CheckHits()
 }
 
 void Spear::OnDeath() {
-	if (owner != nullptr) {
-		owner->SetSpear(true);	
+	if (!owner->ToDelete()) {
+		owner->SetSpear(true);
 	}
 	Projectile::OnDeath();
 }

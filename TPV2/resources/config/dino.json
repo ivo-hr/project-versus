@@ -163,9 +163,9 @@
           "hitData": {
             "b2vecX": 1.1,
             "b2vecY": 1,
-            "base": 40,
+            "base": 36,
             "damage": 23,
-            "multiplier": 1.2,
+            "multiplier": 1.15,
             "stun": -1,
             "shieldBreak": true
           },
@@ -173,7 +173,7 @@
           "duration": 8
         }
       ],
-      "keyFrames": [14, 32],
+      "keyFrames": [20, 38],
       "totalFrames": 40
     }
   ],
