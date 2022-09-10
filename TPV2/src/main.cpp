@@ -59,6 +59,9 @@ int main(int ac, char **av) {
 	SDL_GetWindowSize(sdl.window(), &w, &h);
 	SDL_RenderSetLogicalSize(sdl.renderer(), w, h);
 
+	Music::setMusicVolume((int)(1));
+	SoundEffect::setChannelVolume((int)(1));
+
 #endif // _DEBUG
 
 	SDL_SetWindowResizable(sdl.window(), SDL_TRUE);

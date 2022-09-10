@@ -956,29 +956,20 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 
 void Character::StartJump(int frameNumber)
 {
+
+	AllowMovement();
+
 	if (jumpCounter <= 0 || !jumpCooldown)
 	{
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
-	if (frameNumber < 3)
+	if (frameNumber == 0)
 	{
 		anim->StartAnimation("jumpCharge" + animAddon);
-		if (input->right())
-		{
-			speed = maxSpeed;
-			dir = 1;
-		}
-		if (input->left())
-		{
-			speed = -maxSpeed;
-			dir = -1;
-		}
-		if (input->right() && input->left())
-		{
-			speed = 0;
-		}
-
+	}
+	if (frameNumber <= 3)
+	{
 		if (input->special())
 		{
 			ChangeMove([this](int f) { SpecialUpward(f); });
@@ -1027,7 +1018,11 @@ void Character::StartJump(int frameNumber)
 			}
 
 			manager->MoveToFront(this);
-			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
+
+			if (!onGround)
+				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
+			else 
+				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
 
 		}
 		else if (input->special())
@@ -1051,12 +1046,16 @@ void Character::StartJump(int frameNumber)
 			}
 
 			manager->MoveToFront(this);
-			body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
+
+			if (!onGround)
+				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
+			else
+				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
 
 		}
 		else
 		{
-			if (input->up())
+			if (input->up() || !onGround)
 				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
 			else
 				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);

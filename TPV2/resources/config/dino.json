@@ -170,11 +170,11 @@
             "shieldBreak": true
           },
           "hitlag": -1,
-          "duration": 8
+          "duration": 7
         }
       ],
-      "keyFrames": [20, 38],
-      "totalFrames": 40
+      "keyFrames": [18, 34],
+      "totalFrames": 49
     }
   ],
 

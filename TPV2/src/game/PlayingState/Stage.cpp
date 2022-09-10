@@ -13,7 +13,7 @@ void Stage::reset()
 }
 
 Stage::Stage(FightManager* mngr, SDLUtils* sdl, MyListener* _listener, float step) :
-	mngr(mngr), world(new b2World(b2Vec2(0.f, 15.f))), sdl(sdl), step(step)
+	mngr(mngr), world(new b2World(b2Vec2(0.f, 13.f))), sdl(sdl), step(step)
 {
 	listener = _listener;
 

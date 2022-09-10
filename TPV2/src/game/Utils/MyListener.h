@@ -26,7 +26,7 @@ public:
 		{
 			for (int i = 0; i < characters.size(); i++)
 			{
-				if (two == characters[i]->GetBody())
+				if (two == characters[i]->GetBody() && two->GetLinearVelocity().y > -0.1f)
 				{
 					characters[i]->SetGround(true);
 				}
@@ -65,7 +65,7 @@ public:
 		if (!one->GetType() == b2_staticBody) swap(one, two);
 		// Mira si es proyectil o personaje que quiere subir a la plataforma (atravesándola)
 		if (one->GetType() == b2_staticBody && (two->GetUserData().pointer == 1 || 
-			(one->GetFixtureList()->GetFilterData().categoryBits == 4 && two->GetLinearVelocity().y < 0)))
+			(one->GetFixtureList()->GetFilterData().categoryBits == 4 && contact->GetManifold()->localNormal != b2Vec2(0, -1))))
 		{ 
 			contact->SetEnabled(false);
 		}

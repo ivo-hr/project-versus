@@ -54,7 +54,7 @@ void NasNas::BasicNeutral(int frameNumber)
 void NasNas::BasicForward(int frameNumber)
 {
 
-	AllowMovement(0.4f, false, true);
+	AllowMovement(0.5f, false, true);
 
 	if (frameNumber == 0)
 	{
@@ -327,23 +327,16 @@ void NasNas::SpecialUpHit(int frameNumber)
 	{
 		if (estado == fire)
 		{
-			attacks["specialUHit"].hitBoxes[0].hitdata.damage = 35;
-			attacks["specialUHit"].hitBoxes[0].hitdata.base = 25;
-			attacks["specialUHit"].hitBoxes[0].hitdata.estado = fire;
+			CreateHitBox(&attacks["specialUHit"].hitBoxes[0]);
 		}
 		else if (estado == water)
 		{
-			attacks["specialUHit"].hitBoxes[0].hitdata.damage = 30;
-			attacks["specialUHit"].hitBoxes[0].hitdata.base = 35;
-			attacks["specialUHit"].hitBoxes[0].hitdata.estado = water;
+			CreateHitBox(&attacks["specialUHit"].hitBoxes[1]);
 		}
 		else if (estado == electric)
 		{
-			attacks["specialUHit"].hitBoxes[0].hitdata.damage = 20;
-			attacks["specialUHit"].hitBoxes[0].hitdata.base = 0;
-			attacks["specialUHit"].hitBoxes[0].hitdata.estado = electric;
+			CreateHitBox(&attacks["specialUHit"].hitBoxes[2]);
 		}
-		CreateHitBox(&attacks["specialUHit"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["specialUHit"].totalFrames)
 	{
@@ -463,6 +456,23 @@ void NasNas::BuildBoxes()
 		width * 3,
 		height * 1.5f);
 
+	attacks["specialUHit"].hitBoxes[1].box = manager->GetSDLCoors(
+		body->GetPosition().x,
+		body->GetPosition().y,
+		width * 3,
+		height * 1.5f);
+
+	attacks["specialUHit"].hitBoxes[2].box = manager->GetSDLCoors(
+		body->GetPosition().x,
+		body->GetPosition().y,
+		width * 3,
+		height * 1.5f);
+
+	attacks["specialUHit"].hitBoxes[0].hitdata.estado = fire;
 	attacks["specialUHit"].hitBoxes[0].hitdata.power = 70;
+	attacks["specialUHit"].hitBoxes[1].hitdata.estado = water;
+	attacks["specialUHit"].hitBoxes[1].hitdata.power = 70;
+	attacks["specialUHit"].hitBoxes[2].hitdata.estado = electric;
+	attacks["specialUHit"].hitBoxes[2].hitdata.power = 70;
 }
 

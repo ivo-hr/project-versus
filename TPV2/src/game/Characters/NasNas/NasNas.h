@@ -25,8 +25,8 @@ public:
 	virtual void Respawn() override;
 private:
 	int maxMana = 600;
-	int mana = maxMana;
-	int manaRecoverRate = 2;
+	float mana = maxMana;
+	float manaRecoverRate = 1.5f;
 	state estado = fire;
 protected:
 	void BuildBoxes() override;
