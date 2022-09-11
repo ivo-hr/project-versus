@@ -36,13 +36,12 @@ ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfpl
     else if (fInput == -2) { usedKeyboard[1] = true; playerTexture[0]->setFront(&sdl->images().at("k2"));
     }
 
-    int pointerSize = w / 64;
     int dist = (w * 12 / 13) / numOfplayer;
     int offset = dist - w / 13;
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P1P"), 0u * dist + offset, 676, pointerSize, pointerSize,w,h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P2P"), 1u, 676, pointerSize, pointerSize, w, h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P3P"), 2u, 676, pointerSize, pointerSize, w, h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P4P"), 3u, 676, pointerSize, pointerSize, w, h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P1P"), 0u * dist + offset, 676, w, h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P2P"), 1u, 676, w, h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P3P"), 2u, 676, w, h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P4P"), 3u, 676, w, h));
     playerPointers[0]->setActive(true);
     sdl->musics().at("sawtines").play();
 }

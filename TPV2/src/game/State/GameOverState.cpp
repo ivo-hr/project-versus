@@ -23,7 +23,7 @@ GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures
         if (playersInputV[i] == playersInput)winnerInput = i+1;
     }
     string inputString = "P" + to_string(winnerInput) + "P";
-    pointer = new PlayerPointer(&sdl->images().at(inputString), w / 2 - w / 64 / 2, h / 2 - w / 64 / 2, w / 64, w / 64, w, h);
+    pointer = new PlayerPointer(&sdl->images().at(inputString), w / 2 - w / 64 / 2, h / 2 - w / 64 / 2, w, h);
     pointer->setActive(true);
     playersInput_ = playersInput;
     gameStats_ = gameStats;

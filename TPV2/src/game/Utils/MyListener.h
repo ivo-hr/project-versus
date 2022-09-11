@@ -26,7 +26,7 @@ public:
 		{
 			for (int i = 0; i < characters.size(); i++)
 			{
-				if (two == characters[i]->GetBody() && two->GetLinearVelocity().y > -0.1f)
+				if (two == characters[i]->GetBody()/* && two->GetLinearVelocity().y > -0.1f*/)
 				{
 					characters[i]->SetGround(true);
 				}

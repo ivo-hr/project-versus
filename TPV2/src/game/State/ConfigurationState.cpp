@@ -23,7 +23,7 @@ ConfigurationState::ConfigurationState(FightManager* game ,int pI) : State(game)
 
     fullSCheck = new Button(&sdl->images().at("check"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)(h * 1.2f / 2 - butW), butW * 2, butW * 2);
     
-    p1 = new PlayerPointer(&sdl->images().at("P1P"), w/2, h/2, w / 64, w / 64, w, h);
+    p1 = new PlayerPointer(&sdl->images().at("P1P"), w/2, h/2, w, h);
     p1->setActive(true);
     pInput = pI;
 }

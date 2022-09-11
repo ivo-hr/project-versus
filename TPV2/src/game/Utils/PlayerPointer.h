@@ -10,7 +10,7 @@ class PlayerPointer {
 	SDLUtils* sdl = SDLUtils::instance();
 public:
 	PlayerPointer() :texture(nullptr), x(0), y(0), w(0), h(0), wh(), ww(), vel((float)ww / 200.f) {};
-	PlayerPointer(Texture* t, int x, int y, int width, int height, int ww, int wh) :texture(t), x(x), y(y), w(width), h(height), ww(ww), wh(wh), vel((float)ww / 200.f) {};
+	PlayerPointer(Texture* t, int x, int y, int ww, int wh) :texture(t), x(x), y(y), w(ww / 38), h(ww / 38), ww(ww), wh(wh), vel((float)ww / 200.f) {};
 	virtual ~PlayerPointer() {};
 	void render();
 	void move(int dir);
