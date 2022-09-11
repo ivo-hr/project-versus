@@ -5,7 +5,7 @@
   "maxSpeed": 25,
   "speed":0,
   "maxJumps": 1 ,
-  "jumpStr": 800,
+  "jumpStr": 740,
   "maxShield": 360,
 
   "attacksData": [
@@ -123,7 +123,7 @@
           "hitData": {
             "b2vecX": 1,
             "b2vecY": 3,
-            "base": 40,
+            "base": 20,
             "damage": 30,
             "multiplier": 0.5,
             "stun": -1,

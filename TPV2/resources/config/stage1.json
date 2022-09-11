@@ -2,16 +2,16 @@
     "codeName": "stage1",
     "background": "fondo",
     "platform": "testura",
-    "deathZoneSizeX": 75,
+    "deathZoneSizeX": 90,
     "deathZoneSizeY": 75,
-    "groundX": 37.5,
+    "groundX": 45,
     "groundY": 50.0,
-    "groundW": 40.0,
+    "groundW": 50.0,
     "groundH": 30.0,
 
     "platformData": [
         {
-        "platformX": 37.5,
+        "platformX": 45,
         "platformY": 30.0,
         "platformW": 10.0,
         "platformH": 0.5
@@ -19,19 +19,19 @@
 
     "playerSpawns": [
         {
-        "X": 29,
+        "X": 36.5,
         "Y": 33
         },
         {
-        "X": 46,
+        "X": 53.5,
         "Y": 33
         },
         {
-        "X": 20,
+        "X": 27.5,
         "Y": 33
         },
         {
-        "X": 55,
+        "X": 62.5,
         "Y": 33
         }]
 }

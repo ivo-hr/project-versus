@@ -5,7 +5,7 @@
   "maxSpeed": 25,
   "speed":0,
   "maxJumps": 2 ,
-  "jumpStr": 740,
+  "jumpStr": 650,
   "onGround": true,
   "shield": false ,
   "maxShield": 360,
@@ -91,7 +91,7 @@
           "hitData": {
             "b2vecX": 1,
             "b2vecY": 9,
-            "base": 40,
+            "base": 30,
             "damage": 7,
             "multiplier": 0.1,
             "stun": -1,

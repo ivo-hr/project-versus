@@ -887,7 +887,7 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 						maxSpeed += ralentizar;
 						ralentizar = 0;
 					}
-					int poder = (statePower + a.power) / 2;
+					int poder = (statePower + a.power) / 3;
 					auto vapor = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 0);
 					manager->AddEntity(vapor);
 					vapor->SetOponents(manager->GetEntities(vapor));
