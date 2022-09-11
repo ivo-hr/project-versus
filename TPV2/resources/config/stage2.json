@@ -7,20 +7,20 @@
     "groundX": 50.0,
     "groundY": 45.0,
     "groundW": 35.0,
-    "groundH": 10.0,
+    "groundH": 20.0,
 
     "platformData": [
         {
-        "platformX": 37.5,
-        "platformY": 35.0,
+        "platformX": 24.5,
+        "platformY": 30.0,
         "platformW": 10.0,
-        "platformH": 0.5
+        "platformH": 2.5
         },
         {
-        "platformX": 62.5,
-        "platformY": 35.0,
+        "platformX": 75.5,
+        "platformY": 30.0,
         "platformW": 10.0,
-        "platformH": 0.5
+        "platformH": 2.5
         }],
 
     "playerSpawns": [

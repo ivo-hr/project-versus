@@ -3,7 +3,7 @@
     "background": "fondo",
     "platform": "testura",
     "deathZoneSizeX": 90,
-    "deathZoneSizeY": 75,
+    "deathZoneSizeY": 70,
     "groundX": 45,
     "groundY": 50.0,
     "groundW": 50.0,
@@ -13,7 +13,7 @@
         {
         "platformX": 45,
         "platformY": 30.0,
-        "platformW": 10.0,
+        "platformW": 20.0,
         "platformH": 0.5
         }],
 

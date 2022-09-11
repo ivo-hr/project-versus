@@ -93,7 +93,7 @@
             "b2vecY": 9,
             "base": 30,
             "damage": 7,
-            "multiplier": 0.1,
+            "multiplier": 0.6,
             "stun": -1,
             "shieldBreak": false
           },

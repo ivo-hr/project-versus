@@ -52,14 +52,14 @@ void ConfigurationState::update() {
         if (ih.isKeyDown(SDLK_s)){ p1->move(1); toReDraw = true; }
         if (ih.isKeyDown(SDLK_a)) { p1->move(2); toReDraw = true; }
         if (ih.isKeyDown(SDLK_d)) { p1->move(3); toReDraw = true; }
-        if (ih.isKeyDown(SDLK_e)) { enter = true; toReDraw = true; }
+        if (ih.isKeyDown(SDLK_LCTRL)) { enter = true; toReDraw = true; }
         break;
     case -2:
         if (ih.isKeyDown(SDLK_UP)) { p1->move(0); toReDraw = true; }
         if (ih.isKeyDown(SDLK_DOWN)) { p1->move(1); toReDraw = true; }
         if (ih.isKeyDown(SDLK_LEFT)) { p1->move(2); toReDraw = true; }
         if (ih.isKeyDown(SDLK_RIGHT)) { p1->move(3); toReDraw = true; }
-        if (ih.isKeyDown(SDLK_l)) { enter = true; toReDraw = true; }
+        if (ih.isKeyDown(SDLK_RCTRL)) { enter = true; toReDraw = true; }
         break;
     default:
         if (ih.xboxGetAxesState(pInput, 1) == -1 || ih.xboxGetDpadState(pInput, 0)) { p1->move(0); toReDraw = true; }
@@ -155,10 +155,10 @@ void ConfigurationState::update() {
     switch (pInput)
     {
     case -1:
-        if (!ih.isKeyDown(SDLK_e))keyRelease = true;
+        if (!ih.isKeyDown(SDLK_LCTRL))keyRelease = true;
         break;
     case -2:
-        if (!ih.isKeyDown(SDLK_l))keyRelease = true;
+        if (!ih.isKeyDown(SDLK_RCTRL))keyRelease = true;
         break;
     case -3:
         break;

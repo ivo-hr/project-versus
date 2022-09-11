@@ -98,10 +98,10 @@ void ConfigState::update() {
             switch (playerInput[i])
             {
             case -1:
-                if (ih.isKeyDown(SDLK_e))enter = true;
+                if (ih.isKeyDown(SDLK_LCTRL))enter = true;
                 break;
             case -2:
-                if (ih.isKeyDown(SDLK_l))enter = true;
+                if (ih.isKeyDown(SDLK_RCTRL))enter = true;
                 break;
             default:
                 if (ih.xboxGetButtonState(playerInput[i], SDL_CONTROLLER_BUTTON_B))enter = true;
@@ -312,10 +312,10 @@ void ConfigState::checkButtonPointerClick()
         switch (playerInput[i])
         {
         case -1:
-            if (ih.isKeyDown(SDLK_e))enter = true;
+            if (ih.isKeyDown(SDLK_LCTRL))enter = true;
             break;
         case -2:
-            if (ih.isKeyDown(SDLK_l))enter = true;
+            if (ih.isKeyDown(SDLK_RCTRL))enter = true;
             break;
         default:
             if (ih.xboxGetButtonState(playerInput[i], SDL_CONTROLLER_BUTTON_B))enter = true;
@@ -458,10 +458,10 @@ void ConfigState::checkButtonPointerClick()
             switch (lastPointerClick)
             {
             case -1:
-                if (!ih.isKeyDown(SDLK_e))keyRelease = true;
+                if (!ih.isKeyDown(SDLK_LCTRL))keyRelease = true;
                 break;
             case -2:
-                if (!ih.isKeyDown(SDLK_l))keyRelease = true;
+                if (!ih.isKeyDown(SDLK_RCTRL))keyRelease = true;
                 break;
             case -3:
                 break;
@@ -477,10 +477,10 @@ void ConfigState::checkButtonPointerClick()
         switch (playerInput[i])
         {
         case -1:
-            if (ih.isKeyDown(SDLK_r))selected[i] = false;
+            if (ih.isKeyDown(SDLK_LSHIFT))selected[i] = false;
             break;
         case -2:
-            if (ih.isKeyDown(SDLK_k))selected[i] = false;
+            if (ih.isKeyDown(SDLK_RSHIFT))selected[i] = false;
             break;
         default:
             if (ih.xboxGetButtonState(playerInput[i], SDL_CONTROLLER_BUTTON_A))selected[i] = false;
@@ -672,10 +672,10 @@ void ConfigState::mapcheckButtonPointerClick()
     switch (playerInput[0])
     {
     case -1:
-        if (ih.isKeyDown(SDLK_e))enter = true;
+        if (ih.isKeyDown(SDLK_LCTRL))enter = true;
         break;
     case -2:
-        if (ih.isKeyDown(SDLK_l))enter = true;
+        if (ih.isKeyDown(SDLK_RCTRL))enter = true;
         break;
     default:
         if (ih.xboxGetButtonState(playerInput[0], SDL_CONTROLLER_BUTTON_B))enter = true;
@@ -712,10 +712,10 @@ void ConfigState::mapcheckButtonPointerClick()
         switch (playerInput[0])
         {
         case -1:
-            if (!ih.isKeyDown(SDLK_e))keyRelease = true;
+            if (!ih.isKeyDown(SDLK_LCTRL))keyRelease = true;
             break;
         case -2:
-            if (!ih.isKeyDown(SDLK_l))keyRelease = true;
+            if (!ih.isKeyDown(SDLK_RCTRL))keyRelease = true;
             break;
         case -3:
             break;

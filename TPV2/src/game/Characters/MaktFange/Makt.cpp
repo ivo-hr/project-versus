@@ -259,7 +259,7 @@ void Makt::SpecialUpward(int frameNumber)
 
 		CreateHitBox(&attacks["specialU"].hitBoxes[0]);
 		
-		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, -60));
+		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, -70));
 	}
 	else if (frameNumber >= attacks["specialU"].totalFrames)
 	{

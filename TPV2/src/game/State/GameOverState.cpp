@@ -65,10 +65,10 @@ void GameOverState::update() {
     switch (playersInput_)
     {
     case -1:
-        if (ih.isKeyDown(SDLK_e))enter = true;
+        if (ih.isKeyDown(SDLK_LCTRL))enter = true;
         break;
     case -2:
-        if (ih.isKeyDown(SDLK_l))enter = true;
+        if (ih.isKeyDown(SDLK_RCTRL))enter = true;
         break;
     default:
         if (ih.xboxGetButtonState(playersInput_, SDL_CONTROLLER_BUTTON_B))enter = true;
@@ -139,7 +139,7 @@ void GameOverState::drawGameStats()
         showText("Deaths: ", (h / 42), (int)(i * dist + offset), (int)h * 4.05f / 5, build_sdlcolor(0x00000000));
         showText(to_string(gameStats_[numOfplayer - i - 1][0]), (h / 42), (int)(i * dist + offset + w / 6), (int)h * 4.05f / 5, build_sdlcolor(0x00000000));
 
-        showText("Damage taken: ", (h / 42), (int)(i * dist + offset), (int)h * 4.2f / 5, build_sdlcolor(0x00000000));
+        showText("Dmg taken: ", (h / 42), (int)(i * dist + offset), (int)h * 4.2f / 5, build_sdlcolor(0x00000000));
         showText(to_string(gameStats_[numOfplayer - i - 1][1]), (h / 42), (int)(i * dist + offset + w / 6), (int)h * 4.2f / 5, build_sdlcolor(0x00000000));
     }
 }
