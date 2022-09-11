@@ -156,7 +156,7 @@ En partida el jugador dispone de varios botones con los que atacar, defender y m
   - Arriba: Hará que el jugador salte.
   - Abajo: El jugador bloqueará/esquivará. Pulsado dos veces rápidamente subido a una plataforma te bajará de ella.
 
-- Ataques básicos: Los botones RCTRL/LCTRL en teclado y A en mando activarán los ataques básicos. Pueden combinarse con las teclas de movimiento.
+- Ataques básicos: Los botones LCTRL/RCTRL en teclado y A en mando activarán los ataques básicos. Pueden combinarse con las teclas de movimiento.
 - Ataques especiales:Los botones LSHIFT/RSHIFT en teclado y B en mando activarán los ataques básicos. Pueden combinarse con las teclas de movimiento.
 - Menú de pausa: La tecla Escape en teclado activará la pestaña de pausa de partida.
 - Taunt: La tecla T/J en teclado y Start en mando activará la animación de burla.
