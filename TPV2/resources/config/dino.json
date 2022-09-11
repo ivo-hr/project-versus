@@ -54,9 +54,9 @@
       "hitBoxes": [
         {
           "hitData": {
-            "b2vecX": 1.3,
-            "b2vecY": 1,
-            "base": 40,
+            "b2vecX": -1,
+            "b2vecY": 4,
+            "base": 35,
             "damage": 10,
             "multiplier": 0.2,
             "stun": -1,
@@ -113,15 +113,15 @@
       "id": "specialL",
       "hitBoxes": [
       ],
-      "keyFrames": [6, 30],
-      "totalFrames": 40
+      "keyFrames": [10, 35],
+      "totalFrames": 50
     },
     {
       "id": "specialLHit",
       "hitBoxes": [
         {
           "hitData": {
-            "b2vecX": 1,
+            "b2vecX": 1.6,
             "b2vecY": 3,
             "base": 20,
             "damage": 30,
@@ -134,7 +134,7 @@
         }
       ],
       "keyFrames": [2],
-      "totalFrames": 16
+      "totalFrames": 25
     },
     {
       "id": "specialU",

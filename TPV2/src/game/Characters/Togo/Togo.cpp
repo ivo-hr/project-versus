@@ -237,7 +237,7 @@ void Togo::SpecialForward(int frameNumber)
 		speed = dir * 34;
 		
 		bite = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * width * 1.2f),
+			body->GetPosition().x + (dir * width * 1.5f),
 			body->GetPosition().y - height * 0.2f,
 			width * 4,
 			height * 0.7f);
@@ -420,9 +420,9 @@ void Togo::BuildBoxes()
 		height * 0.4f);
 
 	attacks["specialLHit"].hitBoxes[0].box = manager->GetSDLCoors(
-		body->GetPosition().x + (dir * width * 1.2f),
+		body->GetPosition().x + (dir * width * 1.5f),
 		body->GetPosition().y - height * 0.2f,
-		width * 4.5f,
+		width * 4.1f,
 		height * 0.9f);
 
 	attacks["specialD"].hitBoxes[0].box = manager->GetSDLCoors(
