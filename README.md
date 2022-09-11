@@ -121,11 +121,11 @@ Los personajes se sitúan en un escenario 2D y tendrán que atacar al rival hast
 
 - Movimientos generales: 
   - Ataque básico: todos los personajes tienen un ataque básico distinto.
-    - Ataque neutral (A) en mando, (E, L) en teclado
-    - Ataque lateral(←/→ + A) en mando, (A/D + E, ←/→ + L) en teclado
-    - Ataque hacia abajo (↓ + A) en mando, (S+ E, ↓ + L) en teclado
-    - Ataque hacia arriba (↑ + A) en mando, (W + E, ↑ + L) en teclado
-    - Ataques aéreo: (en el aire + A) en mando, (en el aire + E, L) en teclado
+    - Ataque neutral (A) en mando, (LCTRL, RCTRL) en teclado
+    - Ataque lateral(←/→ + A) en mando, (A/D + LCTRL, ←/→ + RCTRL) en teclado
+    - Ataque hacia abajo (↓ + A) en mando, (S+ LCTRL, ↓ + RCTRL) en teclado
+    - Ataque hacia arriba (↑ + A) en mando, (W + LCTRL, ↑ + RCTRL) en teclado
+    - Ataques aéreo: (en el aire + A) en mando, (en el aire + LCTRL, en el aire + RCTRL) en teclado
   - Bloqueo: (↓) en mando, (S, ↓) en teclado
     - Los personajes pueden usar el movimiento de bloqueo para reducir el daño recibido y evitar el efecto de knockback y de lanzamiento de otro jugador. Para el equilibrio, el movimiento tiene un tiempo de cooldown. El personaje no podrá realizar otros ataques mientras.
   - Esquiva: (en el aire + ↓)
@@ -133,10 +133,10 @@ Los personajes se sitúan en un escenario 2D y tendrán que atacar al rival hast
   - Saltos: (↑)
     - El jugador salta más o menos dependiendo del tiempo que se presione el botón. Hay múltiples saltos.
 - Movimientos especiales:
-  - Especial neutral (←/→ + B) en mando, (A/D + R, ←/→ + K) en teclado
-  - Ataque lateral(←/→ + B) en mando, (A/D + R, ←/→ + K) en teclado
-  - Ataque hacia abajo (↓ + B) en mando, (S+ R, ↓ + K) en teclado
-  - Recovery: (↑ + B) en el mando, (W + R, ↑ + K) en teclado
+  - Especial neutral (←/→ + B) en mando, (A/D + LSHIFT, ←/→ + RSHIFT) en teclado
+  - Ataque lateral(←/→ + B) en mando, (A/D + LSHIFT, ←/→ + RSHIFT) en teclado
+  - Ataque hacia abajo (↓ + B) en mando, (S+ LSHIFT, ↓ + RSHIFT) en teclado
+  - Recovery: (↑ + B) en el mando, (W + LSHIFT, ↑ + RSHIFT) en teclado
 
 
 ####  <a name = "Mecánicas-escenario"> Mecánicas de escenario</a>
