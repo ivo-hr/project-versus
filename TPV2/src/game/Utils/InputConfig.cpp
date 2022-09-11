@@ -74,10 +74,10 @@ bool InputConfig::right()
 bool InputConfig::basic()
 {
 	if (typeofInput == -1) {
-		return ih.isKeyDown(SDLK_e);
+		return ih.isKeyDown(SDLK_LCTRL);
 	}
 	else if (typeofInput == -2) {
-		return ih.isKeyDown(SDLK_l);
+		return ih.isKeyDown(SDLK_RCTRL);
 	}
 	else {
 		return ih.xboxGetButtonState(typeofInput, SDL_CONTROLLER_BUTTON_B);
@@ -87,10 +87,10 @@ bool InputConfig::basic()
 bool InputConfig::special()
 {
 	if (typeofInput == -1) {
-		return ih.isKeyDown(SDLK_r);
+		return ih.isKeyDown(SDLK_LSHIFT);
 	}
 	else if (typeofInput == -2) {
-		return ih.isKeyDown(SDLK_k);
+		return ih.isKeyDown(SDLK_RSHIFT);
 	}
 	else {
 		return ih.xboxGetButtonState(typeofInput, SDL_CONTROLLER_BUTTON_A);
