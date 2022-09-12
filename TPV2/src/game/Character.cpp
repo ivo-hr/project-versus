@@ -357,7 +357,7 @@ void Character::update()
 
 	anim->update();
 
-	if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()) && (hurtbox.y > -hurtbox.h || stun > 0))
+	if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()) /*&& (hurtbox.y > -hurtbox.h || stun > 0)*/)
 	{
 		OnDeath();
 	}
@@ -1171,6 +1171,7 @@ SDL_Rect* Character::GetHurtbox()
 
 void Character::OnDeath()
 {
+	body->SetGravityScale(10.0f);
 	//Canal 1 , (antes a veces no se escucha)
 	sdl->soundEffects().at("death").play(0,1);
 
