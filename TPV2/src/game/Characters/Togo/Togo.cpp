@@ -239,20 +239,15 @@ void Togo::SpecialForward(int frameNumber)
 		bite = manager->GetSDLCoors(
 			body->GetPosition().x + (dir * width * 1.5f),
 			body->GetPosition().y - height * 0.2f,
-			width * 4,
-			height * 0.7f);
+			width * 3.8f,
+			height * 0.8f);
 
 		for (int i = 0; i < oponents.size(); i++) {
 			if (SDL_HasIntersection(&bite, oponents[i]->GetHurtbox())) {
 				ChangeMove([this](int f) { SpecialLHit(f); });
+				bite = { 0, 0, 0, 0 };
 			}
 		}
-
-#ifdef _DEBUG
-
-		SDL_RenderDrawRect(sdl->renderer(), &bite);
-
-#endif // _DEBUG
 
 	}
 	else if (frameNumber == attacks["specialL"].keyFrames[1])
@@ -367,9 +362,29 @@ void Togo::SpecialLHit(int frameNumber)
 	}
 }
 
-void Togo::drawHUD(int numOfPlayer)
+void Togo::draw(SDL_Rect* camera)
 {
-	Character::drawHUD(numOfPlayer);
+
+#ifdef _DEBUG
+
+	SDL_Rect aux = bite;
+
+	aux.x -= camera->x;
+	aux.x *= (manager->GetActualWidth() / (float)camera->w);
+
+	aux.y -= camera->y;
+	aux.y *= (manager->GetActualWidth() / (float)camera->w);
+
+	aux.w *= (manager->GetActualWidth() / (float)camera->w);
+	aux.h *= (manager->GetActualWidth() / (float)camera->w);
+
+	SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 255, 255);
+
+	SDL_RenderDrawRect(sdl->renderer(), &aux);
+
+#endif
+
+	Character::draw(camera);
 }
 
 bool Togo::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)

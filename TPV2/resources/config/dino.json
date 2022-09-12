@@ -121,11 +121,11 @@
       "hitBoxes": [
         {
           "hitData": {
-            "b2vecX": 1.6,
+            "b2vecX": 1.2,
             "b2vecY": 3,
-            "base": 20,
-            "damage": 30,
-            "multiplier": 0.5,
+            "base": 40,
+            "damage": 25,
+            "multiplier": 1.12,
             "stun": -1,
             "shieldBreak": true
           },
@@ -134,7 +134,7 @@
         }
       ],
       "keyFrames": [2],
-      "totalFrames": 25
+      "totalFrames": 27
     },
     {
       "id": "specialU",

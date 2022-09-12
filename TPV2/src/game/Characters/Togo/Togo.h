@@ -22,7 +22,7 @@ public:
 	virtual void update() override;
 	virtual void SetSpear(bool spear);
 	void SpecialLHit(int frameNumber);
-	virtual void drawHUD(int numOfPlayer)override;
+	virtual void draw(SDL_Rect* camera)override;
 private:
 	bool lanza = true;
 	float spearTime;
