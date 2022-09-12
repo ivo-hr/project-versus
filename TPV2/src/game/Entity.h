@@ -11,23 +11,23 @@ enum state { none, fire, electric, water, wElectric };
 struct animationData
 {
 	//Por cada animación...
-	int iniSprite;		//En que frame empieza
-	int totalSprites;	//Cuantos frames son
-	std::vector<int>  keySprite = std::vector<int>();		//Sprite de la animación en el que debe aparecer la hitbox (Con respecto al sprite inicial)
-	std::vector<int>  keyFrame = std::vector<int>();		//Los frames en el que el juego crea las hitbox de los ataques
-	int totalFrames;	//Cuantos frames dura el movimiento en total (Hasta que se repita o acabe)
+	ushort iniSprite;		//En que frame empieza
+	ushort totalSprites;	//Cuantos frames son
+	std::vector<ushort> keySprite = std::vector<ushort>();		//Sprite de la animación en el que debe aparecer la hitbox (Con respecto al sprite inicial)
+	std::vector<ushort> keyFrame = std::vector<ushort>();		//Los frames en el que el juego crea las hitbox de los ataques
+	ushort totalFrames;	//Cuantos frames dura el movimiento en total (Hasta que se repita o acabe)
 	bool loop;			//Si se debe loopear
 };
 
 struct spriteSheetData
 {
-	int leftOffset;		//Cuanto debe sobresalir la spritesheet a la izquierda (par que el dibujo coincida con la hurtbox)
-	int upOffset;		//bruh
-	int sizeXOffset;	//Que tan grande se tiene que hacer el sprite en X para que coincida
-	int sizeYOffset;	//bruh
+	ushort leftOffset;		//Cuanto debe sobresalir la spritesheet a la izquierda (par que el dibujo coincida con la hurtbox)
+	ushort upOffset;		//bruh
+	ushort sizeXOffset;	//Que tan grande se tiene que hacer el sprite en X para que coincida
+	ushort sizeYOffset;	//bruh
 
-	int spritesInX;		//Cuantos frames hay en una fila de la spritesheet entera
-	int spritesInY;		//Cuantos frames hay en una columna de la spritesheet entera
+	ushort spritesInX;		//Cuantos frames hay en una fila de la spritesheet entera
+	ushort spritesInY;		//Cuantos frames hay en una columna de la spritesheet entera
 
 	std::unordered_map<std::string, animationData> animations;
 	//std::unordered_map<std::string, animationData> animations;
@@ -35,19 +35,19 @@ struct spriteSheetData
 
 struct HitData {
 
-	int damage;
+	ushort damage;
 
 	b2Vec2 direction;
-	int base;
+	ushort base;
 	float multiplier;
 
-	int stun = -1;
-	int GetStun(float recoil) { return stun <= 0 ? (recoil / 1.8f) + 4 : stun; };
+	short stun = -1;
+	ushort GetStun(float recoil) { return stun <= 0 ? (recoil / 1.8f) + 4 : stun; };
 
 	bool shieldBreak = false;
 
 	state estado = none;
-	int power = 0;
+	ushort power = 0;
 };
 
 struct HitBoxData
@@ -56,11 +56,11 @@ struct HitBoxData
 
 	HitData hitdata;
 
-	int hitlag = -1;
-	int GetHitlag() { return hitlag <= 0 ? hitdata.damage * 0.9f : hitlag; };
+	short hitlag = -1;
+	ushort GetHitlag() { return hitlag <= 0 ? hitdata.damage * 0.9f : hitlag; };
 
-	int duration;
-	int outFor = 0;
+	ushort duration;
+	ushort outFor = 0;
 
 	Vector2D charOffset;	//Offset que tiene con respecto a la entidad para que la siga
 	Vector2D normalOffset;
@@ -70,8 +70,8 @@ struct attackData
 {
 	std::vector<HitBoxData> hitBoxes;
 
-	std::vector<int> keyFrames;
-	int totalFrames = 0;
+	std::vector<ushort> keyFrames;
+	ushort totalFrames = 0;
 };
 
 class Entity
@@ -92,7 +92,7 @@ protected:
 	float width = 3.f;
 	float height = 3.f;
 
-	int dir;
+	short dir;
 
 	std::vector<Entity*> oponents;
 	std::vector<HitBoxData*> hitboxes;
@@ -102,15 +102,15 @@ protected:
 	bool projectile = false;
 
 	bool alive;
-	int respawnTimer = 0;
-	int respawnFrames;
+	ushort respawnTimer = 0;
+	ushort respawnFrames;
 
-	uint16 hitLag = 0;
+	ushort hitLag = 0;
 
-	int lives = 3;
+	ushort lives = 3;
 	b2Vec2 respawnPos;
 
-	int kills;
+	ushort kills;
 	Entity* lastCharacter; // El ultimo jugador que golpeo a este
 
 	Vector2D shakeValue;
@@ -141,13 +141,13 @@ public:
 
 	FightManager* GetManager() { return manager; };
 
-	virtual int GetDir() { return dir; };
+	virtual short GetDir() { return dir; };
 	virtual float GetWidth() { return width; };
 	virtual float GetHeight() { return height; };
 	virtual SDL_Rect* GetHurtbox();
 	virtual b2Body* GetBody() { return body; };
 
-	void AddHitLag(uint16 lag);
+	void AddHitLag(ushort lag);
 
 	Vector2D GetCenterSDL() { return Vector2D(hurtbox.x + (hurtbox.w / 2), hurtbox.y + (hurtbox.h / 2)); };
 
@@ -168,5 +168,5 @@ public:
 	bool ToDelete() { return toDelete; };
 	virtual bool isCharacter() { return false; };
 
-	void SetShake(Vector2D dir, uint16 value);
+	void SetShake(Vector2D dir, ushort value);
 };

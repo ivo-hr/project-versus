@@ -4,7 +4,7 @@
 #include "../PlayingState/FightManager.h"
 #include "../../utils/CheckML.h"
 
-ConfigState::ConfigState(FightManager* game , int fInput) : State(game), numOfplayer(2) {
+ConfigState::ConfigState(FightManager* game , short fInput) : State(game), numOfplayer(2) {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     initcharact();
@@ -157,7 +157,7 @@ void ConfigState::next() {
     cout << "Next State " << endl;
 
     if (!TeamModebool) {
-        fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,map+1)); //3 para el de noche
+        fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,map + 1)); //3 para el de noche
     }
     else
     {
@@ -222,7 +222,7 @@ void ConfigState::searchInput()
             }
         }
         else if (SDL_NumJoysticks() > nMandos) { //se ha enchufado nuevo mando
-            vector<int> aux = playerInput;
+            vector<short> aux = playerInput;
             for (auto i = 0u; i < SDL_NumJoysticks(); i++) {
                 if (ih.xboxGetAxesState(i, 1) == -1) {
                     bool nes = false;

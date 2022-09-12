@@ -16,7 +16,6 @@
 #include "../Utils/PlayerSelectRect.h"
 #include "../State/ConfigurationState.h"
 
-
 class Entity;
 class Character;
 class Particle;
@@ -36,8 +35,8 @@ class FightManager :public StateMachine
 	// Team mode
 	std::vector<Character*> team1;
 	std::vector<Character*> team2;
-	vector<vector<int>>team1DeadStats;
-	vector<vector<int>>team2DeadStats;
+	vector<vector<ushort>>team1DeadStats;
+	vector<vector<ushort>>team2DeadStats;
 	vector<Texture*>team1DeadTextures;
 	vector<Texture*>team2DeadTextures;
 
@@ -49,14 +48,14 @@ class FightManager :public StateMachine
 
 	Entity* winner;
 
-	int width, height;
+	ushort width, height;
 	float sizeDiff;
 
 	bool fightEnded = false;
 
-	int numPlayers = 0;
+	short numPlayers = 0;
 	
-	int addedDelay;
+	ushort addedDelay;
 
 	bool exit_ = false;
 
@@ -69,23 +68,23 @@ class FightManager :public StateMachine
 	SDL_Rect camera; 
 	SDL_Rect auxCam;
 
-	int cameraOffset = 75;
+	ushort cameraOffset = 75;
 	Vector2D camShake;
 	uint16 shakeDuration;
 
 	void MoveCamera();
 
-	vector<Texture*>deadTextures; // Textures of dead characters for gameover stats
+	vector<Texture*> deadTextures; // Textures of dead characters for gameover stats
 
-	int winnerInput;
-	vector<vector<int>>gameStats;
-	bool endGame=false;
-	int endGameTimer=0;
+	short winnerInput;
+	vector<vector<ushort>> gameStats;
+	bool endGame = false;
+	unsigned int endGameTimer = 0;
 	bool teammode = false;
 
 	void startCount();
-	int scount = 4;
-	int startticks=0;
+	short scount = 4;
+	int startticks = 0;
 public:
 
 	FightManager(SDLUtils* sdl);
@@ -97,8 +96,8 @@ public:
 
 	void LoadStage(std::string file);
 	void InitCamera();
-	int StartFight(std::vector<Character*> ent);
-	int StartFight(std::vector<Character*> team1, std::vector<Character*> team2);
+	ushort StartFight(std::vector<Character*> ent);
+	ushort StartFight(std::vector<Character*> team1, std::vector<Character*> team2);
 
 	void AddEntity(Entity* ent);
 	bool RemoveEntity(Entity* ent);
@@ -116,8 +115,8 @@ public:
 	int b2ToSDLY(b2Body* body, float height);
 	int ToSDL(float x);
 
-	int GetActualWidth();
-	int GetActualHeight();
+	ushort GetActualWidth();
+	ushort GetActualHeight();
 
 	double GetScreenRatio();
 	double GetScreeAdjust();
@@ -130,9 +129,9 @@ public:
 	b2World* GetWorld();
 	SDLUtils* GetSDLU() { return sdl; };
 
-	int getWinnerInput() { return winnerInput; }
+	short getWinnerInput() { return winnerInput; }
 	void addCharacterStats(Character* character);
-	vector<vector<int>>getGameStats() { return gameStats; }
+	vector<vector<ushort>>getGameStats() { return gameStats; }
 
 	void userExit() { exit_ = true; };
 

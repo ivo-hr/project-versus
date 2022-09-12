@@ -6,9 +6,8 @@
 #include "../../../utils/CheckML.h"
 #include <iostream>
 using json = nlohmann::json;
-GatoEspia::GatoEspia(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p, 1.5f, 3.f)
+GatoEspia::GatoEspia(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mngr, pos, input, p, 1.5f, 3.f)
 {
-
 	spriteSheetData spData;
 
 	ReadJson("resources/config/gato.json", spData);
@@ -29,7 +28,7 @@ GatoEspia::~GatoEspia()
 }
 
 //Lo mismo que el de arriba pero mas rapido y debil xd
-void GatoEspia::BasicNeutral(int frameNumber)
+void GatoEspia::BasicNeutral(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -53,7 +52,7 @@ void GatoEspia::BasicNeutral(int frameNumber)
 	}
 }
 
-void GatoEspia::BasicForward(int frameNumber)
+void GatoEspia::BasicForward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -80,7 +79,7 @@ void GatoEspia::BasicForward(int frameNumber)
 	}
 }
 
-void GatoEspia::BasicDownward(int frameNumber)
+void GatoEspia::BasicDownward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -106,7 +105,7 @@ void GatoEspia::BasicDownward(int frameNumber)
 	}
 }
 
-void GatoEspia::BasicUpward(int frameNumber)
+void GatoEspia::BasicUpward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -133,7 +132,7 @@ void GatoEspia::BasicUpward(int frameNumber)
 
 //--------------------------------------------------------------------------------------------------
 
-void GatoEspia::SpecialNeutral(int frameNumber)
+void GatoEspia::SpecialNeutral(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -197,7 +196,7 @@ void GatoEspia::SpecialNeutral(int frameNumber)
 	}
 }
 
-void GatoEspia::SpecialNeutralU(int frameNumber)
+void GatoEspia::SpecialNeutralU(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -269,7 +268,7 @@ void GatoEspia::SpecialNeutralU(int frameNumber)
 	}
 }
 
-void GatoEspia::SpecialNeutralD(int frameNumber)
+void GatoEspia::SpecialNeutralD(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -333,7 +332,7 @@ void GatoEspia::SpecialNeutralD(int frameNumber)
 	}
 }
 
-void GatoEspia::SpecialForward(int frameNumber)
+void GatoEspia::SpecialForward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -379,7 +378,7 @@ void GatoEspia::SpecialForward(int frameNumber)
 	}
 }
 
-void GatoEspia::SpecialUpward(int frameNumber)
+void GatoEspia::SpecialUpward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -447,7 +446,7 @@ void GatoEspia::SpecialUpward(int frameNumber)
 	}
 }
 
-void GatoEspia::SpecialDownward(int frameNumber)
+void GatoEspia::SpecialDownward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -487,7 +486,7 @@ void GatoEspia::SpecialDownward(int frameNumber)
 	//}
 }
 
-void GatoEspia::TpAtack(int frameNumber)
+void GatoEspia::TpAtack(ushort frameNumber)
 {
 
 	if (!onGround && frameNumber >= attacks["specialLHit"].keyFrames[0])
@@ -545,7 +544,7 @@ bool GatoEspia::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 	return Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
 }
 
-void GatoEspia::Counter(int frameNumber)
+void GatoEspia::Counter(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -572,7 +571,7 @@ void GatoEspia::Counter(int frameNumber)
 
 }
 
-void GatoEspia::drawHUD(int numOfPlayer)
+void GatoEspia::drawHUD(ushort numOfPlayer)
 {
 	Character::drawHUD(numOfPlayer);
 

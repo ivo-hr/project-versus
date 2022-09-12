@@ -117,7 +117,7 @@ void Entity::setLastCharacer(Entity* chrcter)
 	lastCharacter = chrcter;
 }
 
-void Entity::SetShake(Vector2D dir, uint16 value)
+void Entity::SetShake(Vector2D dir, ushort value)
 {
 	shakeValue = dir * value;
 }
@@ -323,7 +323,7 @@ SDL_Rect* Entity::GetHurtbox()
 	return &hurtbox;
 }
 
-void Entity::AddHitLag(uint16 lag)
+void Entity::AddHitLag(ushort lag)
 {
 	hitLag = lag;
 	body->SetEnabled(false);

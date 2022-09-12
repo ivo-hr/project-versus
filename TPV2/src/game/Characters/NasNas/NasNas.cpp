@@ -8,7 +8,7 @@
 #include <iostream>
 using json = nlohmann::json;
 
-NasNas::NasNas(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p, 1.5f, 2.7f)
+NasNas::NasNas(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mngr, pos, input,p, 1.5f, 2.7f)
 {
 
 	spriteSheetData spData;
@@ -27,7 +27,7 @@ NasNas::~NasNas()
 }
 
 //Lo mismo que el de arriba pero mas rapido y debil xd
-void NasNas::BasicNeutral(int frameNumber)
+void NasNas::BasicNeutral(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -51,7 +51,7 @@ void NasNas::BasicNeutral(int frameNumber)
 		moveFrame = -1;
 	}
 }
-void NasNas::BasicForward(int frameNumber)
+void NasNas::BasicForward(ushort frameNumber)
 {
 
 	AllowMovement(0.5f, false, true);
@@ -72,7 +72,7 @@ void NasNas::BasicForward(int frameNumber)
 		moveFrame = -1;
 	}
 }
-void NasNas::BasicUpward(int frameNumber)
+void NasNas::BasicUpward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -97,7 +97,7 @@ void NasNas::BasicUpward(int frameNumber)
 	}
 }
 
-void NasNas::BasicDownward(int frameNumber)
+void NasNas::BasicDownward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -125,7 +125,7 @@ void NasNas::BasicDownward(int frameNumber)
 
 //--------------------------------------------------------------------------------------------------
 
-void NasNas::SpecialNeutral(int frameNumber)
+void NasNas::SpecialNeutral(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -152,7 +152,7 @@ void NasNas::SpecialNeutral(int frameNumber)
 			attacks["specialN"].hitBoxes[0].hitdata.power = 25;
 			sdl->soundEffects().at("nasSpecNf").play();
 
-			spell = new Spell(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y), attacks["specialN"].hitBoxes[0].hitdata, b2Vec2(dir, 0), estado);
+			spell = new Spell(manager, b2Vec2(body->GetPosition().x + dir * 3, body->GetPosition().y - 0.3f), attacks["specialN"].hitBoxes[0].hitdata, b2Vec2(dir, 0), estado);
 		}
 		else if (estado == water)
 		{
@@ -160,7 +160,7 @@ void NasNas::SpecialNeutral(int frameNumber)
 			attacks["specialN"].hitBoxes[1].hitdata.power = 20;
 			sdl->soundEffects().at("nasSpecNw").play();
 
-			spell = new Spell(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y), attacks["specialN"].hitBoxes[1].hitdata, b2Vec2(dir, 0), estado);
+			spell = new Spell(manager, b2Vec2(body->GetPosition().x + dir * 3, body->GetPosition().y - 0.3f), attacks["specialN"].hitBoxes[1].hitdata, b2Vec2(dir, 0), estado);
 		}
 		else if (estado == electric)
 		{
@@ -168,7 +168,7 @@ void NasNas::SpecialNeutral(int frameNumber)
 			attacks["specialN"].hitBoxes[2].hitdata.power = 25;
 			sdl->soundEffects().at("nasSpecNr").play(); 
 
-			spell = new Spell(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y), attacks["specialN"].hitBoxes[2].hitdata, b2Vec2(dir, 0), estado);
+			spell = new Spell(manager, b2Vec2(body->GetPosition().x + dir * 3, body->GetPosition().y - 0.3f), attacks["specialN"].hitBoxes[2].hitdata, b2Vec2(dir, 0), estado);
 		}
 		manager->AddEntity(spell);
 		manager->MoveToFront(spell);
@@ -181,7 +181,7 @@ void NasNas::SpecialNeutral(int frameNumber)
 	}
 }
 
-void NasNas::SpecialForward(int frameNumber)
+void NasNas::SpecialForward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -229,7 +229,7 @@ void NasNas::SpecialForward(int frameNumber)
 	}
 }
 
-void NasNas::SpecialUpward(int frameNumber)
+void NasNas::SpecialUpward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -269,7 +269,7 @@ void NasNas::SpecialUpward(int frameNumber)
 	}
 }
 
-void NasNas::SpecialDownward(int frameNumber)
+void NasNas::SpecialDownward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -309,7 +309,7 @@ void NasNas::SpecialDownward(int frameNumber)
 
 }
 
-void NasNas::SpecialUpHit(int frameNumber)
+void NasNas::SpecialUpHit(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -356,7 +356,7 @@ void NasNas::update()
 	}
 }
 
-void NasNas::drawHUD( int numOfPlayer)
+void NasNas::drawHUD(ushort numOfPlayer)
 {
 	Character::drawHUD(numOfPlayer);
 

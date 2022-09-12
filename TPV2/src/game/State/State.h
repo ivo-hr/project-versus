@@ -5,6 +5,10 @@
 #include "../Utils/Button.h"
 
 class FightManager;
+
+using ushort = unsigned short;
+using uchar = unsigned char;
+
 using namespace std;
 
 class State {
@@ -12,11 +16,11 @@ protected:
     FightManager* fmngr = nullptr;
     InputHandler& ih = *InputHandler::instance();
     SDLUtils* sdl = SDLUtils::instance();
-    void showText(string s, int size, int x,int y,SDL_Color c);
-    void showText(string s, int size, int x, int y, SDL_Color c, SDL_Color b);
+    void showText(string s, ushort size, ushort x, ushort y,SDL_Color c);
+    void showText(string s, ushort size, ushort x, ushort y, SDL_Color c, SDL_Color b);
     //double ts(double i);//TO SCREEN
     Texture* tex;
-    vector<int> globalplayerInput;
+    vector<short> globalplayerInput;
 public:
     State(FightManager* fmngr) : fmngr(fmngr) ,tex(nullptr) {
     };

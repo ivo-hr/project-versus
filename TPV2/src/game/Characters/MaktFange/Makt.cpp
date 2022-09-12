@@ -6,7 +6,7 @@
 #include "../../../utils/CheckML.h"
 #include <iostream>
 
-Makt::Makt(FightManager* mngr, b2Vec2 pos, char input,int p) :
+Makt::Makt(FightManager* mngr, b2Vec2 pos, char input, ushort p) :
 	Character(mngr, pos, input,p, 2.f, 3.5f)
 {
 
@@ -41,7 +41,7 @@ Makt::~Makt()
 {
 }
 
-void Makt::BasicNeutral(int frameNumber)
+void Makt::BasicNeutral(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -65,7 +65,7 @@ void Makt::BasicNeutral(int frameNumber)
 	}
 }
 
-void Makt::BasicForward(int frameNumber)
+void Makt::BasicForward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -100,7 +100,7 @@ void Makt::BasicForward(int frameNumber)
 	}
 }
 
-void Makt::BasicUpward(int frameNumber)
+void Makt::BasicUpward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -130,7 +130,7 @@ void Makt::BasicUpward(int frameNumber)
 	}
 }
 
-void Makt::BasicDownward(int frameNumber)
+void Makt::BasicDownward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -160,7 +160,7 @@ void Makt::BasicDownward(int frameNumber)
 	}
 }
 
-void Makt::SpecialNeutral(int frameNumber)
+void Makt::SpecialNeutral(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -191,7 +191,7 @@ void Makt::SpecialNeutral(int frameNumber)
 	
 }
 
-void Makt::SpecialForward(int frameNumber)
+void Makt::SpecialForward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -226,7 +226,6 @@ void Makt::SpecialForward(int frameNumber)
 			}
 			else if (frameNumber == frameRelease + 5) {
 				release = false;
-				ThrowBall(attacks["specialL"].hitBoxes[0].hitdata, frameNumber);
 				ChangeMove([this](int f) { ThrowRecover(f); });
 			}
 			
@@ -234,7 +233,25 @@ void Makt::SpecialForward(int frameNumber)
 	}
 }
 
-void Makt::SpecialUpward(int frameNumber)
+void Makt::ThrowRecover(ushort frameNumber)
+{
+
+	if (!onGround)
+	{
+		AllowMovement(0.7f);
+	}
+
+	if (frameNumber == attacks["specialLThrow"].keyFrames[0])
+	{
+		ThrowBall(attacks["specialLThrow"].hitBoxes[0].hitdata, frameNumber);
+	}
+	else if (frameNumber >= attacks["specialLThrow"].totalFrames)
+	{
+		currentMove = nullptr;
+	}
+}
+
+void Makt::SpecialUpward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -269,7 +286,7 @@ void Makt::SpecialUpward(int frameNumber)
 	}
 }
 
-void Makt::SpecialDownward(int frameNumber)
+void Makt::SpecialDownward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -299,21 +316,7 @@ void Makt::SpecialDownward(int frameNumber)
 	}
 }
 
-void Makt::ThrowRecover(int frameNumber)
-{
-
-	if (!onGround)
-	{
-		AllowMovement(0.7f);
-	}
-
-	if (frameNumber >= attacks["specialL"].totalFrames)
-	{
-		currentMove = nullptr;
-	}
-}
-
-void Makt::BallPickUp(int frameNumber)
+void Makt::BallPickUp(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -352,7 +355,7 @@ void Makt::RecoveredBall()
 	}
 }
 
-void Makt::ThrowBall(HitData force, int timeHeld)
+void Makt::ThrowBall(HitData force, ushort timeHeld)
 {
 	if (timeHeld > 200)
 	{
@@ -368,7 +371,7 @@ void Makt::ThrowBall(HitData force, int timeHeld)
 	aux.damage += timeHeld / 10;
 	aux.base += timeHeld / 10;
 
-	ball = new MaktBall(manager, b2Vec2( body->GetPosition().x + dir, body->GetPosition().y ), aux, b2Vec2(dir, 0), respawnPos);
+	ball = new MaktBall(manager, b2Vec2( body->GetPosition().x + dir * 4, body->GetPosition().y + 0.3f ), aux, b2Vec2(dir, 0), respawnPos);
 	manager->AddEntity(ball);
 	ball->SetOponents(oponents);
 

@@ -5,7 +5,7 @@
 #include "../../utils/CheckML.h"
 
 
-GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures, vector<vector<int>>gameStats, int playersInput, vector<int>playersInputV) : State(game) {
+GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures, vector<vector<ushort>>gameStats, short playersInput, vector<short>playersInputV) : State(game) {
 
     //ts(15) = w / 64
 
@@ -13,8 +13,8 @@ GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures
     //fmngr = game;
     winnersTextures_ = winnersTextures;
 
-    int w = fmngr->GetActualWidth();
-    int h = fmngr->GetActualHeight();
+    ushort w = fmngr->GetActualWidth();
+    ushort h = fmngr->GetActualHeight();
 
     playAgain = new Button(&sdl->images().at("playagain"), w / 3, h / 4, w/3, h/4);
 

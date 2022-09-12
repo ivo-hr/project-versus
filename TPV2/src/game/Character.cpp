@@ -92,7 +92,7 @@ json Character::ReadJson(std::string filename, spriteSheetData &spData)
 		auxAnim.iniSprite = animData[i]["iniSprite"];
 		auxAnim.totalSprites = animData[i]["totalSprites"];
 
-		std::vector<int> a = animData[i]["keySprite"];
+		std::vector<ushort> a = animData[i]["keySprite"];
 		auxAnim.keySprite = a;
 
 		if (animData[i]["attack"] != "")
@@ -130,7 +130,7 @@ void Character::CreateHitBox(HitBoxData* data)
 	hitboxes.push_back(data);
 }
 
-Character::Character(FightManager* manager, b2Vec2 pos, char input,int playerPos, float w, float h) :
+Character::Character(FightManager* manager, b2Vec2 pos, char input, ushort playerPos, float w, float h) :
 	Entity(manager, pos, w, h)
 {
 	arrowsTex = &sdl->images().at("arrows");
@@ -159,14 +159,14 @@ Character::~Character()
 	delete anim;
 }
 
-void Character::SetSpawn(b2Vec2 spawn, int dir)
+void Character::SetSpawn(b2Vec2 spawn, short dir)
 {
 	body->SetTransform(spawn, 0);
 	this->dir = dir;
 	respawnPos = b2Vec2(spawn.x, 5);
 }
 
-void Character::SetPNumber(uint16 num)
+void Character::SetPNumber(ushort num)
 {
 	playerNumber = num;
 	arrowSrc.y = arrowSrc.h * num;
@@ -954,7 +954,7 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 }
 
 
-void Character::StartJump(int frameNumber)
+void Character::StartJump(ushort frameNumber)
 {
 
 	AllowMovement();
@@ -1066,7 +1066,7 @@ void Character::StartJump(int frameNumber)
 	}
 }
 
-void Character::StartShield(int frameNumber)
+void Character::StartShield(ushort frameNumber)
 {
 	int shieldStartUp = 0;
 
@@ -1097,7 +1097,7 @@ void Character::StartShield(int frameNumber)
 		ChangeMove([this](int f) { SpecialDownward(f); });
 	}
 }
-void Character::EndShield(int frameNumber)
+void Character::EndShield(ushort frameNumber)
 {
 	if (frameNumber == 0)
 	{
@@ -1111,7 +1111,7 @@ void Character::EndShield(int frameNumber)
 	}
 }
 
-void Character::Dash(int frameNumber)
+void Character::Dash(ushort frameNumber)
 {
 
 	if (frameNumber > 0)
@@ -1143,7 +1143,7 @@ void Character::Dash(int frameNumber)
 	}
 }
 
-void Character::DashLanding(int frameNumber)
+void Character::DashLanding(ushort frameNumber)
 {
 	if (frameNumber >= 10)
 	{
@@ -1153,12 +1153,12 @@ void Character::DashLanding(int frameNumber)
 	}
 }
 
-void Character::StartMove(std::function<void(int)> newMove)
+void Character::StartMove(std::function<void(ushort)> newMove)
 {
 	currentMove = newMove;
 	moveFrame = 0;
 }
-void Character::ChangeMove(std::function<void(int)> newMove)
+void Character::ChangeMove(std::function<void(ushort)> newMove)
 {
 	currentMove = newMove;
 	moveFrame = -1;
@@ -1261,7 +1261,7 @@ void Character::ResetChar()
 	moveFrame = -1;
 }
 
-void Character::Taunt(int frameNumber)
+void Character::Taunt(ushort frameNumber)
 {
 	//----------------Movimiento
 	if (onGround)
@@ -1333,7 +1333,7 @@ void Character::Elements()
 		ResetChar();
 	}
 }
-void Character::drawHUD(int numOfPlayer)
+void Character::drawHUD(ushort numOfPlayer)
 {
 	//Portrait y posiciones
 	int w_ = manager->GetActualWidth();
@@ -1368,7 +1368,7 @@ void Character::drawHUD(int numOfPlayer)
 
 	//Numero jugador
 	//
-	string player = "Player" + to_string(playerPosition + 1);
+	string player = "Player " + to_string(playerPosition + 1);
 	if (playerPosition == 0)c = build_sdlcolor(0xFF000000);
 	else if (playerPosition == 1)c = build_sdlcolor(0x002EFF00);
 	else if (playerPosition == 2)c = build_sdlcolor(0x00FF6100);

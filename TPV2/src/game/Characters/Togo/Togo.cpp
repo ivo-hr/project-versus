@@ -9,7 +9,7 @@
 #include <iostream>
 using json = nlohmann::json;
 
-Togo::Togo(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p, 1.5f, 3.5f)
+Togo::Togo(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mngr, pos, input,p, 1.5f, 3.5f)
 {
 
 	spriteSheetData spData;
@@ -28,7 +28,7 @@ Togo::~Togo()
 }
 
 //Lo mismo que el de arriba pero mas rapido y debil xd
-void Togo::BasicNeutral(int frameNumber)
+void Togo::BasicNeutral(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -52,7 +52,7 @@ void Togo::BasicNeutral(int frameNumber)
 	}
 }
 
-void Togo::BasicForward(int frameNumber)
+void Togo::BasicForward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -85,7 +85,7 @@ void Togo::BasicForward(int frameNumber)
 	}
 }
 
-void Togo::BasicUpward(int frameNumber)
+void Togo::BasicUpward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -142,7 +142,7 @@ void Togo::BasicUpward(int frameNumber)
 	}
 }
 
-void Togo::BasicDownward(int frameNumber)
+void Togo::BasicDownward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -177,7 +177,7 @@ void Togo::BasicDownward(int frameNumber)
 
 //--------------------------------------------------------------------------------------------------
 
-void Togo::SpecialNeutral(int frameNumber)
+void Togo::SpecialNeutral(ushort frameNumber)
 {
 	if (onGround)
 	{
@@ -218,7 +218,7 @@ void Togo::SpecialNeutral(int frameNumber)
 	}
 }
 
-void Togo::SpecialForward(int frameNumber)
+void Togo::SpecialForward(ushort frameNumber)
 {
 
 	if (frameNumber < attacks["specialL"].keyFrames[0])
@@ -262,7 +262,7 @@ void Togo::SpecialForward(int frameNumber)
 	}
 }
 
-void Togo::SpecialUpward(int frameNumber)
+void Togo::SpecialUpward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -301,7 +301,7 @@ void Togo::SpecialUpward(int frameNumber)
 	}
 }
 
-void Togo::SpecialDownward(int frameNumber)
+void Togo::SpecialDownward(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -339,7 +339,7 @@ void Togo::SetSpear(bool spear)
 	lanza = spear;
 }
 
-void Togo::SpecialLHit(int frameNumber)
+void Togo::SpecialLHit(ushort frameNumber)
 {
 
 	if (!onGround)

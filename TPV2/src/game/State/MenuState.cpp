@@ -74,8 +74,8 @@ void MenuState::update() {
 }
 
 void MenuState::draw() {
-    int w = fmngr->GetActualWidth();
-    int h = fmngr->GetActualHeight();
+    ushort w = fmngr->GetActualWidth();
+    ushort h = fmngr->GetActualHeight();
     sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
     background->render({ 0,0,w,h });
     if (drawText)
@@ -87,7 +87,7 @@ void MenuState::draw() {
 
 void MenuState::next() {
     cout << "Next State " << endl;
-    fmngr->setState(new ConfigState(fmngr,Finput));
+    fmngr->setState(new ConfigState(fmngr, Finput));
 
     sdl->soundEffects().at("uiSelect").play();
     delete this;

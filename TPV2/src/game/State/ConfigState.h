@@ -6,7 +6,7 @@
 
 class ConfigState : public State {
     Texture* background , *charselbg;
-    int numOfplayer;
+    ushort numOfplayer;
     Button *zero, *gatoespia, *maketo ,*togo , *nasnas ,*aleatorio , *plusB, *minusB ,*play;
     Button* teammode, * normalmode , *team1, *team2 ,*config;
     bool TeamModebool = false;
@@ -20,11 +20,11 @@ class ConfigState : public State {
     bool selectMap = true;
     int map = -1;
     int lastPointerClick = -3;
-    int nMandos;
+    ushort nMandos;
 
-    vector<int> playerInput;
-    vector<int> charactersSelect;
-    vector<int> charactersTeam;
+    vector<short> playerInput;
+    vector<short> charactersSelect;
+    vector<short> charactersTeam;
     vector<bool> usedPad;
     vector<bool> usedKeyboard;
     vector<bool> selected;
@@ -51,7 +51,7 @@ class ConfigState : public State {
     int timerMapkeyRelease = 0;
 public:
 
-    ConfigState(FightManager* game , int fInput) ;
+    ConfigState(FightManager* game , short fInput) ;
     virtual  ~ConfigState();
 
     void update() override;

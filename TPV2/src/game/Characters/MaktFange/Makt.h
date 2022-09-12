@@ -5,36 +5,36 @@ class MaktBall;
 class Makt : public Character
 {
 public:
-	Makt(FightManager* mngr, b2Vec2 pos, char input,int p);
+	Makt(FightManager* mngr, b2Vec2 pos, char input, ushort p);
 	virtual ~Makt();
 
-	virtual void BasicNeutral(int frameNumber) override;
-	virtual void BasicForward(int frameNumber) override;
-	virtual void BasicUpward(int frameNumber) override;
-	virtual void BasicDownward(int frameNumber) override;
+	virtual void BasicNeutral(ushort frameNumber) override;
+	virtual void BasicForward(ushort frameNumber) override;
+	virtual void BasicUpward(ushort frameNumber) override;
+	virtual void BasicDownward(ushort frameNumber) override;
 
-	virtual void SpecialNeutral(int frameNumber) override;
-	virtual void SpecialForward(int frameNumber) override;
-	virtual void SpecialUpward(int frameNumber) override;
-	virtual void SpecialDownward(int frameNumber) override;
+	virtual void SpecialNeutral(ushort frameNumber) override;
+	virtual void SpecialForward(ushort frameNumber) override;
+	virtual void SpecialUpward(ushort frameNumber) override;
+	virtual void SpecialDownward(ushort frameNumber) override;
 
-	virtual void ThrowRecover(int frameNumber);
-	virtual void BallPickUp(int frameNumber);
+	virtual void ThrowRecover(ushort frameNumber);
+	virtual void BallPickUp(ushort frameNumber);
 
 private:
 
-	int baseWeight;
-	int ballWeight;
+	ushort baseWeight;
+	ushort ballWeight;
 
-	int baseSpeed;
-	int ballSpeed;
+	ushort baseSpeed;
+	ushort ballSpeed;
 
-	int baseJump;
-	int ballJump;
+	ushort baseJump;
+	ushort ballJump;
 	bool release = false;
-	int frameRelease;
+	ushort frameRelease;
 	void RecoveredBall();
-	void ThrowBall(HitData force, int timeHeld);
+	void ThrowBall(HitData force, ushort timeHeld);
 
 	MaktBall* ball;
 protected:

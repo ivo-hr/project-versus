@@ -6,7 +6,7 @@ bool State::doQuit() {
     return false;
 }
 
-void State::showText(string s, int size, int x, int y, SDL_Color c)
+void State::showText(string s, ushort size, ushort x, ushort y, SDL_Color c)
 {
     string fontstring = "nes" + to_string(size);
     auto& font = sdl->fonts().at(fontstring);
@@ -18,7 +18,7 @@ void State::showText(string s, int size, int x, int y, SDL_Color c)
     tex->render(x, y);
 }
 
-void State::showText(string s, int size, int x, int y, SDL_Color c, SDL_Color b)
+void State::showText(string s, ushort size, ushort x, ushort y, SDL_Color c, SDL_Color b)
 {
     if (size <= 16) {
         auto& font = sdl->fonts().at("nes16");

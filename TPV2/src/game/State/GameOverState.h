@@ -1,7 +1,6 @@
 #pragma once
 
 #include "State.h"
-
 #include "../Utils/PlayerPointer.h"
 
 class GameOverState : public State {
@@ -10,13 +9,13 @@ class GameOverState : public State {
     vector<Texture*>winnersTextures_;
     Button* playAgain;
     PlayerPointer* pointer;
-    int playersInput_;
-    vector<vector<int>>gameStats_;
+    short playersInput_;
+    vector<vector<ushort>>gameStats_;
 
     void drawGameStats();
 
 public:
-    GameOverState(FightManager* fmngr, vector<Texture*>winnersTextures, vector<vector<int>>gameStats, int playersInput, vector<int>playersInputV);
+    GameOverState(FightManager* fmngr, vector<Texture*>winnersTextures, vector<vector<ushort>>gameStats, short playersInput, vector<short>playersInputV);
     virtual ~GameOverState();
 
     void update() override;

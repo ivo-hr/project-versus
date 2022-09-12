@@ -3,30 +3,30 @@
 class GatoEspia : public Character
 {
 public:
-	GatoEspia(FightManager* mngr, b2Vec2 pos, char input,int p);
+	GatoEspia(FightManager* mngr, b2Vec2 pos, char input, ushort p);
 	virtual ~GatoEspia();
 
 
-	virtual void BasicNeutral(int frameNumber) override;
-	virtual void BasicForward(int frameNumber) override;
-	virtual void BasicUpward(int frameNumber) override;
-	virtual void BasicDownward(int frameNumber) override;
+	virtual void BasicNeutral(ushort frameNumber) override;
+	virtual void BasicForward(ushort frameNumber) override;
+	virtual void BasicUpward(ushort frameNumber) override;
+	virtual void BasicDownward(ushort frameNumber) override;
 
-	virtual void SpecialNeutral(int frameNumber) override;
-	virtual void SpecialNeutralU(int frameNumber);
-	virtual void SpecialNeutralD(int frameNumber);
-	virtual void SpecialForward(int frameNumber) override;
-	virtual void SpecialUpward(int frameNumber) override;
-	virtual void SpecialDownward(int frameNumber) override;
+	virtual void SpecialNeutral(ushort frameNumber) override;
+	virtual void SpecialNeutralU(ushort frameNumber);
+	virtual void SpecialNeutralD(ushort frameNumber);
+	virtual void SpecialForward(ushort frameNumber) override;
+	virtual void SpecialUpward(ushort frameNumber) override;
+	virtual void SpecialDownward(ushort frameNumber) override;
 	
-	void TpAtack(int frameNumber);
+	void TpAtack(ushort frameNumber);
 
 	virtual void update() override;
 	virtual void Respawn() override;
 	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
-	void Counter(int frameNumber);
+	void Counter(ushort frameNumber);
 
-	virtual void drawHUD( int numOfPlayer)override;
+	virtual void drawHUD(ushort numOfPlayer)override;
 private:
 
 	Texture* blinkContainer = nullptr;

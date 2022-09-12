@@ -5,26 +5,26 @@ class DinoShield;
 class NasNas : public Character
 {
 public:
-	NasNas(FightManager* mngr, b2Vec2 pos, char input,int p);
+	NasNas(FightManager* mngr, b2Vec2 pos, char input, ushort p);
 	virtual ~NasNas();
 
-	virtual void BasicNeutral(int frameNumber) override;
-	virtual void BasicForward(int frameNumber) override;
-	virtual void BasicUpward(int frameNumber) override;
-	virtual void BasicDownward(int frameNumber) override;
+	virtual void BasicNeutral(ushort frameNumber) override;
+	virtual void BasicForward(ushort frameNumber) override;
+	virtual void BasicUpward(ushort frameNumber) override;
+	virtual void BasicDownward(ushort frameNumber) override;
 
-	virtual void SpecialNeutral(int frameNumber) override;
-	virtual void SpecialForward(int frameNumber) override;
-	virtual void SpecialUpward(int frameNumber) override;
-	virtual void SpecialDownward(int frameNumber) override;
+	virtual void SpecialNeutral(ushort frameNumber) override;
+	virtual void SpecialForward(ushort frameNumber) override;
+	virtual void SpecialUpward(ushort frameNumber) override;
+	virtual void SpecialDownward(ushort frameNumber) override;
 
-	virtual void SpecialUpHit(int frameNumber);
+	virtual void SpecialUpHit(ushort frameNumber);
 
 	virtual void update() override;
-	virtual void drawHUD( int numOfPlayer) override;
+	virtual void drawHUD(ushort numOfPlayer) override;
 	virtual void Respawn() override;
 private:
-	int maxMana = 600;
+	ushort maxMana = 600;
 	float mana = maxMana;
 	float manaRecoverRate = 1.5f;
 	state estado = fire;

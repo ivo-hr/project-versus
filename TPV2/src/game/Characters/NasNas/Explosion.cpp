@@ -16,7 +16,7 @@ Explosion::Explosion(FightManager* manager, b2Vec2 pos, int power, int type) :
 	{
 		data.base = power;
 		data.damage = 10;
-		data.multiplier = 0.8f;
+		data.multiplier = power / 60;
 		texture = &sdl->images().at("ExplosionWF");
 	}
 	else{

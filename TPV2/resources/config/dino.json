@@ -63,11 +63,11 @@
             "shieldBreak": false
           },
           "hitlag": -1,
-          "duration": 4
+          "duration": 5
         }
       ],
-      "keyFrames": [6, 13],
-      "totalFrames": 23
+      "keyFrames": [8, 18],
+      "totalFrames": 28
     },
     {
       "id": "basicU",
@@ -77,7 +77,7 @@
             "b2vecX": 0,
             "b2vecY": 0,
             "base": 5,
-            "damage": 6,
+            "damage": 4,
             "multiplier": 0.5,
             "stun": 6,
             "shieldBreak": false
@@ -89,18 +89,18 @@
           "hitData": {
             "b2vecX": 1,
             "b2vecY": 9,
-            "base": 5,
-            "damage": 8,
-            "multiplier": 0.8,
+            "base": 30,
+            "damage": 7,
+            "multiplier": 0.5,
             "stun": -1,
             "shieldBreak": false
           },
           "hitlag": 16,
-          "duration": 9
+          "duration": 6
         }
       ],
       "keyFrames": [5, 9, 13, 17, 21],
-      "totalFrames": 27
+      "totalFrames": 30
     },
     {
       "id": "specialN",

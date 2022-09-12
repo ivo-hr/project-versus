@@ -17,7 +17,7 @@ class ConfigurationState : public State {
     bool toReDraw = true;
 public:
 
-    ConfigurationState(FightManager* fmngr ,int pI);
+    ConfigurationState(FightManager* fmngr , short pI);
     virtual  ~ConfigurationState();
 
     void update() override;

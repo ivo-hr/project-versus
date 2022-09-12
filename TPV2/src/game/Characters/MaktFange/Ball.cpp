@@ -23,7 +23,7 @@ MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir
 
 	data = attack;
 
-	//respawnFrames = 180;
+	respawnFrames = 180;
 }
 
 MaktBall::~MaktBall()
@@ -67,7 +67,7 @@ void MaktBall::update()
 	else
 	{
 		respawnFrames--;
-		if (respawnFrames <= 0)
+		if (respawnFrames == 0)
 		{
 			Respawn();
 			respawnFrames = 180;

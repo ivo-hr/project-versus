@@ -2,7 +2,7 @@
 #include "../../Utils/AnimationManager.h"
 #include "../../../utils/CheckML.h"
 
-CharacterZero::CharacterZero(FightManager* mngr, b2Vec2 pos, char input,int p) : Character(mngr, pos, input,p)
+CharacterZero::CharacterZero(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mngr, pos, input,p)
 {
 	//importamos json del personaje
 
@@ -29,7 +29,7 @@ void CharacterZero::draw()
 }
 
 
-void CharacterZero::BasicNeutral(int frameNumber)
+void CharacterZero::BasicNeutral(ushort frameNumber)
 {
 	if (!onGround)
 	{
@@ -56,17 +56,17 @@ void CharacterZero::BasicNeutral(int frameNumber)
 	}
 }
 
-void CharacterZero::BasicForward(int frameNumber)
+void CharacterZero::BasicForward(ushort frameNumber)
 {
 	ChangeMove([this](int f) { BasicNeutral(f); });
 }
 
-void CharacterZero::BasicUpward(int frameNumber)
+void CharacterZero::BasicUpward(ushort frameNumber)
 {
 	ChangeMove([this](int f) { BasicNeutral(f); });
 }
 
-void CharacterZero::BasicDownward(int frameNumber)
+void CharacterZero::BasicDownward(ushort frameNumber)
 {
 	ChangeMove([this](int f) { BasicNeutral(f); });
 }
@@ -74,7 +74,7 @@ void CharacterZero::BasicDownward(int frameNumber)
 
 
 //Lo mismo que el de arriba pero mas lento y fuerte xd
-void CharacterZero::SpecialNeutral(int frameNumber)
+void CharacterZero::SpecialNeutral(ushort frameNumber)
 {
 
 	if (!onGround)
@@ -101,25 +101,19 @@ void CharacterZero::SpecialNeutral(int frameNumber)
 	}
 }
 
-void CharacterZero::SpecialForward(int frameNumber)
+void CharacterZero::SpecialForward(ushort frameNumber)
 {
 	ChangeMove([this](int f) { SpecialNeutral(f); });
 }
 
-void CharacterZero::SpecialUpward(int frameNumber)
+void CharacterZero::SpecialUpward(ushort frameNumber)
 {
 	ChangeMove([this](int f) { SpecialNeutral(f); });
 }
 
-void CharacterZero::SpecialDownward(int frameNumber)
+void CharacterZero::SpecialDownward(ushort frameNumber)
 {
 	ChangeMove([this](int f) { SpecialNeutral(f); });
-}
-
-void CharacterZero::drawHUD( int numOfPlayer )
-{
-	Character::drawHUD(numOfPlayer);
-
 }
 
 void CharacterZero::BuildBoxes()

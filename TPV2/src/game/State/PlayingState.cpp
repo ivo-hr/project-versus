@@ -9,7 +9,7 @@
 
 
 
-PlayingState::PlayingState(FightManager* game, vector<int>playersInput, vector<int>characters , int map) : State(game) {
+PlayingState::PlayingState(FightManager* game, vector<short>playersInput, vector<short>characters , ushort map) : State(game) {
 	std::vector<Character*> entities;
 	std::vector<Character*> team1;
 	std::vector<Character*> team2;
@@ -72,7 +72,7 @@ PlayingState::PlayingState(FightManager* game, vector<int>playersInput, vector<i
 
 }
 
-PlayingState::PlayingState(FightManager* game, vector<int> playersInput, vector<int> characters, vector<int> teams, int map) : State(game)
+PlayingState::PlayingState(FightManager* game, vector<short> playersInput, vector<short> characters, vector<short> teams, ushort map) : State(game)
 {
 	std::vector<Character*> team1;
 	std::vector<Character*> team2;
@@ -118,7 +118,7 @@ PlayingState::PlayingState(FightManager* game, vector<int> playersInput, vector<
 		case 4://Nasnas		
 			break;
 		case -1://Aleatorio
-			int charac = sdl->rand().nextInt(0, 9);
+			ushort charac = sdl->rand().nextInt(0, 9);
 			switch (charac)
 			{
 			case 0: //Nasnas
@@ -190,7 +190,7 @@ void PlayingState::draw() {
 void PlayingState::next() {
 	cout << "Next State " << endl;
 	vector<Texture*>winnersTextures = fmngr->getWinnersTextures();
-	vector<vector<int>>gameStats = fmngr->getGameStats();
+	vector<vector<ushort>>gameStats = fmngr->getGameStats();
 	fmngr->setState(new GameOverState(fmngr, winnersTextures, gameStats, fmngr->getWinnerInput(), playersInput_));
 	delete this;
 }

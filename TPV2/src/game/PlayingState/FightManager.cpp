@@ -111,8 +111,11 @@ void FightManager::MoveCamera()
 
 FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 {
+	int w = width, h = height;
+	SDL_GetWindowSize(sdl->window(), &w, &h);
 
-	SDL_GetWindowSize(sdl->window(), &width, &height);
+	width = w;
+	height = h;
 
 	listener = new MyListener();
 	stage = new Stage(this, sdl, listener, step);
@@ -157,6 +160,7 @@ FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 		{
 			SDL_Delay((step * 1000));
 		}
+		cout << frameTime << endl;
 	}
 	// En ExitState se borran el state y el exitState, el savedState se borra en esta destructora
 	delete getState();
@@ -288,7 +292,7 @@ void FightManager::InitCamera()
 	}
 }
 
-int FightManager::StartFight(std::vector<Character*> ent)
+ushort FightManager::StartFight(std::vector<Character*> ent)
 {
 
 	InitCamera();
@@ -330,7 +334,7 @@ int FightManager::StartFight(std::vector<Character*> ent)
 	startticks = 0;
 	return 1;
 }
-int FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Character*> ateam2)
+ushort FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Character*> ateam2)
 {
 
 	InitCamera();
@@ -423,7 +427,7 @@ bool FightManager::RemoveCharacter(Character* character)
 						if (e == character)belongsTeam1 = true;
 					}
 					if (belongsTeam1) { // Si pertenece al team1
-						vector<int>stats;
+						vector<ushort>stats;
 						stats.push_back(characters[i]->getDeaths());
 						stats.push_back(characters[i]->getDamageTaken());
 						stats.push_back(characters[i]->getKills());
@@ -437,7 +441,7 @@ bool FightManager::RemoveCharacter(Character* character)
 					}
 					else // Si pertenece al team2
 					{
-						vector<int>stats;
+						vector<ushort>stats;
 						stats.push_back(characters[i]->getDeaths());
 						stats.push_back(characters[i]->getDamageTaken());
 						stats.push_back(characters[i]->getKills());
@@ -584,7 +588,7 @@ b2World* FightManager::GetWorld()
 
 void FightManager::addCharacterStats(Character* character)
 {
-	vector<int>stats;
+	vector<ushort>stats;
 	stats.push_back(character->getDeaths());
 	stats.push_back(character->getDamageTaken());
 	stats.push_back(character->getKills());
@@ -612,8 +616,8 @@ void FightManager::onNewGame()
 	endGameTimer = 0;
 	gameStats.clear();
 	
-	int scount = 4;
-	int startticks = 0;
+	scount = 4;
+	startticks = 0;
 
 }
 void FightManager::SetShake(const Vector2D& dir, uint16 duration)
@@ -680,12 +684,12 @@ int FightManager::ToSDL(float x)
 	return x * stage->getb2ToSDL();
 }
 
-int FightManager::GetActualWidth()
+ushort FightManager::GetActualWidth()
 {
 	return width;
 }
 
-int FightManager::GetActualHeight()
+ushort FightManager::GetActualHeight()
 {
 	return height;
 }

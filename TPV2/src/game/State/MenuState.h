@@ -4,7 +4,7 @@
 
 class MenuState : public State {
     Texture* background;
-    int Finput = -3;
+    short Finput = -3;
     Uint32 textTimer = 0;
     bool drawText = false;
     Button* exit ,*config;

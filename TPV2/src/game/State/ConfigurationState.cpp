@@ -3,7 +3,7 @@
 #include "../PlayingState/FightManager.h"
 
 
-ConfigurationState::ConfigurationState(FightManager* game ,int pI) : State(game) {
+ConfigurationState::ConfigurationState(FightManager* game , short pI) : State(game) {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     backgr = &sdl->images().at("ConfigBack");
