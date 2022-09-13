@@ -126,7 +126,7 @@
             "b2vecY": 1,
             "base": 15,
             "damage": 5,
-            "multiplier": 1,
+            "multiplier": 0.8,
             "stun": -1,
             "shieldBreak": false
           },
@@ -172,7 +172,7 @@
             "b2vecY": 1,
             "base": 25,
             "damage": 20,
-            "multiplier": 1.2,
+            "multiplier": 1,
             "stun": -1,
             "shieldBreak": false
           },
@@ -225,7 +225,7 @@
             "b2vecY": 2,
             "base": 35,
             "damage": 25,
-            "multiplier": 1.3,
+            "multiplier": 1.2,
             "stun": -1,
             "shieldBreak": false
           },

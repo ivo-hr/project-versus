@@ -24,6 +24,8 @@ MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir
 	data = attack;
 
 	respawnFrames = 180;
+
+	alive = true;
 }
 
 MaktBall::~MaktBall()
@@ -32,7 +34,6 @@ MaktBall::~MaktBall()
 
 void MaktBall::update()
 {
-
 	if (hitLag > 0)
 	{
 		hitLag--;
@@ -51,7 +52,6 @@ void MaktBall::update()
 			if (outFor <= duration)
 			{
 				body->SetLinearVelocity(vecDir);
-
 			}
 			else
 			{

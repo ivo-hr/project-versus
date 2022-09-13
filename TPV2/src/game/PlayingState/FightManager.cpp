@@ -160,7 +160,6 @@ FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 		{
 			SDL_Delay((step * 1000));
 		}
-		cout << frameTime << endl;
 	}
 	// En ExitState se borran el state y el exitState, el savedState se borra en esta destructora
 	delete getState();

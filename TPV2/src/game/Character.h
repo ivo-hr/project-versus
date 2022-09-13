@@ -79,10 +79,10 @@ protected:
 	ushort r = 0;
 	ushort g = 255;
 
-	ushort arrowCont = 0;
+	unsigned int arrowCont = 0;
 	bool invencible = false;
-	bool drawArrow=false;
-	ushort invencibleCont = 0;
+	bool drawArrow = false;
+	unsigned int invencibleCont = 0;
 
 	std::string animAddon = "";
 
