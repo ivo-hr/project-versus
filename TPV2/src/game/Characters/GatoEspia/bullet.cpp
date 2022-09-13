@@ -2,8 +2,8 @@
 #include "bullet.h"
 #include "../../../utils/CheckML.h"
 
-Bullet::Bullet(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir) :
-	Projectile(manager, pos, dir, 0.5f, 0.2f, 20)
+Bullet::Bullet(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, float width, float height, int speed) :
+	Projectile(manager, pos, dir, width, height, speed)
 {
 	texture = &sdl->images().at("bullet");
 	//funciona , but i dont know why

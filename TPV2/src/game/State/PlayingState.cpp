@@ -36,8 +36,9 @@ PlayingState::PlayingState(FightManager* game, vector<short>playersInput, vector
 		case 3: //Maketo
 			entities.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i],i));
 			break;
-		case 4://Nasnas
-			//entities.push_back(new NasNas(fmngr, new Vector2D(20 + i * 10, 0), playersInput[i]));
+			
+		case 4://Yuno
+			entities.push_back(new Yuno(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 			break;
 		case -1://Aleatorio
 			int charac = sdl->rand().nextInt(0, 9);
@@ -59,7 +60,11 @@ PlayingState::PlayingState(FightManager* game, vector<short>playersInput, vector
 			case 7:
 				entities.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				break;
-			case 8: //Zero
+			case 8: //Yuno
+			case 9:
+				entities.push_back(new Yuno(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				break;
+			case 10: //Zero
 				entities.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				break;
 			}
@@ -115,7 +120,13 @@ PlayingState::PlayingState(FightManager* game, vector<short> playersInput, vecto
 				team2.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 			}
 			break;
-		case 4://Nasnas		
+		case 4://Yuno
+			if (teams[i] == 0)
+				team1.push_back(new Yuno(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+			else
+			{
+				team2.push_back(new Yuno(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+			}
 			break;
 		case -1://Aleatorio
 			ushort charac = sdl->rand().nextInt(0, 9);
@@ -157,7 +168,15 @@ PlayingState::PlayingState(FightManager* game, vector<short> playersInput, vecto
 					team2.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				}
 				break;
-			case 8: //Zero
+			case 8:
+			case 9:
+				if (teams[i] == 0)
+					team1.push_back(new Yuno(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				else
+				{
+					team2.push_back(new Yuno(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				}
+			case 10: //Zero
 				if (teams[i] == 0)
 					team1.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 				else

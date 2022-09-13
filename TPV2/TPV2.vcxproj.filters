@@ -222,6 +222,9 @@
     <ClInclude Include="src\utils\CheckML.h">
       <Filter>Source Files\utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\Characters\Yuno\Yuno.h">
+      <Filter>Header Files\game\Characters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">
@@ -343,6 +346,9 @@
     </ClCompile>
     <ClCompile Include="src\game\State\ExitState.cpp">
       <Filter>Source Files\game\State</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Characters\Yuno\Yuno.cpp">
+      <Filter>Source Files\game\Characters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@
 class ConfigState : public State {
     Texture* background , *charselbg;
     ushort numOfplayer;
-    Button *zero, *gatoespia, *maketo ,*togo , *nasnas ,*aleatorio , *plusB, *minusB ,*play;
+    Button *zero, *gatoespia, *maketo ,*togo , *nasnas , *yuno , *aleatorio , *plusB, *minusB ,*play;
     Button* teammode, * normalmode , *team1, *team2 ,*config;
     bool TeamModebool = false;
     bool charsel = false;

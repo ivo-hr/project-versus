@@ -253,6 +253,30 @@ void Makt::ThrowRecover(ushort frameNumber)
 	}
 }
 
+
+void Makt::ThrowBall(HitData force, ushort timeHeld)
+{
+	if (timeHeld > 200)
+	{
+		timeHeld = 200;
+	}
+
+	jumpStr = baseJump;
+	maxSpeed = baseSpeed - ralentizar;
+	weight = baseWeight;
+
+	HitData aux = force;
+
+	aux.damage += timeHeld / 10;
+	aux.base += timeHeld / 10;
+
+	ball = new MaktBall(manager, b2Vec2(body->GetPosition().x + dir * 4, body->GetPosition().y + 0.3f), aux, b2Vec2(dir, 0), respawnPos);
+	manager->AddEntity(ball);
+	ball->SetOponents(oponents);
+
+	animAddon = "";
+}
+
 void Makt::SpecialUpward(ushort frameNumber)
 {
 
@@ -357,28 +381,6 @@ void Makt::RecoveredBall()
 	}
 }
 
-void Makt::ThrowBall(HitData force, ushort timeHeld)
-{
-	if (timeHeld > 200)
-	{
-		timeHeld = 200;
-	}
-
-	jumpStr = baseJump;
-	maxSpeed = baseSpeed - ralentizar;
-	weight = baseWeight;
-
-	HitData aux = force;
-
-	aux.damage += timeHeld / 10;
-	aux.base += timeHeld / 10;
-
-	ball = new MaktBall(manager, b2Vec2( body->GetPosition().x + dir * 4, body->GetPosition().y + 0.3f ), aux, b2Vec2(dir, 0), respawnPos);
-	manager->AddEntity(ball);
-	ball->SetOponents(oponents);
-
-	animAddon = "";
-}
 
 void Makt::BuildBoxes()
 {

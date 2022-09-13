@@ -53,6 +53,7 @@ ConfigState::~ConfigState()
     delete maketo;
     delete togo;
     delete nasnas;
+    delete yuno;
     delete aleatorio;
     delete plusB;
     delete minusB;
@@ -358,6 +359,15 @@ void ConfigState::checkButtonPointerClick()
 
             sdl->soundEffects().at("uiMov").play();
         }
+        else if (yuno->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
+            playerTexture[i]->setFront(&sdl->images().at("blinkMasterSelect"));
+            charactersSelect[i] = 4;
+            keyRelease = false;
+            lastPointerClick = playerInput[i];
+            selected[i] = true;
+
+            sdl->soundEffects().at("uiMov").play();
+        }
         else if (aleatorio->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
             playerTexture[i]->setFront(&sdl->images().at("aleatorioSelect"));
             charactersSelect[i] = -1;
@@ -613,6 +623,7 @@ void ConfigState::playerMenuRender()
     gatoespia->render();
     togo->render();
     maketo->render();
+    yuno->render();
     plusB->render();
     minusB->render();
     normalmode->render();
@@ -762,8 +773,9 @@ void ConfigState::initcharact()
     charName.push_back("  Makt Fange");
     togo = new Button(&sdl->images().at("dinoSoulsSelect"), dist*3 + offset, offsetY, (int)w / 16, (int)w / 16);
     charName.push_back("     Togo");
+    yuno = new Button(&sdl->images().at("blinkMasterSelect"), dist * 4 + offset, offsetY, (int)w / 16, (int)w / 16);
+    charName.push_back("     Yuno");
 
-    charName.push_back(" Coming Soon");
     charName.push_back(" Coming Soon");
     charName.push_back(" Coming Soon");
     charName.push_back(" Coming Soon");

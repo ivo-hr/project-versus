@@ -34,6 +34,7 @@
     <ClInclude Include="src\game\Characters\MaktFange\Makt.h" />
     <ClInclude Include="src\game\Characters\Togo\Spear.h" />
     <ClInclude Include="src\game\Characters\Togo\Togo.h" />
+    <ClInclude Include="src\game\Characters\Yuno\Yuno.h" />
     <ClInclude Include="src\game\Entity.h" />
     <ClInclude Include="src\game\PlayingState\FightManager.h" />
     <ClInclude Include="src\game\PlayingState\Stage.h" />
@@ -86,6 +87,7 @@
     <ClCompile Include="src\game\Characters\MaktFange\Makt.cpp" />
     <ClCompile Include="src\game\Characters\Togo\Spear.cpp" />
     <ClCompile Include="src\game\Characters\Togo\Togo.cpp" />
+    <ClCompile Include="src\game\Characters\Yuno\Yuno.cpp" />
     <ClCompile Include="src\game\Entity.cpp" />
     <ClCompile Include="src\game\PlayingState\FightManager.cpp" />
     <ClCompile Include="src\game\PlayingState\Stage.cpp" />
