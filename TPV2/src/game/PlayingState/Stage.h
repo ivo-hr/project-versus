@@ -53,6 +53,7 @@ public:
 	double GetScreenRatio() { return (b2ToSDL * 50) / sdl->width(); }
 
 	SDL_Rect* GetDeathZone() { return &deathZone; };
+	b2Vec2* GetDeathZoneB2() { return &deathzoneSize; };
 	b2World* GetWorld() { return world; };
 	SDLUtils* GetSDLU() { return sdl; }
 

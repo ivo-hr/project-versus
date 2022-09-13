@@ -169,12 +169,12 @@ FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 
 FightManager::~FightManager()
 {
+	delete getSavedState();
 	delete listener;
 	for (auto e : entities)
 		delete e;
 	entities.clear();
 	delete stage;
-	delete getSavedState();
 }
 
 void FightManager::Update()
@@ -579,6 +579,11 @@ std::vector<Entity*> FightManager::GetEntities(Entity* current)
 SDL_Rect* FightManager::GetDeathZone()
 {
 	return stage->GetDeathZone();
+}
+
+b2Vec2* FightManager::GetDeathZoneB2()
+{
+	return stage->GetDeathZoneB2();
 }
 
 b2World* FightManager::GetWorld()

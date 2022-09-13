@@ -161,7 +161,7 @@
             "shieldBreak": true
           },
           "hitlag": -1,
-          "duration": 8
+          "duration": 3
         }
       ],
       "keyFrames": [ 10 ],

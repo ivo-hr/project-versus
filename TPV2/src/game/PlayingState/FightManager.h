@@ -125,7 +125,8 @@ public:
 
 	std::vector<Entity*> GetOponents(Entity* current);
 	std::vector<Entity*> GetEntities(Entity* current);
-	SDL_Rect* GetDeathZone() ;
+	SDL_Rect* GetDeathZone();
+	b2Vec2* GetDeathZoneB2();
 	b2World* GetWorld();
 	SDLUtils* GetSDLU() { return sdl; };
 

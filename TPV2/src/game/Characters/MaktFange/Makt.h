@@ -33,6 +33,8 @@ private:
 	ushort ballJump;
 	bool release = false;
 	ushort frameRelease;
+	ushort timeHeld = 0;
+
 	void RecoveredBall();
 	void ThrowBall(HitData force, ushort timeHeld);
 

@@ -558,13 +558,20 @@ void Character::StunBehaviour()
 	if (anim->CurrentAnimation() != "stun" + animAddon)
 		anim->StartAnimation("stun" + animAddon);
 
-	if (input->right())
+	if (!onGround)
 	{
-		body->ApplyLinearImpulseToCenter({ 5, 0 }, true);
+		if (input->right())
+		{
+			body->ApplyLinearImpulseToCenter({ 4, 0 }, true);
+		}
+		if (input->left())
+		{
+			body->ApplyLinearImpulseToCenter({ -4, 0 }, true);
+		}
 	}
-	if (input->left())
+	else
 	{
-		body->ApplyLinearImpulseToCenter({ -5, 0 }, true);
+		speed = 0;
 	}
 
 	currentMove = nullptr;
@@ -697,14 +704,16 @@ void Character::draw(SDL_Rect* camera)
 
 bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)
 {
+	//Shield is up
 	if (shield > 0)
 	{
-		if (shield <= 7)		//Parry
+		//Parry
+		if (shield <= 7)
 		{
 			if (!attacker->isProjectile())
 			{
-				AddHitLag(25);
-				attacker->AddHitLag(35);
+				AddHitLag(35);
+				attacker->AddHitLag(50);
 			}
 			currentMove = nullptr;
 			moveFrame = 0;
@@ -716,247 +725,238 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 			return false;
 		}
 
+		//See if it broke shield
 		if (a.damage > shieldHealth || a.shieldBreak)
 			shieldHealth = 0;
 		else
 			shieldHealth -= a.damage;
 
+		//Shield NOT broken
 		if (shieldHealth > 0)	//A
 		{
 			damageTaken += (int)(a.damage * 0.4f);
 			controlHitLag = false;
 		}
-		else					//Rompe escudos
+		//Shield broken
+		else
 		{
-			shield = 0;
-			anim->StartAnimation("stun" + animAddon);
-			anim->update();
-			float recoil = ((a.base * 2) + ((damageTaken * a.multiplier) / (weight * .2f)));
-
-			stun = a.GetStun(recoil);
-
-			//Actualiza el da�o
-			damageTaken += a.damage * 2;
-
-			b2Vec2 aux = a.direction;
-
-			if (recoil > 90)
-			{
-				manager->KillingBlow();
-				AddHitLag(50);
-				attacker->AddHitLag(50);
-				controlHitLag = true;
-
-				SetShake(Vector2D(a.direction.x, a.direction.y), 50);
-				controlShake = true;
-
-				manager->SetShake(Vector2D(a.direction.x * -15, a.direction.y * 10), 50);
-				controlCamShake = true;
-
-				AddParticle(new Particle(
-					Vector2D(
-						manager->ToSDL(body->GetPosition().x),
-						manager->ToSDL(body->GetPosition().y)),
-					1, "killVfx", this));
-				AddParticle(new Particle(
-					Vector2D(
-						manager->ToSDL(body->GetPosition().x),
-						manager->ToSDL(body->GetPosition().y)),
-					1, "killHit", this));
-			}
-			else
-			{
-				AddHitLag(30);
-				attacker->AddHitLag(30);
-				controlHitLag = true;
-
-				SetShake(Vector2D(a.direction.x, a.direction.y), 30);
-				controlShake = true;
-
-				manager->SetShake(Vector2D(a.direction.x * -15, a.direction.y * 7), 30);
-				controlCamShake = true;
-			}
-
-			AddParticle(new Particle(
-				Vector2D(
-					manager->ToSDL(body->GetPosition().x),
-					manager->ToSDL(body->GetPosition().y)),
-				1, "shieldBroken", this));
-
-			aux *= recoil;
-			aux.y *= -1;
-			aux.x *= attacker->GetDir();
-
-			if (onGround && aux.y > 0)
-			{
-				aux.y *= -0.9f;
-			}
-
-			//Produce el knoback..
-			body->SetLinearVelocity(aux);
-			shieldHealth = 0;
-			controlHitLag = true;
+			SuccessfulHit(true, a, controlHitLag, attacker, controlShake, controlCamShake);
 		}
 		return true;
 	}
+	//Is dodging
 	if (dash)
 	{
 		return false;
 	}
+	//Normal hit
 	else if (!shield && !dash && !attacker->ToDelete())
 	{
-		hitboxes.clear();
-		resetHit();
-
-		body->SetGravityScale(10.0f);
-		currentMove = nullptr;
-		moveFrame = -1;
-		anim->StartAnimation("stun" + animAddon);
-		anim->update();
-		float recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
-
-		stun = a.GetStun(recoil);
-
-		//Actualiza el da�o
-		damageTaken += a.damage;
-		
-		b2Vec2 aux = a.direction;
-
-		controlHitLag = false;
-
-		if (recoil > 90)
-		{
-			manager->KillingBlow();
-
-			AddHitLag(40);
-			attacker->AddHitLag(40);
-			controlHitLag = true;
-
-			SetShake(Vector2D(a.direction.x, a.direction.y), 20);
-			controlShake = true;
-
-			manager->SetShake(Vector2D(a.direction.x * -15, a.direction.y * 10), 30);
-			controlCamShake = true;
-
-			AddParticle(new Particle(
-				Vector2D(
-					manager->ToSDL(body->GetPosition().x),
-					manager->ToSDL(body->GetPosition().y)),
-				1, "killVfx", this));
-			AddParticle(new Particle(
-				Vector2D(
-					manager->ToSDL(body->GetPosition().x),
-					manager->ToSDL(body->GetPosition().y)),
-				1, "killHit", this));
-		}
-
-		aux *= recoil;
-		aux.y *= -1;
-		aux.x *= attacker->GetDir();
-
-		if (onGround && aux.y > 0)
-		{
-			aux.y *= -0.9f;
-		}
-
-		// Estados y combinaciones de estado
-		if (a.estado != none)
-		{
-			if (efEstado != a.estado && efEstado != none)
-			{
-				// fuego y rayo
-				if ((efEstado == fire && a.estado == electric) || (efEstado == electric && a.estado == fire))
-				{
-					//explosión de fuego/rayo
-					// 
-					//suma de efectos de estado para pasarselo a la explosion
-					int poder = statePower + a.power;
-					auto plasma = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 1);
-					manager->AddEntity(plasma);
-					plasma->SetOponents(manager->GetEntities(plasma));
-					manager->MoveToFront(plasma);
-					efEstado = none;
-					statePower = 0;
-					stateCont = 0;
-				}
-				//fuego y agua
-				else if((efEstado == fire && a.estado == water) || (efEstado == water && a.estado == fire))
-				{
-					if (efEstado == water)
-					{
-						maxSpeed += ralentizar;
-						ralentizar = 0;
-					}
-					int poder = (statePower + a.power) / 3;
-					auto vapor = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 0);
-					manager->AddEntity(vapor);
-					vapor->SetOponents(manager->GetEntities(vapor));
-					manager->MoveToFront(vapor);
-					efEstado = none;
-					statePower = 0;
-					stateCont = 0;
-				}
-				// agua y rayo
-				else if ((efEstado == water && a.estado == electric) || (efEstado == electric && a.estado == water))
-				{
-					if (efEstado == water)
-					{
-						maxSpeed += ralentizar;
-						ralentizar = 0;
-					}
-					efEstado = wElectric;
-					statePower += a.power;
-					stateCont = 0;
-
-				}
-			}
-			//si se recibe un ataque con un estado del cual ya se veía afectado
-			else if (efEstado == a.estado)
-			{
-				stateCont = 0;
-				statePower = a.power;
-				if (efEstado == electric)
-				{
-					stun += statePower * 1.5f;
-				}
-			}
-			//efecto de estado básico
-			else if (efEstado == none)
-			{
-				efEstado = a.estado;
-				statePower = a.power;
-				if (efEstado == electric)
-				{
-					stun += statePower * 1.5f;
-
-					AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "electric", this));
-				}
-				else if (efEstado == water)
-				{
-					ralentizar = maxSpeed * ((float)statePower / 100);
-					maxSpeed -= ralentizar;
-
-					AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "water", this));
-				}
-				else if (efEstado == fire)
-				{
-					AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "fire", this));
-				}
-			}
-		}
-
-		//Produce el knoback..
-		body->SetLinearVelocity(aux);
-
+		SuccessfulHit(false, a, controlHitLag, attacker, controlShake, controlCamShake);
 		return true;
 	}
 
 }
 
+void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag, Entity* attacker, bool& controlShake, bool& controlCamShake)
+{
+	hitboxes.clear();
+	resetHit();
+
+	body->SetGravityScale(10.0f);
+	currentMove = nullptr;
+	moveFrame = -1;
+	anim->StartAnimation("stun" + animAddon);
+	anim->update();
+
+	float recoil;
+	if (shieldBreak)
+		recoil = (a.base * 2 + ((damageTaken * a.multiplier) / (weight * .2f)));
+	else
+		recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
+
+	stun = a.GetStun(recoil);
+
+	controlHitLag = false;
+
+	//Actualiza el da�o
+	if (shieldBreak)
+		damageTaken += a.damage * 2;
+	else
+		damageTaken += a.damage;
+
+	b2Vec2 aux = a.direction;
+
+	aux *= recoil;
+	aux.y *= -1;
+	aux.x *= attacker->GetDir();
+
+	if (onGround && aux.y > 0)
+	{
+		aux.y *= -0.9f;
+	}
+
+	if (IsGoingToKill(aux))
+	{
+		ushort currHitlag;
+		if (shieldBreak)
+			currHitlag = 50;
+		else
+			currHitlag = 40;
+
+		manager->KillingBlow();
+
+		AddHitLag(currHitlag);
+		attacker->AddHitLag(currHitlag);
+		controlHitLag = true;
+
+		SetShake(Vector2D(a.direction.x, a.direction.y), currHitlag / 3);
+		controlShake = true;
+
+		manager->SetShake(Vector2D(a.direction.x * -15, a.direction.y * 10), currHitlag / 2);
+		controlCamShake = true;
+
+		AddParticle(new Particle(
+			Vector2D(
+				manager->ToSDL(body->GetPosition().x),
+				manager->ToSDL(body->GetPosition().y)),
+			1, "killVfx", this));
+		AddParticle(new Particle(
+			Vector2D(
+				manager->ToSDL(body->GetPosition().x),
+				manager->ToSDL(body->GetPosition().y)),
+			1, "killHit", this));
+	}
+	else if (shieldBreak)
+	{
+		AddHitLag(30);
+		attacker->AddHitLag(30);
+		controlHitLag = true;
+
+		SetShake(Vector2D(a.direction.x, a.direction.y), 30);
+		controlShake = true;
+
+		manager->SetShake(Vector2D(a.direction.x * -15, a.direction.y * 7), 30);
+		controlCamShake = true;
+	}
+
+	if (shieldBreak)
+	{
+		shield = 0;
+		shieldHealth = 0;
+		controlHitLag = true;
+
+		AddParticle(new Particle(
+			Vector2D(
+				manager->ToSDL(body->GetPosition().x),
+				manager->ToSDL(body->GetPosition().y)),
+			1, "shieldBroken", this));
+	}
+
+	// Estados y combinaciones de estado
+	if (a.estado != none)
+	{
+		if (efEstado != a.estado && efEstado != none)
+		{
+			// fuego y rayo
+			if ((efEstado == fire && a.estado == electric) || (efEstado == electric && a.estado == fire))
+			{
+				//explosión de fuego/rayo
+				// 
+				//suma de efectos de estado para pasarselo a la explosion
+				int poder = statePower + a.power;
+				auto plasma = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 1);
+				manager->AddEntity(plasma);
+				plasma->SetOponents(manager->GetEntities(plasma));
+				manager->MoveToFront(plasma);
+				efEstado = none;
+				statePower = 0;
+				stateCont = 0;
+			}
+			//fuego y agua
+			else if ((efEstado == fire && a.estado == water) || (efEstado == water && a.estado == fire))
+			{
+				if (efEstado == water)
+				{
+					maxSpeed += ralentizar;
+					ralentizar = 0;
+				}
+				int poder = (statePower + a.power) / 3;
+				auto vapor = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 0);
+				manager->AddEntity(vapor);
+				vapor->SetOponents(manager->GetEntities(vapor));
+				manager->MoveToFront(vapor);
+				efEstado = none;
+				statePower = 0;
+				stateCont = 0;
+			}
+			// agua y rayo
+			else if ((efEstado == water && a.estado == electric) || (efEstado == electric && a.estado == water))
+			{
+				if (efEstado == water)
+				{
+					maxSpeed += ralentizar;
+					ralentizar = 0;
+				}
+				efEstado = wElectric;
+				statePower += a.power;
+				stateCont = 0;
+
+			}
+		}
+		//si se recibe un ataque con un estado del cual ya se veía afectado
+		else if (efEstado == a.estado)
+		{
+			stateCont = 0;
+			statePower = a.power;
+			if (efEstado == electric)
+			{
+				stun += statePower * 1.5f;
+			}
+		}
+		//efecto de estado básico
+		else if (efEstado == none)
+		{
+			efEstado = a.estado;
+			statePower = a.power;
+			if (efEstado == electric)
+			{
+				stun += statePower * 1.5f;
+
+				AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "electric", this));
+			}
+			else if (efEstado == water)
+			{
+				ralentizar = maxSpeed * ((float)statePower / 100);
+				maxSpeed -= ralentizar;
+
+				AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "water", this));
+			}
+			else if (efEstado == fire)
+			{
+				AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "fire", this));
+			}
+		}
+	}
+
+	//Produce el knoback..
+	body->SetLinearVelocity(aux);
+}
+
+bool Character::IsGoingToKill(const b2Vec2& angle)
+{
+	float horValue = 0.018f;  //0.8f
+	float upValue = 0.00362f;
+	b2Vec2 pos = body->GetPosition();
+
+	return (pos.x + (angle.x * abs(angle.x) * horValue) > manager->GetDeathZoneB2()->x ||
+		pos.x + (angle.x * abs(angle.x) * horValue) < 0 ||
+		pos.y + (angle.y * abs(angle.y) * upValue) < 0);
+}
+
 
 void Character::StartJump(ushort frameNumber)
 {
-
 	AllowMovement();
 
 	if (jumpCounter <= 0 || !jumpCooldown)

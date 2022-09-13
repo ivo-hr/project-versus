@@ -226,6 +226,7 @@ void Makt::SpecialForward(ushort frameNumber)
 			}
 			else if (frameNumber == frameRelease + 5) {
 				release = false;
+				timeHeld = frameNumber + 10;
 				ChangeMove([this](int f) { ThrowRecover(f); });
 			}
 			
@@ -243,7 +244,8 @@ void Makt::ThrowRecover(ushort frameNumber)
 
 	if (frameNumber == attacks["specialLThrow"].keyFrames[0])
 	{
-		ThrowBall(attacks["specialLThrow"].hitBoxes[0].hitdata, frameNumber);
+		CreateHitBox(&attacks["specialLThrow"].hitBoxes[0]);
+		ThrowBall(attacks["specialLThrow"].hitBoxes[0].hitdata, timeHeld);
 	}
 	else if (frameNumber >= attacks["specialLThrow"].totalFrames)
 	{
@@ -421,6 +423,12 @@ void Makt::BuildBoxes()
 		body->GetPosition().x + (dir * 1.7f),
 		body->GetPosition().y,
 		width * 1.7f,
+		height);
+
+	attacks["specialLThrow"].hitBoxes[0].box = manager->GetSDLCoors(
+		body->GetPosition().x + (dir * 1.4f),
+		body->GetPosition().y,
+		width * 1.3f,
 		height);
 
 	attacks["specialU"].hitBoxes[0].box = manager->GetSDLCoors(
