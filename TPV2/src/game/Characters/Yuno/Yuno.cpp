@@ -239,6 +239,7 @@ void Yuno::update()
 
 void Yuno::Respawn()
 {
+	counter = false;
 	Character::Respawn();
 	blinks = maxBlinks;
 }
@@ -297,7 +298,6 @@ void Yuno::BuildBoxes()
 		body->GetPosition().y,
 		width * 2.f,
 		height * 0.8f);
-
 	attacks["basicF"].hitBoxes[1].box =
 		manager->GetSDLCoors(
 			body->GetPosition().x + (dir),

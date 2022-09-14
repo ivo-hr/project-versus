@@ -43,7 +43,9 @@ Makt::~Makt()
 
 void Makt::BasicNeutral(ushort frameNumber)
 {
-
+	if (ballRecover > 0) {
+		return;
+	}
 	if (!onGround)
 	{
 		AllowMovement(0.7f);
@@ -67,7 +69,9 @@ void Makt::BasicNeutral(ushort frameNumber)
 
 void Makt::BasicForward(ushort frameNumber)
 {
-
+	if (ballRecover > 0) {
+		return;
+	}
 	if (!onGround)
 	{
 		AllowMovement(0.7f);
@@ -102,7 +106,9 @@ void Makt::BasicForward(ushort frameNumber)
 
 void Makt::BasicUpward(ushort frameNumber)
 {
-
+	if (ballRecover > 0) {
+		return;
+	}
 	if (!onGround)
 	{
 		AllowMovement(0.7f);
@@ -132,7 +138,9 @@ void Makt::BasicUpward(ushort frameNumber)
 
 void Makt::BasicDownward(ushort frameNumber)
 {
-
+	if (ballRecover > 0) {
+		return;
+	}
 	if (!onGround)
 	{
 		AllowMovement(0.7f);
@@ -162,7 +170,9 @@ void Makt::BasicDownward(ushort frameNumber)
 
 void Makt::SpecialNeutral(ushort frameNumber)
 {
-
+	if (ballRecover > 0) {
+		return;
+	}
 	if (!onGround)
 	{
 		AllowMovement(0.3f);
@@ -178,6 +188,7 @@ void Makt::SpecialNeutral(ushort frameNumber)
 		moving = false;
 		anim->StartAnimation("especialN");
 		sdl->soundEffects().at("maktSpecN").play();
+		superArmor = true;
 	}
 	else if (frameNumber == attacks["specialN"].keyFrames[0])
 	{
@@ -187,13 +198,16 @@ void Makt::SpecialNeutral(ushort frameNumber)
 	{
 		currentMove = nullptr;
 		moveFrame = -1;
+		superArmor = false;
 	}
 	
 }
 
 void Makt::SpecialForward(ushort frameNumber)
 {
-
+	if (ballRecover > 0) {
+		return;
+	}
 	if (!onGround)
 	{
 		AllowMovement(0.7f);
@@ -209,6 +223,7 @@ void Makt::SpecialForward(ushort frameNumber)
 		moving = false;
 		anim->StartAnimation("especialLEntrada");
 		sdl->soundEffects().at("maktSpecS").play();
+		superArmor = true;
 	}
 	
 	else if (frameNumber >= attacks["specialL"].keyFrames[0])
@@ -227,10 +242,17 @@ void Makt::SpecialForward(ushort frameNumber)
 			else if (frameNumber == frameRelease + 5) {
 				release = false;
 				timeHeld = frameNumber + 10;
+				superArmor = false;
 				ChangeMove([this](int f) { ThrowRecover(f); });
 			}
 			
-		}		
+		}	
+		else if (input->down()) {
+			currentMove = nullptr;
+			moveFrame = 0;
+			ballRecover = maxRecover;
+			superArmor = false;
+		}
 	}
 }
 
@@ -279,7 +301,9 @@ void Makt::ThrowBall(HitData force, ushort timeHeld)
 
 void Makt::SpecialUpward(ushort frameNumber)
 {
-
+	if (ballRecover > 0) {
+		return;
+	}
 	if (!onGround)
 	{
 		AllowMovement(0.8f);
@@ -314,6 +338,9 @@ void Makt::SpecialUpward(ushort frameNumber)
 
 void Makt::SpecialDownward(ushort frameNumber)
 {
+	if (ballRecover > 0) {
+		return;
+	}
 
 	if (!onGround)
 	{
@@ -330,6 +357,7 @@ void Makt::SpecialDownward(ushort frameNumber)
 		moving = false;
 		anim->StartAnimation("especialD");
 		sdl->soundEffects().at("maktSpecD").play();
+		superArmor = true;
 	}
 	else if (frameNumber == attacks["specialD"].keyFrames[0])
 	{
@@ -339,6 +367,7 @@ void Makt::SpecialDownward(ushort frameNumber)
 	{
 		currentMove = nullptr;
 		moveFrame = -1;
+		superArmor = false;
 	}
 }
 
@@ -381,6 +410,20 @@ void Makt::RecoveredBall()
 	}
 }
 
+void Makt::update() {
+	if (ballRecover > 0) {
+		ballRecover--;
+	}
+	Character::update();
+}
+
+bool Makt::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) {
+	if (superArmor) {
+		superArmor = false;
+		return false;
+	}
+	return Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
+}
 
 void Makt::BuildBoxes()
 {

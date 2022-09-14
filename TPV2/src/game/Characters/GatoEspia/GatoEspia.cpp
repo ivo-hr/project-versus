@@ -55,10 +55,7 @@ void GatoEspia::BasicNeutral(ushort frameNumber)
 void GatoEspia::BasicForward(ushort frameNumber)
 {
 
-	if (!onGround)
-	{
-		AllowMovement(0.7f);
-	}
+	AllowMovement(0.4f);
 
 	if (frameNumber == 0)
 	{

@@ -36,7 +36,7 @@
           "hitData": {
             "b2vecX": 1,
             "b2vecY": 1.5,
-            "base": 35,
+            "base": 15,
             "damage": 15,
             "multiplier": 0.8,
             "stun": -1,

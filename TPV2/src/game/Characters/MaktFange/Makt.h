@@ -21,6 +21,9 @@ public:
 	virtual void ThrowRecover(ushort frameNumber);
 	virtual void BallPickUp(ushort frameNumber);
 
+	virtual void update() override;
+	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
+
 private:
 
 	ushort baseWeight;
@@ -34,6 +37,9 @@ private:
 	bool release = false;
 	ushort frameRelease;
 	ushort timeHeld = 0;
+	ushort ballRecover = 0;
+	ushort maxRecover = 30;
+	bool superArmor = false;
 
 	void RecoveredBall();
 	void ThrowBall(HitData force, ushort timeHeld);
