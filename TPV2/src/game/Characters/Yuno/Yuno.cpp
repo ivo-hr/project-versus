@@ -47,9 +47,17 @@ void Yuno::BasicNeutral(ushort frameNumber)
 	}
 	else if (frameNumber == attacks["basicN"].keyFrames[0])
 	{
-		auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["basicN"].hitBoxes[0].hitdata, b2Vec2(dir, 0), 0.8f, 0.4f, 30);
-		manager->AddEntity(bullet);
-		bullet->SetOponents(oponents);
+		if (boosted) {
+			auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["basicN"].hitBoxes[1].hitdata, b2Vec2(dir, 0), 0.8f, 0.4f, 30);
+			manager->AddEntity(bullet);
+			bullet->SetOponents(oponents);
+			boosted = false;
+		}
+		else {
+			auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["basicN"].hitBoxes[0].hitdata, b2Vec2(dir, 0), 0.8f, 0.4f, 30);
+			manager->AddEntity(bullet);
+			bullet->SetOponents(oponents);
+		}
 	}
 	else if (frameNumber == attacks["basicN"].totalFrames)
 	{
@@ -61,16 +69,16 @@ void Yuno::BasicNeutral(ushort frameNumber)
 void Yuno::BasicForward(ushort frameNumber)
 {
 
-	if (!onGround)
+	/*if (!onGround)
 	{
 		AllowMovement(0.7f);
-	}
+	}*/
 
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("basicF");
 		sdl->soundEffects().at("catAtk0").play();
-		body->SetLinearVelocity(b2Vec2(dir * 40, body->GetLinearVelocity().y));
+		speed = dir * 40;
 	}
 	else if (frameNumber == attacks["basicF"].keyFrames[0])
 	{
@@ -95,21 +103,16 @@ void Yuno::BasicForward(ushort frameNumber)
 void Yuno::BasicDownward(ushort frameNumber)
 {
 
-	if (!onGround)
-	{
-		AllowMovement(0.7f);
-	}
-
 	if (frameNumber == 0)
 	{
-		moving = false;
 		anim->StartAnimation("basicD");
-		sdl->soundEffects().at("catAtk2").play();
+		sdl->soundEffects().at("catAtk3").play();
 	}
 	else if (frameNumber == attacks["basicD"].keyFrames[0])
 	{
-		CreateHitBox(&attacks["basicD"].hitBoxes[0]);
-		CreateHitBox(&attacks["basicD"].hitBoxes[1]);
+		if (boosted == false) {
+			boosted = true;
+		}
 	}
 	else if (frameNumber == attacks["basicD"].totalFrames)
 	{
@@ -130,11 +133,20 @@ void Yuno::BasicUpward(ushort frameNumber)
 	{
 		moving = false;
 		anim->StartAnimation("basicU");
-		sdl->soundEffects().at("catAtk3").play();
+		sdl->soundEffects().at("catAtk2").play();
+
+		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, -10));
 	}
 	else if (frameNumber == attacks["basicU"].keyFrames[0])
 	{
 		CreateHitBox(&attacks["basicU"].hitBoxes[0]);
+	}
+	else if (frameNumber == attacks["basicU"].keyFrames[1])
+	{
+		if (onGround)
+			CreateHitBox(&attacks["basicU"].hitBoxes[1]);
+		else
+			CreateHitBox(&attacks["basicU"].hitBoxes[2]);
 	}
 	else if (frameNumber == attacks["basicU"].totalFrames)
 	{
@@ -172,69 +184,6 @@ void Yuno::SpecialForward(ushort frameNumber)
 void Yuno::SpecialUpward(ushort frameNumber)
 {
 
-	if (!onGround)
-	{
-		AllowMovement(0.4f);
-	}
-
-	if (frameNumber == 0)
-	{
-		if (blinks < 1.0f) {
-			currentMove = nullptr;
-			moveFrame = -1;
-			return;
-		}
-		anim->StartAnimation("especialU");
-		sdl->soundEffects().at("catSpecU").play();
-		body->SetLinearVelocity(b2Vec2(0, 0));
-		body->SetGravityScale(0);
-		moving = false;
-		blinks -= 1.0f;
-	}
-	else if (frameNumber == attacks["specialU"].keyFrames[0])
-	{
-		dash = true;
-	}
-	else if (frameNumber == attacks["specialU"].keyFrames[1])
-	{
-		b2Vec2 a;
-		if (input->left())
-		{
-			dir = -1;
-			a = b2Vec2(-7, -7);
-			a.Normalize();
-			a *= 7;
-		}
-		else if (input->right())
-		{
-			dir = 1;
-			a = b2Vec2(7, -7);
-			a.Normalize();
-			a *= 7;
-		}
-		else
-		{
-			a = b2Vec2(0, -7);
-		}
-		body->SetTransform(body->GetPosition() + a, 0);
-		body->SetLinearVelocity({ body->GetLinearVelocity().x / 2, -25 });
-		body->SetGravityScale(10.0f);
-
-		CreateHitBox(&attacks["specialU"].hitBoxes[0]);
-
-	}
-	else if (frameNumber == attacks["specialU"].keyFrames[2])
-	{
-		dash = false;
-		body->SetLinearVelocity(b2Vec2(0, 0));
-		body->SetGravityScale(0);
-	}
-	else if (frameNumber == attacks["specialU"].totalFrames)
-	{
-		body->SetGravityScale(10.0f);
-		currentMove = nullptr;
-		moveFrame = -1;
-	}
 }
 
 void Yuno::SpecialDownward(ushort frameNumber)
@@ -296,11 +245,11 @@ void Yuno::Respawn()
 
 bool Yuno::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)
 {
-	if (counter && !attacker->isProjectile()) {
+	if (counter) {
 		anim->StartAnimation("counter");
 		anim->update();
+		a.damage = 0;
 		counter = false;
-		return false;
 	}
 	return Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
 }
@@ -356,26 +305,24 @@ void Yuno::BuildBoxes()
 			width * 2.f,
 			height * 0.8f);
 
-	attacks["basicD"].hitBoxes[0].box = 
-		manager->GetSDLCoors(
-		body->GetPosition().x + (dir * width * 0.7f),
-		body->GetPosition().y + height / 2,
-		width * 1.4f,
-		height / 2);
-
-	attacks["basicD"].hitBoxes[1].box = 
-		manager->GetSDLCoors(
-		body->GetPosition().x - (dir * width * 0.7f),
-		body->GetPosition().y + height / 2,
-		width * 1.4f,
-		height / 2);
-
 	attacks["basicU"].hitBoxes[0].box = 
 		manager->GetSDLCoors(
 		body->GetPosition().x,
 		body->GetPosition().y - height * 0.6f,
-		width * 2.5f,
-		height * 0.7f);
+		width*1.5,
+		height * 0.5f);
+	attacks["basicU"].hitBoxes[1].box =
+		manager->GetSDLCoors(
+			body->GetPosition().x + (dir * 1.2f),
+			body->GetPosition().y,
+			width * 1.2f,
+			height);
+	attacks["basicU"].hitBoxes[2].box =
+		manager->GetSDLCoors(
+			body->GetPosition().x + (dir * 1.2f),
+			body->GetPosition().y,
+			width *1.2f,
+			height);
 
 	attacks["specialU"].hitBoxes[0].box = 
 		manager->GetSDLCoors(body, width, height);

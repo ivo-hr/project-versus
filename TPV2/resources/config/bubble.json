@@ -14,12 +14,12 @@
       "hitBoxes": [
         {
           "hitData": {
-            "b2vecX": 0,
-            "b2vecY": 0,
+            "b2vecX": 0.5,
+            "b2vecY": 0.5,
             "base": 5,
-            "damage": 15,
-            "multiplier": 0.5,
-            "stun": 6,
+            "damage": 10,
+            "multiplier": 0.1,
+            "stun": 15,
             "shieldBreak": false
           },
           "hitlag": -1,
@@ -27,11 +27,11 @@
         },
         {
           "hitData": {
-            "b2vecX": 1,
-            "b2vecY": 9,
-            "base": 25,
-            "damage": 20,
-            "multiplier": 0.5,
+            "b2vecX": 2,
+            "b2vecY": 2.5,
+            "base": 15,
+            "damage": 15,
+            "multiplier": 1.2,
             "stun": -1,
             "shieldBreak": false
           },
@@ -50,8 +50,21 @@
             "b2vecX": 1,
             "b2vecY": 1,
             "base": 1,
-            "damage": 20,
+            "damage": 15,
             "multiplier": 0.3,
+            "stun": -1,
+            "shieldBreak": false
+          },
+          "hitlag": -1,
+          "duration": 5
+        },
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": 1,
+            "base": 10,
+            "damage": 20,
+            "multiplier": 1.5,
             "stun": -1,
             "shieldBreak": false
           },
@@ -65,35 +78,9 @@
     {
       "id": "basicD",
       "hitBoxes": [
-        {
-          "hitData": {
-            "b2vecX": 1.5,
-            "b2vecY": 1,
-            "base": 40,
-            "damage": 10,
-            "multiplier": 0.7,
-            "stun": -1,
-            "shieldBreak": false
-          },
-          "hitlag": -1,
-          "duration": 4
-        },
-        {
-          "hitData": {
-            "b2vecX": -1.5,
-            "b2vecY": 1,
-            "base": 40,
-            "damage": 10,
-            "multiplier": 0.7,
-            "stun": -1,
-            "shieldBreak": false
-          },
-          "hitlag": -1,
-          "duration": 4
-        }
       ],
-      "keyFrames": [9],
-      "totalFrames": 46
+      "keyFrames": [30],
+      "totalFrames": 40
     },
     {
       "id": "basicU",
@@ -101,19 +88,45 @@
         {
           "hitData": {
             "b2vecX": 1,
-            "b2vecY": 9,
-            "base": 40,
-            "damage": 9,
-            "multiplier": 0.5,
+            "b2vecY": 2,
+            "base": 20,
+            "damage": 15,
+            "multiplier": 1.5,
             "stun": -1,
             "shieldBreak": false
           },
           "hitlag": -1,
+          "duration": 8
+        },
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": 1.3,
+            "base": 40,
+            "damage": 25,
+            "multiplier": 0.6,
+            "stun": -1,
+            "shieldBreak": true
+          },
+          "hitlag": -1,
+          "duration": 10
+        },
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": -11,
+            "base": 60,
+            "damage": 24,
+            "multiplier": 0.3,
+            "stun": -1,
+            "shieldBreak": true
+          },
+          "hitlag": -1,
           "duration": 10
         }
-      ],
-      "keyFrames": [5],
-      "totalFrames": 25
+        ],
+      "keyFrames": [10, 20],
+      "totalFrames": 40
     },
     {
       "id": "specialN",
@@ -149,9 +162,9 @@
           "hitData": {
             "b2vecX": 1,
             "b2vecY": 3,
-            "base": 40,
-            "damage": 30,
-            "multiplier": 1.6,
+            "base": 15,
+            "damage": 15,
+            "multiplier": 1.5,
             "stun": -1,
             "shieldBreak": true
           },
@@ -236,9 +249,9 @@
         "id" : "basicU",
         "iniSprite" : 15,
         "totalSprites" : 4,
-        "keySprite" : [2],
+        "keySprite" : [10, 25],
         "attack": "basicU",
-        "totalFrames" : 20,
+        "totalFrames" : 50,
         "loop" :false
       },
       {

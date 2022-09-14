@@ -33,6 +33,7 @@ private:
 	float blinks = maxBlinks;
 	float blinkRecover = 0.004;
 	bool counter = false;
+	bool boosted = false;
 
 protected:
 	void BuildBoxes() override;
