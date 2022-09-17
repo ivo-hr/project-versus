@@ -292,7 +292,7 @@ void Makt::ThrowBall(HitData force, ushort timeHeld)
 	aux.damage += timeHeld / 10;
 	aux.base += timeHeld / 10;
 
-	ball = new MaktBall(manager, b2Vec2(body->GetPosition().x + dir * 4, body->GetPosition().y + 0.3f), aux, b2Vec2(dir, 0), respawnPos);
+	ball = new MaktBall(manager, b2Vec2(body->GetPosition().x + dir * 4, body->GetPosition().y + 0.3f), aux, b2Vec2(dir, 0), respawnPos, playerNumber);
 	manager->AddEntity(ball);
 	ball->SetOponents(oponents);
 
@@ -420,7 +420,8 @@ void Makt::update() {
 bool Makt::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) {
 	if (superArmor) {
 		superArmor = false;
-		return false;
+		damageTaken += a.damage;
+		return true;
 	}
 	return Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
 }

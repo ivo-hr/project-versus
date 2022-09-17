@@ -19,10 +19,11 @@ Explosion::Explosion(FightManager* manager, b2Vec2 pos, int power, int type) :
 		data.multiplier = 1.2f;
 		texture = &sdl->images().at("ExplosionWF");
 	}
-	else{
-		data.base = 20;
+	else
+	{
+		data.base = 40;
 		data.damage = power;
-		data.multiplier = 0.4f;
+		data.multiplier = 0.1f;
 		texture = &sdl->images().at("ExplosionEF");
 	}
 

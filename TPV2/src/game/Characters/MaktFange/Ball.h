@@ -17,7 +17,7 @@ class MaktBall : public Projectile
 	//	float ang;
 
 public:
-	MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, b2Vec2 respawn);
+	MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, b2Vec2 respawn, ushort pNumber);
 	virtual ~MaktBall();
 
 	virtual void update() override;
@@ -34,7 +34,10 @@ private:
 
 	void Respawn();
 
-	bool physic;
+	Texture* arrowsTex = nullptr;
+	SDL_Rect arrowSrc = SDL_Rect();
+
+	bool physic = false;
 
 	int sprite = 0;
 	float anim = 0;

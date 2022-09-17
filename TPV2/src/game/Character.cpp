@@ -163,7 +163,7 @@ void Character::SetSpawn(b2Vec2 spawn, short dir)
 {
 	body->SetTransform(spawn, 0);
 	this->dir = dir;
-	respawnPos = b2Vec2(spawn.x, 5);
+	respawnPos = b2Vec2(spawn.x, 10);
 }
 
 void Character::SetPNumber(ushort num)
@@ -357,7 +357,7 @@ void Character::update()
 
 	anim->update();
 
-	if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()) /*&& (hurtbox.y > -hurtbox.h || stun > 0)*/)
+	if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()) && (hurtbox.y > -hurtbox.h || !invencible))
 	{
 		OnDeath();
 	}
@@ -664,8 +664,6 @@ void Character::draw(SDL_Rect* camera)
 	aux.w *= (manager->GetActualWidth() / (float)camera->w);
 	aux.h *= (manager->GetActualWidth() / (float)camera->w);
 
-	int xpos = aux.x + (aux.w / 2);
-
 	if (invencible)
 	{
 		if (arrowCont + 100 < SDL_GetTicks()) {
@@ -677,6 +675,8 @@ void Character::draw(SDL_Rect* camera)
 	{
 		drawArrow = true;
 	}
+
+	int xpos = aux.x + (aux.w / 2);
 
 	arrowsTex->render(arrowSrc, { xpos - 15, aux.y - 44, 30, 16 });
 
@@ -867,7 +867,7 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 				int poder = statePower + a.power;
 				auto plasma = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 1);
 				manager->AddEntity(plasma);
-				plasma->SetOponents(manager->GetEntities(plasma));
+				plasma->SetOponents(manager->GetOponents(plasma));
 				manager->MoveToFront(plasma);
 				efEstado = none;
 				statePower = 0;
@@ -884,7 +884,7 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 				int poder = (statePower + a.power) / 3;
 				auto vapor = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 0);
 				manager->AddEntity(vapor);
-				vapor->SetOponents(manager->GetEntities(vapor));
+				vapor->SetOponents(manager->GetOponents(vapor));
 				manager->MoveToFront(vapor);
 				efEstado = none;
 				statePower = 0;
@@ -1177,6 +1177,7 @@ void Character::OnDeath()
 
 	alive = false;
 	lives--;
+	totalDamageTaken += damageTaken;
 
 	recovery = true;
 	AddDeathParticle();
@@ -1235,7 +1236,6 @@ void Character::Respawn()
 	speed = 0;
 
 	alive = true;
-	totalDamageTaken += damageTaken;
 	damageTaken = 0;
 	moving = false;
 
@@ -1256,6 +1256,8 @@ void Character::Respawn()
 
 void Character::ResetChar()
 {
+	dash = false;
+	shield = 0;
 	body->SetGravityScale(10.0f);
 	currentMove = nullptr;
 	moveFrame = -1;

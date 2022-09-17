@@ -423,7 +423,10 @@ bool FightManager::RemoveCharacter(Character* character)
 				else {
 					bool belongsTeam1 = false;
 					for (auto e : team1) {
-						if (e == character)belongsTeam1 = true;
+						if (e == character)
+						{
+							belongsTeam1 = true; break;
+						}
 					}
 					if (belongsTeam1) { // Si pertenece al team1
 						vector<ushort>stats;
@@ -547,21 +550,6 @@ void FightManager::FighterLost(Character* loser)
 }
 
 std::vector<Entity*> FightManager::GetOponents(Entity* current)
-{
-	std::vector<Entity*> a;
-
-	for (int i = 0; i < entities.size(); i++)
-	{
-		if (entities[i] != current)
-		{
-			a.push_back(entities[i]);
-		}
-	}
-	return a;
-}
-
-
-std::vector<Entity*> FightManager::GetEntities(Entity* current)
 {
 	std::vector<Entity*> a;
 

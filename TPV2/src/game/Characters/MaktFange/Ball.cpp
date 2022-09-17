@@ -2,9 +2,12 @@
 #include "../../Utils/Particle.h"
 #include "../../../utils/CheckML.h"
 
-MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, b2Vec2 respawn) :
+MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, b2Vec2 respawn, ushort pNumber) :
 	Projectile(manager, pos, dir, 1.5f, 1.5f, 20)
 {
+	arrowsTex = &sdl->images().at("arrows");
+	arrowSrc = { 0, arrowsTex->height() * pNumber / 4, arrowsTex->width(), arrowsTex->height() / 4 };
+
 	texture = &sdl->images().at("makt");
 
 	vecDir = dir;
@@ -161,6 +164,10 @@ void MaktBall::draw(SDL_Rect* camera)
 		texture->render(src, aux, ang, nullptr, SDL_FLIP_HORIZONTAL);
 	else
 		texture->render(src, aux);
+
+	int xpos = aux.x + (aux.w / 2);
+
+	arrowsTex->render(arrowSrc, { xpos - 15, aux.y - 34, 30, 16 });
 
 #ifdef _DEBUG
 

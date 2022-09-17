@@ -164,7 +164,7 @@
             "shieldBreak": false
           },
           "hitlag": -1,
-          "duration": 17
+          "duration": 12
         },
         {
           "hitData": {
@@ -177,7 +177,7 @@
             "shieldBreak": false
           },
           "hitlag": -1,
-          "duration": 17
+          "duration": 12
         },
         {
           "hitData": {
@@ -190,7 +190,7 @@
             "shieldBreak": false
           },
           "hitlag": -1,
-          "duration": 17
+          "duration": 12
         }
       ],
       "keyFrames": [25],
