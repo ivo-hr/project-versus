@@ -113,7 +113,8 @@ void Projectile::CheckHits()
 }
 bool Projectile::changeDir()
 {
-	outFor = 0;
+	outFor = 0; 
+	duration -= 10;
 	vecDir = -vecDir;
 	data.damage *= 1.2f;
 	reflected = 3;
