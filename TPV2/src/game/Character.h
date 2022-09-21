@@ -112,7 +112,9 @@ public:
 	virtual void draw(SDL_Rect* camera) override;
 	virtual void drawHUD(ushort numOfPlayer) ;
 
+	virtual void CheckHits() override;
 	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
+
 	void SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag, Entity* attacker, bool& controlShake, bool& controlCamShake);
 	bool IsGoingToKill(const b2Vec2& angle);
 	virtual SDL_Rect* GetHurtbox();

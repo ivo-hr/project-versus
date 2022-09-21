@@ -49,14 +49,12 @@ void Yuno::BasicNeutral(ushort frameNumber)
 	{
 		if (boosted) {
 			auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["basicN"].hitBoxes[1].hitdata, b2Vec2(dir, 0), 0.8f, 0.4f, 30);
-			manager->AddEntity(bullet);
-			bullet->SetOponents(oponents);
+			manager->AddEntity(bullet, layer, false);
 			boosted = false;
 		}
 		else {
 			auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["basicN"].hitBoxes[0].hitdata, b2Vec2(dir, 0), 0.8f, 0.4f, 30);
-			manager->AddEntity(bullet);
-			bullet->SetOponents(oponents);
+			manager->AddEntity(bullet, layer, false);
 		}
 	}
 	else if (frameNumber == attacks["basicN"].totalFrames)

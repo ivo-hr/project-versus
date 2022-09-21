@@ -64,24 +64,25 @@ void Explosion::CheckHits()
 {
 	if (time >= 3)
 	{
-		for (int j = 0; j < oponents.size(); j++)
+		Entity* oponent = nullptr;
+		while (manager->GetNextEntity(oponent, 0))
 		{
 			SDL_Rect hitArea;
-			if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea) && !isHit[j])
+			if (SDL_IntersectRect(&hurtbox, oponent->GetHurtbox(), &hitArea) && !isHit[oponent])
 			{
 				bool controlHitLag = false;
 				bool controlShake = false;
 				bool controlCamShake = false;
 
-				if (oponents[j]->GetHit(data, this, controlHitLag, controlShake, controlCamShake))
+				if (oponent->GetHit(data, this, controlHitLag, controlShake, controlCamShake))
 				{
 					if (!controlHitLag)
 					{
-						oponents[j]->AddHitLag(20);
+						oponent->AddHitLag(20);
 						AddHitLag(20);
 					}
 
-					isHit[j] = true;
+					isHit[oponent] = true;
 				}
 			}
 		}

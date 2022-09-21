@@ -702,6 +702,95 @@ void Character::draw(SDL_Rect* camera)
 }
 
 
+void Character::CheckHits()
+{
+	bool toResetHits = false;
+
+	if (hitLag > 0)
+	{
+		return;
+	}
+
+	for (int i = 0; i < hitboxes.size(); i++)
+	{
+
+		if (hitboxes[i]->duration == hitboxes[i]->outFor)
+		{
+			hitboxes[i]->outFor = 0;
+			for (int j = i + 1; j < hitboxes.size(); j++)
+			{
+				hitboxes[j - 1] = hitboxes[j];
+			}
+			hitboxes.pop_back();
+			i--;
+			toResetHits = true;
+		}
+		else
+		{
+			hitboxes[i]->box.x = (hurtbox.x + (hurtbox.w / 2) + hitboxes[i]->charOffset.getX()) - hitboxes[i]->box.w / 2;
+			hitboxes[i]->box.y = (hurtbox.y + (hurtbox.h / 2) + hitboxes[i]->charOffset.getY()) - hitboxes[i]->box.h / 2;
+			hitboxes[i]->outFor++;
+		}
+
+		if (!toResetHits)
+		{
+			Entity* oponent = nullptr;
+			while (manager->GetNextEntity(oponent, layer))
+			{
+				SDL_Rect hitArea;
+				if (SDL_IntersectRect(&hitboxes[i]->box, oponent->GetHurtbox(), &hitArea) && !isHit[oponent])
+				{
+					manager->MoveToFront(this);
+					bool hitLagApplied = false, shakeApplied = false, camShakeApplied = false;
+					//Le hace daño xddd
+					if (oponent->GetHit(hitboxes[i]->hitdata, this, hitLagApplied, shakeApplied, camShakeApplied))
+					{
+						if (!hitLagApplied)
+						{
+							AddHitLag(hitboxes[i]->GetHitlag());
+							oponent->AddHitLag(hitboxes[i]->GetHitlag());
+						}
+
+						if (!shakeApplied)
+						{
+							oponent->SetShake(Vector2D(hitboxes[i]->hitdata.direction.x, hitboxes[i]->hitdata.direction.y), hitboxes[i]->GetHitlag());
+						}
+
+						if (!camShakeApplied)
+						{
+							manager->SetShake(Vector2D(hitboxes[i]->hitdata.direction.x * -hitboxes[i]->GetHitlag() * 0.3f, hitboxes[i]->hitdata.direction.y * hitboxes[i]->GetHitlag() * 0.1f), hitboxes[i]->GetHitlag());
+						}
+
+						oponent->setLastCharacer(this);
+
+						if (hitboxes[i]->GetHitlag() >= 15)
+						{
+							AddParticle(new Particle(
+								Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+								1, "bHitParticle", this));
+
+							manager->GetSDLU()->soundEffects().at("hitStr").play();
+						}
+						else
+						{
+							AddParticle(new Particle(
+								Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+								1, "sHitParticle", this));
+
+							manager->GetSDLU()->soundEffects().at("hitMed").play();
+						}
+					}
+					isHit[oponent] = true;
+				}
+			}
+		}
+	}
+	if (toResetHits)
+	{
+		resetHit();
+	}
+}
+
 bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)
 {
 	//Shield is up
@@ -866,8 +955,7 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 				//suma de efectos de estado para pasarselo a la explosion
 				int poder = statePower + a.power;
 				auto plasma = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 1);
-				manager->AddEntity(plasma);
-				plasma->SetOponents(manager->GetOponents(plasma));
+				manager->AddEntity(plasma, 0);
 				manager->MoveToFront(plasma);
 				efEstado = none;
 				statePower = 0;
@@ -883,8 +971,7 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 				}
 				int poder = (statePower + a.power) / 3;
 				auto vapor = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 0);
-				manager->AddEntity(vapor);
-				vapor->SetOponents(manager->GetOponents(vapor));
+				manager->AddEntity(vapor, 0);
 				manager->MoveToFront(vapor);
 				efEstado = none;
 				statePower = 0;

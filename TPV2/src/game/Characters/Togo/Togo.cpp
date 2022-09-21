@@ -73,9 +73,8 @@ void Togo::BasicForward(ushort frameNumber)
 	else if (frameNumber == attacks["basicF"].keyFrames[0])
 	{
 			auto spear = new Spear(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y-height/2), attacks["basicF"].hitBoxes[0].hitdata, b2Vec2(dir, 0), this);
-			manager->AddEntity(spear);
+			manager->AddEntity(spear, layer, false);
 			manager->MoveToFront(spear);
-			spear->SetOponents(oponents);
 			SetSpear(false);
 	}
 	else if (frameNumber == attacks["basicF"].totalFrames)
@@ -191,11 +190,8 @@ void Togo::SpecialNeutral(ushort frameNumber)
 		{
 			anim->StartAnimation("especialNHold");
 			dShield = new DinoShield(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - GetHeight() / 4.5));
-			dShield->SetOponents(oponents);
 
-			manager->AddEntity(dShield);
-
-			manager->AddOponnent(dShield, this);
+			manager->AddEntity(dShield, layer);
 
 			manager->MoveToFront(dShield);
 
@@ -242,8 +238,9 @@ void Togo::SpecialForward(ushort frameNumber)
 			width * 3.8f,
 			height * 0.8f);
 
-		for (int i = 0; i < oponents.size(); i++) {
-			if (SDL_HasIntersection(&bite, oponents[i]->GetHurtbox())) {
+		Entity* oponent = nullptr;
+		while (manager->GetNextEntity(oponent, layer)) {
+			if (SDL_HasIntersection(&bite, oponent->GetHurtbox())) {
 				ChangeMove([this](int f) { SpecialLHit(f); });
 				bite = { 0, 0, 0, 0 };
 			}

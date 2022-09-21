@@ -107,9 +107,7 @@ void Entity::SetGround(bool ground)
 
 void Entity::resetHit()
 {
-	for (int i = 0; i < isHit.size(); i++) {
-		isHit[i] = false;
-	}
+	isHit.clear();
 }
 
 void Entity::setLastCharacer(Entity* chrcter)
@@ -189,133 +187,6 @@ bool Entity::RemoveParticle(Particle* par)
 	}
 	delete par;
 	return false;
-}
-
-//Le decimos a quien toca dar de ostias xd
-void Entity::SetOponents(std::vector<Entity*> ents)
-{
-	oponents.clear();
-	isHit.clear();
-	for (int i = 0; i < ents.size(); i++)
-	{
-		if (ents[i] != this)
-		{
-			oponents.push_back(ents[i]);
-			isHit.push_back(false);
-		}
-	}
-}
-
-void Entity::AddOponent(Entity* ent)
-{
-	if (ent != this)
-	{
-		oponents.push_back(ent);
-		isHit.push_back(false);
-	}
-}
-
-void Entity::DeleteOponent(Entity* ent)
-{
-	for (int i = 0; i < oponents.size(); i++)
-	{
-		if (oponents[i] == ent)
-		{
-			for (int j = i + 1; j < oponents.size(); j++)
-			{
-				oponents[j - 1] = oponents[j];
-				isHit[j - 1] = isHit[j];
-			}
-			oponents.pop_back();
-			isHit.pop_back();
-		}
-	}
-}
-
-void Entity::CheckHits()
-{
-	bool toResetHits = false;
-
-	if (hitLag > 0)
-	{
-		return;
-	}
-
-	for (int i = 0; i < hitboxes.size(); i++)
-	{
-
-		if (hitboxes[i]->duration == hitboxes[i]->outFor)
-		{
-			hitboxes[i]->outFor = 0;
-			for (int j = i + 1; j < hitboxes.size(); j++)
-			{
-				hitboxes[j - 1] = hitboxes[j];
-			}
-			hitboxes.pop_back();
-			i--;
-			toResetHits = true;
-		}
-		else
-		{
-			hitboxes[i]->box.x = (hurtbox.x + (hurtbox.w / 2) + hitboxes[i]->charOffset.getX()) - hitboxes[i]->box.w / 2;
-			hitboxes[i]->box.y = (hurtbox.y + (hurtbox.h / 2) + hitboxes[i]->charOffset.getY()) - hitboxes[i]->box.h / 2;
-			hitboxes[i]->outFor++;
-		}
-
-		if (!toResetHits)
-		for (int j = 0; j < oponents.size(); j++)
-		{
-			SDL_Rect hitArea;
-			if (SDL_IntersectRect(&hitboxes[i]->box, oponents[j]->GetHurtbox(), &hitArea) && !isHit[j])
-			{
-				manager->MoveToFront(this);
-				bool hitLagApplied = false, shakeApplied = false, camShakeApplied = false;
-				//Le hace daño xddd
-				if (oponents[j]->GetHit(hitboxes[i]->hitdata, this, hitLagApplied, shakeApplied, camShakeApplied))
-				{
-					if (!hitLagApplied)
-					{
-						AddHitLag(hitboxes[i]->GetHitlag());
-						oponents[j]->AddHitLag(hitboxes[i]->GetHitlag());
-					}
-
-					if (!shakeApplied)
-					{
-						oponents[j]->SetShake(Vector2D(hitboxes[i]->hitdata.direction.x, hitboxes[i]->hitdata.direction.y), hitboxes[i]->GetHitlag());
-					}
-
-					if (!camShakeApplied)
-					{
-						manager->SetShake(Vector2D(hitboxes[i]->hitdata.direction.x * -hitboxes[i]->GetHitlag() * 0.3f, hitboxes[i]->hitdata.direction.y * hitboxes[i]->GetHitlag() * 0.1f), hitboxes[i]->GetHitlag());
-					}
-
-					oponents[j]->setLastCharacer(this);
-
-					if (hitboxes[i]->GetHitlag() >= 15)
-					{
-						AddParticle(new Particle(
-							 Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-							1, "bHitParticle", this));
-
-						manager->GetSDLU()->soundEffects().at("hitStr").play();
-					}
-					else
-					{
-						AddParticle(new Particle(
-							 Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-							1, "sHitParticle", this)); 
-
-						manager->GetSDLU()->soundEffects().at("hitMed").play();
-					}
-				}
-				isHit[j] = true;
-			}
-		}
-	}
-	if (toResetHits)
-	{
-		resetHit();
-	}
 }
 
 SDL_Rect* Entity::GetHurtbox()

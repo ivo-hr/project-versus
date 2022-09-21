@@ -293,8 +293,7 @@ void Makt::ThrowBall(HitData force, ushort timeHeld)
 	aux.base += timeHeld / 10;
 
 	ball = new MaktBall(manager, b2Vec2(body->GetPosition().x + dir * 4, body->GetPosition().y + 0.3f), aux, b2Vec2(dir, 0), respawnPos, playerNumber);
-	manager->AddEntity(ball);
-	ball->SetOponents(oponents);
+	manager->AddEntity(ball, layer, false);
 
 	animAddon = "";
 }

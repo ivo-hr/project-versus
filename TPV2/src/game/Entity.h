@@ -78,6 +78,10 @@ class Entity
 {
 
 protected:
+
+	ushort layer;
+	ushort placeInLayer;
+
 	Texture* texture;
 
 	FightManager* manager;
@@ -94,9 +98,8 @@ protected:
 
 	short dir;
 
-	std::vector<Entity*> oponents;
 	std::vector<HitBoxData*> hitboxes;
-	std::vector<bool> isHit;
+	std::unordered_map<Entity*, bool> isHit;
 
 	bool onGround;
 	bool projectile = false;
@@ -123,6 +126,11 @@ public:
 	Entity(FightManager* mngr, b2Vec2 position, float w = 3.f, float h = 3.f);
 	virtual ~Entity();
 
+	void SetLayer(ushort layer) { this->layer = layer; }
+	ushort GetLayer() { return layer; }
+	void SetPlaceInLayer(ushort placeInLayer) { this->placeInLayer = placeInLayer; }
+	ushort GetPlaceInLayer() { return placeInLayer; }
+
 	virtual void updateParticles();
 	virtual void update();
 	virtual void draw();
@@ -131,11 +139,7 @@ public:
 	void AddParticle(Particle* par);
 	bool RemoveParticle(Particle* par);
 
-	virtual void SetOponents(std::vector<Entity*> op);
-	virtual void AddOponent(Entity* ent);
-	virtual void DeleteOponent(Entity* ent);
-
-	virtual void CheckHits();
+	virtual void CheckHits() { };
 	virtual void OnDeath() { toDelete = true; };
 	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) { return false; };
 

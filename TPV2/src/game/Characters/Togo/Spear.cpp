@@ -58,22 +58,23 @@ void Spear::CheckHits()
 	}
 	else
 	{
-		for (int j = 0; j < oponents.size(); j++)
+		Entity* oponent = nullptr;
+		while (manager->GetNextEntity(oponent, layer))
 		{
 			SDL_Rect hitArea;
-			if (SDL_IntersectRect(&hurtbox, oponents[j]->GetHurtbox(), &hitArea))
+			if (SDL_IntersectRect(&hurtbox, oponent->GetHurtbox(), &hitArea))
 			{
 				bool controlHitLag = false;
 				bool controlShake = false;
 				bool controlCamShake = false;
 
-				if (oponents[j]->GetHit(data, this, controlHitLag, controlShake, controlCamShake))
+				if (oponent->GetHit(data, this, controlHitLag, controlShake, controlCamShake))
 				{
 					hitDelay = 0;
 
-					oponents[j]->AddParticle(new Particle(
+					oponent->AddParticle(new Particle(
 						Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-						1, "sHitParticle", oponents[j]));
+						1, "sHitParticle", oponent));
 				}
 			}
 		}

@@ -74,7 +74,10 @@ void DinoShield::draw(SDL_Rect* camera)
 
 bool DinoShield::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)
 {
-	if (attacker->changeDir())
-		attacker->SetOponents(oponents);
+	if (attacker->changeDir() && !isHit[attacker])
+	{
+		manager->ChangeEntityLayer(attacker, layer);
+		isHit[attacker] = true;
+	}
 	return false;
 }

@@ -26,11 +26,16 @@ class MyListener;
 
 class Stage;
 
-class FightManager :public StateMachine
+class FightManager : public StateMachine
 {
 
-	std::vector<Entity*> entities;
-	std::vector<Character*> characters;
+	std::vector<Entity*> entities = vector<Entity*>(0);
+	std::vector<Character*> characters = vector<Character*>(0);
+
+	std::vector<vector<Entity*>> entityMatrix;
+	Entity* matrixPtr = nullptr;
+	std::pair<ushort, ushort> ptrPlace = { 0, 0 };
+	ushort numHitableLayers = 0;
 
 	// Team mode
 	std::vector<Character*> team1;
@@ -98,12 +103,16 @@ public:
 	void InitCamera();
 	ushort StartFight(std::vector<Character*> ent);
 	ushort StartFight(std::vector<Character*> team1, std::vector<Character*> team2);
+	void InitMatrix();
+	void RemoveEntityFromMatrix(Entity* ent);
 
-	void AddEntity(Entity* ent);
+	void AddEntity(Entity* ent, ushort layer, bool hitable = true);
 	bool RemoveEntity(Entity* ent);
 	bool RemoveCharacter(Character* character);
 	void MoveToFront(Entity* ent);
-	void AddOponnent(Entity* ent, Entity* ignore = nullptr);
+
+	void ChangeEntityLayer(Entity* ent, ushort newLayer);
+	bool GetNextEntity(Entity*& ent, ushort layer);
 
 	void KillingBlow();
 
@@ -123,7 +132,7 @@ public:
 
 	vector<Texture*>getWinnersTextures() { return deadTextures; }
 
-	std::vector<Entity*> GetOponents(Entity* current);
+	std::vector<Entity*>* GetEntities();
 	SDL_Rect* GetDeathZone();
 	b2Vec2* GetDeathZoneB2();
 	b2World* GetWorld();

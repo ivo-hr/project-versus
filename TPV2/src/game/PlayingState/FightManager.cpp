@@ -126,6 +126,7 @@ FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 
 	cameraOffset *= sizeDiff;
 
+	entityMatrix = vector<vector<Entity*>>();
 	
 	for (auto i = 0u; i < 1000; i++) {
 		string s = "nes" + to_string(i);
@@ -300,6 +301,7 @@ ushort FightManager::StartFight(std::vector<Character*> ent)
 	teammode = false;
 	for (Character* a : ent)
 	{
+		//Init vectors
 		entities.push_back(a);
 		characters.push_back(a);
 	}
@@ -307,7 +309,6 @@ ushort FightManager::StartFight(std::vector<Character*> ent)
 
 	for (auto i = 0u; i < characters.size(); i++) {
 		numPlayers++;
-		characters[i]->SetOponents(entities);
 		listener->AddCharacter(entities[i]);
 		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i)); 
 		characters[i]->SetPNumber(i);
@@ -328,6 +329,8 @@ ushort FightManager::StartFight(std::vector<Character*> ent)
 
 	}
 	numPlayers = characters.size();
+
+	InitMatrix();
 	
 	scount = 4;
 	startticks = 0;
@@ -362,14 +365,12 @@ ushort FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Cha
 
 	for (auto i = 0u; i < ateam1.size(); i++) {
 		//numPlayers++;
-		characters[i]->SetOponents(aux2);
 		listener->AddCharacter(characters[i]);
 		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
 		characters[i]->SetPNumber(0);
 	}
 	for (auto i = ateam1.size(); i < ateam2.size()+ateam1.size() ; i++) {
 		//numPlayers++;
-		characters[i]->SetOponents(aux1);
 		listener->AddCharacter(characters[i]);
 		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
 		characters[i]->SetPNumber(1);
@@ -377,15 +378,96 @@ ushort FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Cha
 	sdl->musics().at("cube").play();
 	//Music::setMusicVolume(1);
 	numPlayers = characters.size();
+
+	InitMatrix();
+
 	scount = 4;
 	startticks = 0;
 	return 1;
 }
 
+void FightManager::InitMatrix()
+{
 
-void FightManager::AddEntity(Entity* ent)
+	if (!teammode)
+	{
+		entityMatrix = vector<vector<Entity*>>((entities.size() * 2) + 1);
+		numHitableLayers = entities.size();
+		int j = 0;
+		for (int i = 1; i < entities.size() + 1; i++)
+		{
+			entityMatrix[i].push_back(entities[j]);
+			entities[j]->SetLayer(i);
+			entities[j]->SetPlaceInLayer(entityMatrix[i].size());
+			j++;
+		}
+	}
+	else
+	{
+		if (team1.size() > 0 && team2.size() > 0)
+		{
+			entityMatrix = vector<vector<Entity*>>(5);
+			numHitableLayers = 2;
+			for (int i = 0; i < team1.size(); i++)
+			{
+				entityMatrix[1].push_back(team1[i]);
+				team1[i]->SetLayer(1);
+				entities[i]->SetPlaceInLayer(entityMatrix[1].size());
+			}
+			for (int i = 0; i < team2.size(); i++)
+			{
+				entityMatrix[2].push_back(team2[i]);
+				team2[i]->SetLayer(2);
+				entities[i]->SetPlaceInLayer(entityMatrix[2].size());
+			}
+		}
+		else
+		{
+			entityMatrix = vector<vector<Entity*>>(3);
+			numHitableLayers = 1;
+			for (int i = 0; i < entities.size(); i++)
+			{
+				entityMatrix[1].push_back(entities[i]);
+				entities[i]->SetLayer(1);
+				entities[i]->SetPlaceInLayer(entityMatrix[1].size());
+			}
+		}
+	}
+	entityMatrix.shrink_to_fit();
+
+	for (vector<Entity*> a : entityMatrix)
+	{
+		for (Entity* b : a)
+		{
+			cout << b->GetDir() << "  ";
+		}
+		cout << endl;
+	}
+}
+
+void FightManager::AddEntity(Entity* ent, ushort layer, bool hitable)
 {
 	entities.push_back(ent);
+
+	if (layer == 0)
+	{
+		entityMatrix[layer].push_back(ent);
+		ent->SetLayer(0);
+		ent->SetPlaceInLayer(entityMatrix[layer].size());
+	}
+
+	if (hitable)
+	{
+		entityMatrix[layer].push_back(ent);
+		ent->SetLayer(layer);
+		ent->SetPlaceInLayer(entityMatrix[layer].size());
+	}
+	else
+	{
+		entityMatrix[layer + numHitableLayers].push_back(ent);
+		ent->SetLayer(layer + numHitableLayers);
+		ent->SetPlaceInLayer(entityMatrix[layer + numHitableLayers].size());
+	}
 }
 
 bool FightManager::RemoveEntity(Entity* ent)
@@ -399,12 +481,12 @@ bool FightManager::RemoveEntity(Entity* ent)
 				entities[j - 1] = entities[j];
 			}
 			entities.pop_back();
+			break;
 		}
 	}
-	for (int i = 0; i < entities.size(); i++)
-	{
-		entities[i]->DeleteOponent(ent);
-	}
+
+	RemoveEntityFromMatrix(ent);
+
 	delete ent;
 	return false;
 }
@@ -521,13 +603,19 @@ void FightManager::MoveToFront(Entity* ent)
 	}
 }
 
-void FightManager::AddOponnent(Entity* ent, Entity* ignore)
+void FightManager::RemoveEntityFromMatrix(Entity* ent)
 {
-	for (auto i = 0u; i < entities.size(); i++)
+	for (int i = 0; i < entityMatrix[ent->GetLayer()].size(); i++)
 	{
-		if (entities[i] != ent && entities[i] != ignore)
+		if (entityMatrix[ent->GetLayer()][i] == ent)
 		{
-			entities[i]->AddOponent(ent);
+			for (int j = i + 1; j < entityMatrix[ent->GetLayer()].size(); j++)
+			{
+				entityMatrix[ent->GetLayer()][j - 1] = entityMatrix[ent->GetLayer()][j];
+				entityMatrix[ent->GetLayer()][j - 1]->SetPlaceInLayer(j - 1);
+			}
+			entityMatrix[ent->GetLayer()].pop_back();
+			break;
 		}
 	}
 }
@@ -535,6 +623,20 @@ void FightManager::AddOponnent(Entity* ent, Entity* ignore)
 void FightManager::KillingBlow()
 {
 	sdl->soundEffects().at("hitKill").play();
+}
+
+void FightManager::ChangeEntityLayer(Entity* ent, ushort newLayer)
+{
+	RemoveEntityFromMatrix(ent);
+
+	if (ent->GetLayer() > numHitableLayers)
+	{
+		newLayer += numHitableLayers;
+	}
+	entityMatrix[newLayer].push_back(ent);
+
+	ent->SetLayer(newLayer);
+	ent->SetPlaceInLayer(entityMatrix[newLayer].size());
 }
 
 void FightManager::FighterLost(Character* loser)
@@ -549,18 +651,54 @@ void FightManager::FighterLost(Character* loser)
 	}
 }
 
-std::vector<Entity*> FightManager::GetOponents(Entity* current)
+bool FightManager::GetNextEntity(Entity*& ent, ushort layer)
 {
-	std::vector<Entity*> a;
+	ushort layerToIgnore = layer;
 
-	for (int i = 0; i < entities.size(); i++)
+	if (layer > numHitableLayers)
 	{
-		if (entities[i] != current)
-		{
-			a.push_back(entities[i]);
-		}
+		layerToIgnore = layer - numHitableLayers;
 	}
-	return a;
+
+	if (ent == nullptr)
+	{
+		if (layerToIgnore != 1)
+		{
+			ent = entityMatrix[1][0];
+			ptrPlace = { 1,0 };
+		}
+		else
+		{
+			if (numHitableLayers == 1)
+			{
+				return false;
+			}
+			ent = entityMatrix[2][0];
+			ptrPlace = { 2,0 };
+		}
+		return true;
+	}
+
+	ptrPlace.second++;
+
+	if (ptrPlace.second >= entityMatrix[ptrPlace.first].size())
+	{
+		ptrPlace.second = 0;
+		ptrPlace.first++;
+		if (ptrPlace.first == layerToIgnore)
+			ptrPlace.first++;
+		if (ptrPlace.first > numHitableLayers)
+			return false;
+	}
+
+	ent = entityMatrix[ptrPlace.first][ptrPlace.second];
+
+	return true;
+}
+
+std::vector<Entity*>* FightManager::GetEntities()
+{
+	return &entities;
 }
 
 SDL_Rect* FightManager::GetDeathZone()

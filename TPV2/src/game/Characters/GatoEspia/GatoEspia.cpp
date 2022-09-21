@@ -146,8 +146,7 @@ void GatoEspia::SpecialNeutral(ushort frameNumber)
 	else if (frameNumber == attacks["specialN"].keyFrames[0])
 	{
 		auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x + dir * 2, body->GetPosition().y - height / 3), attacks["specialN"].hitBoxes[0].hitdata, b2Vec2(dir, 0), 0.5f, 0.2f, 20);
-		manager->AddEntity(bullet);
-		bullet->SetOponents(oponents);
+		manager->AddEntity(bullet, layer, false);
 	}
 	else if (frameNumber == attacks["specialN"].totalFrames)
 	{
@@ -219,8 +218,7 @@ void GatoEspia::SpecialNeutralU(ushort frameNumber)
 
 		//CreateHitBox(new Hitbox(hitbox, attacks["specialN"], 1, OnHitData(5, false, false)));
 		auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["specialN"].hitBoxes[0].hitdata, b2Vec2(0,-1), 0.5f, 0.2f, 20);
-		manager->AddEntity(bullet);
-		bullet->SetOponents(oponents);
+		manager->AddEntity(bullet, layer, false);
 
 	}
 	else if (frameNumber == attacks["specialN"].totalFrames)
@@ -282,8 +280,7 @@ void GatoEspia::SpecialNeutralD(ushort frameNumber)
 	else if (frameNumber == attacks["specialN"].keyFrames[0])
 	{
 		auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x + dir / 2, body->GetPosition().y - height / 2), attacks["specialN"].hitBoxes[0].hitdata, b2Vec2(dir, -1), 0.5f, 0.2f, 20);
-		manager->AddEntity(bullet);
-		bullet->SetOponents(oponents);
+		manager->AddEntity(bullet, layer, false);
 	}
 	else if (frameNumber == attacks["specialN"].totalFrames)
 	{
