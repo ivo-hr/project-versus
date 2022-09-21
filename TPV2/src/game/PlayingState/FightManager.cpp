@@ -662,21 +662,16 @@ bool FightManager::GetNextEntity(Entity*& ent, ushort layer)
 
 	if (ent == nullptr)
 	{
-		if (layerToIgnore != 1)
+		for (int i = 1; i <= numHitableLayers; i++)
 		{
-			ent = entityMatrix[1][0];
-			ptrPlace = { 1,0 };
-		}
-		else
-		{
-			if (numHitableLayers == 1)
+			if (i != layerToIgnore && entityMatrix[i].size() > 0)
 			{
-				return false;
+				ent = entityMatrix[i][0];
+				ptrPlace = { i,0 };
+				return true;
 			}
-			ent = entityMatrix[2][0];
-			ptrPlace = { 2,0 };
 		}
-		return true;
+		return false;
 	}
 
 	ptrPlace.second++;
@@ -688,7 +683,10 @@ bool FightManager::GetNextEntity(Entity*& ent, ushort layer)
 		if (ptrPlace.first == layerToIgnore)
 			ptrPlace.first++;
 		if (ptrPlace.first > numHitableLayers)
+		{
+			ent = nullptr;
 			return false;
+		}
 	}
 
 	ent = entityMatrix[ptrPlace.first][ptrPlace.second];

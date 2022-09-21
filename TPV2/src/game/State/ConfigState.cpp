@@ -48,7 +48,6 @@ ConfigState::ConfigState(FightManager* game , short fInput) : State(game), numOf
 
 ConfigState::~ConfigState()
 {
-    delete zero;
     delete gatoespia;
     delete maketo;
     delete togo;
@@ -323,7 +322,7 @@ void ConfigState::checkButtonPointerClick()
             break;
         }
         //Comprobacion con cada boton
-        if (zero->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
+        if (nasnas->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
             playerTexture[i]->setFront(&sdl->images().at("nasNasSelect"));
             charactersSelect[i] = 0;
             keyRelease = false;
@@ -619,7 +618,7 @@ void ConfigState::playerMenuRender()
             }
         }
     }
-    zero->render();
+    nasnas->render();
     gatoespia->render();
     togo->render();
     maketo->render();
@@ -764,8 +763,7 @@ void ConfigState::initcharact()
    // (int)(((w * 3 / 24) * j) + w / 12), 
    //     (int)w / 12, (int)w / 12 }
  
-    nasnas = nullptr;
-    zero = new Button(&sdl->images().at("nasNasSelect"), offset , offsetY, (int)w / 16, (int)w / 16);
+    nasnas = new Button(&sdl->images().at("nasNasSelect"), offset , offsetY, (int)w / 16, (int)w / 16);
     charName.push_back("    NasNas");
     gatoespia = new Button(&sdl->images().at("blinkMasterSelect"), dist + offset, offsetY, (int)w / 16, (int)w / 16);
     charName.push_back(" Blink Master");

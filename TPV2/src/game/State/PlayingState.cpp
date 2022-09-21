@@ -41,7 +41,12 @@ PlayingState::PlayingState(FightManager* game, vector<short>playersInput, vector
 			entities.push_back(new Yuno(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
 			break;
 		case -1://Aleatorio
-			int charac = sdl->rand().nextInt(0, 9);
+			int charac = sdl->rand().nextInt(0, 11);
+
+#ifdef _DEBUG
+			charac = sdl->rand().nextInt(10, 11);		//Si estamos en debug siempre sale Ciro
+#endif // _DEBUG
+
 			switch (charac)
 			{
 			case 0: //nasnas
