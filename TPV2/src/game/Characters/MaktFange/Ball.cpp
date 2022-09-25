@@ -80,7 +80,7 @@ void MaktBall::update()
 
 void MaktBall::CheckHits()
 {
-	if (!physic)
+	if (!physic && alive)
 	{
 		Entity* oponent = nullptr;
 		while (manager->GetNextEntity(oponent, layer))
@@ -146,44 +146,47 @@ void MaktBall::Respawn()
 
 void MaktBall::draw(SDL_Rect* camera)
 {
-	SDL_Rect aux = hurtbox;
+	if (alive)
+	{
+		SDL_Rect aux = hurtbox;
 
-	//si hurtbox.x = camera w + camera x                   aux.x = manager->GetActualWidth()
-	//   hurtbox.x = camera w / 2 + camera x               aux.x = manager->GetActualWidth() / 2
+		//si hurtbox.x = camera w + camera x                   aux.x = manager->GetActualWidth()
+		//   hurtbox.x = camera w / 2 + camera x               aux.x = manager->GetActualWidth() / 2
 
-	aux.x -= camera->x;
-	aux.x *= (manager->GetActualWidth() / (float)camera->w);
+		aux.x -= camera->x;
+		aux.x *= (manager->GetActualWidth() / (float)camera->w);
 
-	aux.y -= camera->y;
-	aux.y *= (manager->GetActualHeight() / (float)camera->h);
+		aux.y -= camera->y;
+		aux.y *= (manager->GetActualHeight() / (float)camera->h);
 
-	aux.w *= (manager->GetActualWidth() / (float)camera->w);
-	aux.h *= (manager->GetActualHeight() / (float)camera->h);
+		aux.w *= (manager->GetActualWidth() / (float)camera->w);
+		aux.h *= (manager->GetActualHeight() / (float)camera->h);
 
-	SDL_Rect src = { 1260 + sprite, 1543, 17, 17 };
-	if (dir < 0)
-		texture->render(src, aux, ang, nullptr, SDL_FLIP_HORIZONTAL);
-	else
-		texture->render(src, aux);
+		SDL_Rect src = { 1260 + sprite, 1543, 17, 17 };
+		if (dir < 0)
+			texture->render(src, aux, ang, nullptr, SDL_FLIP_HORIZONTAL);
+		else
+			texture->render(src, aux);
 
-	int xpos = aux.x + (aux.w / 2);
+		int xpos = aux.x + (aux.w / 2);
 
-	arrowsTex->render(arrowSrc, { xpos - 15, aux.y - 34, 30, 16 });
+		arrowsTex->render(arrowSrc, { xpos - 15, aux.y - 34, 30, 16 });
 
 #ifdef _DEBUG
 
-	SDL_RenderDrawRect(sdl->renderer(), &aux);
+		SDL_RenderDrawRect(sdl->renderer(), &aux);
 
 #endif // _DEBUG
 
-	/*if (anim >= 1) {
-		if (sprite != 320) {
-			sprite += 140;
+		/*if (anim >= 1) {
+			if (sprite != 320) {
+				sprite += 140;
+			}
+			else {
+				sprite = 0;
+			}
+			anim = 0;
 		}
-		else {
-			sprite = 0;
-		}
-		anim = 0;
+		anim += 0.1;*/
 	}
-	anim += 0.1;*/
 }

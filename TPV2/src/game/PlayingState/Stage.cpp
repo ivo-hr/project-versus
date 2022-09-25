@@ -147,18 +147,19 @@ void Stage::Update(SDL_Rect* camera)
 
 	SDL_Rect auxDeath = deathZone;
 
-	auxDeath.w += auxDeath.w * 0.5f;
-	auxDeath.h += auxDeath.h * 0.5f;
+	float parallaxValue = 0.2f;
 
-	Vector2D camCenter = Vector2D(camera->x + camera->w / 2, camera->y + camera->h / 2);
+	float cameraWDiff = (float)mngr->GetActualWidth() - (float)camera->w;
+	float cameraHDiff = (float)mngr->GetActualHeight() - (float)camera->h;
 
-	auxDeath.x = (camCenter.getX() - deathZone.w / 2) * 0.5f;
-	auxDeath.x += deathZone.w / 2;
-	auxDeath.x -= (auxDeath.w * 0.5f);
+	auxDeath.x = (auxDeath.x - camera->x) * parallaxValue;
+	auxDeath.x *= ((float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - parallaxValue))));
 
-	auxDeath.y = (camCenter.getX() - deathZone.w / 2) * -0.2f;
-	auxDeath.y += deathZone.h / 2;
-	auxDeath.y -= (auxDeath.h * 0.5f);
+	auxDeath.y = (auxDeath.y - camera->y) * parallaxValue;
+	auxDeath.y *= ((float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - parallaxValue))));
+
+	auxDeath.w *= ((float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - parallaxValue))));
+	auxDeath.h *= ((float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - parallaxValue))));
 
 	background->render(auxDeath);
 
