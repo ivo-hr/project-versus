@@ -66,9 +66,11 @@ public:
 
 		if (!one->GetType() == b2_staticBody)
 		{
+			//Nos aseguramos que el one sea static, y si hay que cambiarlo significa que la normal tambien, ya que seria inversa
 			swap(one, two);
 			normalToCheckFor.y *= -1;
 		}
+
 		// Mira si es proyectil o personaje que quiere subir a la plataforma (atravesándola)
 		if (one->GetType() == b2_staticBody && (two->GetUserData().pointer == 1 || 
 			(one->GetFixtureList()->GetFilterData().categoryBits == 4 && contact->GetManifold()->localNormal != normalToCheckFor)))
