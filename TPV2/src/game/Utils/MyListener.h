@@ -59,13 +59,19 @@ public:
 	}
 	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 	{
+		b2Vec2 normalToCheckFor = { 0, -1 };
+
 		b2Body* one = contact->GetFixtureA()->GetBody();
 		b2Body* two = contact->GetFixtureB()->GetBody();
 
-		if (!one->GetType() == b2_staticBody) swap(one, two);
+		if (!one->GetType() == b2_staticBody)
+		{
+			swap(one, two);
+			normalToCheckFor.y *= -1;
+		}
 		// Mira si es proyectil o personaje que quiere subir a la plataforma (atravesándola)
 		if (one->GetType() == b2_staticBody && (two->GetUserData().pointer == 1 || 
-			(one->GetFixtureList()->GetFilterData().categoryBits == 4 && contact->GetManifold()->localNormal != b2Vec2(0, -1))))
+			(one->GetFixtureList()->GetFilterData().categoryBits == 4 && contact->GetManifold()->localNormal != normalToCheckFor)))
 		{ 
 			contact->SetEnabled(false);
 		}

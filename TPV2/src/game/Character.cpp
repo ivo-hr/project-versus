@@ -1032,8 +1032,8 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 
 bool Character::IsGoingToKill(const b2Vec2& angle)
 {
-	float horValue = 0.018f;  //0.8f
-	float upValue = 0.00362f;
+	float horValue = 0.02f;  //0.8f
+	float upValue = 0.0037f;
 	b2Vec2 pos = body->GetPosition();
 
 	return (pos.x + (angle.x * abs(angle.x) * horValue) > manager->GetDeathZoneB2()->x ||
