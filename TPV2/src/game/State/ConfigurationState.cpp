@@ -26,6 +26,8 @@ ConfigurationState::ConfigurationState(FightManager* game , short pI) : State(ga
     p1 = new PlayerPointer(&sdl->images().at("P1P"), w/2, h/2, w, h);
     p1->setActive(true);
     pInput = pI;
+
+    SDL_ShowCursor(1);
 }
 
 ConfigurationState::~ConfigurationState()

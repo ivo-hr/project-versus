@@ -44,6 +44,8 @@ ConfigState::ConfigState(FightManager* game , short fInput) : State(game), numOf
     playerPointers.push_back(new PlayerPointer(&sdl->images().at("P4P"), 3u, 676, w, h));
     playerPointers[0]->setActive(true);
     sdl->musics().at("sawtines").play();
+
+    SDL_ShowCursor(1);
 }
 
 ConfigState::~ConfigState()

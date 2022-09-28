@@ -45,7 +45,6 @@ class FightManager : public StateMachine
 	vector<Texture*>team1DeadTextures;
 	vector<Texture*>team2DeadTextures;
 
-
 	SDLUtils* sdl;
 
 	InputHandler& ih = *InputHandler::instance();

@@ -22,6 +22,8 @@ ExitState::ExitState(FightManager* game) : State(game) {
         sdl->msgs().emplace(key, Texture(sdl->renderer(), "NO", font, c));
     }
     no = new Button(&sdl->msgs().at(key), w / 2 - w / 10, (h * 2 / 3) - w / 20, w / 20, w / 20);
+
+    SDL_ShowCursor(1);
 }
 
 ExitState::~ExitState()

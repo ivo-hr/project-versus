@@ -8,17 +8,10 @@
 class Entity;
 class Fightmanager;
 
-class Particle
+struct ParticleData
 {
+	Texture* tex;
 
-protected:
-
-	FightManager* manager;
-	Entity* ent;
-
-	Texture* texture;
-
-	SDL_Rect src;
 	SDL_Rect dest;
 
 	int numSprites;
@@ -26,18 +19,38 @@ protected:
 	int numSpritesinY;
 
 	int duration;
+
+	int dir;
+};
+
+class Particle
+{
+
+protected:
+
+	FightManager* manager;
+
+	Texture* texture;
+
+	SDL_Rect src;
+
+	ParticleData data;
+
 	int spriteDuration;
 	int cont;
 
-	int dir;
+	bool active;
 
 	void CalcularResto();
 
 public:
 
-
-	Particle(Vector2D position, int dir, std::string id, Entity* ent);
+	Particle(const Vector2D& position, const std::string& id, Entity* ent, int dir);
+	Particle(const Vector2D& position, const ParticleData& data, Entity* ent);
 	virtual ~Particle();
+
+	void Activate();
+	void Deactivate();
 
 	virtual void update();
 	virtual void draw();

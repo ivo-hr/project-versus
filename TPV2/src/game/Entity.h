@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <queue>
 #include <functional>
 #include "PlayingState/FightManager.h"
 
@@ -86,7 +87,9 @@ protected:
 
 	FightManager* manager;
 
-	std::vector<Particle*> particulas;
+	map<string, queue<Particle*>> particlePool;
+	std::vector<Particle*> backParticles;
+	std::vector<Particle*> frontParticles;
 
 	SDLUtils* sdl;
 

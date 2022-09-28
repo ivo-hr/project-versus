@@ -4,47 +4,49 @@
 void Particle::CalcularResto()
 {
 
-	spriteDuration = duration / numSprites;
+	spriteDuration = data.duration / data.numSprites;
 	cont = spriteDuration;
 
 	src.x = 0;
 	src.y = 0;
 
-	src.w = texture->width() / numSpritesinX;
-	src.h = texture->height() / numSpritesinY;
+	src.w = texture->width() / data.numSpritesinX;
+	src.h = texture->height() / data.numSpritesinY;
 }
 
-Particle::Particle(Vector2D position, int dir, std::string id, Entity* ent): ent(ent), dir(dir)
+Particle::Particle(const Vector2D& position, const std::string& id, Entity* ent, int dir)
 {
+	data.dir = dir;
 	manager = ent->GetManager();
+	active = false;
 
 	if (id == "sHitParticle")
 	{
 		int w = 75;
 		int h = 75;
 
-		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
+		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
 		texture = &manager->GetSDLU()->images().at("sHitParticle");
 
-		numSpritesinX = 2;
-		numSpritesinY = 3;
-		numSprites = 5;
-		duration = 15;
+		data.numSpritesinX = 2;
+		data.numSpritesinY = 3;
+		data.numSprites = 5;
+		data.duration = 15;
 	}
 	else if (id == "bHitParticle")
 	{
 		int w = 120;
 		int h = 120;
 
-		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
+		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
 		texture = &manager->GetSDLU()->images().at("bHitParticle");
 
-		numSpritesinX = 2;
-		numSpritesinY = 4;
-		numSprites = 7;
-		duration = 35;
+		data.numSpritesinX = 2;
+		data.numSpritesinY = 4;
+		data.numSprites = 7;
+		data.duration = 35;
 	}
 	else if (id == "run")
 	{
@@ -53,132 +55,140 @@ Particle::Particle(Vector2D position, int dir, std::string id, Entity* ent): ent
 
 		if (dir > 0)
 		{
-			dest = { (int)(position.getX() - w), (int)(position.getY() - h), (int)w, (int)h };
+			data.dest = { (int)(position.getX() - w), (int)(position.getY() - h), (int)w, (int)h };
 		}
 		else
 		{
-			dest = { (int)(position.getX()), (int)(position.getY() - h), (int)w, (int)h };
+			data.dest = { (int)(position.getX()), (int)(position.getY() - h), (int)w, (int)h };
 		}
 
 		texture = &manager->GetSDLU()->images().at("run");
 
-		numSpritesinX = 1;
-		numSpritesinY = 3;
-		numSprites = 3;
-		duration = 12;
+		data.numSpritesinX = 1;
+		data.numSpritesinY = 3;
+		data.numSprites = 3;
+		data.duration = 12;
 	}
 	else if (id == "killHit")
 	{
 		int w = 620;
 		int h = w / 4;
 
-		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
+		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
 		texture = &manager->GetSDLU()->images().at("killHit");
 
-		numSpritesinX = 1;
-		numSpritesinY = 6;
-		numSprites = 6;
-		duration = 40;
+		data.numSpritesinX = 1;
+		data.numSpritesinY = 6;
+		data.numSprites = 6;
+		data.duration = 40;
 	}
 	else if (id == "killVfx")
 	{
 		int w = 384;
 		int h = w;
 
-		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
+		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
 		texture = &manager->GetSDLU()->images().at("killVfx");
 
-		numSpritesinX = 3;
-		numSpritesinY = 3;
-		numSprites = 7;
-		duration = 30;
+		data.numSpritesinX = 3;
+		data.numSpritesinY = 3;
+		data.numSprites = 7;
+		data.duration = 30;
 	}
 	else if (id == "died")
 	{
 		int w = 1024;
 		int h = w;
 
-		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h};
+		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h};
 
 		texture = &manager->GetSDLU()->images().at("died");
 
-		numSpritesinX = 3;
-		numSpritesinY = 3;
-		numSprites = 7;
-		duration = 40;
+		data.numSpritesinX = 3;
+		data.numSpritesinY = 3;
+		data.numSprites = 7;
+		data.duration = 40;
 	}
 	else if (id == "water")
 	{
 		int w = 32;
 		int h = w;
 
-		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
+		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
 		texture = &manager->GetSDLU()->images().at("water");
 
-		numSpritesinX = 2;
-		numSpritesinY = 2;
-		numSprites = 4;
-		duration = 30;
+		data.numSpritesinX = 2;
+		data.numSpritesinY = 2;
+		data.numSprites = 4;
+		data.duration = 30;
 	}
 	else if (id == "electric")
 	{
 		int w = 32;
 		int h = w;
 
-		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
+		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
 		texture = &manager->GetSDLU()->images().at("electric");
 
-		numSpritesinX = 2;
-		numSpritesinY = 2;
-		numSprites = 4;
-		duration = 30;
+		data.numSpritesinX = 2;
+		data.numSpritesinY = 2;
+		data.numSprites = 4;
+		data.duration = 30;
 	}
 	else if (id == "fire")
 	{
 		int w = 32;
 		int h = w;
 
-		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
+		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
 		texture = &manager->GetSDLU()->images().at("fire");
 
-		numSpritesinX = 2;
-		numSpritesinY = 2;
-		numSprites = 3;
-		duration = 30;
+		data.numSpritesinX = 2;
+		data.numSpritesinY = 2;
+		data.numSprites = 3;
+		data.duration = 30;
 	}
 	else if (id == "shieldBroken")
 	{
 		int w = 128;
 		int h = w;
 
-		dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
+		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
 		texture = &manager->GetSDLU()->images().at("shieldBroken");
 
-		numSpritesinX = 1;
-		numSpritesinY = 6;
-		numSprites = 6;
-		duration = 30;
+		data.numSpritesinX = 1;
+		data.numSpritesinY = 6;
+		data.numSprites = 6;
+		data.duration = 30;
 	}
 	else
 	{
 		int w = 0;
 		int h = 0;
 
-		dest = { 0, 0, 0, 0 };
+		data.dest = { 0, 0, 0, 0 };
 
 		texture = &manager->GetSDLU()->images().at("killVfx");
-		numSpritesinX = 0;
-		numSpritesinY = 0;
-		numSprites = 1;
-		duration = 0;
+		data.numSpritesinX = 0;
+		data.numSpritesinY = 0;
+		data.numSprites = 1;
+		data.duration = 0;
 	}
 
+	CalcularResto();
+}
+
+Particle::Particle(const Vector2D& position, const ParticleData& data, Entity* ent)
+{
+	manager = ent->GetManager();
+	this->data = data;
+	active = false;
 	CalcularResto();
 }
 
@@ -186,25 +196,42 @@ Particle::~Particle()
 {
 }
 
+void Particle::Activate()
+{
+	active = true;
+}
+
+void Particle::Deactivate()
+{
+	active = false;
+	cont = spriteDuration;
+
+	src.x = 0;
+	src.y = 0;
+}
+
 void Particle::update()
 {
-	cont--;
-	if (cont == 0)
+	if (active)
 	{
-		cont = spriteDuration;
-
-		if (src.x + src.w < texture->width())
-			src.x += src.w;
-		else
+		cont--;
+		if (cont == 0)
 		{
-			if (src.y + src.h < texture->height())
-			{
-				src.x = 0;
-				src.y += src.h;
-			}
+			cont = spriteDuration;
+
+			if (src.x + src.w < texture->width())
+				src.x += src.w;
 			else
 			{
-				dead = true;
+				if (src.y + src.h < texture->height())
+				{
+					src.x = 0;
+					src.y += src.h;
+				}
+				else
+				{
+					dead = true;
+				}
 			}
 		}
 	}
@@ -212,35 +239,38 @@ void Particle::update()
 
 void Particle::draw()
 {
-	if (dir < 0)
+	if (data.dir < 0)
 	{
-		texture->render(src, dest, 0, nullptr, SDL_FLIP_HORIZONTAL);
+		texture->render(src, data.dest, 0, nullptr, SDL_FLIP_HORIZONTAL);
 	}
 	else
 	{
-		texture->render(src, dest);
+		texture->render(src, data.dest);
 	}
 }
 
 void Particle::draw(SDL_Rect* camera)
 {
-	SDL_Rect aux = dest;
-
-	aux.x -= camera->x;
-	aux.x *= (manager->GetActualWidth() / (float)camera->w);
-
-	aux.y -= camera->y;
-	aux.y *= (manager->GetActualWidth() / (float)camera->w);
-
-	aux.w *= (manager->GetActualWidth() / (float)camera->w);
-	aux.h *= (manager->GetActualWidth() / (float)camera->w);
-
-	if (dir < 0)
+	if (active)
 	{
-		texture->render(src, aux, 0, nullptr, SDL_FLIP_HORIZONTAL);
-	}
-	else
-	{
-		texture->render(src, aux);
+		SDL_Rect aux = data.dest;
+
+		aux.x -= camera->x;
+		aux.x *= (manager->GetActualWidth() / (float)camera->w);
+
+		aux.y -= camera->y;
+		aux.y *= (manager->GetActualWidth() / (float)camera->w);
+
+		aux.w *= (manager->GetActualWidth() / (float)camera->w);
+		aux.h *= (manager->GetActualWidth() / (float)camera->w);
+
+		if (data.dir < 0)
+		{
+			texture->render(src, aux, 0, nullptr, SDL_FLIP_HORIZONTAL);
+		}
+		else
+		{
+			texture->render(src, aux);
+		}
 	}
 }

@@ -78,6 +78,8 @@ PlayingState::PlayingState(FightManager* game, vector<short>playersInput, vector
 	}
 	playersInput_ = playersInput;
 
+	SDL_ShowCursor(0);
+
 	fmngr->StartFight(entities);
 
 }

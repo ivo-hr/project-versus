@@ -13,6 +13,8 @@ MenuState::MenuState(FightManager* game) : State(game) {
     exit = new Button( &sdl->images().at("ExitBut"), 0, h * 11 / 12, w / 12, h / 12);
     sdl->musics().at("main").play();
     config = new Button(&sdl->images().at("ConfigBut"), w * 15 / 16, h - w / 16, w / 16, w / 16);
+
+    SDL_ShowCursor(1);
 }
 
 MenuState::~MenuState()

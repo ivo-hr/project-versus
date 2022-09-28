@@ -29,6 +29,8 @@ GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures
     gameStats_ = gameStats;
 
     sdl->musics().at("win").play();
+
+    SDL_ShowCursor(1);
 }
 
 GameOverState::~GameOverState()
