@@ -4,7 +4,7 @@
 #include"../../PlayingState/FightManager.h"
 #include "../../../utils/CheckML.h"
 
-Explosion::Explosion(FightManager* manager, b2Vec2 pos, int power, int type) :
+Explosion::Explosion(FightManager* manager, b2Vec2 pos, int power, int type, bool lookRight) :
 	Entity(manager, pos, 7.5f, 5.f)
 {
 
@@ -26,6 +26,8 @@ Explosion::Explosion(FightManager* manager, b2Vec2 pos, int power, int type) :
 		data.multiplier = 0.1f;
 		texture = &sdl->images().at("ExplosionEF");
 	}
+
+	dir = lookRight ? 1 : -1;
 
 	spDur = duration / 5;
 }

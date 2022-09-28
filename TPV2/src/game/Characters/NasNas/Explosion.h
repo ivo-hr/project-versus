@@ -8,7 +8,7 @@ class Explosion : public Entity
 protected:
 	HitData data;
 public:
-	Explosion(FightManager* manager, b2Vec2 pos, int power, int type);
+	Explosion(FightManager* manager, b2Vec2 pos, int power, int type, bool lookRight);
 	virtual ~Explosion();
 
 	virtual void update() override;

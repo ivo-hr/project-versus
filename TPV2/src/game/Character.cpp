@@ -954,7 +954,7 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 				// 
 				//suma de efectos de estado para pasarselo a la explosion
 				int poder = statePower + a.power;
-				auto plasma = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 1);
+				auto plasma = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 1, attacker->GetDir() == 1);
 				manager->AddEntity(plasma, 0);
 				manager->MoveToFront(plasma);
 				efEstado = none;
@@ -970,7 +970,7 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 					ralentizar = 0;
 				}
 				int poder = (statePower + a.power) / 3;
-				auto vapor = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 0);
+				auto vapor = new Explosion(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - height / 2), poder, 0, attacker->GetDir() == 1);
 				manager->AddEntity(vapor, 0);
 				manager->MoveToFront(vapor);
 				efEstado = none;
@@ -984,6 +984,12 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 				{
 					maxSpeed += ralentizar;
 					ralentizar = 0;
+				}
+				if (a.estado == electric)
+				{
+					stun += statePower * 1.5f;
+
+					AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "electric", this));
 				}
 				efEstado = wElectric;
 				statePower += a.power;
