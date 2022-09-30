@@ -8,21 +8,6 @@
 class Entity;
 class Fightmanager;
 
-struct ParticleData
-{
-	Texture* tex;
-
-	SDL_Rect dest;
-
-	int numSprites;
-	int numSpritesinX;
-	int numSpritesinY;
-
-	int duration;
-
-	int dir;
-};
-
 class Particle
 {
 
@@ -45,16 +30,18 @@ protected:
 
 public:
 
-	Particle(const Vector2D& position, const std::string& id, Entity* ent, int dir);
+	Particle(const Vector2D& position, const std::string& id, Entity* ent, int dir = 1);
 	Particle(const Vector2D& position, const ParticleData& data, Entity* ent);
 	virtual ~Particle();
 
-	void Activate();
+	void Activate(const Vector2D& pos, short dir = 1, bool isRun = false);
 	void Deactivate();
 
 	virtual void update();
 	virtual void draw();
 	virtual void draw(SDL_Rect* camera);
+
+	bool IsActive() { return active; };
 
 	bool dead = false;
 };

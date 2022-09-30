@@ -328,15 +328,15 @@ void Character::update()
 
 			if (efEstado == fire)
 			{
-				AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "fire", this));
+				AddParticle("fire", Vector2D(hurtbox.x, hurtbox.y), 1, true);
 			}
 			else if (efEstado == water)
 			{
-				AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "water", this));
+				AddParticle("water", Vector2D(hurtbox.x, hurtbox.y), 1, true);
 			}
 			else if (efEstado == wElectric)
 			{
-				AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "electric", this));
+				AddParticle("electric", Vector2D(hurtbox.x, hurtbox.y), 1, true);
 			}
 		}
 	}
@@ -502,7 +502,7 @@ void Character::AllowMovement(bool changeDirection, bool showParticles)
 				dir = 1;
 
 			if (showParticles && speed < 0.01f)
-				AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
+				AddParticle("run", Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, false);
 
 			speed = maxSpeed;
 		}
@@ -512,7 +512,7 @@ void Character::AllowMovement(bool changeDirection, bool showParticles)
 				dir = -1;
 
 			if (showParticles && speed > -0.01f)
-				AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
+				AddParticle("run", Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, false);
 
 			speed = -maxSpeed;
 		}
@@ -535,7 +535,7 @@ void Character::AllowMovement(float multiplier, bool changeDirection, bool showP
 				dir = 1;
 
 			if (showParticles && speed < 0.01f)
-				AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
+				AddParticle("run", Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, false);
 
 			speed = maxSpeed * multiplier;
 		}
@@ -545,7 +545,7 @@ void Character::AllowMovement(float multiplier, bool changeDirection, bool showP
 				dir = -1;
 
 			if (showParticles && speed > -0.01f)
-				AddParticle(new Particle(Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, "run", this));
+				AddParticle("run", Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, false);
 
 			speed = -maxSpeed * multiplier;
 		}
@@ -645,14 +645,22 @@ void Character::draw()
 void Character::draw(SDL_Rect* camera)
 {
 	//xd
-	if (drawArrow) {
-		Entity::draw(camera);
-
-		if (!alive) return;
-
-		anim->render(camera, &shakeValue);
-
+	for (Particle* ent : backParticles)
+	{
+		ent->draw(camera);
 	}
+
+	if (drawArrow && alive)
+	{
+		Entity::draw(camera);
+		anim->render(camera, &shakeValue);
+	}
+
+	for (Particle* ent : frontParticles)
+	{
+		ent->draw(camera);
+	}
+
 	SDL_Rect aux = hurtbox;
 
 	aux.x -= camera->x;
@@ -765,17 +773,17 @@ void Character::CheckHits()
 
 						if (hitboxes[i]->GetHitlag() >= 15)
 						{
-							AddParticle(new Particle(
+							AddParticle("bigHit", 
 								Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-								1, "bHitParticle", this));
+								1, false);
 
 							manager->GetSDLU()->soundEffects().at("hitStr").play();
 						}
 						else
 						{
-							AddParticle(new Particle(
+							AddParticle("smallHit",
 								Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-								1, "sHitParticle", this));
+								1, false);
 
 							manager->GetSDLU()->soundEffects().at("hitMed").play();
 						}
@@ -905,16 +913,16 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 		manager->SetShake(Vector2D(a.direction.x * -15, a.direction.y * 10), currHitlag / 2);
 		controlCamShake = true;
 
-		AddParticle(new Particle(
+		AddParticle("killVfx", 
 			Vector2D(
 				manager->ToSDL(body->GetPosition().x),
 				manager->ToSDL(body->GetPosition().y)),
-			1, "killVfx", this));
-		AddParticle(new Particle(
+			1, false);
+		AddParticle("killHit", 
 			Vector2D(
 				manager->ToSDL(body->GetPosition().x),
 				manager->ToSDL(body->GetPosition().y)),
-			1, "killHit", this));
+			1, false);
 	}
 	else if (shieldBreak)
 	{
@@ -935,11 +943,11 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 		shieldHealth = 0;
 		controlHitLag = true;
 
-		AddParticle(new Particle(
+		AddParticle("shieldBroken", 
 			Vector2D(
 				manager->ToSDL(body->GetPosition().x),
 				manager->ToSDL(body->GetPosition().y)),
-			1, "shieldBroken", this));
+			1, false);
 	}
 
 	// Estados y combinaciones de estado
@@ -989,7 +997,7 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 				{
 					stun += statePower * 1.5f;
 
-					AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "electric", this));
+					AddParticle("electric", Vector2D(hurtbox.x, hurtbox.y), 1, true);
 				}
 				efEstado = wElectric;
 				statePower += a.power;
@@ -1016,18 +1024,18 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 			{
 				stun += statePower * 1.5f;
 
-				AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "electric", this));
+				AddParticle("electric", Vector2D(hurtbox.x, hurtbox.y), 1, true);
 			}
 			else if (efEstado == water)
 			{
 				ralentizar = maxSpeed * ((float)statePower / 100);
 				maxSpeed -= ralentizar;
 
-				AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "water", this));
+				AddParticle("water", Vector2D(hurtbox.x, hurtbox.y), 1, true);
 			}
 			else if (efEstado == fire)
 			{
-				AddParticle(new Particle(Vector2D(hurtbox.x, hurtbox.y), 1, "fire", this));
+				AddParticle("fire", Vector2D(hurtbox.x, hurtbox.y), 1, true);
 			}
 		}
 	}
@@ -1059,9 +1067,17 @@ void Character::StartJump(ushort frameNumber)
 	}
 	if (frameNumber == 0)
 	{
+		hasRealasedUp = false;
 		anim->StartAnimation("jumpCharge" + animAddon);
 	}
-	if (frameNumber <= 3)
+	if (frameNumber <= 5)
+	{
+		if (!input->up())
+		{
+			hasRealasedUp = true;
+		}
+	}
+	if (frameNumber <= 2)
 	{
 		if (input->special())
 		{
@@ -1097,10 +1113,6 @@ void Character::StartJump(ushort frameNumber)
 			{
 				ChangeMove([this](int f) { BasicUpward(f); });
 			}
-			else if (input->down()) //básico abajo
-			{
-				ChangeMove([this](int f) { BasicDownward(f); });
-			}
 			else if (input->right() || input->left()) //básico en movimiento
 			{
 				ChangeMove([this](int f) { BasicForward(f); });
@@ -1113,9 +1125,14 @@ void Character::StartJump(ushort frameNumber)
 			manager->MoveToFront(this);
 
 			if (!onGround)
-				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
-			else 
 				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
+			else
+			{
+				if (hasRealasedUp)
+					body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
+				else
+					body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
+			}
 
 		}
 		else if (input->special())
@@ -1124,10 +1141,6 @@ void Character::StartJump(ushort frameNumber)
 			if (input->up()) //especial arriba
 			{
 				ChangeMove([this](int f) { SpecialUpward(f); });
-			}
-			else if (input->down()) //especial abajo
-			{
-				ChangeMove([this](int f) { SpecialDownward(f); });
 			}
 			else if (input->right() || input->left()) //especial en movimiento
 			{
@@ -1140,10 +1153,16 @@ void Character::StartJump(ushort frameNumber)
 
 			manager->MoveToFront(this);
 
+
 			if (!onGround)
-				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
-			else
 				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
+			else
+			{
+				if (hasRealasedUp)
+					body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
+				else
+					body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr), true);
+			}
 
 		}
 		else
@@ -1307,7 +1326,7 @@ void Character::AddDeathParticle()
 	if (lives == 0)
 		return;
 	//O dios mio que he creado
-	AddParticle(new Particle(
+	AddParticle("died",
 		Vector2D(
 			( manager->ToSDL(body->GetPosition().x) < 0 ?
 				0 : manager->ToSDL(body->GetPosition().x )) > manager->GetDeathZone()->w?
@@ -1316,7 +1335,7 @@ void Character::AddDeathParticle()
 			( manager->ToSDL(body->GetPosition().y) < 0 ? 
 				0 : manager->ToSDL(body->GetPosition().y )) > manager->GetDeathZone()->h ?
 				manager->GetDeathZone()->h : manager->ToSDL(body->GetPosition().y)),
-		1, "died", this));
+		1, true);
 }
 
 void Character::Respawn()

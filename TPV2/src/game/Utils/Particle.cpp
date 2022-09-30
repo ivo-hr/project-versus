@@ -196,9 +196,24 @@ Particle::~Particle()
 {
 }
 
-void Particle::Activate()
+void Particle::Activate(const Vector2D& pos, short dir, bool isRun)
 {
 	active = true;
+
+	if (!isRun)
+		data.dest = { (int)(pos.getX() - data.dest.w / 2), (int)(pos.getY() - data.dest.h / 2), (int)data.dest.w, (int)data.dest.h };
+	else
+	{
+		if (dir > 0)
+		{
+			data.dest = { (int)(pos.getX() - data.dest.w), (int)(pos.getY() - data.dest.h), (int)data.dest.w, (int)data.dest.h };
+		}
+		else
+		{
+			data.dest = { (int)(pos.getX()), (int)(pos.getY() - data.dest.h), (int)data.dest.w, (int)data.dest.h };
+		}
+	}
+	data.dir = dir;
 }
 
 void Particle::Deactivate()
@@ -230,7 +245,7 @@ void Particle::update()
 				}
 				else
 				{
-					dead = true;
+					Deactivate();
 				}
 			}
 		}

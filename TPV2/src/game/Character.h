@@ -32,6 +32,7 @@ protected:
 
 	string codeName;
 	bool moving;
+	bool hasRealasedUp = false;
 	ushort maxSpeed;
 	float speed;
 

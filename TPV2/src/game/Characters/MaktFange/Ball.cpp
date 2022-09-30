@@ -100,9 +100,9 @@ void MaktBall::CheckHits()
 						AddHitLag(lag);
 					}
 
-					oponent->AddParticle(new Particle(
+					oponent->AddParticle("bigHit", 
 						Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-						1, "bHitParticle", oponent));
+						1, false);
 
 					physic = true;
 					body->SetGravityScale(10.f);

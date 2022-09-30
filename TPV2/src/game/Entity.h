@@ -75,6 +75,21 @@ struct attackData
 	ushort totalFrames = 0;
 };
 
+struct ParticleData
+{
+	Texture* tex;
+
+	SDL_Rect dest;
+
+	ushort numSprites;
+	ushort numSpritesinX;
+	ushort numSpritesinY;
+
+	ushort duration;
+
+	short dir;
+};
+
 class Entity
 {
 
@@ -87,10 +102,6 @@ protected:
 
 	FightManager* manager;
 
-	map<string, queue<Particle*>> particlePool;
-	std::vector<Particle*> backParticles;
-	std::vector<Particle*> frontParticles;
-
 	SDLUtils* sdl;
 
 	b2Body* body;
@@ -100,6 +111,10 @@ protected:
 	float height = 3.f;
 
 	short dir;
+
+	map<string, deque<Particle*>> particlePool;
+	std::vector<Particle*> backParticles;
+	std::vector<Particle*> frontParticles;
 
 	std::vector<HitBoxData*> hitboxes;
 	std::unordered_map<Entity*, bool> isHit;
@@ -123,6 +138,8 @@ protected:
 
 	bool toDelete = false;
 
+	virtual void BuildParticlePool();
+
 public:
 	string nombre;
 
@@ -139,8 +156,8 @@ public:
 	virtual void draw();
 	virtual void draw(SDL_Rect* camera);
 
-	void AddParticle(Particle* par);
-	bool RemoveParticle(Particle* par);
+	void AddParticle(const string& name, const Vector2D& pos, short dir = 1, bool front = false);
+	void RemoveParticle(Particle* par, ushort posInVec, bool front);
 
 	virtual void CheckHits() { };
 	virtual void OnDeath() { toDelete = true; };

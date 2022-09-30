@@ -115,7 +115,7 @@
             "damage": 10,
             "multiplier": 0.3,
             "stun": -1,
-            "shieldBreak": false
+            "shieldBreak": true
           },
           "hitlag": -1,
           "duration": 6
@@ -161,7 +161,7 @@
             "damage": 25,
             "multiplier": 0.3,
             "stun": -1,
-            "shieldBreak": false
+            "shieldBreak": true
           },
           "hitlag": -1,
           "duration": 12
@@ -174,7 +174,7 @@
             "damage": 20,
             "multiplier": 1,
             "stun": -1,
-            "shieldBreak": false
+            "shieldBreak": true
           },
           "hitlag": -1,
           "duration": 12
@@ -187,7 +187,7 @@
             "damage": 12,
             "multiplier": 0,
             "stun": -1,
-            "shieldBreak": false
+            "shieldBreak": true
           },
           "hitlag": -1,
           "duration": 12
@@ -214,7 +214,7 @@
             "damage": 40,
             "multiplier": 0.6,
             "stun": -1,
-            "shieldBreak": false
+            "shieldBreak": true
           },
           "hitlag": 25,
           "duration": 10
@@ -227,7 +227,7 @@
             "damage": 25,
             "multiplier": 1.2,
             "stun": -1,
-            "shieldBreak": false
+            "shieldBreak": true
           },
           "hitlag": 25,
           "duration": 10
@@ -240,7 +240,7 @@
             "damage": 35,
             "multiplier": 0.05,
             "stun": -1,
-            "shieldBreak": false
+            "shieldBreak": true
           },
           "hitlag": 25,
           "duration": 10

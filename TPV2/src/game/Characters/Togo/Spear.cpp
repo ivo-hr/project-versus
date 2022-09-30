@@ -72,9 +72,9 @@ void Spear::CheckHits()
 				{
 					hitDelay = 0;
 
-					oponent->AddParticle(new Particle(
+					oponent->AddParticle("smallHit",
 						Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-						1, "sHitParticle", oponent));
+						1, false);
 				}
 			}
 		}

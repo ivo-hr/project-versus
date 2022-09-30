@@ -99,9 +99,9 @@ void Projectile::CheckHits()
 						AddHitLag(lag);
 					}
 
-					oponent->AddParticle(new Particle(
+					oponent->AddParticle("smallHit",
 						Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-						1, "sHitParticle", oponent));
+						1, false);
 				}
 				if (reflected == 0)
 					toDelete = true;

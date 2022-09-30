@@ -3,6 +3,25 @@
 #include "../utils/CheckML.h"
 
 
+void Entity::BuildParticlePool()
+{
+
+	for (ushort i = 0; i < 2; i++)
+	{
+		particlePool["smallHit"].push_front(new Particle({ 0,0 }, "sHitParticle", this, 1));
+		particlePool["bigHit"].push_front(new Particle({ 0,0 }, "bHitParticle", this, 1));
+		particlePool["run"].push_front(new Particle({ 0,0 }, "run", this, 1));
+		particlePool["killHit"].push_front(new Particle({ 0,0 }, "killHit", this, 1));
+		particlePool["killVfx"].push_front(new Particle({ 0,0 }, "killVfx", this, 1));
+		particlePool["died"].push_front(new Particle({ 0,0 }, "died", this, 1));
+		particlePool["water"].push_front(new Particle({ 0,0 }, "water", this, 1));
+		particlePool["electric"].push_front(new Particle({ 0,0 }, "electric", this, 1));
+		particlePool["fire"].push_front(new Particle({ 0,0 }, "fire", this, 1));
+		particlePool["shieldBroken"].push_front(new Particle({ 0,0 }, "shieldBroken", this, 1));
+		particlePool["killVfx"].push_front(new Particle({ 0,0 }, "killVfx", this, 1));
+	}
+}
+
 Entity::Entity(FightManager* mngr, b2Vec2 position, float w, float h) : manager(mngr), width(w), height(h)
 {
 	this->sdl = mngr->GetSDLU();
@@ -50,36 +69,57 @@ Entity::Entity(FightManager* mngr, b2Vec2 position, float w, float h) : manager(
 	//Tamaño de la hurtbox del personaje
 	hurtbox = mngr->GetSDLCoors(body, width, height);
 
+	BuildParticlePool();
 }
 
 Entity::~Entity()
 {
-	for (Particle* ent : particulas) RemoveParticle(ent);
 	manager->GetWorld()->DestroyBody(body);
+
+	for (auto i = particlePool.begin(); i != particlePool.end(); i++)
+	{
+		for (ushort j = 0; j < i->second.size(); j++)
+		{
+			delete i->second[j];
+		}
+		i->second.clear();
+	}
+	particlePool.clear();
 }
 
 void Entity::updateParticles()
 {
-	for (Particle* part : particulas)
-	{
-		part->update();
-	}
+	ushort maxSize = max(backParticles.size(), frontParticles.size());
 
-	for (auto i = 0u; i < particulas.size(); i++)
+	for (ushort i = 0u; i < maxSize; i++)
 	{
-		if (particulas[i]->dead)
+		if (i < backParticles.size())
 		{
-			RemoveParticle(particulas[i]);
-			if (particulas.size() > 0)
-				i--;
+			backParticles[i]->update();
+			if (!backParticles[i]->IsActive())
+			{
+				RemoveParticle(backParticles[i], i, false);
+				if (backParticles.size() > 0)
+					i--;
+			}
+		}
+
+		if (i < frontParticles.size())
+		{
+			frontParticles[i]->update();
+			if (!frontParticles[i]->IsActive())
+			{
+				RemoveParticle(frontParticles[i], i, true);
+				if (frontParticles.size() > 0)
+					i--;
+			}
 		}
 	}
 }
 
+
 void Entity::update()
 {
-	updateParticles();
-
 	if (hitLag > 0)
 	{
 		hitLag--;
@@ -122,11 +162,6 @@ void Entity::SetShake(Vector2D dir, ushort value)
 
 void Entity::draw()
 {
-	for (Particle* ent : particulas)
-	{
-		ent->draw();
-	}
-
 #ifdef _DEBUG
 
 	for (int i = 0; i < hitboxes.size(); i++)
@@ -140,10 +175,6 @@ void Entity::draw()
 
 void Entity::draw(SDL_Rect* camera)
 {
-	for (Particle* ent : particulas)
-	{
-		ent->draw(camera);
-	}
 
 #ifdef _DEBUG
 
@@ -167,26 +198,39 @@ void Entity::draw(SDL_Rect* camera)
 #endif // _DEBUG
 }
 
-void Entity::AddParticle(Particle* par)
+void Entity::AddParticle(const string& name, const Vector2D& pos, short dir, bool front)
 {
-	particulas.push_back(par);
+	Particle* aux = particlePool[name].front();
+	if (aux->IsActive())
+		aux->Deactivate();
+	if (name == "run")
+		aux->Activate(pos, dir, true);
+	else
+		aux->Activate(pos, dir);
+	particlePool[name].pop_front();
+	particlePool[name].push_back(aux);
+
+	if (front)
+	{
+		frontParticles.push_back(aux);
+	}
+	else
+	{
+		backParticles.push_back(aux);
+	}
 }
 
-bool Entity::RemoveParticle(Particle* par)
+void Entity::RemoveParticle(Particle* par, ushort posInVec, bool front)
 {
-	for (int i = 0; i < particulas.size(); i++)
+	par->Deactivate();
+	if (front)
 	{
-		if (particulas[i] == par)
-		{
-			for (int j = i + 1; j < particulas.size(); j++)
-			{
-				particulas[j - 1] = particulas[j];
-			}
-			particulas.pop_back();
-		}
+		frontParticles.erase(frontParticles.begin() + posInVec);
 	}
-	delete par;
-	return false;
+	else
+	{
+		backParticles.erase(backParticles.begin() + posInVec);
+	}
 }
 
 SDL_Rect* Entity::GetHurtbox()
