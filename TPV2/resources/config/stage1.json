@@ -1,37 +1,64 @@
 {
-    "codeName": "stage1",
-    "background": "fondo",
-    "platform": "testura",
-    "deathZoneSizeX": 90,
-    "deathZoneSizeY": 70,
-    "groundX": 45,
-    "groundY": 50.0,
-    "groundW": 50.0,
-    "groundH": 30.0,
+  "codeName": "stage1",
+  "background": "fondo",
+  "bgParallax": 0.1,
+  "deathZoneSizeX": 90,
+  "deathZoneSizeY": 55,
 
-    "platformData": [
+  "elements": [
+    {
+      "image": "testura",
+      "whereToDraw": [
         {
-        "platformX": 45,
-        "platformY": 30.0,
-        "platformW": 20.0,
-        "platformH": 0.5
-        }],
+          "x": 45,
+          "y": 50.0,
+          "w": 50.0,
+          "h": 30.0,
+          "parallaxValue": 1
+        },
+        {
+          "x": 45,
+          "y": 30.25,
+          "w": 20.0,
+          "h": 0.5,
+          "parallaxValue": 1
+        }
+      ]
+    }
+  ],
 
-    "playerSpawns": [
-        {
-        "X": 36.5,
-        "Y": 33
-        },
-        {
-        "X": 53.5,
-        "Y": 33
-        },
-        {
-        "X": 27.5,
-        "Y": 33
-        },
-        {
-        "X": 62.5,
-        "Y": 33
-        }]
+  "groundData": [
+    {
+      "groundX": 45,
+      "groundY": 50.0,
+      "groundW": 50.0,
+      "groundH": 30.0
+    }
+  ],
+  "platformData": [
+    {
+      "platformX": 45,
+      "platformY": 30.0,
+      "platformW": 20.0
+    }
+  ],
+
+  "playerSpawns": [
+    {
+      "X": 36.5,
+      "Y": 33
+    },
+    {
+      "X": 53.5,
+      "Y": 33
+    },
+    {
+      "X": 27.5,
+      "Y": 33
+    },
+    {
+      "X": 62.5,
+      "Y": 33
+    }
+  ]
 }

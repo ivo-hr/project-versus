@@ -11,14 +11,29 @@
 
 class MyListener;
 
+struct TexWithRect
+{
+	Texture* image = nullptr;
+	SDL_Rect rect = SDL_Rect();
+	float parallaxValue = 1;
+
+	TexWithRect(Texture* sprite, SDL_Rect place, float par) : image(sprite), rect(place), parallaxValue(par)
+	{
+
+	}
+};
+
 class Stage
 {
 	FightManager* mngr;
-	b2Body* stage;
-	SDL_Rect stageRect;
+
+	std::vector<b2Body*> grounds;
+	std::vector<SDL_Rect> groundRects;
 
 	std::vector<b2Body*> platforms;
 	std::vector<SDL_Rect> platformRects;
+
+	std::vector<TexWithRect> elements;
 
 	std::vector<b2Vec2> playerSpawns;
 
@@ -30,7 +45,7 @@ class Stage
 
 	MyListener* listener;
 	Texture* background;
-	Texture* platformTexture;
+	float backGroundParallax;
 
 	b2Vec2 deathzoneSize;
 	float step;
@@ -47,7 +62,6 @@ public:
 	b2Vec2 GetPlayerSpawns(int index) { return playerSpawns[index]; };
 	int GetPlayerDir(int index);
 
-	void Update();
 	void Update(SDL_Rect* camera);
 
 	double GetScreenRatio() { return (b2ToSDL * 50) / sdl->width(); }

@@ -26,13 +26,19 @@ Stage::~Stage()
 
 void Stage::UnLoadStage()
 {
-	world->DestroyBody(stage);
+	for (uint16 i = 0; i < grounds.size(); i++)
+	{
+		world->DestroyBody(grounds[i]);
+	}
 	for (uint16 i = 0; i < platforms.size(); i++)
 	{
 		world->DestroyBody(platforms[i]);
 	}
+	grounds.clear();
+	groundRects.clear();
 	platforms.clear();
 	platformRects.clear();
+	elements.clear();
 	playerSpawns.clear();
 }
 
@@ -48,28 +54,59 @@ void Stage::LoadJsonStage(std::string fileName, int width, int height)
 	b2ToSDL = width / deathzoneSize.x;
 
 	background = &sdl->images().at(jsonFile["background"]);
-	platformTexture = &sdl->images().at(jsonFile["platform"]);
+	backGroundParallax = jsonFile["bgParallax"];
 
-	//Definimos un objeto (estatico)
-	b2BodyDef groundDef;
-	groundDef.position.Set(jsonFile["groundX"], jsonFile["groundY"]);
-	groundDef.type = b2_staticBody;
 
-	//Anadimos al mundo
-	stage = world->CreateBody(&groundDef);;
-	//Le damos forma...
-	b2PolygonShape floor;
-	float floorW = jsonFile["groundW"], floorH = jsonFile["groundH"];
-	floor.SetAsBox(floorW / 2, floorH / 2);
+	auto images = jsonFile["elements"];
+	assert(images.is_array());
 
-	//..cuerpo
-	b2FixtureDef fixt;
-	fixt.shape = &floor;
-	fixt.density = 10.0f;
-	fixt.friction = 0.5f;
-	fixt.filter.categoryBits = 2; // 2 para el suelo principal
+	for (uint16 i = 0u; i < images.size(); i++)
+	{
+		auto info = images[i]["whereToDraw"];
+		assert(info.is_array());
 
-	stage->CreateFixture(&fixt);
+		for (uint16 j = 0u; j < info.size(); j++)
+		{
+			float par = info[j]["parallaxValue"];
+
+			SDL_Rect rect = GetSDLCoors(info[j]["x"], info[j]["y"], info[j]["w"], info[j]["h"]);
+
+			elements.push_back(TexWithRect(
+				&sdl->images().at(images[i]["image"]),
+				rect,
+				par));
+		}
+	}
+
+	auto groundData = jsonFile["groundData"];
+	assert(groundData.is_array());
+
+	for (uint16 i = 0u; i < groundData.size(); i++) {
+
+		//Definimos un objeto (estatico)
+		b2BodyDef groundDef;
+		groundDef.position.Set(groundData[i]["groundX"], groundData[i]["groundY"]);
+		groundDef.type = b2_staticBody;
+
+		//Anadimos al mundo
+		grounds.push_back(world->CreateBody(&groundDef));
+
+		//Le damos forma...
+		b2PolygonShape floor;
+		float floorW = groundData[i]["groundW"], floorH = groundData[i]["groundH"];
+		floor.SetAsBox(floorW / 2, floorH / 2);
+
+		//..cuerpo
+		b2FixtureDef fixt;
+		fixt.shape = &floor;
+		fixt.density = 10.0f;
+		fixt.friction = 0.5f;
+		fixt.filter.categoryBits = 2; // 2 para el suelo principal
+
+		grounds[i]->CreateFixture(&fixt);
+
+		groundRects.push_back(GetSDLCoors(grounds[i], floorW, floorH));
+	}
 
 	auto aData = jsonFile["platformData"];
 	assert(aData.is_array());
@@ -77,11 +114,11 @@ void Stage::LoadJsonStage(std::string fileName, int width, int height)
 	for (uint16 i = 0u; i < aData.size(); i++) {
 
 		b2BodyDef gDef;
-		gDef.position.Set(aData[i]["platformX"], aData[i]["platformY"]);
+		gDef.position.Set(aData[i]["platformX"], aData[i]["platformY"] + 0.1f);
 		gDef.type = b2_staticBody;
 
 		b2PolygonShape plat;
-		float platW = aData[i]["platformW"], platH = aData[i]["platformH"];
+		float platW = aData[i]["platformW"], platH = 0.2f;
 		plat.SetAsBox(platW / 2, platH / 2);
 
 		b2FixtureDef fi;
@@ -95,9 +132,6 @@ void Stage::LoadJsonStage(std::string fileName, int width, int height)
 
 		platformRects.push_back(GetSDLCoors(platforms[i], platW, platH));
 	}
-
-	//Creo las cajas que representaran a los objetos
-	stageRect = GetSDLCoors(stage, floorW, floorH);
 
 	deathZone = { 0, 0, (int)(deathzoneSize.x * b2ToSDL), (int)(deathzoneSize.y * b2ToSDL) };
 
@@ -115,88 +149,63 @@ int Stage::GetPlayerDir(int index)
 	return playerSpawns[index].x < deathzoneSize.x / 2 ? 1: -1 ;
 }
 
-void Stage::Update()
-{
-	sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
-
-	//Calculamos la posicion del sdl rect con respecto a las coordenadas que nos da box2d
-	background->render(deathZone);
-
-	for (SDL_Rect aaa : platformRects)
-	{
-		platformTexture->render(aaa);
-	}
-	platformTexture->render(stageRect);
-
-#ifdef _DEBUG
-	SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-	SDL_RenderDrawRect(sdl->renderer(), &stageRect);
-
-	for (SDL_Rect aaa : platformRects)
-	{
-		SDL_RenderDrawRect(sdl->renderer(), &aaa);
-	}
-
-	SDL_RenderDrawRect(sdl->renderer(), &deathZone);
-#endif
-}
-
 void Stage::Update(SDL_Rect* camera)
 {
 	sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
 
 	SDL_Rect auxDeath = deathZone;
 
-	float parallaxValue = 0.2f;
-
 	float cameraWDiff = (float)mngr->GetActualWidth() - (float)camera->w;
 	float cameraHDiff = (float)mngr->GetActualHeight() - (float)camera->h;
 
-	auxDeath.x = (auxDeath.x - camera->x) * parallaxValue;
-	auxDeath.x *= ((float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - parallaxValue))));
+	auxDeath.x = (auxDeath.x - camera->x) * backGroundParallax;
+	auxDeath.x *= ((float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - backGroundParallax))));
 
-	auxDeath.y = (auxDeath.y - camera->y) * parallaxValue;
-	auxDeath.y *= ((float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - parallaxValue))));
+	auxDeath.y = (auxDeath.y - camera->y) * backGroundParallax;
+	auxDeath.y *= ((float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - backGroundParallax))));
 
-	auxDeath.w *= ((float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - parallaxValue))));
-	auxDeath.h *= ((float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - parallaxValue))));
+	auxDeath.w *= ((float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - backGroundParallax))));
+	auxDeath.h *= ((float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - backGroundParallax))));
 
 	background->render(auxDeath);
 
-	for (SDL_Rect aaa : platformRects)
+	for (TexWithRect aaa : elements)
 	{
-		SDL_Rect auxPlat = aaa;
+		SDL_Rect auxPlat = aaa.rect;
 
-		auxPlat.x -= camera->x;
-		auxPlat.x *= (mngr->GetActualWidth() / (float)camera->w);
+		auxPlat.x = auxPlat.x - camera->x * aaa.parallaxValue;
+		auxPlat.x *= ((float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - aaa.parallaxValue))));
 
-		auxPlat.y -= camera->y;
-		auxPlat.y *= (mngr->GetActualWidth() / (float)camera->w);
+		auxPlat.y = auxPlat.y - camera->y * aaa.parallaxValue;
+		auxPlat.y *= ((float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - aaa.parallaxValue))));
 
-		auxPlat.w *= (mngr->GetActualWidth() / (float)camera->w);
-		auxPlat.h *= (mngr->GetActualWidth() / (float)camera->w);
+		auxPlat.w *= ((float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - aaa.parallaxValue))));
+		auxPlat.h *= ((float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - aaa.parallaxValue))));
 
-		platformTexture->render(auxPlat);
+		aaa.image->render(auxPlat);
 	}
-
-	SDL_Rect auxStage = stageRect;
-
-	auxStage.x -= camera->x;
-	auxStage.x *= (mngr->GetActualWidth() / (float)camera->w);
-
-	auxStage.y -= camera->y;
-	auxStage.y *= (mngr->GetActualWidth() / (float)camera->w);
-
-	auxStage.w *= (mngr->GetActualWidth() / (float)camera->w);
-	auxStage.h *= (mngr->GetActualWidth() / (float)camera->w);
-
-	platformTexture->render(auxStage);
 
 #ifdef _DEBUG
 
 	//Dibujamos las cajas
 	SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
-	SDL_RenderDrawRect(sdl->renderer(), &auxStage);
+
+
+	for (SDL_Rect aaa : groundRects)
+	{
+		SDL_Rect auxStage = aaa;
+
+		auxStage.x -= camera->x;
+		auxStage.x *= (mngr->GetActualWidth() / (float)camera->w);
+
+		auxStage.y -= camera->y;
+		auxStage.y *= (mngr->GetActualWidth() / (float)camera->w);
+
+		auxStage.w *= (mngr->GetActualWidth() / (float)camera->w);
+		auxStage.h *= (mngr->GetActualWidth() / (float)camera->w);
+
+		SDL_RenderDrawRect(sdl->renderer(), &auxStage);
+	}
 
 	for (SDL_Rect aaa : platformRects)
 	{
