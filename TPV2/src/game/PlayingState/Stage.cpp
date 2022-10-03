@@ -158,14 +158,17 @@ void Stage::Update(SDL_Rect* camera)
 	float cameraWDiff = (float)mngr->GetActualWidth() - (float)camera->w;
 	float cameraHDiff = (float)mngr->GetActualHeight() - (float)camera->h;
 
-	auxDeath.x = (auxDeath.x - camera->x) * backGroundParallax;
-	auxDeath.x *= ((float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - backGroundParallax))));
+	float widthMat = (float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - backGroundParallax)));
+	float heightMat = (float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - backGroundParallax)));
 
-	auxDeath.y = (auxDeath.y - camera->y) * backGroundParallax;
-	auxDeath.y *= ((float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - backGroundParallax))));
+	auxDeath.x = -camera->x * backGroundParallax;
+	auxDeath.x *= widthMat;
 
-	auxDeath.w *= ((float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - backGroundParallax))));
-	auxDeath.h *= ((float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - backGroundParallax))));
+	auxDeath.y = -camera->y * backGroundParallax;
+	auxDeath.y *= heightMat;
+
+	auxDeath.w *= widthMat;
+	auxDeath.h *= heightMat;
 
 	background->render(auxDeath);
 
@@ -173,14 +176,17 @@ void Stage::Update(SDL_Rect* camera)
 	{
 		SDL_Rect auxPlat = aaa.rect;
 
+		widthMat = (float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - aaa.parallaxValue)));
+		heightMat = (float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - aaa.parallaxValue)));
+
 		auxPlat.x = auxPlat.x - camera->x * aaa.parallaxValue;
-		auxPlat.x *= ((float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - aaa.parallaxValue))));
+		auxPlat.x *= widthMat;
 
 		auxPlat.y = auxPlat.y - camera->y * aaa.parallaxValue;
-		auxPlat.y *= ((float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - aaa.parallaxValue))));
+		auxPlat.y *= heightMat;
 
-		auxPlat.w *= ((float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - aaa.parallaxValue))));
-		auxPlat.h *= ((float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - aaa.parallaxValue))));
+		auxPlat.w *= widthMat;
+		auxPlat.h *= heightMat;
 
 		aaa.image->render(auxPlat);
 	}

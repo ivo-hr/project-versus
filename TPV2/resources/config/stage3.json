@@ -14,14 +14,14 @@
           "y": 20.0,
           "w": 12.0,
           "h": 3,
-          "parallaxValue": 0.4
+          "parallaxValue": 0.2
         },
         {
           "x": 70.0,
           "y": 25.0,
           "w": 14.0,
           "h": 4,
-          "parallaxValue": 0.6
+          "parallaxValue": 0.4
         },
         {
           "x": 30.0,

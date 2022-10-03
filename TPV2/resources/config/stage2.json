@@ -7,6 +7,18 @@
 
   "elements": [
     {
+      "image": "mazmorra2",
+      "whereToDraw": [
+        {
+          "x": 50,
+          "y": 30,
+          "w": 100,
+          "h": 60,
+          "parallaxValue": 0.215
+        }
+      ]
+    },
+    {
       "image": "rockPlat",
       "whereToDraw": [
         {
