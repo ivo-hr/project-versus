@@ -19,6 +19,8 @@ Togo::Togo(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mng
 	texture = &sdl->images().at("dinoSouls");
 	portrait = &sdl->images().at("dinoSoulsSelect");
 
+	eyePos = { (float)hurtbox.w * 1.2f, (float)hurtbox.h / 2.2f };
+
 	anim = new AnimationManager(this, texture, spData);
 }
 

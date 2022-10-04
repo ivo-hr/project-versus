@@ -77,17 +77,23 @@ struct attackData
 
 struct ParticleData
 {
-	Texture* tex;
+	Texture* tex = nullptr;
 
-	SDL_Rect dest;
+	SDL_Rect dest = { 0,0,0,0 };
 
-	ushort numSprites;
-	ushort numSpritesinX;
-	ushort numSpritesinY;
+	ushort numSprites = 0;
+	ushort numSpritesinX = 0;
+	ushort numSpritesinY = 0;
 
-	ushort duration;
+	ushort duration = 0;
 
-	short dir;
+	short dir = 1;
+
+	ParticleData() {}
+
+	ParticleData(Texture* im, SDL_Rect dest, ushort numS, ushort numX, ushort numY, ushort dur) :
+		tex(im), dest(dest), numSprites(numS), numSpritesinX(numX), numSpritesinY(numY), duration(dur), dir(1)
+	{ }
 };
 
 class Entity

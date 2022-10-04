@@ -87,7 +87,9 @@
     { "id" : "ExplosionEF", "file" : "resources/images/EFExplosion.png"},
     { "id" : "selectcharbg", "file" : "resources/images/selectcharacter.png"},
     { "id" : "check", "file" : "resources/images/configuracion/Check.png"},
-    { "id" : "shieldBroken", "file" : "resources/images/EscudoRoto.png"}
+    { "id" : "shieldBroken", "file" : "resources/images/EscudoRoto.png"},
+    { "id" : "parryS", "file" : "resources/images/ParrySpark.png"},
+    { "id" : "parryB", "file" : "resources/images/ParryBack.png"}
   ],
   
   "messages" : [

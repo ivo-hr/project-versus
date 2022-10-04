@@ -34,6 +34,8 @@ Makt::Makt(FightManager* mngr, b2Vec2 pos, char input, ushort p) :
 
 	anim = new AnimationManager(this, texture, spData);
 
+	eyePos = { (float)hurtbox.w / 1.45f, (float)hurtbox.h / 20.f };
+
 	animAddon = "B";
 }
 

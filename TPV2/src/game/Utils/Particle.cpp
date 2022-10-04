@@ -3,15 +3,14 @@
 
 void Particle::CalcularResto()
 {
-
 	spriteDuration = data.duration / data.numSprites;
 	cont = spriteDuration;
 
 	src.x = 0;
 	src.y = 0;
 
-	src.w = texture->width() / data.numSpritesinX;
-	src.h = texture->height() / data.numSpritesinY;
+	src.w = data.tex->width() / data.numSpritesinX;
+	src.h = data.tex->height() / data.numSpritesinY;
 }
 
 Particle::Particle(const Vector2D& position, const std::string& id, Entity* ent, int dir)
@@ -27,7 +26,7 @@ Particle::Particle(const Vector2D& position, const std::string& id, Entity* ent,
 
 		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
-		texture = &manager->GetSDLU()->images().at("sHitParticle");
+		data.tex = &manager->GetSDLU()->images().at("sHitParticle");
 
 		data.numSpritesinX = 2;
 		data.numSpritesinY = 3;
@@ -41,7 +40,7 @@ Particle::Particle(const Vector2D& position, const std::string& id, Entity* ent,
 
 		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
-		texture = &manager->GetSDLU()->images().at("bHitParticle");
+		data.tex = &manager->GetSDLU()->images().at("bHitParticle");
 
 		data.numSpritesinX = 2;
 		data.numSpritesinY = 4;
@@ -62,7 +61,7 @@ Particle::Particle(const Vector2D& position, const std::string& id, Entity* ent,
 			data.dest = { (int)(position.getX()), (int)(position.getY() - h), (int)w, (int)h };
 		}
 
-		texture = &manager->GetSDLU()->images().at("run");
+		data.tex = &manager->GetSDLU()->images().at("run");
 
 		data.numSpritesinX = 1;
 		data.numSpritesinY = 3;
@@ -76,7 +75,7 @@ Particle::Particle(const Vector2D& position, const std::string& id, Entity* ent,
 
 		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
-		texture = &manager->GetSDLU()->images().at("killHit");
+		data.tex = &manager->GetSDLU()->images().at("killHit");
 
 		data.numSpritesinX = 1;
 		data.numSpritesinY = 6;
@@ -90,7 +89,7 @@ Particle::Particle(const Vector2D& position, const std::string& id, Entity* ent,
 
 		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
-		texture = &manager->GetSDLU()->images().at("killVfx");
+		data.tex = &manager->GetSDLU()->images().at("killVfx");
 
 		data.numSpritesinX = 3;
 		data.numSpritesinY = 3;
@@ -104,7 +103,7 @@ Particle::Particle(const Vector2D& position, const std::string& id, Entity* ent,
 
 		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h};
 
-		texture = &manager->GetSDLU()->images().at("died");
+		data.tex = &manager->GetSDLU()->images().at("died");
 
 		data.numSpritesinX = 3;
 		data.numSpritesinY = 3;
@@ -118,7 +117,7 @@ Particle::Particle(const Vector2D& position, const std::string& id, Entity* ent,
 
 		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
-		texture = &manager->GetSDLU()->images().at("water");
+		data.tex = &manager->GetSDLU()->images().at("water");
 
 		data.numSpritesinX = 2;
 		data.numSpritesinY = 2;
@@ -132,7 +131,7 @@ Particle::Particle(const Vector2D& position, const std::string& id, Entity* ent,
 
 		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
-		texture = &manager->GetSDLU()->images().at("electric");
+		data.tex = &manager->GetSDLU()->images().at("electric");
 
 		data.numSpritesinX = 2;
 		data.numSpritesinY = 2;
@@ -146,7 +145,7 @@ Particle::Particle(const Vector2D& position, const std::string& id, Entity* ent,
 
 		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
-		texture = &manager->GetSDLU()->images().at("fire");
+		data.tex = &manager->GetSDLU()->images().at("fire");
 
 		data.numSpritesinX = 2;
 		data.numSpritesinY = 2;
@@ -160,7 +159,7 @@ Particle::Particle(const Vector2D& position, const std::string& id, Entity* ent,
 
 		data.dest = { (int)(position.getX() - w / 2), (int)(position.getY() - h / 2), (int)w, (int)h };
 
-		texture = &manager->GetSDLU()->images().at("shieldBroken");
+		data.tex = &manager->GetSDLU()->images().at("shieldBroken");
 
 		data.numSpritesinX = 1;
 		data.numSpritesinY = 6;
@@ -174,7 +173,7 @@ Particle::Particle(const Vector2D& position, const std::string& id, Entity* ent,
 
 		data.dest = { 0, 0, 0, 0 };
 
-		texture = &manager->GetSDLU()->images().at("killVfx");
+		data.tex = &manager->GetSDLU()->images().at("killVfx");
 		data.numSpritesinX = 0;
 		data.numSpritesinY = 0;
 		data.numSprites = 1;
@@ -184,10 +183,9 @@ Particle::Particle(const Vector2D& position, const std::string& id, Entity* ent,
 	CalcularResto();
 }
 
-Particle::Particle(const Vector2D& position, const ParticleData& data, Entity* ent)
+Particle::Particle(const Vector2D& position, const ParticleData& data, Entity* ent) : data(data)
 {
 	manager = ent->GetManager();
-	this->data = data;
 	active = false;
 	CalcularResto();
 }
@@ -234,11 +232,11 @@ void Particle::update()
 		{
 			cont = spriteDuration;
 
-			if (src.x + src.w < texture->width())
+			if (src.x + src.w < data.tex->width())
 				src.x += src.w;
 			else
 			{
-				if (src.y + src.h < texture->height())
+				if (src.y + src.h < data.tex->height())
 				{
 					src.x = 0;
 					src.y += src.h;
@@ -256,11 +254,11 @@ void Particle::draw()
 {
 	if (data.dir < 0)
 	{
-		texture->render(src, data.dest, 0, nullptr, SDL_FLIP_HORIZONTAL);
+		data.tex->render(src, data.dest, 0, nullptr, SDL_FLIP_HORIZONTAL);
 	}
 	else
 	{
-		texture->render(src, data.dest);
+		data.tex->render(src, data.dest);
 	}
 }
 
@@ -281,11 +279,11 @@ void Particle::draw(SDL_Rect* camera)
 
 		if (data.dir < 0)
 		{
-			texture->render(src, aux, 0, nullptr, SDL_FLIP_HORIZONTAL);
+			data.tex->render(src, aux, 0, nullptr, SDL_FLIP_HORIZONTAL);
 		}
 		else
 		{
-			texture->render(src, aux);
+			data.tex->render(src, aux);
 		}
 	}
 }

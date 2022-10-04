@@ -87,6 +87,8 @@ protected:
 
 	std::string animAddon = "";
 
+	Vector2D eyePos = { 0,0 };
+
 	virtual void CreateHitBox(HitBoxData* data);
 
 	virtual void BuildBoxes() = 0;

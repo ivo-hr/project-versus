@@ -15,8 +15,6 @@ protected:
 
 	FightManager* manager;
 
-	Texture* texture;
-
 	SDL_Rect src;
 
 	ParticleData data;

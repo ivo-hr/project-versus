@@ -192,6 +192,7 @@ void Character::update()
 		if (hitLag == 0)
 		{
 			body->SetEnabled(true);
+			shield = 0;
 			shakeValue = { 0, 0 };
 		}
 		return;
@@ -809,16 +810,28 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 		{
 			if (!attacker->isProjectile())
 			{
-				AddHitLag(35);
-				attacker->AddHitLag(50);
+				AddHitLag(25);
+				attacker->AddHitLag(45);
+			}
+			else
+			{
+				AddHitLag(4);
 			}
 			currentMove = nullptr;
 			moveFrame = 0;
-			shield = 0;
+			shield = 1;
 			anim->StartAnimation("parry" + animAddon);
 			anim->update();
 			manager->MoveToFront(this);
 			controlHitLag = true;
+
+			manager->SetShake(Vector2D(a.direction.x * 2, a.direction.y * 3), 3);
+			controlCamShake = true;
+
+			float xEyeDiff = eyePos.getX() - (hurtbox.w / 2.f);
+
+			AddParticle("parryS", { hurtbox.x + (hurtbox.w / 2.f) + (xEyeDiff * dir), hurtbox.y + eyePos.getY() }, dir, true);
+			AddParticle("parryB", { hurtbox.x + hurtbox.w / 2.f, (float)hurtbox.y + hurtbox.h * 1.05f });
 			return false;
 		}
 
@@ -1323,8 +1336,6 @@ void Character::OnDeath()
 
 void Character::AddDeathParticle()
 {
-	if (lives == 0)
-		return;
 	//O dios mio que he creado
 	AddParticle("died",
 		Vector2D(

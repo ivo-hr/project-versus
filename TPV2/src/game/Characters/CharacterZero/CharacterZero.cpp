@@ -15,6 +15,8 @@ CharacterZero::CharacterZero(FightManager* mngr, b2Vec2 pos, char input, ushort 
 	portrait = &sdl->images().at("zeroSelect");
 	//smolH = &sdl->soundEffects().at("zeroSmolHit");
 
+	eyePos = { (float)hurtbox.w / 1.1f, (float)hurtbox.h / 6.f };
+
 	anim = new AnimationManager(this, texture, spData);
 }
 

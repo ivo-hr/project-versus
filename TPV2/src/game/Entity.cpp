@@ -11,15 +11,20 @@ void Entity::BuildParticlePool()
 		particlePool["smallHit"].push_front(new Particle({ 0,0 }, "sHitParticle", this, 1));
 		particlePool["bigHit"].push_front(new Particle({ 0,0 }, "bHitParticle", this, 1));
 		particlePool["run"].push_front(new Particle({ 0,0 }, "run", this, 1));
-		particlePool["killHit"].push_front(new Particle({ 0,0 }, "killHit", this, 1));
-		particlePool["killVfx"].push_front(new Particle({ 0,0 }, "killVfx", this, 1));
-		particlePool["died"].push_front(new Particle({ 0,0 }, "died", this, 1));
 		particlePool["water"].push_front(new Particle({ 0,0 }, "water", this, 1));
 		particlePool["electric"].push_front(new Particle({ 0,0 }, "electric", this, 1));
 		particlePool["fire"].push_front(new Particle({ 0,0 }, "fire", this, 1));
-		particlePool["shieldBroken"].push_front(new Particle({ 0,0 }, "shieldBroken", this, 1));
-		particlePool["killVfx"].push_front(new Particle({ 0,0 }, "killVfx", this, 1));
 	}
+	particlePool["died"].push_front(new Particle({ 0,0 }, "died", this, 1));
+	particlePool["killHit"].push_front(new Particle({ 0,0 }, "killHit", this, 1));
+	particlePool["killVfx"].push_front(new Particle({ 0,0 }, "killVfx", this, 1));
+	particlePool["shieldBroken"].push_front(new Particle({ 0,0 }, "shieldBroken", this, 1));
+	particlePool["parryS"].push_front(new Particle(
+		{ 0,0 }, ParticleData(&sdl->images().at("parryS"), SDL_Rect({ 0, 0, 32, 32 }), 4, 2, 2, 16), this)
+	);
+	particlePool["parryB"].push_front(new Particle(
+		{ 0,0 }, ParticleData(&sdl->images().at("parryB"), SDL_Rect({ 0, 0, 128, 64 }), 5, 3, 2, 25), this)
+	);
 }
 
 Entity::Entity(FightManager* mngr, b2Vec2 position, float w, float h) : manager(mngr), width(w), height(h)
