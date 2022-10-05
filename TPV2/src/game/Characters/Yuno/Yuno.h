@@ -19,20 +19,11 @@ public:
 	virtual void SpecialUpward(ushort frameNumber) override;
 	virtual void SpecialDownward(ushort frameNumber) override;
 
-	virtual void update() override;
-	virtual void Respawn() override;
-	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
-
-	virtual void drawHUD(ushort numOfPlayer)override;
 private:
 
 	Texture* blinkContainer = nullptr;
 	Texture* blinkfondo = nullptr;
 
-	float maxBlinks = 3.2;
-	float blinks = maxBlinks;
-	float blinkRecover = 0.004;
-	bool counter = false;
 	bool boosted = false;
 
 protected:

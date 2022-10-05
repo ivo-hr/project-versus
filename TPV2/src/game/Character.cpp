@@ -665,13 +665,13 @@ void Character::draw(SDL_Rect* camera)
 	SDL_Rect aux = hurtbox;
 
 	aux.x -= camera->x;
-	aux.x *= (manager->GetActualWidth() / (float)camera->w);
+	aux.x = int((float)aux.x * ((float)manager->GetActualWidth() / (float)camera->w));
 
 	aux.y -= camera->y;
-	aux.y *= (manager->GetActualWidth() / (float)camera->w);
+	aux.y = int((float)aux.y * (float)manager->GetActualWidth() / (float)camera->w);
 
-	aux.w *= (manager->GetActualWidth() / (float)camera->w);
-	aux.h *= (manager->GetActualWidth() / (float)camera->w);
+	aux.w = int((float)aux.w * (float)manager->GetActualWidth() / (float)camera->w);
+	aux.h = int((float)aux.h * (float)manager->GetActualWidth() / (float)camera->w);
 
 	if (invencible)
 	{
@@ -728,7 +728,7 @@ void Character::CheckHits()
 			hitboxes[i]->outFor = 0;
 			for (int j = i + 1; j < hitboxes.size(); j++)
 			{
-				hitboxes[j - 1] = hitboxes[j];
+				hitboxes[(size_t)j - 1] = hitboxes[j];
 			}
 			hitboxes.pop_back();
 			i--;
@@ -806,7 +806,7 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 	if (shield > 0)
 	{
 		//Parry
-		if (shield <= 7)
+		if (shield <= parryWindow)
 		{
 			if (!attacker->isProjectile())
 			{
@@ -832,6 +832,9 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 
 			AddParticle("parryS", { hurtbox.x + (hurtbox.w / 2.f) + (xEyeDiff * dir), hurtbox.y + eyePos.getY() }, dir, true);
 			AddParticle("parryB", { hurtbox.x + hurtbox.w / 2.f, (float)hurtbox.y + hurtbox.h * 1.05f });
+
+			sdl->soundEffects().at("parry").play();
+
 			return false;
 		}
 
@@ -1186,6 +1189,7 @@ void Character::StartJump(ushort frameNumber)
 				body->ApplyLinearImpulseToCenter(b2Vec2(0, -jumpStr * 0.6f), true);
 		}
 
+		onGround = false;
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
@@ -1201,7 +1205,7 @@ void Character::StartShield(ushort frameNumber)
 	{
 		shield++;
 	}
-	if (frameNumber == shieldStartUp)
+	if (frameNumber == parryWindow)
 	{
 		sdl->soundEffects().at("shield").play();
 
@@ -1453,7 +1457,7 @@ void Character::Elements()
 	}
 	else if (efEstado == wElectric)
 	{
-		stun += (statePower / (stateDur / 60))*1.5;
+		stun += ushort((statePower / (stateDur / 60)) * 1.5f);
 		body->SetLinearVelocity({ 0, 0 }); 
 		ResetChar();
 	}

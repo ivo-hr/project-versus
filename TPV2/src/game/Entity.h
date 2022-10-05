@@ -43,7 +43,7 @@ struct HitData {
 	float multiplier;
 
 	short stun = -1;
-	ushort GetStun(float recoil) { return stun <= 0 ? (recoil / 1.8f) + 4 : stun; };
+	ushort GetStun(float recoil) { return stun <= 0 ? (ushort)(recoil / 1.8f) + 4 : stun; };
 
 	bool shieldBreak = false;
 
@@ -58,7 +58,7 @@ struct HitBoxData
 	HitData hitdata;
 
 	short hitlag = -1;
-	ushort GetHitlag() { return hitlag <= 0 ? hitdata.damage * 0.9f : hitlag; };
+	ushort GetHitlag() { return hitlag <= 0 ? (ushort)((float)hitdata.damage * 0.9f) : hitlag; };
 
 	ushort duration;
 	ushort outFor = 0;
@@ -179,7 +179,7 @@ public:
 
 	void AddHitLag(ushort lag);
 
-	Vector2D GetCenterSDL() { return Vector2D(hurtbox.x + (hurtbox.w / 2), hurtbox.y + (hurtbox.h / 2)); };
+	Vector2D GetCenterSDL() { return Vector2D(hurtbox.x + ((float)hurtbox.w / 2.f), hurtbox.y + ((float)hurtbox.h / 2.f)); };
 
 	void SetGround(bool ground);
 	bool GetGround() { return onGround; };

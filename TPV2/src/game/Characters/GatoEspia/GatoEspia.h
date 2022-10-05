@@ -32,9 +32,9 @@ private:
 	Texture* blinkContainer = nullptr;
 	Texture* blinkfondo = nullptr;
 
-	float maxBlinks = 3.2;
+	float maxBlinks = 3.2f;
 	float blinks = maxBlinks;
-	float blinkRecover = 0.008;
+	float blinkRecover = 0.008f;
 	bool counter = false;
 
 protected:

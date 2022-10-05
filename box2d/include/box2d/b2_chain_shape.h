@@ -87,7 +87,7 @@ public:
 	/// The vertex count.
 	int32 m_count;
 
-	b2Vec2 m_prevVertex, m_nextVertex;
+	b2Vec2 m_prevVertex = { }, m_nextVertex = { };
 };
 
 inline b2ChainShape::b2ChainShape()

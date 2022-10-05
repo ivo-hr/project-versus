@@ -12,48 +12,51 @@ using json = nlohmann::json;
 class Character : public Entity
 {
 protected:
-	ushort playerNumber;
-	ushort playerPosition;//P1 ,P2 ,P3,P4..
+	ushort playerNumber = 0;
+	ushort playerPosition = 0;//P1 ,P2 ,P3,P4..
 	//InputHandler& ih = *InputHandler::instance();
 	InputConfig *input = nullptr;
 
-	AnimationManager* anim;
+	AnimationManager* anim = nullptr;
 
 	//Datos de los ataques (Deberian salir de jsons en un futuro)
-	std::unordered_map<std::string, attackData> attacks;
+	std::unordered_map<std::string, attackData> attacks = unordered_map<string, attackData>();
 
-	Texture* arrowsTex;
-	Texture* portrait;
-	SDL_Rect arrowSrc;
-	ushort stun;
-	ushort lives;
+	Texture* arrowsTex = nullptr;
+	Texture* portrait = nullptr;
+	SDL_Rect arrowSrc = { };
+	ushort stun = 0;
+	ushort lives = 0;
 
 	const ushort maxLives = 3;
 
-	string codeName;
-	bool moving;
+	string codeName = "";
+	bool moving = false;
 	bool hasRealasedUp = false;
-	ushort maxSpeed;
-	float speed;
+	ushort maxSpeed = 0;
+	float speed = 0.f;
 
-	ushort shield;
-	ushort shieldHealth;
-	int maxShield;
-	bool dash;
+	ushort shield = 0;
+	ushort shieldHealth = 0;
+	int maxShield = 0;
+	ushort parryWindow = 5;
+
+	bool dash = false;
+
 	//Variables para el salto (fuerza, maximo numero permitido, y el contador)
-	ushort jumpStr;
-	ushort maxJumps;
-	ushort jumpCounter;
-	bool jumpCooldown;
+	ushort jumpStr = 0;
+	ushort maxJumps = 0;
+	ushort jumpCounter = 0;
+	bool jumpCooldown = 0;
 	ushort maxFallCount = 30; // Para iniciar los dos siguientes contadores:
 	ushort fall = 0; // Contador entre pulsaciones de abajo (para bajar plataformas)
 	ushort reactivateColl = 0; // Contador para reactivar colisiones con plataforma
 	bool down = false; // El jugador pulsó abajo
 
-	ushort weight;
+	ushort weight = 0;
 
-	ushort damageTaken;
-	ushort totalDamageTaken;
+	ushort damageTaken = 0;
+	ushort totalDamageTaken = 0;
 
 	
 	bool recovery = true;
@@ -75,7 +78,7 @@ protected:
 	ushort stateDur = 300;
 	float ralentizar = 0;
 //	void (Character::* currentMove)(int);
-	ushort input_;
+	ushort input_ = 0;
 
 	ushort r = 0;
 	ushort g = 255;
@@ -93,7 +96,7 @@ protected:
 
 	virtual void BuildBoxes() = 0;
 	virtual Vector2D BuildBoxOffset(const HitBoxData& data) {
-		return Vector2D((data.box.x + (data.box.w / 2)) - (hurtbox.x + (hurtbox.w / 2)), (data.box.y + (data.box.h / 2)) - (hurtbox.y + (hurtbox.h / 2)));
+		return Vector2D((data.box.x + ((float)data.box.w / 2.f)) - (hurtbox.x + ((float)hurtbox.w / 2.f)), (data.box.y + ((float)data.box.h / 2.f)) - (hurtbox.y + ((float)hurtbox.h / 2.f)));
 	};
 
 public:

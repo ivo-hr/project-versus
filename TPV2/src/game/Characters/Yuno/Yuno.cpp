@@ -194,24 +194,12 @@ void Yuno::SpecialDownward(ushort frameNumber)
 
 	if (frameNumber == 0)
 	{
-		if (blinks < 1.0f) {
-			currentMove = nullptr;
-			moveFrame = -1;
-			return;
-		}
 		anim->StartAnimation("especialD");
 		sdl->soundEffects().at("catSpecD").play();
-		blinks -= 1.0f;
 	}
 	else if (frameNumber == attacks["specialD"].keyFrames[0])
 	{
-		if (counter == false) {
-			counter = true;
-		}
-		else {
-			CreateHitBox(&attacks["specialD"].hitBoxes[0]);
-			counter = false;
-		}
+		CreateHitBox(&attacks["specialD"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["specialD"].totalFrames)
 	{
@@ -224,67 +212,6 @@ void Yuno::SpecialDownward(ushort frameNumber)
 	//	currentMove = nullptr;
 	//	moveFrame = -1;
 	//}
-}
-
-
-void Yuno::update()
-{
-	Character::update();
-	if (blinks < maxBlinks) {
-		blinks += blinkRecover;
-	}
-}
-
-void Yuno::Respawn()
-{
-	counter = false;
-	Character::Respawn();
-	blinks = maxBlinks;
-}
-
-bool Yuno::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)
-{
-	if (counter) {
-		anim->StartAnimation("counter");
-		anim->update();
-		a.damage = 0;
-		counter = false;
-	}
-	return Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
-}
-
-
-void Yuno::drawHUD(ushort numOfPlayer)
-{
-	Character::drawHUD(numOfPlayer);
-
-	int w_ = manager->GetActualWidth();
-	int h_ = manager->GetActualHeight();
-	int dist = w_ / numOfPlayer;
-	int offset = (w_ / 2) / numOfPlayer - w_ / 30;
-	int x = (int)(playerPosition * dist + offset) - (w_ / 30);
-	int y = h_ - (h_ / 6) + w_ / 100;
-
-	//portrait->render({ x, y, w_ / 15, w_ / 15 });
-
-	SDL_Rect cont = {
-		x,
-		y,
-		(w_ / 50),
-		w_ / 17 };
-
-	blinkfondo->render(cont);
-
-	SDL_Rect blinkFill = {
-		x + w_ / 300,
-		y + (w_ / 17) - ((w_ / 17) * blinks / maxBlinks),
-		(w_ / 70),
-		w_ / 17 * blinks / maxBlinks };
-
-	SDL_SetRenderDrawColor(sdl->renderer(), 0x53, 0xed, 0xee, 0xff);
-	SDL_RenderFillRect(sdl->renderer(), &blinkFill);
-
-	blinkContainer->render(cont);
 }
 
 void Yuno::BuildBoxes()

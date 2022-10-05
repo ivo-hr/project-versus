@@ -37,7 +37,7 @@ public:
 
 	// update the state with a new event
 	inline void update(const SDL_Event &event) {
-		int whichOne;
+
 		switch (event.type) {
 		case SDL_KEYDOWN:
 			onKeyDown(event);
@@ -218,7 +218,7 @@ public:
 				else return 0;
 			}
 			else { // if any other controller
-				SDL_GameControllerAxis s;
+				SDL_GameControllerAxis s = { };
 				switch (axesNumber)
 				{
 				case 0:

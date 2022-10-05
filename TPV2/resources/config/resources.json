@@ -138,6 +138,10 @@
       "file": "resources/sound/01General/death.wav"
     },
     {
+      "id": "parry",
+      "file": "resources/sound/01General/parry.wav"
+    },
+    {
       "id": "zeroAtk0",
       "file": "resources/sound/ZeroChar/atk0.wav"
     },
@@ -153,7 +157,7 @@
       "id": "zeroSteps",
       "file": "resources/sound/ZeroChar/steps.wav"
     },
-  
+
     {
       "id": "catAtk0",
       "file": "resources/sound/CatChar/atk0.wav"
@@ -278,7 +282,7 @@
       "file": "resources/sound/MaktChar/taunt.wav"
     },
 
-    
+
     {
       "id": "nasAtk0",
       "file": "resources/sound/NasChar/atk0.wav"
