@@ -1,17 +1,17 @@
 {
     "codeName": "makt",
     "weight": 19,
-    "ballWeight": 24,
+    "ballWeight": 28,
     "damageTaken": 0,
-    "maxSpeed": 25,
-    "ballSpeed": 20,
+    "maxSpeed": 28,
+    "ballSpeed": 18,
     "speed":0,
     "maxJumps": 1 ,
-    "jumpStr": 950,
-    "ballJump": 850,
+    "jumpStr": 1100,
+    "ballJump": 900,
     "onGround": true,
     "shield": false ,
-    "maxShield": 360,
+    "maxShield": 420,
 
   "attacksData": [
     {
@@ -28,7 +28,7 @@
             "shieldBreak": false
           },
           "hitlag": -1,
-          "duration": 8
+          "duration": 6
         }
       ],
       "keyFrames": [ 7 ],
@@ -48,20 +48,20 @@
             "shieldBreak": true
           },
           "hitlag": -1,
-          "duration": 10
+          "duration": 8
         },
         {
           "hitData": {
             "b2vecX": 1,
             "b2vecY": -11,
-            "base": 60,
+            "base": 30,
             "damage": 24,
             "multiplier": 0.3,
             "stun": -1,
             "shieldBreak": true
           },
           "hitlag": -1,
-          "duration": 10
+          "duration": 8
         }
       ],
       "keyFrames": [ 12 ],
@@ -72,33 +72,33 @@
       "hitBoxes": [
         {
           "hitData": {
-            "b2vecX": 1,
+            "b2vecX": 1.2,
             "b2vecY": 1,
-            "base": 15,
-            "damage": 9,
-            "multiplier": 0.6,
+            "base": 25,
+            "damage": 12,
+            "multiplier": 0.7,
             "stun": -1,
             "shieldBreak": false
           },
           "hitlag": -1,
-          "duration": 12
+          "duration": 10
         },
         {
           "hitData": {
-            "b2vecX": -1,
+            "b2vecX": -1.2,
             "b2vecY": 1,
-            "base": 15,
-            "damage": 9,
-            "multiplier": 0.6,
+            "base": 25,
+            "damage": 12,
+            "multiplier": 0.7,
             "stun": -1,
             "shieldBreak": false
           },
           "hitlag": -1,
-          "duration": 12
+          "duration": 10
         }
       ],
-      "keyFrames": [ 14 ],
-      "totalFrames": 26
+      "keyFrames": [ 9 ],
+      "totalFrames": 28
     },
     {
       "id": "basicU",
@@ -107,18 +107,18 @@
           "hitData": {
             "b2vecX": 1,
             "b2vecY": 9,
-            "base": 56,
+            "base": 40,
             "damage": 19,
-            "multiplier": 0.25,
+            "multiplier": 0.3,
             "stun": -1,
             "shieldBreak": false
           },
           "hitlag": -1,
-          "duration": 8
+          "duration": 7
         }
       ],
-      "keyFrames": [ 14 ],
-      "totalFrames": 38
+      "keyFrames": [ 10 ],
+      "totalFrames": 30
     },
     {
       "id": "specialN",
@@ -134,7 +134,7 @@
             "shieldBreak": true
           },
           "hitlag": -1,
-          "duration": 10
+          "duration": 8
         }
       ],
       "keyFrames": [ 60 ],
@@ -144,8 +144,8 @@
       "id": "specialL",
       "hitBoxes": [
       ],
-      "keyFrames": [ 5 ],
-      "totalFrames": 30
+      "keyFrames": [ 4 ],
+      "totalFrames": 25
     },
     {
       "id": "specialLThrow",
@@ -164,8 +164,8 @@
           "duration": 3
         }
       ],
-      "keyFrames": [ 10 ],
-      "totalFrames": 23
+      "keyFrames": [ 5 ],
+      "totalFrames": 18
     },
     {
       "id": "specialU",
@@ -194,8 +194,8 @@
           "hitData": {
             "b2vecX": 0,
             "b2vecY": 1,
-            "base": 50,
-            "damage": 9,
+            "base": 57,
+            "damage": 11,
             "multiplier": 0,
             "stun": -1,
             "shieldBreak": true
@@ -204,8 +204,8 @@
           "duration": 8
         }
       ],
-      "keyFrames": [ 15 ],
-      "totalFrames": 55
+      "keyFrames": [ 12 ],
+      "totalFrames": 30
     },
     {
       "id": "pickBall",

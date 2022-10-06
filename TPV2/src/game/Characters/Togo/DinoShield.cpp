@@ -68,7 +68,7 @@ void DinoShield::draw(SDL_Rect* camera)
 		}
 		anim = 0;
 	}
-	anim += 0.1;
+	anim += 0.1f;
 
 }
 

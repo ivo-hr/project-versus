@@ -142,6 +142,10 @@
       "file": "resources/sound/01General/parry.wav"
     },
     {
+      "id": "shieldBreak",
+      "file": "resources/sound/01General/shieldBreak.wav"
+    },
+    {
       "id": "zeroAtk0",
       "file": "resources/sound/ZeroChar/atk0.wav"
     },

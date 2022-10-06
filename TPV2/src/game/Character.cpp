@@ -130,6 +130,27 @@ void Character::CreateHitBox(HitBoxData* data)
 	hitboxes.push_back(data);
 }
 
+void Character::BuildParticlePool()
+{
+	particlePool["smallHit"].push_front(new Particle({ 0,0 }, "sHitParticle", this, 1));
+	particlePool["bigHit"].push_front(new Particle({ 0,0 }, "bHitParticle", this, 1));
+	particlePool["run"].push_front(new Particle({ 0,0 }, "run", this, 1));
+	particlePool["water"].push_front(new Particle({ 0,0 }, "water", this, 1));
+	particlePool["electric"].push_front(new Particle({ 0,0 }, "electric", this, 1));
+	particlePool["fire"].push_front(new Particle({ 0,0 }, "fire", this, 1));
+
+	particlePool["died"].push_front(new Particle({ 0,0 }, "died", this, 1));
+	particlePool["killHit"].push_front(new Particle({ 0,0 }, "killHit", this, 1));
+	particlePool["killVfx"].push_front(new Particle({ 0,0 }, "killVfx", this, 1));
+	particlePool["shieldBroken"].push_front(new Particle({ 0,0 }, "shieldBroken", this, 1));
+	particlePool["parryS"].push_front(new Particle(
+		{ 0,0 }, ParticleData(&sdl->images().at("parryS"), SDL_Rect({ 0, 0, 48, 48 }), 4, 2, 2, 16), this)
+	);
+	particlePool["parryB"].push_front(new Particle(
+		{ 0,0 }, ParticleData(&sdl->images().at("parryB"), SDL_Rect({ 0, 0, 128, 64 }), 5, 3, 2, 25), this)
+	);
+}
+
 Character::Character(FightManager* manager, b2Vec2 pos, char input, ushort playerPos, float w, float h) :
 	Entity(manager, pos, w, h)
 {
@@ -149,6 +170,7 @@ Character::Character(FightManager* manager, b2Vec2 pos, char input, ushort playe
 	totalDamageTaken = 0;
 	kills = 0;
 	resetLastCharacter();
+	BuildParticlePool();
 }
 
 Character::~Character()
@@ -192,7 +214,7 @@ void Character::update()
 		if (hitLag == 0)
 		{
 			body->SetEnabled(true);
-			shield = 0;
+			parry = parryWindow + 1;
 			shakeValue = { 0, 0 };
 		}
 		return;
@@ -269,7 +291,6 @@ void Character::update()
 				UpdateAnimations();
 			}
 		}
-
 	}
 	if (!recovery) {
 		if (anim->CurrentAnimation() != "dash" + animAddon)
@@ -625,7 +646,11 @@ void Character::draw()
 	//if (debug)
 #ifdef _DEBUG
 
-	if (shield)
+	if (parry > 0 && parry <= parryWindow)
+	{
+		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 255, 255);
+	}
+	else if (shield)
 	{
 		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 255, 255);
 	}
@@ -691,7 +716,11 @@ void Character::draw(SDL_Rect* camera)
 
 #ifdef _DEBUG
 
-	if (shield)
+	if (parry > 0 && parry <= parryWindow)
+	{
+		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 255, 255);
+	}
+	else if (shield)
 	{
 		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 255, 255);
 	}
@@ -802,41 +831,42 @@ void Character::CheckHits()
 
 bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)
 {
+	//Parry
+	if (parry > 0 && parry <= parryWindow)
+	{
+		if (!attacker->isProjectile())
+		{
+			AddHitLag(20);
+			attacker->AddHitLag(40);
+		}
+		else
+		{
+			AddHitLag(4);
+		}
+		currentMove = nullptr;
+		moveFrame = 0;
+		parry = 1;
+		shield = 0;
+		anim->StartAnimation("parry" + animAddon);
+		anim->update();
+		manager->MoveToFront(this);
+		controlHitLag = true;
+
+		manager->SetShake(Vector2D(a.direction.x * 2, a.direction.y * 3), 3);
+		controlCamShake = true;
+
+		float xEyeDiff = eyePos.getX() - (hurtbox.w / 2.f);
+
+		AddParticle("parryS", { hurtbox.x + (hurtbox.w / 2.f) + (xEyeDiff * dir), hurtbox.y + eyePos.getY() }, dir, true);
+		AddParticle("parryB", { hurtbox.x + hurtbox.w / 2.f, (float)hurtbox.y + hurtbox.h * 1.05f });
+
+		sdl->soundEffects().at("parry").play();
+
+		return false;
+	}
 	//Shield is up
 	if (shield > 0)
 	{
-		//Parry
-		if (shield <= parryWindow)
-		{
-			if (!attacker->isProjectile())
-			{
-				AddHitLag(25);
-				attacker->AddHitLag(45);
-			}
-			else
-			{
-				AddHitLag(4);
-			}
-			currentMove = nullptr;
-			moveFrame = 0;
-			shield = 1;
-			anim->StartAnimation("parry" + animAddon);
-			anim->update();
-			manager->MoveToFront(this);
-			controlHitLag = true;
-
-			manager->SetShake(Vector2D(a.direction.x * 2, a.direction.y * 3), 3);
-			controlCamShake = true;
-
-			float xEyeDiff = eyePos.getX() - (hurtbox.w / 2.f);
-
-			AddParticle("parryS", { hurtbox.x + (hurtbox.w / 2.f) + (xEyeDiff * dir), hurtbox.y + eyePos.getY() }, dir, true);
-			AddParticle("parryB", { hurtbox.x + hurtbox.w / 2.f, (float)hurtbox.y + hurtbox.h * 1.05f });
-
-			sdl->soundEffects().at("parry").play();
-
-			return false;
-		}
 
 		//See if it broke shield
 		if (a.damage > shieldHealth || a.shieldBreak)
@@ -847,7 +877,7 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 		//Shield NOT broken
 		if (shieldHealth > 0)	//A
 		{
-			damageTaken += (int)(a.damage * 0.4f);
+			damageTaken += (ushort)(a.damage * 0.4f);
 			controlHitLag = false;
 		}
 		//Shield broken
@@ -884,7 +914,7 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 
 	float recoil;
 	if (shieldBreak)
-		recoil = (a.base * 2 + ((damageTaken * a.multiplier) / (weight * .2f)));
+		recoil = (a.base * 1.5f + ((damageTaken * a.multiplier) / (weight * .1f)));
 	else
 		recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .2f)));
 
@@ -942,6 +972,8 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 	}
 	else if (shieldBreak)
 	{
+		sdl->soundEffects().at("shieldBreak").play();
+
 		AddHitLag(30);
 		attacker->AddHitLag(30);
 		controlHitLag = true;
@@ -963,7 +995,7 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 			Vector2D(
 				manager->ToSDL(body->GetPosition().x),
 				manager->ToSDL(body->GetPosition().y)),
-			1, false);
+			1, true);
 	}
 
 	// Estados y combinaciones de estado
@@ -1197,15 +1229,22 @@ void Character::StartJump(ushort frameNumber)
 
 void Character::StartShield(ushort frameNumber)
 {
-	int shieldStartUp = 0;
+	int shieldStartUp = 2;
 
 	shieldHealth--;
+
+	if (frameNumber == 0)
+	{
+		parry = 0;
+	}
+
+	parry++;
 
 	if (frameNumber >= shieldStartUp)
 	{
 		shield++;
 	}
-	if (frameNumber == parryWindow)
+	if (frameNumber == shieldStartUp)
 	{
 		sdl->soundEffects().at("shield").play();
 
@@ -1218,11 +1257,13 @@ void Character::StartShield(ushort frameNumber)
 	if (input->basic())
 	{
 		shield = 0;
+		parry = 0;
 		ChangeMove([this](int f) { BasicDownward(f); });
 	}
 	else if (input->special())
 	{
 		shield = 0;
+		parry = 0;
 		ChangeMove([this](int f) { SpecialDownward(f); });
 	}
 }
@@ -1231,6 +1272,7 @@ void Character::EndShield(ushort frameNumber)
 	if (frameNumber == 0)
 	{
 		shield = 0;
+		parry = 0;
 		anim->StartAnimation("idle" + animAddon);
 	}
 	if (frameNumber >= 5)					//Shield end lag
@@ -1239,7 +1281,6 @@ void Character::EndShield(ushort frameNumber)
 		moveFrame = -1;
 	}
 }
-
 void Character::Dash(ushort frameNumber)
 {
 
@@ -1476,14 +1517,26 @@ void Character::drawHUD(ushort numOfPlayer)
 	string fontstring = "nes" + to_string(7 * w_/sdl->width());
 	auto& font = sdl->fonts().at(fontstring);
 	string damage = to_string(damageTaken) + "%";
-	if (r < 255) {
-		r = damageTaken * 2;
-		if (r > 255)r = 255;
+	if (damageTaken < 255)
+	{
+		if (r < 255) {
+			r = damageTaken * 2;
+			if (r > 255)r = 255;
+		}
+		else
+		{
+			g = 255 - damageTaken;
+			if (g < 0)g = 0;
+		}
 	}
 	else
 	{
-		g = 255 - damageTaken;
-		if (g < 0)g = 0;
+		Uint32 a = (((float)damageTaken - 255.f) / (float)SDL_MAX_SINT16) * 255 * 20;
+		if (a < 255)
+			r = 255 - a;
+		else
+			r = 0;
+		g = 0;
 	}
 	Uint32 color = r * pow(16, 6) + g * pow(16, 4);
 	SDL_Color c = build_sdlcolor(color);

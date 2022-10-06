@@ -39,7 +39,8 @@ protected:
 	ushort shield = 0;
 	ushort shieldHealth = 0;
 	int maxShield = 0;
-	ushort parryWindow = 5;
+	ushort parry = 0;
+	ushort parryWindow = 8;
 
 	bool dash = false;
 
@@ -48,7 +49,7 @@ protected:
 	ushort maxJumps = 0;
 	ushort jumpCounter = 0;
 	bool jumpCooldown = 0;
-	ushort maxFallCount = 30; // Para iniciar los dos siguientes contadores:
+	ushort maxFallCount = 10; // Para iniciar los dos siguientes contadores:
 	ushort fall = 0; // Contador entre pulsaciones de abajo (para bajar plataformas)
 	ushort reactivateColl = 0; // Contador para reactivar colisiones con plataforma
 	bool down = false; // El jugador pulsó abajo
@@ -80,8 +81,8 @@ protected:
 //	void (Character::* currentMove)(int);
 	ushort input_ = 0;
 
-	ushort r = 0;
-	ushort g = 255;
+	short r = 0;
+	short g = 255;
 
 	unsigned int arrowCont = 0;
 	bool invencible = false;
@@ -98,6 +99,8 @@ protected:
 	virtual Vector2D BuildBoxOffset(const HitBoxData& data) {
 		return Vector2D((data.box.x + ((float)data.box.w / 2.f)) - (hurtbox.x + ((float)hurtbox.w / 2.f)), (data.box.y + ((float)data.box.h / 2.f)) - (hurtbox.y + ((float)hurtbox.h / 2.f)));
 	};
+
+	virtual void BuildParticlePool() override;
 
 public:
 

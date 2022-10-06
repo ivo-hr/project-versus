@@ -532,6 +532,9 @@ bool GatoEspia::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 		manager->MoveToFront(this);
 		controlHitLag = controlHitLag = controlCamShake = true;
 		counter = false;
+		float xEyeDiff = eyePos.getX() - (hurtbox.w / 2.f);
+		AddParticle("parryS", { hurtbox.x + (hurtbox.w / 2.f) - (xEyeDiff * dir), hurtbox.y + eyePos.getY() }, dir, true);
+		sdl->soundEffects().at("parry").play();
 		return false;
 	}
 	counter = false;
