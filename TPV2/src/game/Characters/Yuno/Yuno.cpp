@@ -160,25 +160,6 @@ void Yuno::SpecialNeutral(ushort frameNumber)
 {
 	if (frameNumber == 4)
 	{
-		if (!bubble)
-		{
-			bubble = new YunoBubble(manager, body->GetPosition(), this);
-			manager->AddEntity(bubble, layer);
-		}
-		else
-		{
-			bubble->Pop();
-		}
-
-		currentMove = nullptr;
-	}
-	
-}
-
-void Yuno::SpecialForward(ushort frameNumber)
-{
-	if (frameNumber == 4)
-	{
 		releasedSpec = false;
 		if (!bubble)
 		{
@@ -201,11 +182,30 @@ void Yuno::SpecialForward(ushort frameNumber)
 	{
 		currentMove = nullptr;
 	}
+	
+}
+
+void Yuno::SpecialForward(ushort frameNumber)
+{
+	if (frameNumber == 4)
+	{
+		if (!bubble)
+		{
+			bubble = new YunoBubble(manager, body->GetPosition(), this);
+			manager->AddEntity(bubble, layer);
+		}
+		else
+		{
+			bubble->Pop();
+		}
+
+		currentMove = nullptr;
+	}
 }
 
 void Yuno::SpecialUpward(ushort frameNumber)
 {
-
+	currentMove = nullptr;
 }
 
 void Yuno::SpecialDownward(ushort frameNumber)
