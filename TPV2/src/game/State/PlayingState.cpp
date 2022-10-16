@@ -17,7 +17,7 @@ PlayingState::PlayingState(FightManager* game, vector<short>playersInput, vector
 	// 0 y 1: teclado
 	// 2 y 3: mando NES
 	// 4 y 5: mando PS4 o Xbox One
-	string s = "resources/config/stage" + to_string(map) + ".json";
+	string s = "resources/config/Stages/stage" + to_string(map) + ".json";
 	fmngr->LoadStage(s);
 
 
@@ -88,7 +88,7 @@ PlayingState::PlayingState(FightManager* game, vector<short> playersInput, vecto
 {
 	std::vector<Character*> team1;
 	std::vector<Character*> team2;
-	string s = "resources/config/stage" + to_string(map) + ".json";
+	string s = "resources/config/Stages/stage" + to_string(map) + ".json";
 	fmngr->LoadStage(s);
 	//fmngr->LoadStage("resources/config/stage2.json");
 

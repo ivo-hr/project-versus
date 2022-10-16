@@ -49,7 +49,7 @@ void Projectile::update()
 
 void Projectile::draw()
 {	
-	texture->render(hurtbox, ang);
+	texture->render(hurtbox, -ang);
 }
 
 void Projectile::draw(SDL_Rect* camera)
@@ -99,12 +99,16 @@ void Projectile::CheckHits()
 						AddHitLag(lag);
 					}
 
-					oponent->AddParticle("smallHit",
-						Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-						1, false);
+					if (!controlShake)
+					{
+						oponent->AddParticle("smallHit",
+							Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+							1, false);
+					}
+
+					if (reflected == 0)
+						toDelete = true;
 				}
-				if (reflected == 0)
-					toDelete = true;
 			}
 		}
 	}

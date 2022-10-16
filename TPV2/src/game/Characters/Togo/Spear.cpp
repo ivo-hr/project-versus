@@ -1,8 +1,6 @@
-#include "../../Utils/AnimationManager.h"
 #include "Togo.h"
 #include "Spear.h"
 #include "../../../utils/CheckML.h"
-#include "../../Utils/Particle.h"
 
 Spear::Spear(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, Togo* togo) :
 	Projectile(manager, pos, dir, 5.25f, 0.7f, 20)
@@ -72,9 +70,12 @@ void Spear::CheckHits()
 				{
 					hitDelay = 0;
 
-					oponent->AddParticle("smallHit",
-						Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-						1, false);
+					if (!controlShake)
+					{
+						oponent->AddParticle("smallHit",
+							Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+							1, false);
+					}
 				}
 			}
 		}

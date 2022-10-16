@@ -1,0 +1,557 @@
+{
+    "codeName": "makt",
+    "weight": 19,
+    "ballWeight": 28,
+    "damageTaken": 0,
+    "maxSpeed": 28,
+    "ballSpeed": 18,
+    "speed":0,
+    "maxJumps": 1 ,
+    "jumpStr": 1100,
+    "ballJump": 900,
+    "onGround": true,
+    "shield": false ,
+    "maxShield": 420,
+
+  "attacksData": [
+    {
+      "id": "basicN",
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": 1.7,
+            "base": 40,
+            "damage": 13,
+            "multiplier": 0.35,
+            "stun": -1,
+            "shieldBreak": false
+          },
+          "hitlag": -1,
+          "duration": 6
+        }
+      ],
+      "keyFrames": [ 7 ],
+      "totalFrames": 33
+    },
+    {
+      "id": "basicF",
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": 1.3,
+            "base": 40,
+            "damage": 25,
+            "multiplier": 0.6,
+            "stun": -1,
+            "shieldBreak": true
+          },
+          "hitlag": -1,
+          "duration": 8
+        },
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": -11,
+            "base": 30,
+            "damage": 24,
+            "multiplier": 0.3,
+            "stun": -1,
+            "shieldBreak": true
+          },
+          "hitlag": -1,
+          "duration": 8
+        }
+      ],
+      "keyFrames": [ 12 ],
+      "totalFrames": 45
+    },
+    {
+      "id": "basicD",
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 1.2,
+            "b2vecY": 1,
+            "base": 25,
+            "damage": 12,
+            "multiplier": 0.7,
+            "stun": -1,
+            "shieldBreak": false
+          },
+          "hitlag": -1,
+          "duration": 10
+        },
+        {
+          "hitData": {
+            "b2vecX": -1.2,
+            "b2vecY": 1,
+            "base": 25,
+            "damage": 12,
+            "multiplier": 0.7,
+            "stun": -1,
+            "shieldBreak": false
+          },
+          "hitlag": -1,
+          "duration": 10
+        }
+      ],
+      "keyFrames": [ 9 ],
+      "totalFrames": 28
+    },
+    {
+      "id": "basicU",
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": 9,
+            "base": 40,
+            "damage": 19,
+            "multiplier": 0.3,
+            "stun": -1,
+            "shieldBreak": false
+          },
+          "hitlag": -1,
+          "duration": 7
+        }
+      ],
+      "keyFrames": [ 10 ],
+      "totalFrames": 30
+    },
+    {
+      "id": "specialN",
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": 1.3,
+            "base": 80,
+            "damage": 38,
+            "multiplier": 2,
+            "stun": -1,
+            "shieldBreak": true
+          },
+          "hitlag": -1,
+          "duration": 8
+        }
+      ],
+      "keyFrames": [ 60 ],
+      "totalFrames": 100
+    },
+    {
+      "id": "specialL",
+      "hitBoxes": [
+      ],
+      "keyFrames": [ 4 ],
+      "totalFrames": 25
+    },
+    {
+      "id": "specialLThrow",
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": 1.1,
+            "base": 30,
+            "damage": 12,
+            "multiplier": 1.05,
+            "stun": -1,
+            "shieldBreak": true
+          },
+          "hitlag": -1,
+          "duration": 3
+        }
+      ],
+      "keyFrames": [ 5 ],
+      "totalFrames": 18
+    },
+    {
+      "id": "specialU",
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 0.1,
+            "b2vecY": 1,
+            "base": 40,
+            "damage": 11,
+            "multiplier": 0.2,
+            "stun": -1,
+            "shieldBreak": true
+          },
+          "hitlag": -1,
+          "duration": 28
+        }
+      ],
+      "keyFrames": [ 4 ],
+      "totalFrames": 35
+    },
+    {
+      "id": "specialD",
+      "hitBoxes": [
+        {
+          "hitData": {
+            "b2vecX": 0,
+            "b2vecY": 1,
+            "base": 57,
+            "damage": 11,
+            "multiplier": 0,
+            "stun": -1,
+            "shieldBreak": true
+          },
+          "hitlag": -1,
+          "duration": 8
+        }
+      ],
+      "keyFrames": [ 12 ],
+      "totalFrames": 30
+    },
+    {
+      "id": "pickBall",
+      "hitBoxes": [
+      ],
+      "keyFrames": [ 3 ],
+      "totalFrames": 10
+    }
+  ],
+  
+    "spData": {
+      "leftOffset": 71,
+      "upOffset": 68,
+      "sizeXOffset": 180,
+      "sizeYOffset": 70,
+      "spritesInX": 11,
+      "spritesInY": 14
+    },
+    "animationData":{
+      "anim":[
+        {
+          "id" : "idle",
+          "iniSprite" : 116,
+          "totalSprites" : 2,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 30,
+          "loop" :true
+        },
+        {
+          "id" : "idleB",
+          "iniSprite" : 118,
+          "totalSprites" : 2,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 30,
+          "loop" :true
+        },
+        {
+          "id" : "basicN",
+          "iniSprite" : 77,
+          "totalSprites" : 5,
+          "keySprite" : [2],
+          "attack": "basicN",
+          "totalFrames" : 20,
+          "loop" :false
+        },
+        {
+          "id" : "basicNB",
+          "iniSprite" : 82,
+          "totalSprites" : 5,
+          "keySprite" : [2],
+          "attack": "basicN",
+          "totalFrames" : 20,
+          "loop" :false
+        },
+        {
+          "id" : "basicU",
+          "iniSprite" : 136,
+          "totalSprites" : 5,
+          "keySprite" : [4],
+          "attack": "basicU",
+          "totalFrames" : 20,
+          "loop" :false
+        },
+        {
+          "id" : "basicUB",
+          "iniSprite" : 0,
+          "totalSprites" : 5,
+          "keySprite" : [4],
+          "attack": "basicU",
+          "totalFrames" : 20,
+          "loop" :false
+        },
+        {
+          "id" : "basicD",
+          "iniSprite" : 94,
+          "totalSprites" : 7,
+          "keySprite" : [2],
+          "attack": "basicD",
+          "totalFrames" : 35,
+          "loop" :false
+        },
+        {
+          "id" : "basicDB",
+          "iniSprite" : 87,
+          "totalSprites" : 7,
+          "keySprite" : [2],
+          "attack": "basicD",
+          "totalFrames" : 35,
+          "loop" :false
+        },
+        {
+          "id" : "basicF",
+          "iniSprite" : 101,
+          "totalSprites" : 7,
+          "keySprite" : [2],
+          "attack": "basicF",
+          "totalFrames" : 40,
+          "loop" :false
+        },
+        {
+          "id" : "basicFB",
+          "iniSprite" : 70,
+          "totalSprites" : 7,
+          "keySprite" : [2],
+          "attack": "basicF",
+          "totalFrames" : 40,
+          "loop" :false
+        },
+        {
+          "id" : "shield",
+          "iniSprite" : 128,
+          "totalSprites" : 2,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 40,
+          "loop" : true
+        },
+        {
+          "id" : "shieldB",
+          "iniSprite" : 126,
+          "totalSprites" : 2,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 40,
+          "loop" : true
+        },
+        {
+          "id" : "run",
+          "iniSprite" : 9,
+          "totalSprites" : 8,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "runB",
+          "iniSprite" : 5,
+          "totalSprites" : 4,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "airborne",
+          "iniSprite" : 122,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "airborneB",
+          "iniSprite" : 125,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "dash",
+          "iniSprite" : 132,
+          "totalSprites" : 2,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 40,
+          "loop" : true
+        },
+        {
+          "id" : "dashB",
+          "iniSprite" : 130,
+          "totalSprites" : 2,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 40,
+          "loop" : true
+        },
+        {
+          "id" : "especialN",
+          "iniSprite" : 22,
+          "totalSprites" : 14,
+          "keySprite" : [8],
+          "attack": "specialN",
+          "totalFrames" : 60,
+          "loop" : false
+        },
+        {
+          "id" : "especialD",
+          "iniSprite" : 42,
+          "totalSprites" : 19,
+          "keySprite" : [10],
+          "attack": "specialD",
+          "totalFrames" : 30,
+          "loop" : false
+        },
+        {
+          "id" : "especialLEntrada",
+          "iniSprite" : 61,
+          "totalSprites" : 5,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 60,
+          "loop" : false
+        },
+        {
+          "id" : "especialLHold",
+          "iniSprite" : 67,
+          "totalSprites" : 3,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 30,
+          "loop" : true
+        },
+        {
+          "id": "especialLSalida",
+          "iniSprite": 17,
+          "totalSprites": 4,
+          "keySprite": [ 2 ],
+          "attack": "specialLThrow",
+          "totalFrames": 60,
+          "loop": false
+        },
+        {
+          "id" : "especialUEntrada",
+          "iniSprite" : 36,
+          "totalSprites" : 4,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 15,
+          "loop" : false
+        },
+        {
+          "id" : "especialU",
+          "iniSprite" : 40,
+          "totalSprites" : 2,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 10,
+          "loop" : true
+        },
+        {
+          "id" : "ballPick",
+          "iniSprite" : 108,
+          "totalSprites" : 4,
+          "keySprite" : [3],
+          "attack": "pickBall",
+          "totalFrames" : 15,
+          "loop" : false
+        },
+        {
+          "id" : "stun",
+          "iniSprite" : 134,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "stunB",
+          "iniSprite" : 135,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "jump",
+          "iniSprite" : 121,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "jumpB",
+          "iniSprite" : 124,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "jumpCharge",
+          "iniSprite" : 120,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "jumpChargeB",
+          "iniSprite" : 123,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "taunt",
+          "iniSprite" :63,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames": 45,
+          "loop" :false
+        },
+        {
+          "id" : "tauntB",
+          "iniSprite" :63,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames": 45,
+          "loop" :false
+        },
+        {
+          "id" : "parryB",
+          "iniSprite" : 142,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        },
+        {
+          "id" : "parry",
+          "iniSprite" : 143,
+          "totalSprites" : 1,
+          "keySprite" : [],
+          "attack": "",
+          "totalFrames" : 50,
+          "loop" : true
+        }
+  
+      ]
+      
+    }
+  }

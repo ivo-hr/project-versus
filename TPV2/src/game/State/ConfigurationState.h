@@ -23,6 +23,8 @@ public:
     void update() override;
     void draw() override;
     void next() override;
+    void OnEnable() override { SDL_ShowCursor(1); };
+    void OnDisable() override {};
 
     string getStateName() const override {
         return "Pause state";

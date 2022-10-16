@@ -1,5 +1,5 @@
 #pragma once
-class State;
+#include "State.h"
 
 class StateMachine {
 protected:
@@ -13,6 +13,7 @@ public:
     //}
     void setState(State* state) {
         this->state = state;
+        this->state->OnEnable();
     }
 
     State* getState() {
@@ -21,6 +22,7 @@ public:
 
     void saveState(State* state) {
         savedState = state;
+        savedState->OnDisable();
     }
 
     State* getSavedState() {

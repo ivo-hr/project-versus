@@ -124,9 +124,15 @@ void Entity::update()
 		return;
 	}
 
-	//Actualizamos la posicion del rect
-	hurtbox.x = manager->b2ToSDLX(body, width);
-	hurtbox.y = manager->b2ToSDLY(body, height);
+	if (body->IsEnabled())
+	{
+		hurtbox.x = manager->b2ToSDLX(body, width);
+		hurtbox.y = manager->b2ToSDLY(body, height);
+	}
+	else
+	{
+		hurtbox.x = -100;
+	}
 
 	if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()))
 	{

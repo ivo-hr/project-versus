@@ -1,6 +1,5 @@
 #include "Character.h"
 #include "Utils/AnimationManager.h"
-#include "Utils/InputConfig.h"
 #include "Utils/Particle.h"
 #include "Characters/NasNas/Explosion.h"
 #include "../utils/CheckML.h"
@@ -374,8 +373,15 @@ void Character::update()
 		efEstado = none;
 	}
 
-	hurtbox.x = manager->b2ToSDLX(body, width);
-	hurtbox.y = manager->b2ToSDLY(body, height);
+	if (body->IsEnabled())
+	{
+		hurtbox.x = manager->b2ToSDLX(body, width);
+		hurtbox.y = manager->b2ToSDLY(body, height);
+	}
+	else
+	{
+		hurtbox.x = -100;
+	}
 
 	anim->update();
 
@@ -792,6 +798,23 @@ void Character::CheckHits()
 						if (!shakeApplied)
 						{
 							oponent->SetShake(Vector2D(hitboxes[i]->hitdata.direction.x, hitboxes[i]->hitdata.direction.y), hitboxes[i]->GetHitlag());
+
+							if (hitboxes[i]->GetHitlag() >= 15)
+							{
+								AddParticle("bigHit",
+									Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+									1, false);
+
+								manager->GetSDLU()->soundEffects().at("hitStr").play();
+							}
+							else
+							{
+								AddParticle("smallHit",
+									Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+									1, false);
+
+								manager->GetSDLU()->soundEffects().at("hitMed").play();
+							}
 						}
 
 						if (!camShakeApplied)
@@ -800,23 +823,6 @@ void Character::CheckHits()
 						}
 
 						oponent->setLastCharacer(this);
-
-						if (hitboxes[i]->GetHitlag() >= 15)
-						{
-							AddParticle("bigHit", 
-								Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-								1, false);
-
-							manager->GetSDLU()->soundEffects().at("hitStr").play();
-						}
-						else
-						{
-							AddParticle("smallHit",
-								Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-								1, false);
-
-							manager->GetSDLU()->soundEffects().at("hitMed").play();
-						}
 					}
 					isHit[oponent] = true;
 				}
@@ -854,6 +860,7 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 
 		manager->SetShake(Vector2D(a.direction.x * 2, a.direction.y * 3), 3);
 		controlCamShake = true;
+		controlShake = true;
 
 		float xEyeDiff = eyePos.getX() - (hurtbox.w / 2.f);
 
@@ -862,7 +869,7 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 
 		sdl->soundEffects().at("parry").play();
 
-		return false;
+		return true;
 	}
 	//Shield is up
 	if (shield > 0)
@@ -1283,43 +1290,52 @@ void Character::EndShield(ushort frameNumber)
 }
 void Character::Dash(ushort frameNumber)
 {
+	const ushort dashStartUp = 8;
 
-	if (frameNumber > 0)
+	AllowMovement(0.5f);
+
+	if (frameNumber == 0)
 	{
-		if (frameNumber < 6)
-			body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, 10));
-		if (frameNumber < 60)
-			AllowMovement(0.5f);
+		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, 10));
 	}
-	switch (frameNumber)
+	else if (frameNumber == dashStartUp)
 	{
-	case 0:
-		anim->StartAnimation("dash" + animAddon);
-		break;
-	case 6:
 		dash = true;
-		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, 30));
-		break;
-	case 60:
+		anim->StartAnimation("dash" + animAddon);
+	}
+	else if (frameNumber > dashStartUp && frameNumber < 60)
+	{
+		body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, 28));
+	}
+	else if (frameNumber >= 60)
+	{
 		dash = false;
 		currentMove = nullptr;
 		anim->StartAnimation("idle" + animAddon);
-		break;
 	}
+
 	if (onGround)
 	{
-		ChangeMove([this](int f) { DashLanding(f); });
 		dash = false;
+		if (frameNumber < dashStartUp)
+		{
+			currentMove = nullptr;
+		}
+		else
+		{
+			ChangeMove([this](int f) { DashLanding(f); });
+		}
 	}
 }
 
 void Character::DashLanding(ushort frameNumber)
 {
-	if (frameNumber >= 10)
+	//Startanimation landing
+	anim->StartAnimation("shield" + animAddon);
+	if (frameNumber >= 15)
 	{
 		currentMove = nullptr;
 		moveFrame = -1;
-		anim->StartAnimation("idle" + animAddon);
 	}
 }
 

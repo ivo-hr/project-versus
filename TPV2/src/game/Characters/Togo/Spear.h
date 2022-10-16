@@ -1,20 +1,8 @@
 #pragma once
-
 #include "../../Projectile.h"
-
 
 class Spear : public Projectile
 {
-//protected:
-//
-//	int speed;
-//	int damage;
-//	int range = 20;
-//	Vector2D* position;
-//	Vector2D* iniPos;
-//	b2Vec2 vecDir;
-//	attackData data;
-//	float ang;
 
 public:
 	Spear(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, Togo* togo);
@@ -30,7 +18,7 @@ public:
 	virtual void draw(SDL_Rect* camera) override;
 
 private:
-	Togo* owner;
+	Togo* owner = nullptr;
 	
 	int sprite = 0;
 	float anim = 0;

@@ -15,6 +15,8 @@ public:
     void update() override;
     void draw() override;
     void next() override;
+    void OnEnable() override { SDL_ShowCursor(0); };
+    void OnDisable() override {};
 
     string getStateName() const override {
         return "Playing state";

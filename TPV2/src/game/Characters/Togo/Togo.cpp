@@ -1,7 +1,6 @@
 ﻿#include "Togo.h"
 #include "../../Utils/AnimationManager.h"
 #include "../../../json/json.hpp"
-#include "../../Utils/Particle.h"
 #include "../../../utils/CheckML.h"
 #include "Spear.h"
 #include "DinoShield.h"
@@ -14,7 +13,7 @@ Togo::Togo(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mng
 
 	spriteSheetData spData;
 
-	ReadJson("resources/config/dino.json", spData);
+	ReadJson("resources/config/Characters/dino.json", spData);
 	//guardamos la textura
 	texture = &sdl->images().at("dinoSouls");
 	portrait = &sdl->images().at("dinoSoulsSelect");

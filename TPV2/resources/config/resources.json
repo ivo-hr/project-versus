@@ -4,7 +4,6 @@
     { "id" : "ARIAL16", "file" : "resources/fonts/ARIAL.ttf", "size": 16 },
     { "id" : "ARIAL24", "file" : "resources/fonts/ARIAL.ttf", "size": 24 },
     { "id" : "ARIAL48", "file" : "resources/fonts/ARIAL.ttf", "size": 48 }
-  
   ],
   
   "images" : [
@@ -34,6 +33,7 @@
     { "id" : "nasnasElectric", "file" : "resources/images/CharNasESheet.png"},
     { "id" : "fondo", "file" : "resources/images/bckgrd.png"},
     { "id" : "testura", "file" : "resources/images/testura.png"},
+    { "id" : "testura2", "file" : "resources/images/testura2.png"},
     { "id" : "punchingBag", "file" : "resources/images/bag.png"},
     { "id" : "bullet", "file" : "resources/images/bullet.png"},
     { "id" : "sHitParticle", "file" : "resources/images/smallHit.png"},
@@ -89,7 +89,8 @@
     { "id" : "check", "file" : "resources/images/configuracion/Check.png"},
     { "id" : "shieldBroken", "file" : "resources/images/EscudoRoto.png"},
     { "id" : "parryS", "file" : "resources/images/ParrySpark.png"},
-    { "id" : "parryB", "file" : "resources/images/ParryBack.png"}
+    { "id" : "parryB", "file" : "resources/images/ParryBack.png"},
+    { "id" : "bubble", "file" : "resources/images/Bubble.png"}
   ],
   
   "messages" : [

@@ -16,6 +16,8 @@ public:
     void update() override;
     void draw() override;
     void next() override;
+    void OnEnable() override {};
+    void OnDisable() override {};
 
     string getStateName() const override {
         return "Menu state";

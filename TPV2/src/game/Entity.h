@@ -152,7 +152,7 @@ public:
 	Entity(FightManager* mngr, b2Vec2 position, float w = 3.f, float h = 3.f);
 	virtual ~Entity();
 
-	void SetLayer(ushort layer) { this->layer = layer; }
+	virtual void SetLayer(ushort layer) { this->layer = layer; }
 	ushort GetLayer() { return layer; }
 	void SetPlaceInLayer(ushort placeInLayer) { this->placeInLayer = placeInLayer; }
 	ushort GetPlaceInLayer() { return placeInLayer; }
@@ -194,6 +194,7 @@ public:
 	void resetLastCharacter() { lastCharacter = nullptr; }
 
 	Texture* getTexture() { return texture; }
+	SDL_Rect getCurrentSpriteSrc() { return { 0, 0, texture->width(), texture->height() }; }
 	//virtual void SendToHUD(Texture* tex);
 	bool ToDelete() { return toDelete; };
 	virtual bool isCharacter() { return false; };

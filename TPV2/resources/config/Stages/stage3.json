@@ -1,0 +1,109 @@
+{
+  "codeName": "stage3",
+  "background": "night",
+  "bgParallax": 0,
+  "deathZoneSizeX": 90,
+  "deathZoneSizeY": 60,
+
+  "elements": [
+    {
+      "image": "nubePlat",
+      "whereToDraw": [
+        {
+          "x": 10.0,
+          "y": 20.0,
+          "w": 12.0,
+          "h": 3,
+          "parallaxValue": 0.2
+        },
+        {
+          "x": 70.0,
+          "y": 25.0,
+          "w": 14.0,
+          "h": 4,
+          "parallaxValue": 0.4
+        },
+        {
+          "x": 30.0,
+          "y": 35.0,
+          "w": 18.0,
+          "h": 5,
+          "parallaxValue": 0.7
+        },
+        {
+          "x": 45.0,
+          "y": 45.0,
+          "w": 40.0,
+          "h": 13,
+          "parallaxValue": 1
+        },
+        {
+          "x": 32.5,
+          "y": 35.4,
+          "w": 8.0,
+          "h": 1.0,
+          "parallaxValue": 1
+        },
+        {
+          "x": 57.5,
+          "y": 35.4,
+          "w": 8.0,
+          "h": 1.0,
+          "parallaxValue": 1
+        },
+        {
+          "x": 45.0,
+          "y": 30.4,
+          "w": 8.0,
+          "h": 1.0,
+          "parallaxValue": 1
+        }
+      ]
+    }
+  ],
+
+  "groundData": [
+    {
+      "groundX": 45.0,
+      "groundY": 45.0,
+      "groundW": 40.0,
+      "groundH": 10.0
+    }
+  ],
+  "platformData": [
+    {
+      "platformX": 32.5,
+      "platformY": 35.0,
+      "platformW": 8.0
+    },
+    {
+      "platformX": 57.5,
+      "platformY": 35.0,
+      "platformW": 8.0
+    },
+    {
+      "platformX": 45,
+      "platformY": 30.0,
+      "platformW": 8.0
+    }
+  ],
+
+  "playerSpawns": [
+    {
+      "X": 32.5,
+      "Y": 23
+    },
+    {
+      "X": 57.5,
+      "Y": 23
+    },
+    {
+      "X": 45.01,
+      "Y": 18
+    },
+    {
+      "X": 44.99,
+      "Y": 28
+    }
+  ]
+}

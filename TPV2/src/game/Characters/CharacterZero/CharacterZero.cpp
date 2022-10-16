@@ -8,7 +8,7 @@ CharacterZero::CharacterZero(FightManager* mngr, b2Vec2 pos, char input, ushort 
 
 	spriteSheetData spData;
 	
-	ReadJson("resources/config/zero.json", spData);
+	ReadJson("resources/config/Characters/zero.json", spData);
 
 	//guardamos la textura
 	texture = &sdl->images().at("zero");

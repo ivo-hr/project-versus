@@ -20,8 +20,6 @@ class Entity;
 class Character;
 class Particle;
 
-class HUDManager;
-
 class MyListener;
 
 class Stage;
@@ -48,7 +46,6 @@ class FightManager : public StateMachine
 	SDLUtils* sdl;
 
 	InputHandler& ih = *InputHandler::instance();
-	HUDManager* hud;
 
 	Entity* winner;
 
@@ -105,8 +102,9 @@ public:
 	void InitMatrix();
 	void RemoveEntityFromMatrix(Entity* ent);
 
+	void AddEntity(Entity* ent);
 	void AddEntity(Entity* ent, ushort layer, bool hitable = true);
-	bool RemoveEntity(Entity* ent);
+	bool RemoveEntity(Entity* ent, bool shouldDelete = true);
 	bool RemoveCharacter(Character* character);
 	void MoveToFront(Entity* ent);
 

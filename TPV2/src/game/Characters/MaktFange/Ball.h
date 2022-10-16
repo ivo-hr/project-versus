@@ -17,12 +17,14 @@ class MaktBall : public Projectile
 	//	float ang;
 
 public:
-	MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, b2Vec2 respawn, ushort pNumber);
+	MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, b2Vec2 respawn, ushort pNumber, ushort layer);
 	virtual ~MaktBall();
 
 	virtual void update() override;
 	virtual void CheckHits() override;
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox; };
+
+	void SetOriginalLayer();
 
 	virtual void OnDeath() override;
 
@@ -33,6 +35,8 @@ public:
 private:
 
 	void Respawn();
+
+	ushort originalLayer;
 
 	Texture* arrowsTex = nullptr;
 	SDL_Rect arrowSrc = SDL_Rect();

@@ -12,7 +12,7 @@ Makt::Makt(FightManager* mngr, b2Vec2 pos, char input, ushort p) :
 
 	spriteSheetData spData;
 
-	json js = ReadJson("resources/config/maketo.json", spData);
+	json js = ReadJson("resources/config/Characters/maketo.json", spData);
 
 	baseJump = jumpStr;
 	ballJump = js["ballJump"];
@@ -177,7 +177,7 @@ void Makt::SpecialNeutral(ushort frameNumber)
 	}
 	if (!onGround)
 	{
-		AllowMovement(0.3f);
+		AllowMovement(0.5f);
 	}
 
 	if (frameNumber == 0)
@@ -194,6 +194,7 @@ void Makt::SpecialNeutral(ushort frameNumber)
 	}
 	else if (frameNumber == attacks["specialN"].keyFrames[0])
 	{
+		manager->SetShake(Vector2D(-3 * dir, 3), 8);
 		CreateHitBox(&attacks["specialN"].hitBoxes[0]);
 	}
 	else if (frameNumber >= attacks["specialN"].totalFrames)
@@ -294,8 +295,9 @@ void Makt::ThrowBall(HitData force, ushort timeHeld)
 	aux.damage += timeHeld / 10;
 	aux.base += timeHeld / 10;
 
-	ball = new MaktBall(manager, b2Vec2(body->GetPosition().x + dir * 4, body->GetPosition().y + 0.3f), aux, b2Vec2(dir, 0), respawnPos, playerNumber);
+	ball = new MaktBall(manager, b2Vec2(body->GetPosition().x + dir * 4, body->GetPosition().y + 0.3f), aux, b2Vec2(dir, 0), respawnPos, playerNumber, layer);
 	manager->AddEntity(ball, layer, false);
+	ball->SetOriginalLayer();
 
 	animAddon = "";
 }

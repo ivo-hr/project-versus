@@ -109,6 +109,7 @@ public:
 
 	void SetSpawn(b2Vec2 spawn, short dir);
 	void SetPNumber(ushort num);
+	ushort GetPNumber() { return playerNumber; };
 
 	virtual void update() override;
 	void UpdateAnimations();

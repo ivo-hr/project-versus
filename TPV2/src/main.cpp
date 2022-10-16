@@ -3,7 +3,6 @@
 #include <SDL.h>
 #include <iostream>
 #include <box2d.h>
-#include "../CharInclude.h"
 #include "sdlutils/InputHandler.h"
 #include "sdlutils/macros.h"
 
@@ -16,7 +15,9 @@
 
 int main(int ac, char **av) {
 
+#ifdef _DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // Check Memory Leaks
+#endif // _DEBUG
 
 	// Initialise the SDLGame singleton
 	SDLUtils::init("Project Vs21", 512, 288,
@@ -65,7 +66,6 @@ int main(int ac, char **av) {
 #endif // _DEBUG
 
 	SDL_SetWindowResizable(sdl.window(), SDL_TRUE);
-
 
 	//show the cursor
 	sdl.showCursor();

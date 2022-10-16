@@ -196,20 +196,18 @@ void FightManager::Update()
 		}
 	}
 
-	stage->Update(&camera);
-
 	stage->GetWorld()->Step(step, 1, 1);
-	
-	for (Character* c : characters)
-	{
-		c->drawHUD( numPlayers);
-	}
+
 	if (scount > -1) {
+
+		stage->Update(&camera);
 		startCount();
 	}
 	else
 	{
 		MoveCamera();
+
+		stage->Update(&camera);
 
 		//update
 		for (auto i = 0u; i < entities.size(); i++)
@@ -252,6 +250,11 @@ void FightManager::Update()
 				}
 			}
 		}
+	}
+
+	for (Character* c : characters)
+	{
+		c->drawHUD(numPlayers);
 	}
 
 	// present new frame
@@ -445,6 +448,15 @@ void FightManager::InitMatrix()
 	}
 }
 
+void FightManager::AddEntity(Entity* ent)
+{
+	entities.push_back(ent);
+
+	entityMatrix[ent->GetLayer()].push_back(ent);
+	ent->SetPlaceInLayer(entityMatrix[ent->GetLayer()].size());
+	return;
+}
+
 void FightManager::AddEntity(Entity* ent, ushort layer, bool hitable)
 {
 	entities.push_back(ent);
@@ -454,6 +466,7 @@ void FightManager::AddEntity(Entity* ent, ushort layer, bool hitable)
 		entityMatrix[layer].push_back(ent);
 		ent->SetLayer(0);
 		ent->SetPlaceInLayer(entityMatrix[layer].size());
+		return;
 	}
 
 	if (hitable)
@@ -470,7 +483,7 @@ void FightManager::AddEntity(Entity* ent, ushort layer, bool hitable)
 	}
 }
 
-bool FightManager::RemoveEntity(Entity* ent)
+bool FightManager::RemoveEntity(Entity* ent, bool shouldDelete)
 {
 	for (int i = 0; i < entities.size(); i++)
 	{
@@ -487,7 +500,8 @@ bool FightManager::RemoveEntity(Entity* ent)
 
 	RemoveEntityFromMatrix(ent);
 
-	delete ent;
+	if (shouldDelete)
+		delete ent;
 	return false;
 }
 

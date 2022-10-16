@@ -13,7 +13,7 @@ NasNas::NasNas(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character
 
 	spriteSheetData spData;
 
-	ReadJson("resources/config/nasnas.json", spData);
+	ReadJson("resources/config/Characters/nasnas.json", spData);
 	//guardamos la textura
 	texture = &sdl->images().at("nasnasFire");
 	portrait = &sdl->images().at("nasNasSelect");
@@ -320,8 +320,8 @@ void NasNas::SpecialUpHit(ushort frameNumber)
 
 	if (frameNumber == 0)
 	{
+		manager->SetShake(Vector2D(-dir, 5), 6);
 		anim->StartAnimation("especialUHit");
-
 		sdl->soundEffects().at("nasSpecU").play();
 	}
 	else if (frameNumber == attacks["specialUHit"].keyFrames[0])

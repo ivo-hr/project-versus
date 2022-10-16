@@ -2,7 +2,7 @@
 #include "../../Utils/Particle.h"
 #include "../../../utils/CheckML.h"
 
-MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, b2Vec2 respawn, ushort pNumber) :
+MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, b2Vec2 respawn, ushort pNumber, ushort layer) :
 	Projectile(manager, pos, dir, 1.5f, 1.5f, 20)
 {
 	arrowsTex = &sdl->images().at("arrows");
@@ -29,6 +29,8 @@ MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir
 	respawnFrames = 180;
 
 	alive = true;
+
+	originalLayer = layer;
 }
 
 MaktBall::~MaktBall()
@@ -80,10 +82,10 @@ void MaktBall::update()
 
 void MaktBall::CheckHits()
 {
-	if (!physic && alive)
+	if (body->GetLinearVelocity().Length() > 2.f && alive)
 	{
 		Entity* oponent = nullptr;
-		while (manager->GetNextEntity(oponent, layer))
+		while (manager->GetNextEntity(oponent, layer) && !isHit[oponent])
 		{
 			SDL_Rect hitArea;
 			if (SDL_IntersectRect(&hurtbox, oponent->GetHurtbox(), &hitArea))
@@ -91,6 +93,9 @@ void MaktBall::CheckHits()
 				bool controlHitLag = false;
 				bool controlShake = false;
 				bool controlCamShake = false;
+
+				data.damage = body->GetLinearVelocity().Length();
+				data.multiplier = body->GetLinearVelocity().Length() / 20.f;
 
 				if (oponent->GetHit(data, this, controlHitLag, controlShake, controlCamShake))
 				{
@@ -100,17 +105,26 @@ void MaktBall::CheckHits()
 						AddHitLag(lag);
 					}
 
-					oponent->AddParticle("bigHit", 
-						Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-						1, false);
+					if (!controlShake)
+					{
+						oponent->AddParticle("bigHit",
+							Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+							1, false);
+					}
 
 					physic = true;
 					body->SetGravityScale(10.f);
-					body->SetLinearDamping(3.);
+					body->SetLinearDamping(3.f);
+
+					isHit[oponent] = true;
 				}
 			}
 		}
 	}
+}
+
+void MaktBall::SetOriginalLayer()
+{
 }
 
 void MaktBall::OnDeath()
@@ -142,6 +156,8 @@ void MaktBall::Respawn()
 	alive = true;
 
 	respawnFrames = 180;
+
+	manager->ChangeEntityLayer(this, originalLayer);
 }
 
 void MaktBall::draw(SDL_Rect* camera)

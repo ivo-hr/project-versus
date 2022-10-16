@@ -4,14 +4,15 @@
 #include "../../../json/json.hpp"
 #include <fstream>
 #include "../../../utils/CheckML.h"
+#include "YunoBubble.h"
 #include <iostream>
-
 using json = nlohmann::json;
+
 Yuno::Yuno(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mngr, pos, input, p, 1.5f, 3.f)
 {
 	spriteSheetData spData;
 
-	ReadJson("resources/config/bubble.json", spData);
+	ReadJson("resources/config/Characters/bubble.json", spData);
 	//guardamos la textura
 	texture = &sdl->images().at("blinkMaster");
 	portrait = &sdl->images().at("blinkMasterSelect");
@@ -157,26 +158,49 @@ void Yuno::BasicUpward(ushort frameNumber)
 
 void Yuno::SpecialNeutral(ushort frameNumber)
 {
+	if (frameNumber == 4)
+	{
+		if (!bubble)
+		{
+			bubble = new YunoBubble(manager, body->GetPosition(), this);
+			manager->AddEntity(bubble, layer);
+		}
+		else
+		{
+			bubble->Pop();
+		}
 
-	
-}
-
-void Yuno::SpecialNeutralU(ushort frameNumber)
-{
-
-	
-}
-
-void Yuno::SpecialNeutralD(ushort frameNumber)
-{
-
+		currentMove = nullptr;
+	}
 	
 }
 
 void Yuno::SpecialForward(ushort frameNumber)
 {
+	if (frameNumber == 4)
+	{
+		releasedSpec = false;
+		if (!bubble)
+		{
+			bubble = new YunoBubble(manager, body->GetPosition(), this, input);
+			manager->AddEntity(bubble, layer);
+		}
+	}
 
-	
+	if (!input->special())
+	{
+		releasedSpec = true;
+	}
+
+	if (input->special() && bubble && releasedSpec)
+	{
+		bubble->Pop();
+	}
+
+	if (frameNumber > 5 && !bubble)
+	{
+		currentMove = nullptr;
+	}
 }
 
 void Yuno::SpecialUpward(ushort frameNumber)
@@ -212,6 +236,21 @@ void Yuno::SpecialDownward(ushort frameNumber)
 	//	currentMove = nullptr;
 	//	moveFrame = -1;
 	//}
+}
+
+bool Yuno::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)
+{
+	if (bubble)
+	{
+		bubble->Pop();
+	}
+
+	return Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
+}
+
+void Yuno::BubblePopped()
+{
+	bubble = nullptr;
 }
 
 void Yuno::BuildBoxes()
