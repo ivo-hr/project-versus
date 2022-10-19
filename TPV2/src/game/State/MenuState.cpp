@@ -4,6 +4,7 @@
 #include "ConfigState.h"
 #include "../PlayingState/FightManager.h"
 #include "../../utils/CheckML.h"
+#include "../Utils/PlayerConfigs.h"
 
 
 MenuState::MenuState(FightManager* game) : State(game) {
@@ -32,12 +33,12 @@ void MenuState::update() {
             return;
         }
     }
-    if (ih.isKeyDown(SDLK_w) && ih.keyDownEvent()) {
+    if (ih.isKeyDown(playerPrefs.Keyboard1Up()) && ih.keyDownEvent()) {
         Finput = -1;
         fmngr->getState()->next();
         return;
     }
-    if (ih.isKeyDown(SDLK_UP) && ih.keyDownEvent()) {
+    if (ih.isKeyDown(playerPrefs.Keyboard2Up()) && ih.keyDownEvent()) {
         Finput = -2;
         fmngr->getState()->next();
         return;

@@ -3,6 +3,7 @@
 #include "../../sdlutils/InputHandler.h"
 #include "../../sdlutils/SDLUtils.h"
 #include "../Utils/Button.h"
+#include "../Utils/PlayerConfigs.h"
 
 class FightManager;
 
@@ -13,6 +14,7 @@ using namespace std;
 
 class State {
 protected:
+    PlayerConfigs& playerPrefs = *PlayerConfigs::instance();
     FightManager* fmngr = nullptr;
     InputHandler& ih = *InputHandler::instance();
     SDLUtils* sdl = SDLUtils::instance();

@@ -22,15 +22,15 @@ struct animationData
 
 struct spriteSheetData
 {
-	ushort leftOffset;		//Cuanto debe sobresalir la spritesheet a la izquierda (par que el dibujo coincida con la hurtbox)
-	ushort upOffset;		//bruh
-	ushort sizeXOffset;	//Que tan grande se tiene que hacer el sprite en X para que coincida
-	ushort sizeYOffset;	//bruh
+	ushort leftOffset = 0;		//Cuanto debe sobresalir la spritesheet a la izquierda (par que el dibujo coincida con la hurtbox)
+	ushort upOffset = 0;		//bruh
+	ushort sizeXOffset = 0;	//Que tan grande se tiene que hacer el sprite en X para que coincida
+	ushort sizeYOffset = 0;	//bruh
 
-	ushort spritesInX;		//Cuantos frames hay en una fila de la spritesheet entera
-	ushort spritesInY;		//Cuantos frames hay en una columna de la spritesheet entera
+	ushort spritesInX = 0;		//Cuantos frames hay en una fila de la spritesheet entera
+	ushort spritesInY = 0;		//Cuantos frames hay en una columna de la spritesheet entera
 
-	std::unordered_map<std::string, animationData> animations;
+	std::unordered_map<std::string, animationData> animations = std::unordered_map<std::string, animationData>();
 	//std::unordered_map<std::string, animationData> animations;
 };
 

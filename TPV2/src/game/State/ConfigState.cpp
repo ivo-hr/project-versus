@@ -3,6 +3,7 @@
 #include "ExitState.h"
 #include "../PlayingState/FightManager.h"
 #include "../../utils/CheckML.h"
+#include "../Utils/PlayerConfigs.h"
 
 ConfigState::ConfigState(FightManager* game , short fInput) : State(game), numOfplayer(2) {
     int w = fmngr->GetActualWidth();
@@ -257,14 +258,14 @@ void ConfigState::searchInput()
                 }
             }
         }
-        if (ih.isKeyDown(SDLK_UP) && !usedKeyboard[1]) {
+        if (ih.isKeyDown(playerPrefs.Keyboard2Up()) && !usedKeyboard[1]) {
             usedKeyboard[1] = true;
             playerInput.push_back(-2);
             setPointer();
             playerTexture[playerInput.size() - 1]->setgotInput(true);
             playerTexture[playerInput.size() - 1]->setFront(&sdl->images().at("k2"));
         }
-        if (ih.isKeyDown(SDLK_w) && !usedKeyboard[0]) {
+        if (ih.isKeyDown(playerPrefs.Keyboard1Up()) && !usedKeyboard[0]) {
             usedKeyboard[0] = true;
             playerInput.push_back(-1);
             setPointer();
@@ -282,16 +283,16 @@ void ConfigState::movePointers()
         switch (playerInput[i])
         {
         case -1:
-            if (ih.isKeyDown(SDLK_w))playerPointers[i]->move(0);
-            if (ih.isKeyDown(SDLK_s))playerPointers[i]->move(1);
-            if (ih.isKeyDown(SDLK_a))playerPointers[i]->move(2);
-            if (ih.isKeyDown(SDLK_d))playerPointers[i]->move(3);
+            if (ih.isKeyDown(playerPrefs.Keyboard1Up()))playerPointers[i]->move(0);
+            if (ih.isKeyDown(playerPrefs.Keyboard1Down()))playerPointers[i]->move(1);
+            if (ih.isKeyDown(playerPrefs.Keyboard1Left()))playerPointers[i]->move(2);
+            if (ih.isKeyDown(playerPrefs.Keyboard1Right()))playerPointers[i]->move(3);
             break;
         case -2:
-            if (ih.isKeyDown(SDLK_UP))playerPointers[i]->move(0);
-            if (ih.isKeyDown(SDLK_DOWN))playerPointers[i]->move(1);
-            if (ih.isKeyDown(SDLK_LEFT))playerPointers[i]->move(2);
-            if (ih.isKeyDown(SDLK_RIGHT))playerPointers[i]->move(3);
+            if (ih.isKeyDown(playerPrefs.Keyboard2Up()))playerPointers[i]->move(0);
+            if (ih.isKeyDown(playerPrefs.Keyboard2Down()))playerPointers[i]->move(1);
+            if (ih.isKeyDown(playerPrefs.Keyboard2Left()))playerPointers[i]->move(2);
+            if (ih.isKeyDown(playerPrefs.Keyboard2Right()))playerPointers[i]->move(3);
             break;
         default:
             if (ih.xboxGetAxesState(playerInput[i], 1) == -1 || ih.xboxGetDpadState(playerInput[i], 0))playerPointers[i]->move(0);
@@ -314,13 +315,13 @@ void ConfigState::checkButtonPointerClick()
         switch (playerInput[i])
         {
         case -1:
-            if (ih.isKeyDown(SDLK_LCTRL))enter = true;
+            if (ih.isKeyDown(playerPrefs.Keyboard1Basic()))enter = true;
             break;
         case -2:
-            if (ih.isKeyDown(SDLK_RCTRL))enter = true;
+            if (ih.isKeyDown(playerPrefs.Keyboard2Basic()))enter = true;
             break;
         default:
-            if (ih.xboxGetButtonState(playerInput[i], SDL_CONTROLLER_BUTTON_B))enter = true;
+            if (ih.xboxGetButtonState(playerInput[i], playerPrefs.ControllerBasic()))enter = true;
             break;
         }
         //Comprobacion con cada boton
@@ -469,15 +470,15 @@ void ConfigState::checkButtonPointerClick()
             switch (lastPointerClick)
             {
             case -1:
-                if (!ih.isKeyDown(SDLK_LCTRL))keyRelease = true;
+                if (!ih.isKeyDown(playerPrefs.Keyboard1Basic()))keyRelease = true;
                 break;
             case -2:
-                if (!ih.isKeyDown(SDLK_RCTRL))keyRelease = true;
+                if (!ih.isKeyDown(playerPrefs.Keyboard2Basic()))keyRelease = true;
                 break;
             case -3:
                 break;
             default:
-                if (!ih.xboxGetButtonState(lastPointerClick, SDL_CONTROLLER_BUTTON_B))keyRelease = true;
+                if (!ih.xboxGetButtonState(lastPointerClick, playerPrefs.ControllerBasic()))keyRelease = true;
                 break;
             }
         }
@@ -488,13 +489,13 @@ void ConfigState::checkButtonPointerClick()
         switch (playerInput[i])
         {
         case -1:
-            if (ih.isKeyDown(SDLK_LSHIFT))selected[i] = false;
+            if (ih.isKeyDown(playerPrefs.Keyboard1Special()))selected[i] = false;
             break;
         case -2:
-            if (ih.isKeyDown(SDLK_RSHIFT))selected[i] = false;
+            if (ih.isKeyDown(playerPrefs.Keyboard2Special()))selected[i] = false;
             break;
         default:
-            if (ih.xboxGetButtonState(playerInput[i], SDL_CONTROLLER_BUTTON_A))selected[i] = false;
+            if (ih.xboxGetButtonState(playerInput[i], playerPrefs.ControllerSpecial()))selected[i] = false;
             break;
         }
     }
@@ -684,13 +685,13 @@ void ConfigState::mapcheckButtonPointerClick()
     switch (playerInput[0])
     {
     case -1:
-        if (ih.isKeyDown(SDLK_LCTRL))enter = true;
+        if (ih.isKeyDown(playerPrefs.Keyboard1Basic()))enter = true;
         break;
     case -2:
-        if (ih.isKeyDown(SDLK_RCTRL))enter = true;
+        if (ih.isKeyDown(playerPrefs.Keyboard2Basic()))enter = true;
         break;
     default:
-        if (ih.xboxGetButtonState(playerInput[0], SDL_CONTROLLER_BUTTON_B))enter = true;
+        if (ih.xboxGetButtonState(playerInput[0], playerPrefs.ControllerBasic()))enter = true;
         break;
     }
     for (int i = 0u; i < maps.size(); i++) {    
@@ -724,15 +725,15 @@ void ConfigState::mapcheckButtonPointerClick()
         switch (playerInput[0])
         {
         case -1:
-            if (!ih.isKeyDown(SDLK_LCTRL))keyRelease = true;
+            if (!ih.isKeyDown(playerPrefs.Keyboard1Basic()))keyRelease = true;
             break;
         case -2:
-            if (!ih.isKeyDown(SDLK_RCTRL))keyRelease = true;
+            if (!ih.isKeyDown(playerPrefs.Keyboard2Basic()))keyRelease = true;
             break;
         case -3:
             break;
         default:
-            if (!ih.xboxGetButtonState(playerInput[0], SDL_CONTROLLER_BUTTON_B))keyRelease = true;
+            if (!ih.xboxGetButtonState(playerInput[0], playerPrefs.ControllerBasic()))keyRelease = true;
             break;
         }
     }

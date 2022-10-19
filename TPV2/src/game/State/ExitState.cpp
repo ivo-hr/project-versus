@@ -1,6 +1,7 @@
 #include "ExitState.h"
 #include "../PlayingState/FightManager.h"
 #include "../../utils/CheckML.h"
+#include "../Utils/PlayerConfigs.h"
 
 ExitState::ExitState(FightManager* game) : State(game) {
 

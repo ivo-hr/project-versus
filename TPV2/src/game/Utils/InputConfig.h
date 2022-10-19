@@ -2,8 +2,10 @@
 using namespace std;
 #include <string>
 #include "../../sdlutils/InputHandler.h"
+#include "PlayerConfigs.h"
 
 class InputConfig {
+	PlayerConfigs& playerPrefs = *PlayerConfigs::instance();
 	InputHandler& ih = *InputHandler::instance();
 	char typeofInput = 4;
 

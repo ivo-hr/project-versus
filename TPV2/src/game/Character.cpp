@@ -12,7 +12,6 @@ json Character::ReadJson(std::string filename, spriteSheetData &spData)
 	json jsonFile;
 	file >> jsonFile;
 
-
 	// variables
 	codeName = jsonFile["codeName"];
 	weight = jsonFile["weight"];

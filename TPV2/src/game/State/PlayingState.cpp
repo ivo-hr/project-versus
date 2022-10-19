@@ -6,6 +6,7 @@
 #include "../Utils/MyListener.h"
 #include "../../../CharInclude.h"
 #include "../../utils/CheckML.h"
+#include "../Utils/PlayerConfigs.h"
 
 
 

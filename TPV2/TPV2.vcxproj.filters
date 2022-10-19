@@ -228,6 +228,9 @@
     <ClInclude Include="src\game\Characters\Yuno\YunoBubble.h">
       <Filter>Header Files\game\Characters</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\Utils\PlayerConfigs.h">
+      <Filter>Header Files\game\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">

@@ -3,6 +3,7 @@
 #include "ExitState.h"
 #include "../PlayingState/FightManager.h"
 #include "../../utils/CheckML.h"
+#include "../Utils/PlayerConfigs.h"
 
 
 GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures, vector<vector<ushort>>gameStats, short playersInput, vector<short>playersInputV) : State(game) {
@@ -41,40 +42,30 @@ GameOverState::~GameOverState()
 
 void GameOverState::update() {
 
-    switch (playersInput_)
+    if (playersInput_ < 0)
     {
-    case -1:
-        if (ih.isKeyDown(SDLK_w))pointer->move(0);
-        if (ih.isKeyDown(SDLK_s))pointer->move(1);
-        if (ih.isKeyDown(SDLK_a))pointer->move(2);
-        if (ih.isKeyDown(SDLK_d))pointer->move(3);
-        break;
-    case -2:
-        if (ih.isKeyDown(SDLK_UP))pointer->move(0);
-        if (ih.isKeyDown(SDLK_DOWN))pointer->move(1);
-        if (ih.isKeyDown(SDLK_LEFT))pointer->move(2);
-        if (ih.isKeyDown(SDLK_RIGHT))pointer->move(3);
-        break;
-    default:
+        if (ih.isKeyDown(playerPrefs.KeyboardUp(playersInput_ == -1)))pointer->move(0);
+        if (ih.isKeyDown(playerPrefs.KeyboardDown(playersInput_ == -1)))pointer->move(1);
+        if (ih.isKeyDown(playerPrefs.KeyboardLeft(playersInput_ == -1)))pointer->move(2);
+        if (ih.isKeyDown(playerPrefs.KeyboardRight(playersInput_ == -1)))pointer->move(3);
+    }
+    else
+    {
         if (ih.xboxGetAxesState(playersInput_, 1) == -1 || ih.xboxGetDpadState(playersInput_, 0))pointer->move(0);
         if (ih.xboxGetAxesState(playersInput_, 1) == 1 || ih.xboxGetDpadState(playersInput_, 2))pointer->move(1);
         if (ih.xboxGetAxesState(playersInput_, 0) == -1 || ih.xboxGetDpadState(playersInput_, 3))pointer->move(2);
         if (ih.xboxGetAxesState(playersInput_, 0) == 1 || ih.xboxGetDpadState(playersInput_, 1))pointer->move(3);
-        break;
     }
 
     bool enter = false;
-    switch (playersInput_)
+
+    if (playersInput_ < 0)
     {
-    case -1:
-        if (ih.isKeyDown(SDLK_LCTRL))enter = true;
-        break;
-    case -2:
-        if (ih.isKeyDown(SDLK_RCTRL))enter = true;
-        break;
-    default:
-        if (ih.xboxGetButtonState(playersInput_, SDL_CONTROLLER_BUTTON_B))enter = true;
-        break;
+        if (ih.isKeyDown(playerPrefs.KeyboardBasic(playersInput_ == -1)))enter = true;
+    }
+    else
+    {
+        if (ih.xboxGetButtonState(playersInput_, playerPrefs.ControllerBasic()))enter = true;
     }
 
     if ((playAgain->pointerClick(pointer->getRect()) && enter) || playAgain->mouseClick()) {

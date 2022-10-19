@@ -1,6 +1,7 @@
 #include "ConfigurationState.h"
 #include "../../utils/CheckML.h"
 #include "../PlayingState/FightManager.h"
+#include "../Utils/PlayerConfigs.h"
 
 
 ConfigurationState::ConfigurationState(FightManager* game , short pI) : State(game) {
@@ -50,25 +51,25 @@ void ConfigurationState::update() {
     switch (pInput)
     {
     case -1:
-        if (ih.isKeyDown(SDLK_w)) { p1->move(0); toReDraw = true; }
-        if (ih.isKeyDown(SDLK_s)){ p1->move(1); toReDraw = true; }
-        if (ih.isKeyDown(SDLK_a)) { p1->move(2); toReDraw = true; }
-        if (ih.isKeyDown(SDLK_d)) { p1->move(3); toReDraw = true; }
-        if (ih.isKeyDown(SDLK_LCTRL)) { enter = true; toReDraw = true; }
+        if (ih.isKeyDown(playerPrefs.Keyboard1Up())) { p1->move(0); toReDraw = true; }
+        if (ih.isKeyDown(playerPrefs.Keyboard1Down())) { p1->move(1); toReDraw = true; }
+        if (ih.isKeyDown(playerPrefs.Keyboard1Basic())) { p1->move(2); toReDraw = true; }
+        if (ih.isKeyDown(playerPrefs.Keyboard1Right())) { p1->move(3); toReDraw = true; }
+        if (ih.isKeyDown(playerPrefs.Keyboard1Basic())) { enter = true; toReDraw = true; }
         break;
     case -2:
-        if (ih.isKeyDown(SDLK_UP)) { p1->move(0); toReDraw = true; }
-        if (ih.isKeyDown(SDLK_DOWN)) { p1->move(1); toReDraw = true; }
-        if (ih.isKeyDown(SDLK_LEFT)) { p1->move(2); toReDraw = true; }
-        if (ih.isKeyDown(SDLK_RIGHT)) { p1->move(3); toReDraw = true; }
-        if (ih.isKeyDown(SDLK_RCTRL)) { enter = true; toReDraw = true; }
+        if (ih.isKeyDown(playerPrefs.Keyboard2Up())) { p1->move(0); toReDraw = true; }
+        if (ih.isKeyDown(playerPrefs.Keyboard2Down())) { p1->move(1); toReDraw = true; }
+        if (ih.isKeyDown(playerPrefs.Keyboard2Basic())) { p1->move(2); toReDraw = true; }
+        if (ih.isKeyDown(playerPrefs.Keyboard2Right())) { p1->move(3); toReDraw = true; }
+        if (ih.isKeyDown(playerPrefs.Keyboard2Basic())) { enter = true; toReDraw = true; }
         break;
     default:
         if (ih.xboxGetAxesState(pInput, 1) == -1 || ih.xboxGetDpadState(pInput, 0)) { p1->move(0); toReDraw = true; }
         if (ih.xboxGetAxesState(pInput, 1) == 1 || ih.xboxGetDpadState(pInput, 2)) { p1->move(1); toReDraw = true; }
         if (ih.xboxGetAxesState(pInput, 0) == -1 || ih.xboxGetDpadState(pInput, 3)) { p1->move(2); toReDraw = true; }
         if (ih.xboxGetAxesState(pInput, 0) == 1 || ih.xboxGetDpadState(pInput, 1)) { p1->move(3); toReDraw = true; }
-        if (ih.xboxGetButtonState(pInput, SDL_CONTROLLER_BUTTON_B)) { enter = true; toReDraw = true; }
+        if (ih.xboxGetButtonState(pInput, playerPrefs.ControllerBasic())) { enter = true; toReDraw = true; }
         break;
     }
     if (muscm->mouseClick() || muscm->pointerClick(p1->getRect())&&enter && keyRelease ) {
@@ -154,20 +155,15 @@ void ConfigurationState::update() {
     }
     enter = false;
 
-    switch (pInput)
+    if (pInput < 0)
     {
-    case -1:
-        if (!ih.isKeyDown(SDLK_LCTRL))keyRelease = true;
-        break;
-    case -2:
-        if (!ih.isKeyDown(SDLK_RCTRL))keyRelease = true;
-        break;
-    case -3:
-        break;
-    default:
-        if (!ih.xboxGetButtonState(pInput, SDL_CONTROLLER_BUTTON_B))keyRelease = true;
-        break;
+        if (!ih.isKeyDown(playerPrefs.KeyboardBasic(pInput == -1)))keyRelease = true;
     }
+    else
+    {
+        if (!ih.xboxGetButtonState(pInput, playerPrefs.ControllerBasic()))keyRelease = true;
+    }
+
 }
 void ConfigurationState::draw() {
 

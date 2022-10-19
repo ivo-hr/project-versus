@@ -53,6 +53,7 @@
     <ClInclude Include="src\game\Utils\InputConfig.h" />
     <ClInclude Include="src\game\Utils\MyListener.h" />
     <ClInclude Include="src\game\Utils\Particle.h" />
+    <ClInclude Include="src\game\Utils\PlayerConfigs.h" />
     <ClInclude Include="src\game\Utils\PlayerPointer.h" />
     <ClInclude Include="src\game\Utils\PlayerSelectRect.h" />
     <ClInclude Include="src\json\JSON.h" />

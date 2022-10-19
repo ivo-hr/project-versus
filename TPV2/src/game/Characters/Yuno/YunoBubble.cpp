@@ -14,10 +14,18 @@ YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, InputConf
 
 	arrowsTex = &sdl->images().at("arrows");
 	arrowSrc = { 0, arrowsTex->height() * yuno->GetPNumber() / 4, arrowsTex->width(), arrowsTex->height() / 4 };
+
+	dir = yuno->GetDir();
+
+	alive = true;
 }
 
 YunoBubble::~YunoBubble()
 {
+	if (bubbledEntity)
+	{
+		delete bubbledEntity;
+	}
 }
 
 void YunoBubble::update()
@@ -40,6 +48,17 @@ void YunoBubble::update()
 		{
 			body->ApplyLinearImpulseToCenter(b2Vec2(1, 0), true);
 		}
+	}
+	else
+	{
+		body->SetLinearVelocity(b2Vec2(dir * 5, 0));
+	}
+
+	if (bubbledEntity && bubbledEntity->ToDelete())
+	{
+		delete bubbledEntity;
+		bubbledEntity = nullptr;
+		Pop();
 	}
 
 	Entity::update();

@@ -1,16 +1,10 @@
 #include "InputConfig.h"
 #include "../../utils/CheckML.h"
 
-
-
-
 bool InputConfig::up()
 {
-	if (typeofInput == -1) {
-		return ih.isKeyDown(SDLK_w);
-	}
-	else if (typeofInput == -2) {
-		return ih.isKeyDown(SDLK_UP);
+	if (typeofInput < 0) {
+		return ih.isKeyDown(playerPrefs.KeyboardUp(typeofInput == -1));
 	}
 	else {
 		return ih.xboxGetAxesState(typeofInput, 1) == -1 || ih.xboxGetDpadState(typeofInput, 0);
@@ -19,11 +13,8 @@ bool InputConfig::up()
 
 bool InputConfig::down()
 {
-	if (typeofInput == -1) {
-		return ih.isKeyDown(SDLK_s);
-	}
-	else if (typeofInput == -2) {
-		return ih.isKeyDown(SDLK_DOWN);
+	if (typeofInput < 0) {
+		return ih.isKeyDown(playerPrefs.KeyboardDown(typeofInput == -1));
 	}
 	else {
 		return ih.xboxGetAxesState(typeofInput, 1) == 1 || ih.xboxGetDpadState(typeofInput, 2);
@@ -32,11 +23,8 @@ bool InputConfig::down()
 
 bool InputConfig::downReleased()
 {
-	if (typeofInput == -1) {
-		return ih.isKeyUp(SDLK_s);
-	}
-	else if (typeofInput == -2) {
-		return ih.isKeyUp(SDLK_DOWN);
+	if (typeofInput < 0) {
+		return ih.isKeyUp(playerPrefs.KeyboardDown(typeofInput == -1));
 	}
 	else {
 		return ih.xboxGetAxesState(typeofInput, 1) == 0 && !ih.xboxGetDpadState(typeofInput, 2);
@@ -45,11 +33,8 @@ bool InputConfig::downReleased()
 
 bool InputConfig::left()
 {
-	if (typeofInput == -1) {
-		return ih.isKeyDown(SDLK_a);
-	}
-	else if (typeofInput == -2) {
-		return ih.isKeyDown(SDLK_LEFT);
+	if (typeofInput < 0) {
+		return ih.isKeyDown(playerPrefs.KeyboardLeft(typeofInput == -1));
 	}
 	else {
 		return ih.xboxGetAxesState(typeofInput, 0) == -1 || ih.xboxGetDpadState(typeofInput, 3);
@@ -60,11 +45,8 @@ bool InputConfig::left()
 
 bool InputConfig::right()
 {
-	if (typeofInput == -1) {
-		return ih.isKeyDown(SDLK_d);
-	}
-	else if (typeofInput == -2) {
-		return ih.isKeyDown(SDLK_RIGHT);
+	if (typeofInput < 0) {
+		return ih.isKeyDown(playerPrefs.KeyboardRight(typeofInput == -1));
 	}
 	else {
 		return ih.xboxGetAxesState(typeofInput, 0) == 1 || ih.xboxGetDpadState(typeofInput, 1);
@@ -73,37 +55,28 @@ bool InputConfig::right()
 
 bool InputConfig::basic()
 {
-	if (typeofInput == -1) {
-		return ih.isKeyDown(SDLK_LCTRL);
-	}
-	else if (typeofInput == -2) {
-		return ih.isKeyDown(SDLK_RCTRL);
+	if (typeofInput < 0) {
+		return ih.isKeyDown(playerPrefs.KeyboardBasic(typeofInput == -1));
 	}
 	else {
-		return ih.xboxGetButtonState(typeofInput, SDL_CONTROLLER_BUTTON_B);
+		return ih.xboxGetButtonState(typeofInput, playerPrefs.ControllerBasic());
 	}
 }
 
 bool InputConfig::special()
 {
-	if (typeofInput == -1) {
-		return ih.isKeyDown(SDLK_LSHIFT);
-	}
-	else if (typeofInput == -2) {
-		return ih.isKeyDown(SDLK_RSHIFT);
+	if (typeofInput < 0) {
+		return ih.isKeyDown(playerPrefs.KeyboardSpecial(typeofInput == -1));
 	}
 	else {
-		return ih.xboxGetButtonState(typeofInput, SDL_CONTROLLER_BUTTON_A);
+		return ih.xboxGetButtonState(typeofInput, playerPrefs.ControllerSpecial());
 	}
 }
 
 bool InputConfig::stop()
 {
-	if (typeofInput == -1) {
-		return ih.isKeyUp(SDLK_a) && ih.isKeyUp(SDLK_d);
-	}
-	else if (typeofInput == -2) {
-		return ih.isKeyUp(SDLK_LEFT) && ih.isKeyUp(SDLK_RIGHT);
+	if (typeofInput < 0) {
+		return ih.isKeyUp(playerPrefs.KeyboardRight(typeofInput == -1)) && ih.isKeyUp(playerPrefs.KeyboardLeft(typeofInput == -1));
 	}
 	else {
 		return  ih.xboxGetAxesState(typeofInput, 0) == 0 && !ih.xboxGetDpadState(typeofInput, 1) && !ih.xboxGetDpadState(typeofInput, 3);
@@ -112,13 +85,10 @@ bool InputConfig::stop()
 
 bool InputConfig::taunt()
 {
-	if (typeofInput == -1) {
-		return ih.isKeyDown(SDLK_t);
-	}
-	else if (typeofInput == -2) {
-		return ih.isKeyDown(SDLK_j);
+	if (typeofInput < 0) {
+		return ih.isKeyDown(playerPrefs.KeyboardTaunt(typeofInput == -1));
 	}
 	else {
-		return ih.xboxGetButtonState(typeofInput, SDL_CONTROLLER_BUTTON_START);
+		return ih.xboxGetButtonState(typeofInput, playerPrefs.ControllerTaunt());
 	}
 }
