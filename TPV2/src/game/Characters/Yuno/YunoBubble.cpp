@@ -17,6 +17,8 @@ YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, InputConf
 
 	dir = yuno->GetDir();
 
+	manager->FollowCamera(this);
+
 	alive = true;
 }
 
@@ -128,7 +130,7 @@ void YunoBubble::CheckHits()
 
 bool YunoBubble::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)
 {
-	if (attacker->isProjectile() && !bubbledEntity)
+	if (attacker->HasTag(Tags::IsProjectile) && !bubbledEntity)
 	{
 		GetInsideBubble(attacker);
 	}
@@ -147,7 +149,7 @@ void YunoBubble::OnDeath()
 
 void YunoBubble::GetInsideBubble(Entity* ent)
 {
-	if (ent->isProjectile())
+	if (ent->HasTag(Tags::IsProjectile))
 	{
 		ent->changeDir();
 		manager->ChangeEntityLayer(ent, layer);

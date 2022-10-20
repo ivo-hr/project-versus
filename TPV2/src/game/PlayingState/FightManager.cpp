@@ -12,7 +12,7 @@ void FightManager::MoveCamera()
 	int maxX = INT32_MIN, minX = INT32_MAX;
 	int maxY = INT32_MIN, minY = INT32_MAX;
 
-	for (Character* c : characters)
+	for (Entity* c : camFollow)
 	{
 		Vector2D pos = c->GetCenterSDL();
 
@@ -233,7 +233,7 @@ void FightManager::Update()
 	{
 		if (entities[i]->ToDelete())
 		{
- 			if (!entities[i]->isCharacter())
+ 			if (!entities[i]->HasTag(Tags::IsCharacter))
 			{
 				RemoveEntity(entities[i]);
 				if (entities.size() > 1)
@@ -307,6 +307,7 @@ ushort FightManager::StartFight(std::vector<Character*> ent)
 		//Init vectors
 		entities.push_back(a);
 		characters.push_back(a);
+		camFollow.push_back(a);
 	}
 	//characters = ent;
 
@@ -354,6 +355,7 @@ ushort FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Cha
 		entities.push_back(a);
 		characters.push_back(a);
 		aux1.push_back(a);
+		camFollow.push_back(a);
 	}
 
 	for (Character* a : ateam2)
@@ -362,6 +364,7 @@ ushort FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Cha
 		entities.push_back(a);
 		characters.push_back(a);
 		aux2.push_back(a);
+		camFollow.push_back(a);
 	}
 	//characters = team1;
 
@@ -448,6 +451,32 @@ void FightManager::InitMatrix()
 	}
 }
 
+void FightManager::FollowCamera(Entity* ent)
+{
+	camFollow.push_back(ent);
+	ent->AddTag(Tags::CameraFollow);
+}
+
+void FightManager::RemoveFromFollowCamera(Entity* ent)
+{
+	if (!ent->HasTag(Tags::CameraFollow))
+		return;
+
+	for (int i = 0; i < camFollow.size(); i++)
+	{
+		if (camFollow[i] == ent)
+		{
+			for (int j = i + 1; j < camFollow.size(); j++)
+			{
+				camFollow[j - 1] = camFollow[j];
+			}
+			camFollow.pop_back();
+			break;
+		}
+	}
+	ent->RemoveTag(Tags::CameraFollow);
+}
+
 void FightManager::AddEntity(Entity* ent)
 {
 	entities.push_back(ent);
@@ -499,6 +528,23 @@ bool FightManager::RemoveEntity(Entity* ent, bool shouldDelete)
 	}
 
 	RemoveEntityFromMatrix(ent);
+
+	if (ent->HasTag(Tags::CameraFollow))
+	{
+		for (int i = 0; i < camFollow.size(); i++)
+		{
+			if (camFollow[i] == ent)
+			{
+				for (int j = i + 1; j < camFollow.size(); j++)
+				{
+					camFollow[j - 1] = camFollow[j];
+				}
+				camFollow.pop_back();
+				break;
+			}
+		}
+		ent->RemoveTag(Tags::CameraFollow);
+	}
 
 	if (shouldDelete)
 		delete ent;

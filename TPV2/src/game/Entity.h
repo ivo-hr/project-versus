@@ -98,6 +98,9 @@ struct ParticleData
 
 class Entity
 {
+private:
+
+	unordered_map<Tags, bool> tags = unordered_map<Tags, bool>();
 
 protected:
 
@@ -126,9 +129,8 @@ protected:
 	std::unordered_map<Entity*, bool> isHit;
 
 	bool onGround;
-	bool projectile = false;
 
-	bool alive;
+	bool alive = true;
 	ushort respawnTimer = 0;
 	ushort respawnFrames;
 
@@ -151,6 +153,10 @@ public:
 
 	Entity(FightManager* mngr, b2Vec2 position, float w = 3.f, float h = 3.f);
 	virtual ~Entity();
+
+	void AddTag(const Tags& tag) { tags[tag] = true; };
+	void RemoveTag(const Tags& tag) { tags[tag] = false; };
+	bool HasTag(const Tags& tag) { return tags[tag]; };
 
 	virtual void SetLayer(ushort layer) { this->layer = layer; }
 	ushort GetLayer() { return layer; }
@@ -183,7 +189,6 @@ public:
 
 	void SetGround(bool ground);
 	bool GetGround() { return onGround; };
-	bool isProjectile() { return projectile; };
 
 	virtual bool changeDir() { return false; };
 
@@ -197,7 +202,6 @@ public:
 	SDL_Rect getCurrentSpriteSrc() { return { 0, 0, texture->width(), texture->height() }; }
 	//virtual void SendToHUD(Texture* tex);
 	bool ToDelete() { return toDelete; };
-	virtual bool isCharacter() { return false; };
 
 	void SetShake(Vector2D dir, ushort value);
 };

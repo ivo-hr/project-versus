@@ -520,7 +520,7 @@ void GatoEspia::Respawn()
 
 bool GatoEspia::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)
 {
-	if (counter && !attacker->isProjectile()) {
+	if (counter && attacker->HasTag(Tags::IsCharacter)) {
 		anim->StartAnimation("counter");
 		anim->update();
 		dir = attacker->GetDir();

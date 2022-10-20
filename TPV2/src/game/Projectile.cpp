@@ -21,7 +21,7 @@ Projectile::Projectile(FightManager* manager, b2Vec2 pos, b2Vec2 dir, float widt
 
 	body->SetGravityScale(0);
 
-	projectile = true;
+	AddTag(Tags::IsProjectile);
 
 	outFor = 0;
 }
@@ -49,7 +49,7 @@ void Projectile::update()
 
 void Projectile::draw()
 {	
-	texture->render(hurtbox, -ang);
+	texture->render(hurtbox, 1);
 }
 
 void Projectile::draw(SDL_Rect* camera)

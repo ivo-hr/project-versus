@@ -28,6 +28,8 @@ MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir
 
 	respawnFrames = 180;
 
+	manager->FollowCamera(this);
+
 	alive = true;
 
 	originalLayer = layer;
@@ -134,6 +136,7 @@ void MaktBall::OnDeath()
 	alive = false;
 	physic = true;
 	body->SetGravityScale(10.f);
+	manager->RemoveFromFollowCamera(this);
 }
 
 bool MaktBall::PickUp()
@@ -149,6 +152,8 @@ bool MaktBall::PickUp()
 
 void MaktBall::Respawn()
 {
+	manager->FollowCamera(this);
+
 	body->SetAwake(true);
 
 	body->SetLinearVelocity({ 0, 0 });

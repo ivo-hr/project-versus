@@ -24,11 +24,21 @@ class MyListener;
 
 class Stage;
 
+enum class Tags
+{
+	CameraFollow,
+	Hitable,
+	IsProjectile,
+	IsCharacter
+};
+
 class FightManager : public StateMachine
 {
 
 	std::vector<Entity*> entities = vector<Entity*>(0);
 	std::vector<Character*> characters = vector<Character*>(0);
+
+	std::vector<Entity*> camFollow = vector<Entity*>(0);
 
 	std::vector<vector<Entity*>> entityMatrix;
 	Entity* matrixPtr = nullptr;
@@ -104,6 +114,8 @@ public:
 
 	void AddEntity(Entity* ent);
 	void AddEntity(Entity* ent, ushort layer, bool hitable = true);
+	void FollowCamera(Entity* ent);
+	void RemoveFromFollowCamera(Entity* ent);
 	bool RemoveEntity(Entity* ent, bool shouldDelete = true);
 	bool RemoveCharacter(Character* character);
 	void MoveToFront(Entity* ent);

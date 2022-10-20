@@ -167,6 +167,7 @@ Character::Character(FightManager* manager, b2Vec2 pos, char input, ushort playe
 	input_ = input;
 	totalDamageTaken = 0;
 	kills = 0;
+	AddTag(Tags::IsCharacter);
 	resetLastCharacter();
 	BuildParticlePool();
 }
@@ -839,7 +840,7 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 	//Parry
 	if (parry > 0 && parry <= parryWindow)
 	{
-		if (!attacker->isProjectile())
+		if (!attacker->HasTag(Tags::IsProjectile))
 		{
 			AddHitLag(20);
 			attacker->AddHitLag(40);

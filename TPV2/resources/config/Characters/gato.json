@@ -14,7 +14,7 @@
       "hitBoxes": [
         {
           "hitData": {
-            "damage": 10,
+            "damage": 8,
             "b2vecX": 1,
             "b2vecY": 1.8,
             "base": 20,
