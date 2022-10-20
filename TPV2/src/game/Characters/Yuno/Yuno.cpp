@@ -210,26 +210,32 @@ void Yuno::SpecialUpward(ushort frameNumber)
 
 void Yuno::SpecialDownward(ushort frameNumber)
 {
-
+	
 	if (!onGround)
-	{
-		AllowMovement(0.3f);
-	}
+		{
+			AllowMovement(0.3f);
+		}
 
-	if (frameNumber == 0)
-	{
-		anim->StartAnimation("especialD");
-		sdl->soundEffects().at("catSpecD").play();
-	}
-	else if (frameNumber == attacks["specialD"].keyFrames[0])
-	{
-		CreateHitBox(&attacks["specialD"].hitBoxes[0]);
-	}
-	else if (frameNumber == attacks["specialD"].totalFrames)
-	{
-		currentMove = nullptr;
-		moveFrame = -1;
-	}
+		if (frameNumber == 0)
+		{
+			anim->StartAnimation("especialD");
+			sdl->soundEffects().at("catSpecD").play();
+		}
+		else if (frameNumber == attacks["specialD"].keyFrames[0])
+		{
+			if (!casco) {
+				casco = true;
+			}
+			else {
+				CreateHitBox(&attacks["specialD"].hitBoxes[0]);
+				casco = false;
+			}
+		}
+		else if (frameNumber == attacks["specialD"].totalFrames)
+		{
+			currentMove = nullptr;
+			moveFrame = -1;
+		}
 	//else if (frameNumber == attacks["specialD"].totalFrames + 30)
 	//{
 	//	anim->StartAnimation("especialDSalida");
@@ -244,7 +250,10 @@ bool Yuno::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& contro
 	{
 		bubble->Pop();
 	}
-
+	else if (casco) {
+		casco = false;
+		a.damage = 0;
+	}
 	return Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
 }
 

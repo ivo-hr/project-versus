@@ -34,6 +34,8 @@ private:
 
 	bool boosted = false;
 
+	bool casco = false;
+
 protected:
 	void BuildBoxes() override;
 
