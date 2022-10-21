@@ -792,6 +792,7 @@ void FightManager::onNewGame()
 	}
 	entities.clear();
 	characters.clear();
+	camFollow.clear();
 	team1.clear();
 	team2.clear();
 	stage->UnLoadStage();
