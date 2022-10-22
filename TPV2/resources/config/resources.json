@@ -90,7 +90,8 @@
     { "id" : "shieldBroken", "file" : "resources/images/EscudoRoto.png"},
     { "id" : "parryS", "file" : "resources/images/ParrySpark.png"},
     { "id" : "parryB", "file" : "resources/images/ParryBack.png"},
-    { "id" : "bubble", "file" : "resources/images/Bubble.png"}
+    { "id" : "bubble", "file" : "resources/images/Bubble.png"}, 
+    {"id" : "bulletYuno", "file" : "resources/images/BulletYuno.png"}
   ],
   
   "messages" : [

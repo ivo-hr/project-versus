@@ -49,12 +49,12 @@ void Yuno::BasicNeutral(ushort frameNumber)
 	else if (frameNumber == attacks["basicN"].keyFrames[0])
 	{
 		if (boosted) {
-			auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["basicN"].hitBoxes[1].hitdata, b2Vec2(dir, 0), 0.8f, 0.4f, 30);
+			auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["basicN"].hitBoxes[1].hitdata, b2Vec2(dir, 0), 1.f, 0.3f, 30, "bulletYuno");
 			manager->AddEntity(bullet, layer, false);
 			boosted = false;
 		}
 		else {
-			auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["basicN"].hitBoxes[0].hitdata, b2Vec2(dir, 0), 0.8f, 0.4f, 30);
+			auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["basicN"].hitBoxes[0].hitdata, b2Vec2(dir, 0), 1.f, 0.3f, 30, "bulletYuno");
 			manager->AddEntity(bullet, layer, false);
 		}
 	}
@@ -161,7 +161,7 @@ void Yuno::SpecialNeutral(ushort frameNumber)
 	if (frameNumber == 4)
 	{
 		releasedSpec = false;
-		if (!bubble)
+		if (!bubble && !explotado)
 		{
 			bubble = new YunoBubble(manager, body->GetPosition(), this, input);
 			manager->AddEntity(bubble, layer);
@@ -176,6 +176,7 @@ void Yuno::SpecialNeutral(ushort frameNumber)
 	if (input->special() && bubble && releasedSpec)
 	{
 		bubble->Pop();
+		explotado = true;	
 	}
 
 	if (frameNumber > 5 && !bubble)
@@ -262,6 +263,18 @@ void Yuno::BubblePopped()
 	bubble = nullptr;
 }
 
+void Yuno::update()
+{
+	if (explotado && lastBubble < 5) {
+		lastBubble++;
+	}
+	else {
+		explotado = false;
+		lastBubble = 0;
+	}
+	Character::update();
+}
+
 void Yuno::BuildBoxes()
 {
 
@@ -306,6 +319,6 @@ void Yuno::BuildBoxes()
 	attacks["specialD"].hitBoxes[0].box =
 		manager->GetSDLCoors(body->GetPosition().x,
 			body->GetPosition().y-1.5,
-			width * 3,
-			height * 1.5f);
+			width,
+			height*0.5);
 }

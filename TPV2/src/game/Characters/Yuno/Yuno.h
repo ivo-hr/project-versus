@@ -23,6 +23,8 @@ public:
 
 	virtual void BubblePopped();
 
+	virtual void update() override;
+
 private:
 
 	YunoBubble* bubble = nullptr;
@@ -31,6 +33,10 @@ private:
 	Texture* blinkfondo = nullptr;
 
 	bool releasedSpec = false;
+
+	bool explotado = false;
+
+	int lastBubble = 0;
 
 	bool boosted = false;
 

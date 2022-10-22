@@ -88,10 +88,10 @@
         {
           "hitData": {
             "b2vecX": 1,
-            "b2vecY": 2,
-            "base": 20,
+            "b2vecY": 1,
+            "base": 10,
             "damage": 15,
-            "multiplier": 1.5,
+            "multiplier": 1,
             "stun": -1,
             "shieldBreak": false
           },
@@ -102,7 +102,7 @@
           "hitData": {
             "b2vecX": 1,
             "b2vecY": 1.3,
-            "base": 40,
+            "base": 20,
             "damage": 25,
             "multiplier": 0.6,
             "stun": -1,
@@ -115,7 +115,7 @@
           "hitData": {
             "b2vecX": 1,
             "b2vecY": -11,
-            "base": 60,
+            "base": 40,
             "damage": 24,
             "multiplier": 0.3,
             "stun": -1,
@@ -125,8 +125,8 @@
           "duration": 10
         }
         ],
-      "keyFrames": [10, 20],
-      "totalFrames": 40
+      "keyFrames": [10, 15],
+      "totalFrames": 35
     },
     {
       "id": "specialN",
@@ -202,9 +202,9 @@
           "hitData": {
             "b2vecX": 1,
             "b2vecY": 2,
-            "base": 20,
-            "damage": 30,
-            "multiplier": 1,
+            "base": 30,
+            "damage": 10,
+            "multiplier": 1.5,
             "stun": -1,
             "shieldBreak": true
           },
