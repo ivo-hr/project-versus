@@ -100,7 +100,7 @@ class Entity
 {
 private:
 
-	unordered_map<Tags, bool> tags = unordered_map<Tags, bool>();
+	unordered_map<Tags, bool> tags = unordered_map<Tags, bool>({ {Tags::CameraFollow, false}, {Tags::IsCharacter, false}, {Tags::IsProjectile, false}, {Tags::Hitable, false} });
 
 protected:
 

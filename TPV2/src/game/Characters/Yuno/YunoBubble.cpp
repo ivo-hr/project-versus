@@ -3,7 +3,7 @@
 #include "../../../utils/CheckML.h"
 
 
-YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, InputConfig* input) : Entity(manager, pos, 1.f, 1.f), yuno(owner), hndlr(input)
+YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, InputConfig* input) : Entity(manager, pos, 1.5f, 1.5f), yuno(owner), hndlr(input)
 {
 	body->SetGravityScale(0.f);
 
