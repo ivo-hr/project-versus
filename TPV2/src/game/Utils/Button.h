@@ -21,6 +21,7 @@ public:
 
 	Button():tex(nullptr),x(0),y(0),w(0),h(0),pressed(false) {};
 	Button(Texture* t,int x,int y,int width,int height) :tex(t), x(x),y(y),w(width),h(height),pressed(false){};
+	Button(Texture* t, int x, int y, int width) :tex(t), x(x), y(y), w(width), h(width), pressed(false) {};
 	Button(Texture* t,Texture*dt, int x, int y, int width, int height) :tex(t), x(x), y(y), w(width), h(height), pressed(false),destex(dt) {};
 	virtual ~Button() {};
 

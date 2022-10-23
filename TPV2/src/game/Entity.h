@@ -199,7 +199,7 @@ public:
 	void resetLastCharacter() { lastCharacter = nullptr; }
 
 	Texture* getTexture() { return texture; }
-	SDL_Rect getCurrentSpriteSrc() { return { 0, 0, texture->width(), texture->height() }; }
+	virtual SDL_Rect getCurrentSpriteSrc() { return { 0, 0, texture->width(), texture->height() }; }
 	//virtual void SendToHUD(Texture* tex);
 	bool ToDelete() { return toDelete; };
 

@@ -85,9 +85,35 @@ void FightManager::MoveCamera()
 		cameraEnd.y = stage->GetDeathZone()->h - cameraEnd.h;
 	}
 
-	auxCam.x += (cameraEnd.x - auxCam.x) * 0.2f;
-	auxCam.y += (cameraEnd.y - auxCam.y) * 0.2f;
-	auxCam.w += (cameraEnd.w - auxCam.w) * 0.2f;
+	int diffX = (cameraEnd.x - auxCam.x) * 0.2f;
+	int diffY = (cameraEnd.y - auxCam.y) * 0.2f;
+	int diffW = (cameraEnd.w - auxCam.w) * 0.2f;
+
+	if (abs(diffX) > ToSDL(1.2f))
+	{
+		if (diffX < 0)
+			diffX = -ToSDL(1.2f);
+		else
+			diffX = ToSDL(1.2f);
+	}
+	if (abs(diffY) > ToSDL(1.2f))
+	{
+		if (diffY < 0)
+			diffY = -ToSDL(1.2f);
+		else
+			diffY = ToSDL(1.2f);
+	}
+	/*if (abs(diffW) > ToSDL(0.9f))
+	{
+		if (diffW < 0)
+			diffW = -ToSDL(0.9f);
+		else
+			diffW = ToSDL(0.9f);
+	}*/
+
+	auxCam.x += diffX;
+	auxCam.y += diffY;
+	auxCam.w += diffW;
 	auxCam.h = auxCam.w * (float)((float)height / (float)width);
 
 	camera = auxCam;
@@ -308,6 +334,8 @@ ushort FightManager::StartFight(std::vector<Character*> ent)
 		entities.push_back(a);
 		characters.push_back(a);
 		camFollow.push_back(a);
+		a->AddTag(Tags::IsCharacter);
+		a->AddTag(Tags::CameraFollow);
 	}
 	//characters = ent;
 
@@ -397,8 +425,7 @@ void FightManager::InitMatrix()
 
 	if (!teammode)
 	{
-		entityMatrix = vector<vector<Entity*>>((entities.size() * 2) + 1);
-		numHitableLayers = entities.size();
+		entityMatrix = vector<vector<Entity*>>(entities.size() + 1);
 		int j = 0;
 		for (int i = 1; i < entities.size() + 1; i++)
 		{
@@ -412,8 +439,7 @@ void FightManager::InitMatrix()
 	{
 		if (team1.size() > 0 && team2.size() > 0)
 		{
-			entityMatrix = vector<vector<Entity*>>(5);
-			numHitableLayers = 2;
+			entityMatrix = vector<vector<Entity*>>(3);
 			for (int i = 0; i < team1.size(); i++)
 			{
 				entityMatrix[1].push_back(team1[i]);
@@ -429,8 +455,7 @@ void FightManager::InitMatrix()
 		}
 		else
 		{
-			entityMatrix = vector<vector<Entity*>>(3);
-			numHitableLayers = 1;
+			entityMatrix = vector<vector<Entity*>>(2);
 			for (int i = 0; i < entities.size(); i++)
 			{
 				entityMatrix[1].push_back(entities[i]);
@@ -474,7 +499,6 @@ void FightManager::RemoveFromFollowCamera(Entity* ent)
 			break;
 		}
 	}
-	ent->RemoveTag(Tags::CameraFollow);
 }
 
 void FightManager::AddEntity(Entity* ent)
@@ -483,33 +507,15 @@ void FightManager::AddEntity(Entity* ent)
 
 	entityMatrix[ent->GetLayer()].push_back(ent);
 	ent->SetPlaceInLayer(entityMatrix[ent->GetLayer()].size());
-	return;
 }
 
-void FightManager::AddEntity(Entity* ent, ushort layer, bool hitable)
+void FightManager::AddEntity(Entity* ent, ushort layer)
 {
 	entities.push_back(ent);
 
-	if (layer == 0)
-	{
-		entityMatrix[layer].push_back(ent);
-		ent->SetLayer(0);
-		ent->SetPlaceInLayer(entityMatrix[layer].size());
-		return;
-	}
-
-	if (hitable)
-	{
-		entityMatrix[layer].push_back(ent);
-		ent->SetLayer(layer);
-		ent->SetPlaceInLayer(entityMatrix[layer].size());
-	}
-	else
-	{
-		entityMatrix[layer + numHitableLayers].push_back(ent);
-		ent->SetLayer(layer + numHitableLayers);
-		ent->SetPlaceInLayer(entityMatrix[layer + numHitableLayers].size());
-	}
+	entityMatrix[layer].push_back(ent);
+	ent->SetLayer(layer);
+	ent->SetPlaceInLayer(entityMatrix[layer].size());
 }
 
 bool FightManager::RemoveEntity(Entity* ent, bool shouldDelete)
@@ -543,7 +549,6 @@ bool FightManager::RemoveEntity(Entity* ent, bool shouldDelete)
 				break;
 			}
 		}
-		ent->RemoveTag(Tags::CameraFollow);
 	}
 
 	if (shouldDelete)
@@ -689,12 +694,7 @@ void FightManager::ChangeEntityLayer(Entity* ent, ushort newLayer)
 {
 	RemoveEntityFromMatrix(ent);
 
-	if (ent->GetLayer() > numHitableLayers)
-	{
-		newLayer += numHitableLayers;
-	}
 	entityMatrix[newLayer].push_back(ent);
-
 	ent->SetLayer(newLayer);
 	ent->SetPlaceInLayer(entityMatrix[newLayer].size());
 }
@@ -711,46 +711,50 @@ void FightManager::FighterLost(Character* loser)
 	}
 }
 
-bool FightManager::GetNextEntity(Entity*& ent, ushort layer)
+bool FightManager::GetNextEntity(Entity*& ent, ushort layerToIgnore)
 {
-	ushort layerToIgnore = layer;
-
-	if (layer > numHitableLayers)
-	{
-		layerToIgnore = layer - numHitableLayers;
-	}
-
 	if (ent == nullptr)
 	{
-		for (int i = 1; i <= numHitableLayers; i++)
+		short layer = -1;
+		for (auto i = 1u; i < entityMatrix.size(); i++)
 		{
 			if (i != layerToIgnore && entityMatrix[i].size() > 0)
 			{
-				ent = entityMatrix[i][0];
-				ptrPlace = { i,0 };
-				return true;
+				layer = i;
+				break;
 			}
 		}
-		return false;
-	}
-
-	ptrPlace.second++;
-
-	if (ptrPlace.second >= entityMatrix[ptrPlace.first].size())
-	{
-		ptrPlace.second = 0;
-		ptrPlace.first++;
-		if (ptrPlace.first == layerToIgnore)
-			ptrPlace.first++;
-		if (ptrPlace.first > numHitableLayers)
+		if (layer == -1)
 		{
-			ent = nullptr;
 			return false;
 		}
+		else
+		{
+			ptrPlace = { layer, 0 };
+		}
+	}
+	else
+	{
+		do
+		{
+			ptrPlace.second++;
+
+			if (ptrPlace.second >= entityMatrix[ptrPlace.first].size())
+			{
+				ptrPlace.second = 0;
+				ptrPlace.first++;
+				if (ptrPlace.first == layerToIgnore)
+					ptrPlace.first++;
+				if (ptrPlace.first >= entityMatrix.size())
+				{
+					ent = nullptr;
+					return false;
+				}
+			}
+		} while (/*ptrPlace.second >= entityMatrix[ptrPlace.first].size() || */!entityMatrix[ptrPlace.first][ptrPlace.second]->HasTag(Tags::Hitable));
 	}
 
 	ent = entityMatrix[ptrPlace.first][ptrPlace.second];
-
 	return true;
 }
 
@@ -785,10 +789,9 @@ void FightManager::addCharacterStats(Character* character)
 
 void FightManager::onNewGame()
 {
-	
-	for (auto e : entities) {
-		listener->RemoveCharacter(e);
-		delete e;
+	for (auto i = 0u; i < entities.size(); i++) {
+		listener->RemoveCharacter(entities[i]);
+		delete entities[i];
 	}
 	entities.clear();
 	characters.clear();

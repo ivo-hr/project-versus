@@ -74,7 +74,7 @@ void Togo::BasicForward(ushort frameNumber)
 	else if (frameNumber == attacks["basicF"].keyFrames[0])
 	{
 			auto spear = new Spear(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y-height/2), attacks["basicF"].hitBoxes[0].hitdata, b2Vec2(dir, 0), this);
-			manager->AddEntity(spear, layer, false);
+			manager->AddEntity(spear, layer);
 			manager->MoveToFront(spear);
 			SetSpear(false);
 	}

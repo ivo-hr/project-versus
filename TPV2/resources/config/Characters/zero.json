@@ -1,6 +1,6 @@
 {
   "codeName": "zero",
-  "weight": 10,
+  "weight": 12,
   "damageTaken": 0,
   "maxSpeed": 30,
   "speed":0,
@@ -54,7 +54,7 @@
   ],
   "spData": {
     "leftOffset": 4,
-    "upOffset": 48,
+    "upOffset": 46,
     "sizeXOffset":28,
     "sizeYOffset":48,
     "spritesInX":5,

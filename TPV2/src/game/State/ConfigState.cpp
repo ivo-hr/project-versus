@@ -362,7 +362,7 @@ void ConfigState::checkButtonPointerClick()
             sdl->soundEffects().at("uiMov").play();
         }
         else if (yuno->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
-            playerTexture[i]->setFront(&sdl->images().at("blinkMasterSelect"));
+            playerTexture[i]->setFront(&sdl->images().at("yunoSelect"));
             charactersSelect[i] = 4;
             keyRelease = false;
             lastPointerClick = playerInput[i];
@@ -754,11 +754,13 @@ void ConfigState::initcharact()
 {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
-    int dist = (w * 9 / 10) / 5;
-    int offset = dist - w / 10 + w / 65;
+    int dist = ((float)w * 9.f / 10.f) / 5.f;
+    int offset = dist - (float)w / 10.f + (float)w / 68.7f;
 
-    int distY = (w * 3 / 24);
-    int offsetY = w / 12 + w / 70;
+    int distY = ((float)w * 3.f / 24.f);
+    int offsetY = (float)w / 12.f + (float)w / 70.f;
+
+    int buttonSize = (int)((float)w / 15.4f);
     //c % 4 * dist + offset), (int)((ts(80) * j) + ts(50));
 
    // { 
@@ -766,15 +768,15 @@ void ConfigState::initcharact()
    // (int)(((w * 3 / 24) * j) + w / 12), 
    //     (int)w / 12, (int)w / 12 }
  
-    nasnas = new Button(&sdl->images().at("nasNasSelect"), offset , offsetY, (int)w / 16, (int)w / 16);
+    nasnas = new Button(&sdl->images().at("nasNasSelect"), offset , offsetY, buttonSize);
     charName.push_back("    NasNas");
-    gatoespia = new Button(&sdl->images().at("blinkMasterSelect"), dist + offset, offsetY, (int)w / 16, (int)w / 16);
+    gatoespia = new Button(&sdl->images().at("blinkMasterSelect"), dist + offset, offsetY, buttonSize);
     charName.push_back(" Blink Master");
-    maketo = new Button(&sdl->images().at("maktSelect"), dist*2 + offset, offsetY, (int)w / 16, (int)w / 16);
+    maketo = new Button(&sdl->images().at("maktSelect"), dist * 2 + offset, offsetY, buttonSize);
     charName.push_back("  Makt Fange");
-    togo = new Button(&sdl->images().at("dinoSoulsSelect"), dist*3 + offset, offsetY, (int)w / 16, (int)w / 16);
+    togo = new Button(&sdl->images().at("dinoSoulsSelect"), dist * 3 + offset, offsetY, buttonSize);
     charName.push_back("     Togo");
-    yuno = new Button(&sdl->images().at("blinkMasterSelect"), dist * 4 + offset, offsetY, (int)w / 16, (int)w / 16);
+    yuno = new Button(&sdl->images().at("yunoSelect"), dist * 4 + offset, offsetY, buttonSize);
     charName.push_back("     Yuno");
 
     charName.push_back(" Coming Soon");
@@ -782,6 +784,6 @@ void ConfigState::initcharact()
     charName.push_back(" Coming Soon");
     charName.push_back(" Coming Soon");
 
-    aleatorio = new Button(&sdl->images().at("aleatorioSelect"), dist * 4 + offset, (distY + offsetY), (int)w / 16, (int)w / 16);
+    aleatorio = new Button(&sdl->images().at("aleatorioSelect"), dist * 4 + offset, (distY + offsetY), buttonSize);
     charName.push_back("    Random");
 }

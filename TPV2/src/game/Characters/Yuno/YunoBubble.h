@@ -18,7 +18,7 @@ public:
 	virtual void CheckHits() override;
 	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox; };
-	virtual void setToDelete() { toDelete = true; };
+	virtual void setToDelete() { toDelete = true; yuno->BubblePopped(); };
 	virtual void OnDeath() override;
 
 	void GetInsideBubble(Entity* ent);

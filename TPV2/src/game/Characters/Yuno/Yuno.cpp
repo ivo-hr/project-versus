@@ -15,13 +15,10 @@ Yuno::Yuno(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mng
 	ReadJson("resources/config/Characters/bubble.json", spData);
 	//guardamos la textura
 	texture = &sdl->images().at("blinkMaster");
-	portrait = &sdl->images().at("blinkMasterSelect");
+	portrait = &sdl->images().at("yunoSelect");
 	//smolH = &sdl->soundEffects().at("zeroSmolHit");
 
 	anim = new AnimationManager(this, texture, spData);
-
-	blinkContainer = &sdl->images().at("blinkCont");
-	blinkfondo = &sdl->images().at("blinkContb");
 }
 
 Yuno::~Yuno()
@@ -50,12 +47,12 @@ void Yuno::BasicNeutral(ushort frameNumber)
 	{
 		if (boosted) {
 			auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["basicN"].hitBoxes[1].hitdata, b2Vec2(dir, 0), 1.f, 0.3f, 30, "bulletYuno");
-			manager->AddEntity(bullet, layer, false);
+			manager->AddEntity(bullet, layer);
 			boosted = false;
 		}
 		else {
 			auto bullet = new Bullet(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - width / 2), attacks["basicN"].hitBoxes[0].hitdata, b2Vec2(dir, 0), 1.f, 0.3f, 30, "bulletYuno");
-			manager->AddEntity(bullet, layer, false);
+			manager->AddEntity(bullet, layer);
 		}
 	}
 	else if (frameNumber == attacks["basicN"].totalFrames)
@@ -175,7 +172,7 @@ void Yuno::SpecialNeutral(ushort frameNumber)
 
 	if (input->special() && bubble && releasedSpec)
 	{
-		bubble->Pop();
+		bubble->setToDelete();
 		explotado = true;	
 	}
 
@@ -197,7 +194,7 @@ void Yuno::SpecialForward(ushort frameNumber)
 		}
 		else
 		{
-			bubble->Pop();
+			bubble->setToDelete();
 		}
 
 		currentMove = nullptr;
@@ -249,9 +246,10 @@ bool Yuno::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& contro
 {
 	if (bubble)
 	{
-		bubble->Pop();
+		bubble->setToDelete();
 	}
-	else if (casco) {
+	if (casco)
+	{
 		casco = false;
 		a.damage = 0;
 	}

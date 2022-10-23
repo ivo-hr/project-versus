@@ -43,7 +43,6 @@ class FightManager : public StateMachine
 	std::vector<vector<Entity*>> entityMatrix;
 	Entity* matrixPtr = nullptr;
 	std::pair<ushort, ushort> ptrPlace = { 0, 0 };
-	ushort numHitableLayers = 0;
 
 	// Team mode
 	std::vector<Character*> team1;
@@ -113,7 +112,7 @@ public:
 	void RemoveEntityFromMatrix(Entity* ent);
 
 	void AddEntity(Entity* ent);
-	void AddEntity(Entity* ent, ushort layer, bool hitable = true);
+	void AddEntity(Entity* ent, ushort layer);
 	void FollowCamera(Entity* ent);
 	void RemoveFromFollowCamera(Entity* ent);
 	bool RemoveEntity(Entity* ent, bool shouldDelete = true);

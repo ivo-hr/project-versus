@@ -29,9 +29,6 @@ private:
 
 	YunoBubble* bubble = nullptr;
 
-	Texture* blinkContainer = nullptr;
-	Texture* blinkfondo = nullptr;
-
 	bool releasedSpec = false;
 
 	bool explotado = false;

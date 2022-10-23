@@ -65,6 +65,7 @@
     { "id" : "maktSelect", "file" : "resources/images/MaketoSelect.png"},
     { "id" : "zeroSelect", "file" : "resources/images/zeroSelect.png"},
     { "id" : "dinoSoulsSelect", "file" : "resources/images/dinoSoulsSelect.png"},
+    { "id" : "yunoSelect", "file" : "resources/images/yunoSelect.png"},
     { "id" : "mazmorra", "file" : "resources/images/Mazmorra.png"},
     { "id" : "mazmorra2", "file" : "resources/images/Mazmorra2.png"},
     { "id" : "rockPlat", "file" : "resources/images/rock plataform.png"},

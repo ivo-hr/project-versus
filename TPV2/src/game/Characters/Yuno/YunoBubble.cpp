@@ -18,16 +18,14 @@ YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, InputConf
 	dir = yuno->GetDir();
 
 	manager->FollowCamera(this);
+	AddTag(Tags::Hitable);
 
 	alive = true;
 }
 
 YunoBubble::~YunoBubble()
 {
-	if (bubbledEntity)
-	{
-		delete bubbledEntity;
-	}
+	Pop();
 }
 
 void YunoBubble::update()
@@ -36,19 +34,19 @@ void YunoBubble::update()
 	{
 		if (hndlr->up())
 		{
-			body->ApplyLinearImpulseToCenter(b2Vec2(0, -1), true);
+			body->ApplyLinearImpulseToCenter(b2Vec2(0, -2), true);
 		}
 		if (hndlr->down())
 		{
-			body->ApplyLinearImpulseToCenter(b2Vec2(0, 1), true);
+			body->ApplyLinearImpulseToCenter(b2Vec2(0, 2), true);
 		}
 		if (hndlr->left())
 		{
-			body->ApplyLinearImpulseToCenter(b2Vec2(-1, 0), true);
+			body->ApplyLinearImpulseToCenter(b2Vec2(-2, 0), true);
 		}
 		if (hndlr->right())
 		{
-			body->ApplyLinearImpulseToCenter(b2Vec2(1, 0), true);
+			body->ApplyLinearImpulseToCenter(b2Vec2(2, 0), true);
 		}
 	}
 	else
@@ -59,8 +57,8 @@ void YunoBubble::update()
 	if (bubbledEntity && bubbledEntity->ToDelete())
 	{
 		delete bubbledEntity;
-		bubbledEntity = nullptr;
-		Pop();
+		bubbledEntity = nullptr; 
+		setToDelete();
 	}
 
 	Entity::update();
@@ -72,7 +70,7 @@ void YunoBubble::draw(SDL_Rect* camera)
 	{
 		if (bubbledEntity)
 		{
-			texDest = { hurtbox.x + (int)(hurtbox.w * 0.25f), hurtbox.y + (int)(hurtbox.h * 0.25f), (int)(hurtbox.w * 0.5f), (int)(hurtbox.h * 0.5f) };
+			texDest = { hurtbox.x + (int)(hurtbox.w * 0.1f), hurtbox.y + (int)(hurtbox.h * 0.1f), (int)(hurtbox.w * 0.8f), (int)(hurtbox.h * 0.8f) };
 
 			SDL_Rect aux = texDest;
 
@@ -126,6 +124,17 @@ void YunoBubble::draw(SDL_Rect* camera)
 
 void YunoBubble::CheckHits()
 {
+	if (alive && !bubbledEntity && !ToDelete())
+	{
+		Entity* oponent = nullptr;
+		while (manager->GetNextEntity(oponent, layer))
+		{
+			if (SDL_HasIntersection(&hurtbox, oponent->GetHurtbox()))
+			{
+				GetInsideBubble(oponent);
+			}
+		}
+	}
 }
 
 bool YunoBubble::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)
@@ -136,23 +145,33 @@ bool YunoBubble::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& 
 	}
 	else
 	{
-		Pop();
+		setToDelete();
 	}
 	return false;
 }
 
 void YunoBubble::OnDeath()
 {
-	Pop();
+	yuno->BubblePopped();
 	Entity::OnDeath();
 }
 
 void YunoBubble::GetInsideBubble(Entity* ent)
 {
+	if (toDelete)
+	{
+		return;
+	}
+
 	if (ent->HasTag(Tags::IsProjectile))
 	{
 		ent->changeDir();
 		manager->ChangeEntityLayer(ent, layer);
+	}
+	else if (ent->HasTag(Tags::IsCharacter))
+	{
+		auto chr = static_cast<Character*>(ent);
+		chr->ResetChar();
 	}
 
 	bubbledEntity = ent;
@@ -170,14 +189,17 @@ void YunoBubble::Pop()
 	{
 		manager->AddEntity(bubbledEntity);
 
+		if (bubbledEntity->HasTag(Tags::CameraFollow))
+		{
+			manager->FollowCamera(bubbledEntity);
+		}
+
 		bubbledEntity->GetBody()->SetEnabled(true);
 
 		bubbledEntity->GetBody()->SetTransform(body->GetPosition(), 0);
 
-		bubbledEntity = nullptr;
+		bubbledEntity->GetBody()->SetLinearVelocity(b2Vec2(0, -1));
 	}
-
-	yuno->BubblePopped();
 
 	toDelete = true;
 }

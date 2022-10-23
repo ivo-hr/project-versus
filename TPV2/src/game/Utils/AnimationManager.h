@@ -44,4 +44,5 @@ public:
 	void ChangeSheet(Texture* textura) { texture = textura; };
 
 	int GetAnimationDuration();
+	SDL_Rect& getCurrentSpriteSrc() { return recorteSheet; }
 };

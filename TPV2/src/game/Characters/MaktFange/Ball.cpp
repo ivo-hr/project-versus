@@ -30,6 +30,8 @@ MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir
 
 	manager->FollowCamera(this);
 
+	AddTag(Tags::Hitable);
+
 	alive = true;
 
 	originalLayer = layer;

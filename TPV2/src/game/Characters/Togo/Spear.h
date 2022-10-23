@@ -17,6 +17,8 @@ public:
 
 	virtual void draw(SDL_Rect* camera) override;
 
+	SDL_Rect getCurrentSpriteSrc() override { return { 393, 395, 80, 9 }; }
+
 private:
 	Togo* owner = nullptr;
 	

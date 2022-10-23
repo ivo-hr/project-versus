@@ -32,6 +32,8 @@ public:
 
 	virtual void draw(SDL_Rect* camera) override;
 
+	SDL_Rect getCurrentSpriteSrc() override { return { 1260, 1543, 17, 17 }; }
+
 private:
 
 	void Respawn();

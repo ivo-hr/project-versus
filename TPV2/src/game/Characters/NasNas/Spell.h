@@ -24,6 +24,8 @@ public:
 
 	virtual void draw(SDL_Rect* camera) override;
 
+	SDL_Rect getCurrentSpriteSrc() override { return { 0, 1264, 35, 16 }; }
+
 	int sprite = 0;
 	float anim = 0;
 };

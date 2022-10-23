@@ -40,7 +40,7 @@ protected:
 	ushort shieldHealth = 0;
 	int maxShield = 0;
 	ushort parry = 0;
-	ushort parryWindow = 8;
+	ushort parryWindow = 5;
 
 	bool dash = false;
 
@@ -182,6 +182,7 @@ public:
 	void StartMove(std::function<void(ushort)> newMove);
 	void ChangeMove(std::function<void(ushort)> newMove);
 
+	virtual SDL_Rect getCurrentSpriteSrc() override;
 	int getInput() { return input_; }
 	int getDamageTaken() { return totalDamageTaken; }
 	int getDeaths() { return maxLives - lives; }

@@ -1,12 +1,12 @@
 {
   "codeName": "cat",
-  "weight": 10,
+  "weight": 18,
   "damageTaken": 0,
-  "maxSpeed": 30,
+  "maxSpeed": 26,
   "speed":0,
   "maxJumps": 1 ,
-  "jumpStr": 630,
-  "maxShield": 360,
+  "jumpStr": 570,
+  "maxShield": 300,
 
   "attacksData": [
     {

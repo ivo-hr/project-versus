@@ -167,7 +167,6 @@ Character::Character(FightManager* manager, b2Vec2 pos, char input, ushort playe
 	input_ = input;
 	totalDamageTaken = 0;
 	kills = 0;
-	AddTag(Tags::IsCharacter);
 	resetLastCharacter();
 	BuildParticlePool();
 }
@@ -1350,6 +1349,11 @@ void Character::ChangeMove(std::function<void(ushort)> newMove)
 	moveFrame = -1;
 }
 
+SDL_Rect Character::getCurrentSpriteSrc()
+{
+	return anim->getCurrentSpriteSrc();
+}
+
 SDL_Rect* Character::GetHurtbox()
 {
 	return &hurtbox;
@@ -1442,6 +1446,7 @@ void Character::ResetChar()
 {
 	dash = false;
 	shield = 0;
+	parry = 0;
 	body->SetGravityScale(10.0f);
 	currentMove = nullptr;
 	moveFrame = -1;
@@ -1528,7 +1533,7 @@ void Character::drawHUD(ushort numOfPlayer)
 	int offset = (w_ / 2) / numOfPlayer - w_/30;
 	int x = (int)(playerPosition * dist + offset);
 	int y = h_ - (h_ / 6);
-	portrait->render({ x, y, w_ / 15, w_ / 15 });
+	portrait->render({ x, y, w_ / 14, w_ / 14 });
 	//Porcentaje
 	string fontstring = "nes" + to_string(7 * w_/sdl->width());
 	auto& font = sdl->fonts().at(fontstring);

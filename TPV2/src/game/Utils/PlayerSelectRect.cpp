@@ -32,20 +32,20 @@ void PlayerSelectRect::render(int x, int y, int w, int h)
 		}
 
 		if (cont == 0) {
-			m->render({ x + w / 4,y + h / 4,w / 2,h / 2 });
+			m->render({ x + w / 4,y + h / 4,w / 2,w / 2 });
 		}
 		else if (cont == 1)
 		{
-			k1->render({ x + w / 4,y + h / 4,w / 2,h / 2 });
+			k1->render({ x + w / 4,y + h / 4,w / 2,w / 2 });
 		}
 		else if (cont == 2)
 		{
-			k2->render({ x + w / 4,y + h / 4,w / 2,h / 2 });
+			k2->render({ x + w / 4,y + h / 4,w / 2,w / 2 });
 		}
 		
 	}
 	else {
-		if(front!=nullptr)front->render({ x + w / 4,y + h / 4,w / 2,h / 2 });
+		if(front!=nullptr)front->render({ x + w / 4,y + h / 4,w / 2,w / 2 });
 	}
 
 }

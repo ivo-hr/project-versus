@@ -172,7 +172,7 @@ void NasNas::SpecialNeutral(ushort frameNumber)
 
 			spell = new Spell(manager, b2Vec2(body->GetPosition().x + dir * 3, body->GetPosition().y - 0.3f), attacks["specialN"].hitBoxes[2].hitdata, b2Vec2(dir, 0), estado);
 		}
-		manager->AddEntity(spell, layer, false);
+		manager->AddEntity(spell, layer);
 		manager->MoveToFront(spell);
 	}
 	else if (frameNumber == attacks["specialN"].totalFrames)

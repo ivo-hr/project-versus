@@ -11,6 +11,8 @@ DinoShield::DinoShield(FightManager* manager, b2Vec2 pos) :
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
 	texture = &sdl->images().at("dinoSouls");
+
+	AddTag(Tags::Hitable);
 }
 
 DinoShield::~DinoShield()
