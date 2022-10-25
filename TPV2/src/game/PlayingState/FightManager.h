@@ -41,8 +41,7 @@ class FightManager : public StateMachine
 	std::vector<Entity*> camFollow = vector<Entity*>(0);
 
 	std::vector<vector<Entity*>> entityMatrix;
-	Entity* matrixPtr = nullptr;
-	std::pair<ushort, ushort> ptrPlace = { 0, 0 };
+	std::pair<ushort, short> ptrPlace = { 0, 0 };
 
 	// Team mode
 	std::vector<Character*> team1;

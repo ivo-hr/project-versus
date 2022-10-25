@@ -295,10 +295,14 @@ void ConfigState::movePointers()
             if (ih.isKeyDown(playerPrefs.Keyboard2Right()))playerPointers[i]->move(3);
             break;
         default:
-            if (ih.xboxGetAxesState(playerInput[i], 1) == -1 || ih.xboxGetDpadState(playerInput[i], 0))playerPointers[i]->move(0);
-            if (ih.xboxGetAxesState(playerInput[i], 1) == 1 || ih.xboxGetDpadState(playerInput[i], 2))playerPointers[i]->move(1);
-            if (ih.xboxGetAxesState(playerInput[i], 0) == -1 || ih.xboxGetDpadState(playerInput[i], 3))playerPointers[i]->move(2);
-            if (ih.xboxGetAxesState(playerInput[i], 0) == 1 || ih.xboxGetDpadState(playerInput[i], 1))playerPointers[i]->move(3);
+            if (ih.xboxGetAxesState(playerInput[i], 1) == -1 || ih.xboxGetDpadState(playerInput[i], 0))
+                playerPointers[i]->move(0);
+            if (ih.xboxGetAxesState(playerInput[i], 1) == 1 || ih.xboxGetDpadState(playerInput[i], 2))
+                playerPointers[i]->move(1);
+            if (ih.xboxGetAxesState(playerInput[i], 0) == -1 || ih.xboxGetDpadState(playerInput[i], 3))
+                playerPointers[i]->move(2);
+            if (ih.xboxGetAxesState(playerInput[i], 0) == 1 || ih.xboxGetDpadState(playerInput[i], 1))
+                playerPointers[i]->move(3);
             break;
         }
     }

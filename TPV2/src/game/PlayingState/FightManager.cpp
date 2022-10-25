@@ -384,6 +384,8 @@ ushort FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Cha
 		characters.push_back(a);
 		aux1.push_back(a);
 		camFollow.push_back(a);
+		a->AddTag(Tags::IsCharacter);
+		a->AddTag(Tags::CameraFollow);
 	}
 
 	for (Character* a : ateam2)
@@ -393,6 +395,8 @@ ushort FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Cha
 		characters.push_back(a);
 		aux2.push_back(a);
 		camFollow.push_back(a);
+		a->AddTag(Tags::IsCharacter);
+		a->AddTag(Tags::CameraFollow);
 	}
 	//characters = team1;
 
@@ -716,7 +720,7 @@ bool FightManager::GetNextEntity(Entity*& ent, ushort layerToIgnore)
 	if (ent == nullptr)
 	{
 		short layer = -1;
-		for (auto i = 1u; i < entityMatrix.size(); i++)
+		for (auto i = 0u; i < entityMatrix.size(); i++)
 		{
 			if (i != layerToIgnore && entityMatrix[i].size() > 0)
 			{
@@ -730,29 +734,31 @@ bool FightManager::GetNextEntity(Entity*& ent, ushort layerToIgnore)
 		}
 		else
 		{
-			ptrPlace = { layer, 0 };
+			ptrPlace = { layer, -1 };
 		}
 	}
-	else
-	{
-		do
-		{
-			ptrPlace.second++;
 
-			if (ptrPlace.second >= entityMatrix[ptrPlace.first].size())
+	do 
+	{
+		ptrPlace.second++;
+
+		if (ptrPlace.second >= entityMatrix[ptrPlace.first].size())
+		{
+			ptrPlace.second = 0;
+
+			do
 			{
-				ptrPlace.second = 0;
 				ptrPlace.first++;
-				if (ptrPlace.first == layerToIgnore)
-					ptrPlace.first++;
+
 				if (ptrPlace.first >= entityMatrix.size())
 				{
 					ent = nullptr;
 					return false;
 				}
 			}
-		} while (/*ptrPlace.second >= entityMatrix[ptrPlace.first].size() || */!entityMatrix[ptrPlace.first][ptrPlace.second]->HasTag(Tags::Hitable));
-	}
+			while (ptrPlace.first == layerToIgnore || entityMatrix[ptrPlace.first].size() == 0);
+		}
+	} while (!entityMatrix[ptrPlace.first][ptrPlace.second]->HasTag(Tags::Hitable));
 
 	ent = entityMatrix[ptrPlace.first][ptrPlace.second];
 	return true;

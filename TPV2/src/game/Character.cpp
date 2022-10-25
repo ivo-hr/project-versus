@@ -167,6 +167,7 @@ Character::Character(FightManager* manager, b2Vec2 pos, char input, ushort playe
 	input_ = input;
 	totalDamageTaken = 0;
 	kills = 0;
+	AddTag(Tags::Hitable);
 	resetLastCharacter();
 	BuildParticlePool();
 }

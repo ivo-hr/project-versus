@@ -127,11 +127,14 @@ void YunoBubble::CheckHits()
 	if (alive && !bubbledEntity && !ToDelete())
 	{
 		Entity* oponent = nullptr;
-		while (manager->GetNextEntity(oponent, layer))
+		while (manager->GetNextEntity(oponent, yuno->GetLayer()))
 		{
-			if (SDL_HasIntersection(&hurtbox, oponent->GetHurtbox()))
+			if (oponent != this)
 			{
-				GetInsideBubble(oponent);
+				if (SDL_HasIntersection(&hurtbox, oponent->GetHurtbox()))
+				{
+					GetInsideBubble(oponent);
+				}
 			}
 		}
 	}

@@ -161,7 +161,7 @@ void Yuno::SpecialNeutral(ushort frameNumber)
 		if (!bubble && !explotado)
 		{
 			bubble = new YunoBubble(manager, body->GetPosition(), this, input);
-			manager->AddEntity(bubble, layer);
+			manager->AddEntity(bubble, 0);
 		}
 	}
 
@@ -190,7 +190,7 @@ void Yuno::SpecialForward(ushort frameNumber)
 		if (!bubble)
 		{
 			bubble = new YunoBubble(manager, body->GetPosition(), this);
-			manager->AddEntity(bubble, layer);
+			manager->AddEntity(bubble, 0);
 		}
 		else
 		{
