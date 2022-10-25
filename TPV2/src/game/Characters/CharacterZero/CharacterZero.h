@@ -5,8 +5,8 @@ class CharacterZero : public Character
 public:
 	CharacterZero(FightManager* mngr, b2Vec2 pos, char input, ushort p);
 	virtual ~CharacterZero();
-	
-	
+
+	string GetName() override { return "Ciro"; };
 
 	virtual void draw() override;
 

@@ -9,6 +9,8 @@ public:
 	DinoShield(FightManager* manager, b2Vec2 pos);
 	virtual ~DinoShield();
 
+	string GetName() override { return "Togo_Shield"; };
+
 	virtual void update() override;
 	virtual void draw() override;
 	virtual void draw(SDL_Rect* camera) override;

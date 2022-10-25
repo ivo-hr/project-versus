@@ -19,5 +19,8 @@ class Bullet : public Projectile
 public:
 	Bullet(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, float width, float height, int speed, string name);
 	virtual ~Bullet();
+
+	string GetName() override { return "Bullet"; };
+
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox;};
 };

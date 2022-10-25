@@ -11,6 +11,8 @@ public:
 	Explosion(FightManager* manager, b2Vec2 pos, int power, int type, bool lookRight);
 	virtual ~Explosion();
 
+	string GetName() override { return "Nas_Explosion"; };
+
 	virtual void update() override;
 	virtual void draw() override;
 	virtual void draw(SDL_Rect* camera) override;

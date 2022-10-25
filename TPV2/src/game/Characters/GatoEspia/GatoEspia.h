@@ -6,6 +6,7 @@ public:
 	GatoEspia(FightManager* mngr, b2Vec2 pos, char input, ushort p);
 	virtual ~GatoEspia();
 
+	string GetName() override { return "Blink"; };
 
 	virtual void BasicNeutral(ushort frameNumber) override;
 	virtual void BasicForward(ushort frameNumber) override;

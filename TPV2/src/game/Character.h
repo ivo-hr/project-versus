@@ -9,7 +9,7 @@
 
 using json = nlohmann::json;
 
-class Character : public Entity
+class Character abstract : public Entity
 {
 protected:
 	ushort playerNumber = 0;

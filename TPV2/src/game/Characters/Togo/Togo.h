@@ -9,6 +9,8 @@ public:
 	Togo(FightManager* mngr, b2Vec2 pos, char input, ushort p);
 	virtual ~Togo();
 
+	string GetName() override { return "Togo"; };
+
 	virtual void BasicNeutral(ushort frameNumber) override;
 	virtual void BasicForward(ushort frameNumber) override;
 	virtual void BasicUpward(ushort frameNumber) override;

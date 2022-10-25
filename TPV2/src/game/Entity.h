@@ -96,7 +96,7 @@ struct ParticleData
 	{ }
 };
 
-class Entity
+class Entity abstract
 {
 private:
 
@@ -149,10 +149,10 @@ protected:
 	virtual void BuildParticlePool();
 
 public:
-	string nombre;
-
 	Entity(FightManager* mngr, b2Vec2 position, float w = 3.f, float h = 3.f);
 	virtual ~Entity();
+
+	virtual string GetName() = 0;
 
 	void AddTag(const Tags& tag) { tags[tag] = true; };
 	void RemoveTag(const Tags& tag) { tags[tag] = false; };

@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
 
-class Projectile : public Entity
+class Projectile abstract : public Entity
 {
 protected:
 	int damage;

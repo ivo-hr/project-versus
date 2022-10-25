@@ -9,6 +9,8 @@ public:
 	Yuno(FightManager* mngr, b2Vec2 pos, char input, ushort p);
 	virtual ~Yuno();
 
+	string GetName() override { return "Yuno"; };
+
 	virtual void BasicNeutral(ushort frameNumber) override;
 	virtual void BasicForward(ushort frameNumber) override;
 	virtual void BasicUpward(ushort frameNumber) override;
@@ -24,6 +26,8 @@ public:
 	virtual void BubblePopped();
 
 	virtual void update() override;
+
+	virtual void OnDeath() override;
 
 private:
 

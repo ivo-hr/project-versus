@@ -8,6 +8,8 @@ public:
 	Spear(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, Togo* togo);
 	virtual ~Spear();
 
+	string GetName() override { return "Togo_Spear"; };
+
 	virtual void update() override;
 	virtual void CheckHits() override;
 	virtual bool GetHit(attackData a, Entity* attacker) { return(false);};

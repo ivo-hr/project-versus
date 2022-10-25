@@ -273,6 +273,16 @@ void Yuno::update()
 	Character::update();
 }
 
+void Yuno::OnDeath()
+{
+	if (bubble)
+	{
+		bubble->setToDelete();
+		bubble = nullptr;
+	}
+	Character::OnDeath();
+}
+
 void Yuno::BuildBoxes()
 {
 

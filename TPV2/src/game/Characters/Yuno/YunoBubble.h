@@ -12,6 +12,8 @@ public:
 	YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, InputConfig* input = nullptr);
 	virtual ~YunoBubble();
 
+	string GetName() override { return "Yuno_Bubble"; };
+
 	virtual void update() override;
 	virtual void draw() override { };
 	virtual void draw(SDL_Rect* camera) override;

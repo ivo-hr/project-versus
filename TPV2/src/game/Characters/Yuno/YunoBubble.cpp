@@ -54,6 +54,9 @@ void YunoBubble::update()
 		body->SetLinearVelocity(b2Vec2(dir * 5, 0));
 	}
 
+	if (bubbledEntity)
+		bubbledEntity->GetBody()->SetTransform(body->GetPosition(), 0);
+
 	if (bubbledEntity && bubbledEntity->ToDelete())
 	{
 		delete bubbledEntity;
@@ -129,7 +132,7 @@ void YunoBubble::CheckHits()
 		Entity* oponent = nullptr;
 		while (manager->GetNextEntity(oponent, yuno->GetLayer()))
 		{
-			if (oponent != this)
+			if (oponent->GetName() != this->GetName())
 			{
 				if (SDL_HasIntersection(&hurtbox, oponent->GetHurtbox()))
 				{
@@ -169,7 +172,7 @@ void YunoBubble::GetInsideBubble(Entity* ent)
 	if (ent->HasTag(Tags::IsProjectile))
 	{
 		ent->changeDir();
-		manager->ChangeEntityLayer(ent, layer);
+		manager->ChangeEntityLayer(ent, yuno->GetLayer());
 	}
 	else if (ent->HasTag(Tags::IsCharacter))
 	{
@@ -198,8 +201,6 @@ void YunoBubble::Pop()
 		}
 
 		bubbledEntity->GetBody()->SetEnabled(true);
-
-		bubbledEntity->GetBody()->SetTransform(body->GetPosition(), 0);
 
 		bubbledEntity->GetBody()->SetLinearVelocity(b2Vec2(0, -1));
 	}

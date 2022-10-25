@@ -8,6 +8,8 @@ public:
 	Makt(FightManager* mngr, b2Vec2 pos, char input, ushort p);
 	virtual ~Makt();
 
+	string GetName() override { return "Makt"; };
+
 	virtual void BasicNeutral(ushort frameNumber) override;
 	virtual void BasicForward(ushort frameNumber) override;
 	virtual void BasicUpward(ushort frameNumber) override;

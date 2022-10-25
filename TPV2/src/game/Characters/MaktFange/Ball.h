@@ -20,6 +20,8 @@ public:
 	MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, b2Vec2 respawn, ushort pNumber, ushort layer);
 	virtual ~MaktBall();
 
+	string GetName() override { return "Makt_Ball"; };
+
 	virtual void update() override;
 	virtual void CheckHits() override;
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox; };
