@@ -8,7 +8,7 @@ class PlayerSelectRect
 	SDLUtils* sdl = SDLUtils::instance();
 	bool gotInput;
 	int cont=0;
-	int tick = 0;
+	Uint32 tick = 0;
 public:
 	PlayerSelectRect(Texture* b);
 	void setFront(Texture* f) { front = f; };

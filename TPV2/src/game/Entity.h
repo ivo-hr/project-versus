@@ -47,7 +47,7 @@ struct HitData {
 
 	bool shieldBreak = false;
 
-	state estado = none;
+	state estado = state::none;
 	ushort power = 0;
 };
 

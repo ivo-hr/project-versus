@@ -21,8 +21,11 @@ public:
 
 	Button():tex(nullptr),x(0),y(0),w(0),h(0),pressed(false) {};
 	Button(Texture* t,int x,int y,int width,int height) :tex(t), x(x),y(y),w(width),h(height),pressed(false){};
-	Button(Texture* t, int x, int y, int width) :tex(t), x(x), y(y), w(width), h(width), pressed(false) {};
+	Button(Texture* t, int x, int y, int size) :tex(t), x(x), y(y), w(size), h(size), pressed(false) {};
 	Button(Texture* t,Texture*dt, int x, int y, int width, int height) :tex(t), x(x), y(y), w(width), h(height), pressed(false),destex(dt) {};
+	Button(Texture* t, float x, float y, float width, float height) :tex(t), x((int)x), y((int)y), w((int)width), h((int)height), pressed(false) {};
+	Button(Texture* t, float x, float y, float size) :tex(t), x((int)x), y((int)y), w((int)size), h((int)size), pressed(false) {};
+	Button(Texture* t, Texture* dt, float x, float y, float width, float height) :tex(t), x((int)x), y((int)y), w((int)width), h((int)height), pressed(false), destex(dt) {};
 	virtual ~Button() {};
 
 	void setPressTexture(Texture* t) { presstex = t; };
@@ -43,7 +46,7 @@ public:
 
 class PlayButton : public Button {
 	std::vector<Texture*> txV;
-	int cont = 0;
+	unsigned short cont = 0;
 	int frame = 0;
 public:
 	PlayButton() :Button() {};

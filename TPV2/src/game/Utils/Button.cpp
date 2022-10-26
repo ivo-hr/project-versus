@@ -51,14 +51,14 @@ bool Button::mouseClick()
 
 SDL_Rect Button::getRect()
 {
-	SDL_Rect r = build_sdlrect(x, y, w, h);
+	SDL_Rect r = { x, y, w, h };
 	return r;
 }
 
 bool Button::pointerClick(SDL_Rect rect)
 {
 	if (rendered) {
-		SDL_Rect r = build_sdlrect(x - w / 20, y - h / 20, w + w / 10, h + h / 10);
+		SDL_Rect r = build_sdlrect((float)x - (float)w / 20.f, (float)y - (float)h / 20.f, w + (float)w / 10.f, h + (float)h / 10.f);
 		return SDL_HasIntersection(&r, &rect);
 		rendered = false;
 	}
@@ -80,7 +80,7 @@ void PlayButton::render()
 {
 	rendered = true;
 	if (frame < 21) {
-		if (cont + 5 < SDL_GetTicks()) {
+		if (cont + 5u < SDL_GetTicks()) {
 			cont = SDL_GetTicks();
 			frame++;
 		}

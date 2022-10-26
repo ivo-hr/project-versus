@@ -22,7 +22,7 @@ class ConfigState : public State {
     int lastPointerClick = -3;
     ushort nMandos;
 
-    vector<short> playerInput;
+    vector<char> playerInput;
     vector<short> charactersSelect;
     vector<short> charactersTeam;
     vector<bool> usedPad;

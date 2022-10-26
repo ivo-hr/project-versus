@@ -287,7 +287,8 @@ void Makt::ThrowBall(HitData force, ushort timeHeld)
 	}
 
 	jumpStr = baseJump;
-	maxSpeed = baseSpeed - ralentizar;
+	ralentizar = baseSpeed * ((float)statePower / 100);
+	maxSpeed = (ushort)(baseSpeed - ralentizar);
 	weight = baseWeight;
 
 	HitData aux = force;
@@ -406,7 +407,8 @@ void Makt::RecoveredBall()
 	if (ball->PickUp())
 	{
 		jumpStr = ballJump;
-		maxSpeed = ballSpeed - ralentizar;
+		ralentizar = ballSpeed * ((float)statePower / 100);
+		maxSpeed = (ushort)(ballSpeed - ralentizar);
 		weight = ballWeight;
 		animAddon = "B";
 		ball = nullptr;

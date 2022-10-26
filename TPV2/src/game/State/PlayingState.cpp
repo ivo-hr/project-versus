@@ -10,7 +10,7 @@
 
 
 
-PlayingState::PlayingState(FightManager* game, vector<short>playersInput, vector<short>characters , ushort map) : State(game) {
+PlayingState::PlayingState(FightManager* game, vector<char>playersInput, vector<short>characters , ushort map) : State(game) {
 	std::vector<Character*> entities;
 	std::vector<Character*> team1;
 	std::vector<Character*> team2;
@@ -26,20 +26,20 @@ PlayingState::PlayingState(FightManager* game, vector<short>playersInput, vector
 		switch (characters[i])
 		{
 		case 0: //zero
-			entities.push_back(new NasNas(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i],i));
+			entities.push_back(new NasNas(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i],i));
 			break;
 		case 1://Gato espia
-			entities.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i],i));
+			entities.push_back(new GatoEspia(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i],i));
 			break;
 		case 2://Togo
-			entities.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i],i));
+			entities.push_back(new Togo(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i],i));
 			break;
 		case 3: //Maketo
-			entities.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i],i));
+			entities.push_back(new Makt(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i],i));
 			break;
 			
 		case 4://Yuno
-			entities.push_back(new Yuno(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+			entities.push_back(new Yuno(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			break;
 		case -1://Aleatorio
 			int charac = sdl->rand().nextInt(0, 11);
@@ -52,26 +52,26 @@ PlayingState::PlayingState(FightManager* game, vector<short>playersInput, vector
 			{
 			case 0: //nasnas
 			case 1:
-				entities.push_back(new NasNas(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				entities.push_back(new NasNas(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				break;
 			case 2://Gato espia
 			case 3:
-				entities.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				entities.push_back(new GatoEspia(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				break;
 			case 4://Togo
 			case 5:
-				entities.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				entities.push_back(new Togo(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				break;
 			case 6: //Maketo
 			case 7:
-				entities.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				entities.push_back(new Makt(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				break;
 			case 8: //Yuno
 			case 9:
-				entities.push_back(new Yuno(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				entities.push_back(new Yuno(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				break;
 			case 10: //Zero
-				entities.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				entities.push_back(new CharacterZero(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				break;
 			}
 			break;
@@ -85,7 +85,7 @@ PlayingState::PlayingState(FightManager* game, vector<short>playersInput, vector
 
 }
 
-PlayingState::PlayingState(FightManager* game, vector<short> playersInput, vector<short> characters, vector<short> teams, ushort map) : State(game)
+PlayingState::PlayingState(FightManager* game, vector<char> playersInput, vector<short> characters, vector<short> teams, ushort map) : State(game)
 {
 	std::vector<Character*> team1;
 	std::vector<Character*> team2;
@@ -98,42 +98,42 @@ PlayingState::PlayingState(FightManager* game, vector<short> playersInput, vecto
 		{
 		case 0: //zero
 			if (teams[i] == 0)
-				team1.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				team1.push_back(new CharacterZero(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			else
 			{
-				team2.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				team2.push_back(new CharacterZero(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			}
 			break;
 		case 1://Gato espia
 			if (teams[i] == 0)
-				team1.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				team1.push_back(new GatoEspia(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			else
 			{
-				team2.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				team2.push_back(new GatoEspia(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			}
 			break;
 		case 2://Togo
 			if (teams[i] == 0)
-				team1.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				team1.push_back(new Togo(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			else
 			{
-				team2.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				team2.push_back(new Togo(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			}
 			break;
 		case 3: //Maketo
 			if (teams[i] == 0)
-				team1.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				team1.push_back(new Makt(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			else
 			{
-				team2.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				team2.push_back(new Makt(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			}
 			break;
 		case 4://Yuno
 			if (teams[i] == 0)
-				team1.push_back(new Yuno(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				team1.push_back(new Yuno(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			else
 			{
-				team2.push_back(new Yuno(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+				team2.push_back(new Yuno(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			}
 			break;
 		case -1://Aleatorio
@@ -143,53 +143,53 @@ PlayingState::PlayingState(FightManager* game, vector<short> playersInput, vecto
 			case 0: //Nasnas
 			case 1:
 				if (teams[i] == 0)
-					team1.push_back(new NasNas(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+					team1.push_back(new NasNas(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				else
 				{
-					team2.push_back(new NasNas(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+					team2.push_back(new NasNas(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				}
 				break;
 			case 2://Gato espia
 			case 3:
 				if (teams[i] == 0)
-					team1.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+					team1.push_back(new GatoEspia(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				else
 				{
-					team2.push_back(new GatoEspia(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+					team2.push_back(new GatoEspia(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				}
 				break;
 			case 4://Togo
 			case 5:
 				if (teams[i] == 0)
-					team1.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+					team1.push_back(new Togo(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				else
 				{
-					team2.push_back(new Togo(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+					team2.push_back(new Togo(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				}
 				break;
 			case 6: //Maketo
 			case 7:
 				if (teams[i] == 0)
-					team1.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+					team1.push_back(new Makt(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				else
 				{
-					team2.push_back(new Makt(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+					team2.push_back(new Makt(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				}
 				break;
 			case 8:
 			case 9:
 				if (teams[i] == 0)
-					team1.push_back(new Yuno(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+					team1.push_back(new Yuno(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				else
 				{
-					team2.push_back(new Yuno(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+					team2.push_back(new Yuno(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				}
 			case 10: //Zero
 				if (teams[i] == 0)
-					team1.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+					team1.push_back(new CharacterZero(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				else
 				{
-					team2.push_back(new CharacterZero(fmngr, b2Vec2(20 + i * 10, 0), playersInput[i], i));
+					team2.push_back(new CharacterZero(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				}
 				break;
 			}

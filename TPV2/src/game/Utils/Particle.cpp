@@ -268,14 +268,17 @@ void Particle::draw(SDL_Rect* camera)
 	{
 		SDL_Rect aux = data.dest;
 
+		float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
+		float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+
 		aux.x -= camera->x;
-		aux.x *= (manager->GetActualWidth() / (float)camera->w);
+		aux.x = (int)((float)aux.x * wDiff);
 
 		aux.y -= camera->y;
-		aux.y *= (manager->GetActualWidth() / (float)camera->w);
+		aux.y = (int)((float)aux.y * hDiff);
 
-		aux.w *= (manager->GetActualWidth() / (float)camera->w);
-		aux.h *= (manager->GetActualWidth() / (float)camera->w);
+		aux.w = (int)((float)aux.w * wDiff);
+		aux.h = (int)((float)aux.h * hDiff);
 
 		if (data.dir < 0)
 		{

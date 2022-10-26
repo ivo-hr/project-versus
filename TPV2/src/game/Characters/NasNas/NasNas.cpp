@@ -373,7 +373,7 @@ void NasNas::drawHUD(ushort numOfPlayer)
 	SDL_SetRenderDrawColor(sdl->renderer(), 0x53, 0x1d, 0x1e, 0x5f);
 	SDL_RenderFillRect(sdl->renderer(), &aaa);
 
-	SDL_Rect aaab = { x, y, (w_ / 15) * ((float)mana / (float)maxMana), w_ / 45 };
+	SDL_Rect aaab = { x, y, (int)(((float)w_ / 15.f) * ((float)mana / (float)maxMana)), w_ / 45 };
 
 	SDL_SetRenderDrawColor(sdl->renderer(), 0x53, 0xed, 0xee, 0xff);
 	SDL_RenderFillRect(sdl->renderer(), &aaab);
@@ -444,7 +444,7 @@ void NasNas::BuildBoxes()
 		manager->GetSDLCoors(
 		body->GetPosition().x + (dir * width * 3),
 		body->GetPosition().y,
-		width * 3.5,
+		width * 3.5f,
 		height / 6);
 
 	attacks["specialF"].hitBoxes[2].hitdata.estado = electric;

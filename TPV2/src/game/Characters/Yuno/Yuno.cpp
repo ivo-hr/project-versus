@@ -74,7 +74,7 @@ void Yuno::BasicForward(ushort frameNumber)
 	{
 		anim->StartAnimation("basicF");
 		sdl->soundEffects().at("catAtk0").play();
-		speed = dir * 40;
+		speed = dir * 40.f;
 	}
 	else if (frameNumber == attacks["basicF"].keyFrames[0])
 	{
@@ -82,7 +82,7 @@ void Yuno::BasicForward(ushort frameNumber)
 	}
 	else if (frameNumber == attacks["basicF"].keyFrames[1])
 	{
-		speed = dir * 40;
+		speed = dir * 40.f;
 	}
 	else if (frameNumber == attacks["basicF"].keyFrames[2])
 	{
@@ -303,7 +303,7 @@ void Yuno::BuildBoxes()
 		manager->GetSDLCoors(
 		body->GetPosition().x,
 		body->GetPosition().y - height * 0.6f,
-		width*1.5,
+		width * 1.5f,
 		height * 0.5f);
 	attacks["basicU"].hitBoxes[1].box =
 		manager->GetSDLCoors(
@@ -326,7 +326,7 @@ void Yuno::BuildBoxes()
 
 	attacks["specialD"].hitBoxes[0].box =
 		manager->GetSDLCoors(body->GetPosition().x,
-			body->GetPosition().y-1.5,
+			body->GetPosition().y - 1.5f,
 			width,
-			height*0.5);
+			height * 0.5f);
 }

@@ -15,9 +15,10 @@ Projectile::Projectile(FightManager* manager, b2Vec2 pos, b2Vec2 dir, float widt
 		this->dir = -1;
 	}
 
-	ang = (acos(-vecDir.x) * 180) / M_PI;
+	ang = (acos(-vecDir.x) * 180) / (float)M_PI;
 
-	vecDir *= speed;
+	vecDir.x = vecDir.x * (float)speed;
+	vecDir.y = vecDir.y * (float)speed;
 
 	body->SetGravityScale(0);
 
@@ -56,17 +57,17 @@ void Projectile::draw(SDL_Rect* camera)
 {
 	SDL_Rect aux = hurtbox;
 
-	//si hurtbox.x = camera w + camera x                   aux.x = manager->GetActualWidth()
-	//   hurtbox.x = camera w / 2 + camera x               aux.x = manager->GetActualWidth() / 2
+	float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
+	float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
 
 	aux.x -= camera->x;
-	aux.x *= (manager->GetActualWidth() / (float)camera->w);
+	aux.x = (int)((float)aux.x * wDiff);
 
 	aux.y -= camera->y;
-	aux.y *= (manager->GetActualHeight() / (float)camera->h);
+	aux.y = (int)((float)aux.y * hDiff);
 
-	aux.w *= (manager->GetActualWidth() / (float)camera->w);
-	aux.h *= (manager->GetActualHeight() / (float)camera->h);
+	aux.w = (int)((float)aux.w * wDiff);
+	aux.h = (int)((float)aux.h * hDiff);
 
 	texture->render(aux, ang);
 
@@ -120,7 +121,7 @@ bool Projectile::changeDir()
 	outFor = 0; 
 	duration -= 10;
 	vecDir = -vecDir;
-	data.damage *= 1.2f;
+	data.damage = (ushort)((float)data.damage * 1.2f);
 	reflected = 3;
 	dir = -dir;
 	return true;

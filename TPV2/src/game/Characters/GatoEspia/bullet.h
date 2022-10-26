@@ -21,6 +21,4 @@ public:
 	virtual ~Bullet();
 
 	string GetName() override { return "Bullet"; };
-
-	virtual SDL_Rect* GetHurtbox() { return &hurtbox;};
 };

@@ -101,7 +101,7 @@ AnimationManager::AnimationManager(Entity* entity, Texture* textura, spriteSheet
 		for (int j = 0; j < data.spritesInX; j++)
 		{
 			//Creamos el vector del cual sacaremos todos los sprites por separado
-			SpriteIndex.push_back(b2Vec2(j, i));
+			SpriteIndex.push_back(Vector2D((float)j, (float)i));
 		}
 	}
 	//w y h representan el tamaño de cada sprite
@@ -110,18 +110,18 @@ AnimationManager::AnimationManager(Entity* entity, Texture* textura, spriteSheet
 
 	//ent->GetManager()->GetScreenRatio() a 1920, 1080 esto es 3.75
 
-	xOffset = (data.leftOffset * ent->GetWidth()) * ent->GetManager()->GetScreenRatio() / 4.7f;		//En zero (offset = 4, width = 3, tiene que dar APROX 10
+	xOffset = (short)(((float)data.leftOffset * ent->GetWidth()) * ent->GetManager()->GetScreenRatio() / 4.7f);		//En zero (offset = 4, width = 3, tiene que dar APROX 10
 	//xOffset = 10.f;
-	yOffset = data.upOffset * ent->GetHeight() * ent->GetManager()->GetScreenRatio() / 4.7f;			//En zero (offset = 48, height = 3, tiene que dar APROX 115
+	yOffset = (short)(((float)data.upOffset * ent->GetHeight()) * ent->GetManager()->GetScreenRatio() / 4.7f);		//En zero (offset = 48, height = 3, tiene que dar APROX 115
 	//yOffset = 115.f;
 
 
 	//Este rect representa donde se va a renderizar la textura una vez recortada
 	dest = *entity->GetHurtbox();
 
-	dest.w += data.sizeXOffset * ent->GetWidth() * ent->GetManager()->GetScreenRatio() / 4.7f;		//En zero (offset = 28, width = 3, tiene que dar APROX 68
+	dest.w += (int)(((float)data.sizeXOffset * ent->GetWidth()) * ent->GetManager()->GetScreenRatio() / 4.7f);		//En zero (offset = 28, width = 3, tiene que dar APROX 68
 	//dest.w += 68;
-	dest.h += data.sizeYOffset * ent->GetHeight() * ent->GetManager()->GetScreenRatio() / 4.7f;		//En zero (offset = 48, height = 3, tiene que dar APROX 115
+	dest.h += (int)(((float)data.sizeYOffset * ent->GetHeight()) * ent->GetManager()->GetScreenRatio() / 4.7f);		//En zero (offset = 48, height = 3, tiene que dar APROX 115
 	//dest.h += 115.f;
 
 	//Inicializamos la animacion primera (en zero es idle)
@@ -146,15 +146,15 @@ void AnimationManager::update()
 		dest.x = aux.x - xOffset;
 		dest.y = aux.y - yOffset;
 
-		recorteSheet = { w * (int)SpriteIndex[currIndex].x, h * (int)SpriteIndex[currIndex].y, w, h };
+		recorteSheet = { w * (int)SpriteIndex[currIndex].getX(), h * (int)SpriteIndex[currIndex].getY(), w, h };
 
 		lookingRight = true;
 	}
 	else {
-		dest.x = aux.x + xOffset - info.sizeXOffset * ent->GetWidth() * ent->GetManager()->GetScreenRatio() / 4.7f;
+		dest.x = aux.x + xOffset - (short)((float)((float)info.sizeXOffset * ent->GetWidth()) * ent->GetManager()->GetScreenRatio() / 4.7f);
 		dest.y = aux.y - yOffset;
 
-		recorteSheet = { w * (int)SpriteIndex[currIndex].x, h * (int)SpriteIndex[currIndex].y, w, h };
+		recorteSheet = { w * (int)SpriteIndex[currIndex].getX(), h * (int)SpriteIndex[currIndex].getY(), w, h };
 
 		lookingRight = false;
 	}
@@ -180,14 +180,17 @@ void AnimationManager::render(SDL_Rect* camera)
 {
 	SDL_Rect aux = dest;
 
+	float wDiff = (float)ent->GetManager()->GetActualWidth() / (float)camera->w;
+	float hDiff = (float)ent->GetManager()->GetActualHeight() / (float)camera->h;
+
 	aux.x -= camera->x;
-	aux.x *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
+	aux.x = (int)((float)aux.x * wDiff);
 
 	aux.y -= camera->y;
-	aux.y *= (ent->GetManager()->GetActualWidth() / (float)camera->w);		//Se puede cambiar por width y sigue siendo la misma proporcion
+	aux.y = (int)((float)aux.y * hDiff);
 
-	aux.w *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
-	aux.h *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
+	aux.w = (int)((float)aux.w * wDiff);
+	aux.h = (int)((float)aux.h * hDiff);
 
 	if (lookingRight) {
 		texture->render(recorteSheet, aux);
@@ -201,17 +204,20 @@ void AnimationManager::render(SDL_Rect* camera, const Vector2D& offset)
 {
 	SDL_Rect aux = dest;
 
+	float wDiff = (float)ent->GetManager()->GetActualWidth() / (float)camera->w;
+	float hDiff = (float)ent->GetManager()->GetActualHeight() / (float)camera->h;
+
 	aux.x -= camera->x;
-	aux.x *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
+	aux.x = (int)((float)aux.x * wDiff);
 
 	aux.y -= camera->y;
-	aux.y *= (ent->GetManager()->GetActualWidth() / (float)camera->w);		//Se puede cambiar por width y sigue siendo la misma proporcion
+	aux.y = (int)((float)aux.y * hDiff);
 
-	aux.w *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
-	aux.h *= (ent->GetManager()->GetActualWidth() / (float)camera->w);
+	aux.w = (int)((float)aux.w * wDiff);
+	aux.h = (int)((float)aux.h * hDiff);
 
-	aux.x += offset.getX();
-	aux.y += offset.getY();
+	aux.x += (int)nearbyint(offset.getX());
+	aux.y += (int)nearbyint(offset.getY());
 
 	if (lookingRight) {
 		texture->render(recorteSheet, aux);

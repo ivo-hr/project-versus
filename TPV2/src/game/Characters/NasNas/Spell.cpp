@@ -35,17 +35,17 @@ void Spell::draw(SDL_Rect* camera)
 {
 	SDL_Rect aux = hurtbox;
 
-	//si hurtbox.x = camera w + camera x                   aux.x = manager->GetActualWidth()
-	//   hurtbox.x = camera w / 2 + camera x               aux.x = manager->GetActualWidth() / 2
+	float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
+	float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
 
 	aux.x -= camera->x;
-	aux.x *= (manager->GetActualWidth() / (float)camera->w);
+	aux.x = (int)((float)aux.x * wDiff);
 
 	aux.y -= camera->y;
-	aux.y *= (manager->GetActualHeight() / (float)camera->h);
+	aux.y = (int)((float)aux.y * hDiff);
 
-	aux.w *= (manager->GetActualWidth() / (float)camera->w);
-	aux.h *= (manager->GetActualHeight() / (float)camera->h);
+	aux.w = (int)((float)aux.w * wDiff);
+	aux.h = (int)((float)aux.h * hDiff);
 
 	SDL_Rect src = { 0 + sprite, 1264, 35, 16 };
 
@@ -66,5 +66,5 @@ void Spell::draw(SDL_Rect* camera)
 			sprite = 0;
 		}
 	}
-	anim += 0.1;
+	anim += 0.1f;
 }

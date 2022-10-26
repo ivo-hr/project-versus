@@ -51,7 +51,7 @@ void YunoBubble::update()
 	}
 	else
 	{
-		body->SetLinearVelocity(b2Vec2(dir * 5, 0));
+		body->SetLinearVelocity(b2Vec2((float)(dir * 5), 0.f));
 	}
 
 	if (bubbledEntity)
@@ -77,14 +77,17 @@ void YunoBubble::draw(SDL_Rect* camera)
 
 			SDL_Rect aux = texDest;
 
+			float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
+			float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+
 			aux.x -= camera->x;
-			aux.x *= (manager->GetActualWidth() / (float)camera->w);
+			aux.x = (int)((float)aux.x * wDiff);
 
 			aux.y -= camera->y;
-			aux.y *= (manager->GetActualHeight() / (float)camera->h);
+			aux.y = (int)((float)aux.y * hDiff);
 
-			aux.w *= (manager->GetActualWidth() / (float)camera->w);
-			aux.h *= (manager->GetActualHeight() / (float)camera->h);
+			aux.w = (int)((float)aux.w * wDiff);
+			aux.h = (int)((float)aux.h * hDiff);
 
 			bubbledEntity->getTexture()->render(texSrc, aux);
 
@@ -92,14 +95,17 @@ void YunoBubble::draw(SDL_Rect* camera)
 
 		SDL_Rect aux = hurtbox;
 
+		float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
+		float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+
 		aux.x -= camera->x;
-		aux.x *= (manager->GetActualWidth() / (float)camera->w);
+		aux.x = (int)((float)aux.x * wDiff);
 
 		aux.y -= camera->y;
-		aux.y *= (manager->GetActualHeight() / (float)camera->h);
+		aux.y = (int)((float)aux.y * hDiff);
 
-		aux.w *= (manager->GetActualWidth() / (float)camera->w);
-		aux.h *= (manager->GetActualHeight() / (float)camera->h);
+		aux.w = (int)((float)aux.w * wDiff);
+		aux.h = (int)((float)aux.h * hDiff);
 
 		texture->render(aux);
 

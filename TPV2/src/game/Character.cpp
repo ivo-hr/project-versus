@@ -43,7 +43,7 @@ json Character::ReadJson(std::string filename, spriteSheetData &spData)
 		for (uint16 j = 0u; j < hitBoxes.size(); j++)
 		{
 			hitboxDataAux.hitdata.damage = hitBoxes[j]["hitData"]["damage"];
-			hitboxDataAux.hitdata.direction = b2Vec2(hitBoxes[j]["hitData"]["b2vecX"], hitBoxes[j]["hitData"]["b2vecY"]);
+			hitboxDataAux.hitdata.direction = b2Vec2((float)hitBoxes[j]["hitData"]["b2vecX"], (float)hitBoxes[j]["hitData"]["b2vecY"]);
 			hitboxDataAux.hitdata.direction.Normalize();
 			hitboxDataAux.hitdata.base = hitBoxes[j]["hitData"]["base"];
 			hitboxDataAux.hitdata.multiplier = hitBoxes[j]["hitData"]["multiplier"];
@@ -365,7 +365,7 @@ void Character::update()
 	{
 		if (efEstado == water)
 		{
-			maxSpeed += ralentizar;
+			maxSpeed += (ushort)ralentizar;
 			ralentizar = 0;
 		}
 		stateCont = 0;
@@ -542,7 +542,7 @@ void Character::AllowMovement(bool changeDirection, bool showParticles)
 			if (showParticles && speed > -0.01f)
 				AddParticle("run", Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y + hurtbox.h), dir, false);
 
-			speed = -maxSpeed;
+			speed = -(float)maxSpeed;
 		}
 	}
 }
@@ -771,8 +771,8 @@ void Character::CheckHits()
 		}
 		else
 		{
-			hitboxes[i]->box.x = (hurtbox.x + (hurtbox.w / 2) + hitboxes[i]->charOffset.getX()) - hitboxes[i]->box.w / 2;
-			hitboxes[i]->box.y = (hurtbox.y + (hurtbox.h / 2) + hitboxes[i]->charOffset.getY()) - hitboxes[i]->box.h / 2;
+			hitboxes[i]->box.x = (int)(hurtbox.x + (hurtbox.w / 2) + hitboxes[i]->charOffset.getX()) - hitboxes[i]->box.w / 2;
+			hitboxes[i]->box.y = (int)(hurtbox.y + (hurtbox.h / 2) + hitboxes[i]->charOffset.getY()) - hitboxes[i]->box.h / 2;
 			hitboxes[i]->outFor++;
 		}
 
@@ -906,6 +906,8 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 		return true;
 	}
 
+	return false;
+
 }
 
 void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag, Entity* attacker, bool& controlShake, bool& controlCamShake)
@@ -1029,7 +1031,7 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 			{
 				if (efEstado == water)
 				{
-					maxSpeed += ralentizar;
+					maxSpeed += (ushort)ralentizar;
 					ralentizar = 0;
 				}
 				int poder = (statePower + a.power) / 3;
@@ -1045,12 +1047,12 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 			{
 				if (efEstado == water)
 				{
-					maxSpeed += ralentizar;
+					maxSpeed += (ushort)ralentizar;
 					ralentizar = 0;
 				}
 				if (a.estado == electric)
 				{
-					stun += statePower * 1.5f;
+					stun += (ushort)((float)statePower * 1.5f);
 
 					AddParticle("electric", Vector2D(hurtbox.x, hurtbox.y), 1, true);
 				}
@@ -1067,7 +1069,7 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 			statePower = a.power;
 			if (efEstado == electric)
 			{
-				stun += statePower * 1.5f;
+				stun += (ushort)((float)statePower * 1.5f);
 			}
 		}
 		//efecto de estado básico
@@ -1077,14 +1079,14 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 			statePower = a.power;
 			if (efEstado == electric)
 			{
-				stun += statePower * 1.5f;
+				stun += (ushort)((float)statePower * 1.5f);
 
 				AddParticle("electric", Vector2D(hurtbox.x, hurtbox.y), 1, true);
 			}
 			else if (efEstado == water)
 			{
 				ralentizar = maxSpeed * ((float)statePower / 100);
-				maxSpeed -= ralentizar;
+				maxSpeed -= (ushort)ralentizar;
 
 				AddParticle("water", Vector2D(hurtbox.x, hurtbox.y), 1, true);
 			}
@@ -1384,7 +1386,7 @@ void Character::OnDeath()
 	{
 		if(efEstado == water)
 		{
-			maxSpeed += ralentizar;
+			maxSpeed += (ushort)ralentizar;
 			ralentizar = 0;
 		}
 		efEstado = none;
@@ -1553,14 +1555,14 @@ void Character::drawHUD(ushort numOfPlayer)
 	}
 	else
 	{
-		Uint32 a = (((float)damageTaken - 255.f) / (float)SDL_MAX_SINT16) * 255 * 20;
+		Uint32 a = (Uint32)((((float)damageTaken - 255.f) / (float)SDL_MAX_SINT16) * 255 * 20);
 		if (a < 255)
 			r = 255 - a;
 		else
 			r = 0;
 		g = 0;
 	}
-	Uint32 color = r * pow(16, 6) + g * pow(16, 4);
+	Uint32 color = (Uint32)(r * pow(16, 6) + g * pow(16, 4));
 	SDL_Color c = build_sdlcolor(color);
 	string fontstringp = "nes" + to_string(10 * w_ / sdl->width());
 	auto& fontp = sdl->fonts().at(fontstringp);

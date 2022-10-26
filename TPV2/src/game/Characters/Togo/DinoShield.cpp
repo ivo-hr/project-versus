@@ -1,12 +1,10 @@
-﻿
-#include "../../Utils/AnimationManager.h"	﻿
+﻿#include "DinoShield.h"
 #include "Togo.h"
-#include "DinoShield.h"
-#include"../../PlayingState/FightManager.h"
+#include "../../PlayingState/FightManager.h"
 #include "../../../utils/CheckML.h"
 
 DinoShield::DinoShield(FightManager* manager, b2Vec2 pos) :
-	Entity(manager, pos, 7.5, 5)
+	Entity(manager, pos, 7.5f, 5.f)
 {
 	hurtbox = manager->GetSDLCoors(body, width, height);
 
@@ -34,17 +32,17 @@ void DinoShield::draw(SDL_Rect* camera)
 {
 	SDL_Rect aux = hurtbox;
 
-	//si hurtbox.x = camera w + camera x                   aux.x = manager->GetActualWidth()
-	//   hurtbox.x = camera w / 2 + camera x               aux.x = manager->GetActualWidth() / 2
+	float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
+	float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
 
 	aux.x -= camera->x;
-	aux.x *= (manager->GetActualWidth() / (float)camera->w);
+	aux.x = (int)((float)aux.x * wDiff);
 
 	aux.y -= camera->y;
-	aux.y *= (manager->GetActualHeight() / (float)camera->h);
+	aux.y = (int)((float)aux.y * hDiff);
 
-	aux.w *= (manager->GetActualWidth() / (float)camera->w);
-	aux.h *= (manager->GetActualHeight() / (float)camera->h);
+	aux.w = (int)((float)aux.w * wDiff);
+	aux.h = (int)((float)aux.h * hDiff);
 
 	SDL_Rect src = { 896 - spriteX, 903 + spriteY, 128, 82};
 

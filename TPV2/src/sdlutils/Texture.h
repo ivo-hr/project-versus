@@ -55,7 +55,7 @@ public:
 	//
 	inline void render(const SDL_Rect &src, const SDL_Rect &dest, double angle,
 			const SDL_Point *p = nullptr,
-			SDL_RendererFlip flip = SDL_FLIP_NONE) {
+			SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE) {
 		assert(texture_ != nullptr);
 		SDL_RenderCopyEx(renderer_, texture_, &src, &dest, angle, p, flip);
 	}

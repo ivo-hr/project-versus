@@ -9,8 +9,8 @@ ConfigState::ConfigState(FightManager* game , short fInput) : State(game), numOf
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     initcharact();
-    plusB = new Button(&sdl->images().at("pB"), w * 14 / 15, h - w * 2.4f / 15, w / 15, w / 15);
-    minusB = new Button(&sdl->images().at("mB"), w * 14 / 15, h - w * 1.2f / 15, w / 15, w / 15);
+    plusB = new Button(&sdl->images().at("pB"),  (int)(w * 14 / 15), (int)(h - w * 2.4f / 15), (int)(w / 15));
+    minusB = new Button(&sdl->images().at("mB"), (int)(w * 14 / 15), (int)(h - w * 1.2f / 15), (int)(w / 15));
     play = new PlayButton(&sdl->images().at("play"), 0, 0, w, h);
     normalmode = new Button(&sdl->images().at("MNormalC"), &sdl->images().at("MNormalB"), (w / 2) + (h / 168), h / 168, h / 7, h / 14);
     normalmode->active(true);
@@ -25,7 +25,7 @@ ConfigState::ConfigState(FightManager* game , short fInput) : State(game), numOf
     initMapBut();
     usedKeyboard.resize(2);
     playerInput.resize(1);
-    playerInput[0] = fInput;
+    playerInput[0] = (char)fInput;
     playerTexture[0]->setgotInput(true);
     charactersSelect.resize(2);
     nMandos = SDL_NumJoysticks();
@@ -176,7 +176,7 @@ void ConfigState::setPointer()
     int dist = (w * 12 / 13) / numOfplayer;
     int offset = dist - w / 13;
     playerPointers[playerInput.size() - 1]->setActive(true);
-    playerPointers[playerInput.size() - 1]->setPosition((playerInput.size() - 1) * dist + offset, 676);
+    playerPointers[playerInput.size() - 1]->setPosition(((int)playerInput.size() - 1) * dist + offset, (int)(fmngr->GetActualHeight() / 2.f));
 }
 void ConfigState::configTeamChoose()
 {
@@ -212,7 +212,7 @@ void ConfigState::searchInput()
     if (playerInput.size() < numOfplayer) {
         if (SDL_NumJoysticks() == nMandos)
         {
-            for (auto i = 0u; i < SDL_NumJoysticks(); i++) {
+            for (auto i = 0; i < SDL_NumJoysticks(); i++) {
                 if (ih.xboxGetAxesState(i, 1) == -1 && !usedPad[i]) {
                     usedPad[i] = true;
                     playerInput.push_back(i);
@@ -225,19 +225,19 @@ void ConfigState::searchInput()
             }
         }
         else if (SDL_NumJoysticks() > nMandos) { //se ha enchufado nuevo mando
-            vector<short> aux = playerInput;
-            for (auto i = 0u; i < SDL_NumJoysticks(); i++) {
+            vector<char> aux = playerInput;
+            for (auto i = 0; i < SDL_NumJoysticks(); i++) {
                 if (ih.xboxGetAxesState(i, 1) == -1) {
                     bool nes = false;
-                    for (auto j = 0; j < aux.size(); j++)
+                    for (ushort j = 0u; j < aux.size(); j++)
                     {
                         if (i == aux[j]) {
                             nes = true;
-                            j = aux.size();
+                            j = (ushort)aux.size();
                         }
                     }
                     if (nes) {
-                        for (auto x = 0; x < aux.size(); x++)
+                        for (ushort x = 0u; x < aux.size(); x++)
                         {
                             if (aux[x]>=0)
                             {
@@ -619,8 +619,8 @@ void ConfigState::playerMenuRender()
 
             for (int j = 0; j < 2; j++)
             {
-                p[i][j]->setX((i * dist + offset + w / 17.5f + j * (w / 20)));
-                p[i][j]->setY((int)h * 18 / 20);
+                p[i][j]->setX((int)(i * dist + offset + w / 17.5f + j * (w / 20)));
+                p[i][j]->setY((int)(h * 18.f / 20.f));
                 p[i][j]->render();
             }
         }
@@ -758,11 +758,11 @@ void ConfigState::initcharact()
 {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
-    int dist = ((float)w * 9.f / 10.f) / 5.f;
-    int offset = dist - (float)w / 10.f + (float)w / 68.7f;
+    int dist = (int)(((float)w * 9.f / 10.f) / 5.f);
+    int offset = (int)(dist - (float)w / 10.f + (float)w / 68.7f);
 
-    int distY = ((float)w * 3.f / 24.f);
-    int offsetY = (float)w / 12.f + (float)w / 70.f;
+    int distY = (int)((float)w * 3.f / 24.f);
+    int offsetY = (int)((float)w / 12.f + (float)w / 70.f);
 
     int buttonSize = (int)((float)w / 15.4f);
     //c % 4 * dist + offset), (int)((ts(80) * j) + ts(50));

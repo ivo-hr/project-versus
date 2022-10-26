@@ -190,7 +190,7 @@ void ConfigurationState::draw() {
     showText(to_string(sfxV), fontSiz, (int)(w * 31 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
 
 
-    showText("FULLSCREEN", fontSiz, (int)(w - (w * 5 / 6 + w / 16)), (int)h * 1.2f / 2 - fontSiz / 2, build_sdlcolor(0x33FFFC00));
+    showText("FULLSCREEN", fontSiz, (int)(w - (w * 5 / 6 + w / 16)), (int)(h * 1.2f / 2 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
 
     auto flags = SDL_GetWindowFlags(sdl->window());
     if (flags & SDL_WINDOW_FULLSCREEN)

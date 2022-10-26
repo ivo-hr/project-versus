@@ -45,6 +45,12 @@ struct B2_API b2Vec2
 
 	/// Construct using coordinates.
 	b2Vec2(float xIn, float yIn) : x(xIn), y(yIn) {}
+	/// Construct using coordinates.
+	b2Vec2(float xIn, int yIn) : x(xIn), y((float)yIn) {}
+	/// Construct using coordinates.
+	b2Vec2(int xIn, float yIn) : x((float)xIn), y(yIn) {}
+	/// Construct using coordinates.
+	b2Vec2(int xIn, int yIn) : x((float)xIn), y((float)yIn) {}
 
 	/// Set this vector to all zeros.
 	void SetZero() { x = 0.0f; y = 0.0f; }

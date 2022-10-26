@@ -25,7 +25,7 @@ MenuState::~MenuState()
 }
 
 void MenuState::update() {
-    for (auto i = 0u; i < SDL_NumJoysticks(); i++) {
+    for (auto i = 0; i < SDL_NumJoysticks(); i++) {
         if (ih.xboxGetAxesState(i, 1) == -1) {
             std::cout << i << std::endl;
             Finput = i;

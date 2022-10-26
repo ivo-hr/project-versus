@@ -93,7 +93,7 @@ class FightManager : public StateMachine
 
 	void startCount();
 	short scount = 4;
-	int startticks = 0;
+	unsigned int startticks = 0;
 public:
 
 	FightManager(SDLUtils* sdl);

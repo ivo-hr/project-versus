@@ -16,19 +16,19 @@ void PlayerPointer::move(int dir)
 	{
 	case 0:
 		if (y > 0)
-		y = y - vel;
+		y = (int)((float)y - vel);
 		break;
 	case 1:
 		if (y+h < wh)
-		y = y + vel;
+		y = (int)((float)y + vel);
 		break;
 	case 2:
 		if (x > 0)
-		x = x - vel;
+		x = (int)((float)x - vel);
 		break;
 	case 3:
 		if (x+w < ww)
-		x = x + vel;
+		x = (int)((float)x + vel);
 		break;
 	default:
 		break;
@@ -37,7 +37,7 @@ void PlayerPointer::move(int dir)
 
 SDL_Rect PlayerPointer::getRect()
 {
-	SDL_Rect r = build_sdlrect(x, y, w, h);
+	SDL_Rect r = { x, y, w, h };
 	return r;
 }
 

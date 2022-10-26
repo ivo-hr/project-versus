@@ -190,7 +190,7 @@ void Togo::SpecialNeutral(ushort frameNumber)
 		else if (frameNumber == attacks["specialN"].keyFrames[0])
 		{
 			anim->StartAnimation("especialNHold");
-			dShield = new DinoShield(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - GetHeight() / 4.5));
+			dShield = new DinoShield(manager, b2Vec2(body->GetPosition().x, body->GetPosition().y - GetHeight() / 4.5f));
 
 			manager->AddEntity(dShield, layer);
 
@@ -220,7 +220,7 @@ void Togo::SpecialForward(ushort frameNumber)
 
 	if (frameNumber < attacks["specialL"].keyFrames[0])
 	{
-		speed = dir * 34;
+		speed = dir * 34.f;
 	}
 
 	if (frameNumber <= 0) {
@@ -231,7 +231,7 @@ void Togo::SpecialForward(ushort frameNumber)
 	{
 		moving = false;
 		body->SetLinearVelocity(b2Vec2(dir * 30, 0));
-		speed = dir * 34;
+		speed = dir * 34.f;
 		
 		bite = manager->GetSDLCoors(
 			body->GetPosition().x + (dir * width * 1.5f),
@@ -367,14 +367,17 @@ void Togo::draw(SDL_Rect* camera)
 
 	SDL_Rect aux = bite;
 
+	float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
+	float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+
 	aux.x -= camera->x;
-	aux.x *= (manager->GetActualWidth() / (float)camera->w);
+	aux.x = (int)((float)aux.x * wDiff);
 
 	aux.y -= camera->y;
-	aux.y *= (manager->GetActualWidth() / (float)camera->w);
+	aux.y = (int)((float)aux.y * hDiff);
 
-	aux.w *= (manager->GetActualWidth() / (float)camera->w);
-	aux.h *= (manager->GetActualWidth() / (float)camera->w);
+	aux.w = (int)((float)aux.w * wDiff);
+	aux.h = (int)((float)aux.h * hDiff);
 
 	SDL_SetRenderDrawColor(sdl->renderer(), 0, 255, 255, 255);
 

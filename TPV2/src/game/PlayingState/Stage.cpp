@@ -140,7 +140,7 @@ void Stage::LoadJsonStage(std::string fileName, int width, int height)
 
 	for (uint16 i = 0u; i < 4; i++)
 	{
-		playerSpawns.push_back(b2Vec2(player[i % 4]["X"], player[i % 4]["Y"]));
+		playerSpawns.push_back(b2Vec2((float)player[i % 4]["X"], (float)player[i % 4]["Y"]));
 	}
 }
 
@@ -161,14 +161,14 @@ void Stage::Update(SDL_Rect* camera)
 	float widthMat = (float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - backGroundParallax)));
 	float heightMat = (float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - backGroundParallax)));
 
-	auxDeath.x = -camera->x * backGroundParallax;
-	auxDeath.x *= widthMat;
+	auxDeath.x = (int)(-camera->x * backGroundParallax);
+	auxDeath.x = (int)((float)auxDeath.x * widthMat);
 
-	auxDeath.y = -camera->y * backGroundParallax;
-	auxDeath.y *= heightMat;
+	auxDeath.y = (int)(-camera->y * backGroundParallax);
+	auxDeath.y = (int)((float)auxDeath.y * heightMat);
 
-	auxDeath.w *= widthMat;
-	auxDeath.h *= heightMat;
+	auxDeath.w = (int)((float)auxDeath.w * widthMat);
+	auxDeath.h = (int)((float)auxDeath.h * heightMat);
 
 	background->render(auxDeath);
 
@@ -179,14 +179,14 @@ void Stage::Update(SDL_Rect* camera)
 		widthMat = (float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - aaa.parallaxValue)));
 		heightMat = (float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - aaa.parallaxValue)));
 
-		auxPlat.x = auxPlat.x - camera->x * aaa.parallaxValue;
-		auxPlat.x *= widthMat;
+		auxPlat.x = auxPlat.x - (int)(camera->x * aaa.parallaxValue);
+		auxPlat.x = (int)((float)auxPlat.x * widthMat);
 
-		auxPlat.y = auxPlat.y - camera->y * aaa.parallaxValue;
-		auxPlat.y *= heightMat;
+		auxPlat.y = auxPlat.y - (int)(camera->y * aaa.parallaxValue);
+		auxPlat.y = (int)((float)auxPlat.y * heightMat);
 
-		auxPlat.w *= widthMat;
-		auxPlat.h *= heightMat;
+		auxPlat.w = (int)((float)auxPlat.w * widthMat);
+		auxPlat.h = (int)((float)auxPlat.h * heightMat);
 
 		aaa.image->render(auxPlat);
 	}
@@ -196,19 +196,21 @@ void Stage::Update(SDL_Rect* camera)
 	//Dibujamos las cajas
 	SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 
+	float wDiff = (float)mngr->GetActualWidth() / (float)camera->w;
+	float hDiff = (float)mngr->GetActualHeight() / (float)camera->h;
 
 	for (SDL_Rect aaa : groundRects)
 	{
 		SDL_Rect auxStage = aaa;
 
 		auxStage.x -= camera->x;
-		auxStage.x *= (mngr->GetActualWidth() / (float)camera->w);
+		auxStage.x = (int)((float)auxStage.x * wDiff);
 
 		auxStage.y -= camera->y;
-		auxStage.y *= (mngr->GetActualWidth() / (float)camera->w);
+		auxStage.y = (int)((float)auxStage.y * hDiff);
 
-		auxStage.w *= (mngr->GetActualWidth() / (float)camera->w);
-		auxStage.h *= (mngr->GetActualWidth() / (float)camera->w);
+		auxStage.w = (int)((float)auxStage.w * wDiff);
+		auxStage.h = (int)((float)auxStage.h * hDiff);
 
 		SDL_RenderDrawRect(sdl->renderer(), &auxStage);
 	}
@@ -218,25 +220,27 @@ void Stage::Update(SDL_Rect* camera)
 		SDL_Rect auxPlat = aaa;
 
 		auxPlat.x -= camera->x;
-		auxPlat.x *= (mngr->GetActualWidth() / (float)camera->w);
+		auxPlat.x = (int)((float)auxPlat.x * wDiff);
 
 		auxPlat.y -= camera->y;
-		auxPlat.y *= (mngr->GetActualWidth() / (float)camera->w);
+		auxPlat.y = (int)((float)auxPlat.y * hDiff);
 
-		auxPlat.w *= (mngr->GetActualWidth() / (float)camera->w);
-		auxPlat.h *= (mngr->GetActualWidth() / (float)camera->w);
+		auxPlat.w = (int)((float)auxPlat.w * wDiff);
+		auxPlat.h = (int)((float)auxPlat.h * hDiff);
 
 		SDL_RenderDrawRect(sdl->renderer(), &auxPlat);
 	}
 	auxDeath = deathZone;
+
 	auxDeath.x -= camera->x;
-	auxDeath.x *= (mngr->GetActualWidth() / (float)camera->w);
+	auxDeath.x = (int)((float)auxDeath.x * wDiff);
 
 	auxDeath.y -= camera->y;
-	auxDeath.y *= (mngr->GetActualWidth() / (float)camera->w);
+	auxDeath.y = (int)((float)auxDeath.y * hDiff);
 
-	auxDeath.w *= (mngr->GetActualWidth() / (float)camera->w);
-	auxDeath.h *= (mngr->GetActualWidth() / (float)camera->w);
+	auxDeath.w = (int)((float)auxDeath.w * wDiff);
+	auxDeath.h = (int)((float)auxDeath.h * hDiff);
+
 	SDL_RenderDrawRect(sdl->renderer(), &auxDeath);
 
 #endif // _DEBUG

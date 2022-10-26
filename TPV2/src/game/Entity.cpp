@@ -83,7 +83,7 @@ Entity::~Entity()
 
 void Entity::updateParticles()
 {
-	ushort maxSize = max(backParticles.size(), frontParticles.size());
+	ushort maxSize = (ushort)max(backParticles.size(), frontParticles.size());
 
 	for (ushort i = 0u; i < maxSize; i++)
 	{
@@ -182,14 +182,17 @@ void Entity::draw(SDL_Rect* camera)
 	{
 		SDL_Rect aux = hitboxes[i]->box;
 
+		float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
+		float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+
 		aux.x -= camera->x;
-		aux.x *= (manager->GetActualWidth() / (float)camera->w);
+		aux.x = (int)((float)aux.x * wDiff);
 
 		aux.y -= camera->y;
-		aux.y *= (manager->GetActualWidth() / (float)camera->w);
+		aux.y = (int)((float)aux.y * hDiff);
 
-		aux.w *= (manager->GetActualWidth() / (float)camera->w);
-		aux.h *= (manager->GetActualWidth() / (float)camera->w);
+		aux.w = (int)((float)aux.w * wDiff);
+		aux.h = (int)((float)aux.h * hDiff);
 
 		SDL_SetRenderDrawColor(sdl->renderer(), 255, 0, 0, 255);
 		SDL_RenderDrawRect(sdl->renderer(), &aux);

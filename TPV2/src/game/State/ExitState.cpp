@@ -76,7 +76,7 @@ void ExitState::draw()
     Texture* p = &sdl->images().at("Exitbg");
     p->render({(int)(w * 0.3f),(int)(h * 0.3f),(int)(w * 0.4f),(int)(h * 0.4f) });
 
-    showText("DO YOU WANNA EXIT THE GAME?", (w * 0.0145f), (int)(w * 0.311f), (int)(h * 0.32f), build_sdlcolor(0x33FFFC00));
+    showText("DO YOU WANNA EXIT THE GAME?", (ushort)(w * 0.0145f), (ushort)(w * 0.311f), (ushort)(h * 0.32f), build_sdlcolor(0x33FFFC00));
 
     yes->render();
     no->render();

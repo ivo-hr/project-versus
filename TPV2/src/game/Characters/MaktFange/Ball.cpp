@@ -16,7 +16,7 @@ MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir
 
 	vecDir *= attack.damage * 1.1f;
 
-	duration = attack.damage * 2.2f;
+	duration = (int)(attack.damage * 2.2f);
 
 	physic = false;
 
@@ -98,7 +98,7 @@ void MaktBall::CheckHits()
 				bool controlShake = false;
 				bool controlCamShake = false;
 
-				data.damage = body->GetLinearVelocity().Length();
+				data.damage = (ushort)body->GetLinearVelocity().Length();
 				data.multiplier = body->GetLinearVelocity().Length() / 20.f;
 
 				if (oponent->GetHit(data, this, controlHitLag, controlShake, controlCamShake))
@@ -173,17 +173,17 @@ void MaktBall::draw(SDL_Rect* camera)
 	{
 		SDL_Rect aux = hurtbox;
 
-		//si hurtbox.x = camera w + camera x                   aux.x = manager->GetActualWidth()
-		//   hurtbox.x = camera w / 2 + camera x               aux.x = manager->GetActualWidth() / 2
+		float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
+		float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
 
 		aux.x -= camera->x;
-		aux.x *= (manager->GetActualWidth() / (float)camera->w);
+		aux.x = (int)((float)aux.x * wDiff);
 
 		aux.y -= camera->y;
-		aux.y *= (manager->GetActualHeight() / (float)camera->h);
+		aux.y = (int)((float)aux.y * hDiff);
 
-		aux.w *= (manager->GetActualWidth() / (float)camera->w);
-		aux.h *= (manager->GetActualHeight() / (float)camera->h);
+		aux.w = (int)((float)aux.w * wDiff);
+		aux.h = (int)((float)aux.h * hDiff);
 
 		SDL_Rect src = { 1260 + sprite, 1543, 17, 17 };
 		if (dir < 0)

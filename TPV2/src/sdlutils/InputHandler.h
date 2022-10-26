@@ -222,10 +222,10 @@ public:
 				switch (axesNumber)
 				{
 				case 0:
-					s = SDL_CONTROLLER_AXIS_LEFTX;
+					s = SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX;
 					break;
 				case 1:
-					s = SDL_CONTROLLER_AXIS_LEFTY;
+					s = SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY;
 					break;
 				}
 				deathZoneMax = 15000;

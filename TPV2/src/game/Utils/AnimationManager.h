@@ -6,16 +6,16 @@ class AnimationManager
 {
 protected:
 
-	int currIndex = 0;
+	ushort currIndex = 0;
 
-	int xOffset, yOffset;
-	int framespSprite;
-	int w, h, cont;
+	short xOffset, yOffset;
+	ushort framespSprite;
+	ushort w, h, cont;
 	bool lookingRight;
 
 	std::string currentAnimIndex;
 
-	std::vector<b2Vec2> SpriteIndex;
+	std::vector<Vector2D> SpriteIndex;
 	Texture* texture;
 	SDL_Rect recorteSheet;
 	SDL_Rect dest;
@@ -24,7 +24,7 @@ protected:
 	spriteSheetData info;
 	animationData* currentAnim = nullptr;
 
-	int currentState;
+	ushort currentState;
 
 	void UpdateIndex();
 

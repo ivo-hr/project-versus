@@ -6,7 +6,7 @@
 #include "../Utils/PlayerConfigs.h"
 
 
-GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures, vector<vector<ushort>>gameStats, short playersInput, vector<short>playersInputV) : State(game) {
+GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures, vector<vector<ushort>>gameStats, short playersInput, vector<char>playersInputV) : State(game) {
 
     //ts(15) = w / 64
 
@@ -105,7 +105,7 @@ void GameOverState::drawGameStats()
 {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
-    int numOfplayer = gameStats_.size();
+    int numOfplayer = (int)gameStats_.size();
     int dist = w / numOfplayer;
     int offset = (w/2) / numOfplayer - w / 13;
 
@@ -113,7 +113,7 @@ void GameOverState::drawGameStats()
         showText("1", (h / 12), (int)(dist / 2 + 3 * offset), (int)(h * 2.5f / 5), build_sdlcolor(0x00000000));
         showText("2", (h / 12), (int)(10 / 3 * dist - 2 * offset), (int)(h * 2.5f / 5), build_sdlcolor(0x00000000));
     }
-    for (auto i = 0u; i < numOfplayer; i++) {
+    for (auto i = 0; i < numOfplayer; i++) {
         winnersTextures_[numOfplayer - i - 1]->render({ (int)(i * dist + offset), (int)(h * 3 / 5), (int)w / 12, (int)w / 12 });
 
         if (!fmngr->getTeammode())
@@ -126,13 +126,13 @@ void GameOverState::drawGameStats()
             showText(to_string(i + 1), (h / 12), (int)(i * dist + offset), (int)(h * 2.5f / 5), col);
         }
 
-        showText("Kills: ", (h / 42), (int)(i * dist + offset), (int)h * 3.9f / 5, build_sdlcolor(0x00000000));
-        showText(to_string(gameStats_[numOfplayer - i - 1][2]), (h / 42), (int)(i * dist + offset + w / 6), (int)h * 3.9f / 5, build_sdlcolor(0x00000000));
+        showText("Kills: ", (h / 42), (ushort)(i * dist + offset), (ushort)((float)h * 3.9f / (float)5), build_sdlcolor(0x00000000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][2]), (h / 42), (ushort)(i * dist + offset + w / 6), (ushort)(h * 3.9f / 5), build_sdlcolor(0x00000000));
 
-        showText("Deaths: ", (h / 42), (int)(i * dist + offset), (int)h * 4.05f / 5, build_sdlcolor(0x00000000));
-        showText(to_string(gameStats_[numOfplayer - i - 1][0]), (h / 42), (int)(i * dist + offset + w / 6), (int)h * 4.05f / 5, build_sdlcolor(0x00000000));
+        showText("Deaths: ", (h / 42), (ushort)(i * dist + offset), (ushort)((float)h * 4.05f / (float)5), build_sdlcolor(0x00000000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][0]), (h / 42), (ushort)(i * dist + offset + w / 6), (ushort)(h * 4.05f / 5), build_sdlcolor(0x00000000));
 
-        showText("Dmg taken: ", (h / 42), (int)(i * dist + offset), (int)h * 4.2f / 5, build_sdlcolor(0x00000000));
-        showText(to_string(gameStats_[numOfplayer - i - 1][1]), (h / 42), (int)(i * dist + offset + w / 6), (int)h * 4.2f / 5, build_sdlcolor(0x00000000));
+        showText("Dmg taken: ", (h / 42), (ushort)(i * dist + offset), (ushort)((float)h * 4.2f / (float)5), build_sdlcolor(0x00000000));
+        showText(to_string(gameStats_[numOfplayer - i - 1][1]), (h / 42), (ushort)(i * dist + offset + w / 6), (ushort)(h * 4.2f / 5), build_sdlcolor(0x00000000));
     }
 }

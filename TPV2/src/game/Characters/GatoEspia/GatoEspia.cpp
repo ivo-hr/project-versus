@@ -552,7 +552,7 @@ void GatoEspia::Counter(ushort frameNumber)
 	if (frameNumber == 0)
 	{
 		anim->StartAnimation("especialDGolpe");
-		body->SetLinearVelocity({ 0.01, 0.01 });
+		body->SetLinearVelocity({ 0.f, 0.01f });
 		dash = false;
 		counter = false;
 	}
@@ -591,9 +591,9 @@ void GatoEspia::drawHUD(ushort numOfPlayer)
 
 	SDL_Rect blinkFill = {
 		x + w_ / 300,
-		y + (w_ / 17) - ((w_ / 17) * blinks / maxBlinks),
+		y + (int)(((float)w_ / 17.f) - (((float)w_ / 17.f) * blinks / maxBlinks)),
 		(w_ / 70),
-		w_ / 17 * blinks / maxBlinks };
+		(int)((float)w_ / 17.f * blinks / maxBlinks) };
 
 	SDL_SetRenderDrawColor(sdl->renderer(), 0x53, 0xed, 0xee, 0xff);
 	SDL_RenderFillRect(sdl->renderer(), &blinkFill);

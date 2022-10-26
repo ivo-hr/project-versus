@@ -18,35 +18,38 @@ void FightManager::MoveCamera()
 
 		if (pos.getX() > maxX)
 		{
-			maxX = pos.getX();
+			maxX = (int)pos.getX();
 		}
 		if (pos.getX() < minX)
 		{
-			minX = pos.getX();
+			minX = (int)pos.getX();
 		}
 
 		if (pos.getY() > maxY)
 		{
-			maxY = pos.getY();
+			maxY = (int)pos.getY();
 		}
 		if (pos.getY() < minY)
 		{
-			minY = pos.getY();
+			minY = (int)pos.getY();
 		}
 	}
 
-	if (maxX - minX >= (maxY - minY) * (float)((float)width / (float)height))
+	float whr = (float)width / (float)height;
+	float hwr = (float)height / (float)width;
+
+	if (maxX - minX >= (maxY - minY) * whr)
 	{
 		cameraEnd.x = minX - cameraOffset;
 		cameraEnd.w = (maxX - minX) + cameraOffset * 2;
-		cameraEnd.h = cameraEnd.w * (float)((float)height / (float)width);
+		cameraEnd.h = (int)(cameraEnd.w * hwr);
 		cameraEnd.y = minY - (cameraEnd.h - (maxY - minY)) / 2;
 	}
 	else
 	{
-		cameraEnd.y = minY - cameraOffset * (float)((float)height / (float)width);
-		cameraEnd.h = (maxY - minY) + cameraOffset * 2 * (float)((float)height / (float)width);
-		cameraEnd.w = cameraEnd.h * ((float)((float)width / (float)height));
+		cameraEnd.y = minY - (int)((float)cameraOffset * hwr);
+		cameraEnd.h = (maxY - minY) + (int)((int)cameraOffset * 2 * hwr);
+		cameraEnd.w = (int)(cameraEnd.h * whr);
 		cameraEnd.x = minX - (cameraEnd.w - (maxX - minX)) / 2;
 	}
 
@@ -59,12 +62,12 @@ void FightManager::MoveCamera()
 	if (cameraEnd.w > stage->GetDeathZone()->w)
 	{
 		cameraEnd.w = stage->GetDeathZone()->w;
-		cameraEnd.h = stage->GetDeathZone()->w * (float)((float)height / (float)width);
+		cameraEnd.h = (int)(stage->GetDeathZone()->w * hwr);
 	}
 	if (cameraEnd.h > stage->GetDeathZone()->h)
 	{
 		cameraEnd.h = stage->GetDeathZone()->h;
-		cameraEnd.w = stage->GetDeathZone()->h * (float)((float)width / (float)height);
+		cameraEnd.w = (int)(stage->GetDeathZone()->h * whr);
 	}
 
 	if (cameraEnd.x < 0)
@@ -85,9 +88,9 @@ void FightManager::MoveCamera()
 		cameraEnd.y = stage->GetDeathZone()->h - cameraEnd.h;
 	}
 
-	int diffX = (cameraEnd.x - auxCam.x) * 0.2f;
-	int diffY = (cameraEnd.y - auxCam.y) * 0.2f;
-	int diffW = (cameraEnd.w - auxCam.w) * 0.2f;
+	int diffX = (int)((cameraEnd.x - auxCam.x) * 0.2f);
+	int diffY = (int)((cameraEnd.y - auxCam.y) * 0.2f);
+	int diffW = (int)((cameraEnd.w - auxCam.w) * 0.2f);
 
 	if (abs(diffX) > ToSDL(1.2f))
 	{
@@ -114,12 +117,12 @@ void FightManager::MoveCamera()
 	auxCam.x += diffX;
 	auxCam.y += diffY;
 	auxCam.w += diffW;
-	auxCam.h = auxCam.w * (float)((float)height / (float)width);
+	auxCam.h = (int)(auxCam.w * hwr);
 
 	camera = auxCam;
 
-	camera.x += camShake.getX();
-	camera.y += camShake.getY();
+	camera.x += (int)nearbyint(camShake.getX());
+	camera.y += (int)nearbyint(camShake.getY());
 
 	if (shakeDuration % 4 == 1)
 		camShake = { camShake.getX() * -0.9f, camShake.getY() * -0.9f };
@@ -145,12 +148,11 @@ FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 
 	listener = new MyListener();
 	stage = new Stage(this, sdl, listener, step);
-	
 
-	sizeDiff = width / sdl->width() < height / sdl->height() ? 
-		width / sdl->width() : height / sdl->height();
+	sizeDiff = width / (float)sdl->width() < height / (float)sdl->height() ?
+		(float)width / (float)sdl->width() : (float)height / (float)sdl->height();
 
-	cameraOffset *= sizeDiff;
+	cameraOffset = (ushort)((float)cameraOffset * sizeDiff);
 
 	entityMatrix = vector<vector<Entity*>>();
 	
@@ -185,7 +187,7 @@ FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 
 		if (frameTime < (step * 1000))
 		{
-			SDL_Delay((step * 1000));
+			SDL_Delay((Uint32)(step * 1000));
 		}
 	}
 	// En ExitState se borran el state y el exitState, el savedState se borra en esta destructora
@@ -249,7 +251,7 @@ void FightManager::Update()
 	}
 
 	//Dibuja las entidades
-	for (int i = entities.size() - 1; i >= 0; i--)
+	for (int i = (int)entities.size() - 1; i >= 0; i--)
 	{
 		entities[i]->draw(&camera);
 	}
@@ -360,7 +362,7 @@ ushort FightManager::StartFight(std::vector<Character*> ent)
 			break;
 
 	}
-	numPlayers = characters.size();
+	numPlayers = (short)characters.size();
 
 	InitMatrix();
 	
@@ -410,12 +412,12 @@ ushort FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Cha
 	for (auto i = ateam1.size(); i < ateam2.size()+ateam1.size() ; i++) {
 		//numPlayers++;
 		listener->AddCharacter(characters[i]);
-		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
+		characters[i]->SetSpawn(stage->GetPlayerSpawns((int)i), stage->GetPlayerDir((int)i));
 		characters[i]->SetPNumber(1);
 	}
 	sdl->musics().at("cube").play();
 	//Music::setMusicVolume(1);
-	numPlayers = characters.size();
+	numPlayers = (short)characters.size();
 
 	InitMatrix();
 
@@ -435,7 +437,7 @@ void FightManager::InitMatrix()
 		{
 			entityMatrix[i].push_back(entities[j]);
 			entities[j]->SetLayer(i);
-			entities[j]->SetPlaceInLayer(entityMatrix[i].size());
+			entities[j]->SetPlaceInLayer((ushort)entityMatrix[i].size());
 			j++;
 		}
 	}
@@ -448,13 +450,13 @@ void FightManager::InitMatrix()
 			{
 				entityMatrix[1].push_back(team1[i]);
 				team1[i]->SetLayer(1);
-				entities[i]->SetPlaceInLayer(entityMatrix[1].size());
+				entities[i]->SetPlaceInLayer((ushort)entityMatrix[1].size());
 			}
 			for (int i = 0; i < team2.size(); i++)
 			{
 				entityMatrix[2].push_back(team2[i]);
 				team2[i]->SetLayer(2);
-				entities[i]->SetPlaceInLayer(entityMatrix[2].size());
+				entities[i]->SetPlaceInLayer((ushort)entityMatrix[2].size());
 			}
 		}
 		else
@@ -464,7 +466,7 @@ void FightManager::InitMatrix()
 			{
 				entityMatrix[1].push_back(entities[i]);
 				entities[i]->SetLayer(1);
-				entities[i]->SetPlaceInLayer(entityMatrix[1].size());
+				entities[i]->SetPlaceInLayer((ushort)entityMatrix[1].size());
 			}
 		}
 	}
@@ -510,7 +512,7 @@ void FightManager::AddEntity(Entity* ent)
 	entities.push_back(ent);
 
 	entityMatrix[ent->GetLayer()].push_back(ent);
-	ent->SetPlaceInLayer(entityMatrix[ent->GetLayer()].size());
+	ent->SetPlaceInLayer((ushort)entityMatrix[ent->GetLayer()].size());
 }
 
 void FightManager::AddEntity(Entity* ent, ushort layer)
@@ -519,7 +521,7 @@ void FightManager::AddEntity(Entity* ent, ushort layer)
 
 	entityMatrix[layer].push_back(ent);
 	ent->SetLayer(layer);
-	ent->SetPlaceInLayer(entityMatrix[layer].size());
+	ent->SetPlaceInLayer((ushort)entityMatrix[layer].size());
 }
 
 bool FightManager::RemoveEntity(Entity* ent, bool shouldDelete)
@@ -700,7 +702,7 @@ void FightManager::ChangeEntityLayer(Entity* ent, ushort newLayer)
 
 	entityMatrix[newLayer].push_back(ent);
 	ent->SetLayer(newLayer);
-	ent->SetPlaceInLayer(entityMatrix[newLayer].size());
+	ent->SetPlaceInLayer((ushort)entityMatrix[newLayer].size());
 }
 
 void FightManager::FighterLost(Character* loser)
@@ -829,7 +831,7 @@ void FightManager::startCount()
 	string s;
 	int x = 0;
 	int y = 0;
-	if (startticks + 1000 < SDL_GetTicks()) {
+	if (startticks + 1000u < SDL_GetTicks()) {
 		startticks = SDL_GetTicks();
 		scount--;
 	}
@@ -879,7 +881,7 @@ int FightManager::b2ToSDLY(b2Body* body, float height)
 
 int FightManager::ToSDL(float x)
 {
-	return x * stage->getb2ToSDL();
+	return (int)(x * stage->getb2ToSDL());
 }
 
 ushort FightManager::GetActualWidth()

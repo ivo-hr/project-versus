@@ -36,6 +36,10 @@ public:
 			x_(x), y_(y) {
 	}
 
+	Vector2D(int x, int y) :
+		x_((float)x), y_((float)y) {
+	}
+
 	~Vector2D() {
 	}
 
