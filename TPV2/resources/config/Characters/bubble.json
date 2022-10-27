@@ -73,7 +73,7 @@
         }
       ],
       "keyFrames": [20],
-      "totalFrames": 45
+      "totalFrames": 30
     },
     {
       "id": "basicD",
@@ -152,28 +152,8 @@
       "id": "specialL",
       "hitBoxes": [
       ],
-      "keyFrames": [6, 9],
+      "keyFrames": [],
       "totalFrames": 15
-    },
-    {
-      "id": "specialLHit",
-      "hitBoxes": [
-        {
-          "hitData": {
-            "b2vecX": 1,
-            "b2vecY": 3,
-            "base": 15,
-            "damage": 15,
-            "multiplier": 1.5,
-            "stun": -1,
-            "shieldBreak": true
-          },
-          "hitlag": -1,
-          "duration": 8
-        }
-      ],
-      "keyFrames": [3],
-      "totalFrames": 45
     },
     {
       "id": "specialU",

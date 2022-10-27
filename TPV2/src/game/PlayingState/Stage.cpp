@@ -51,6 +51,9 @@ void Stage::LoadJsonStage(std::string fileName, int width, int height)
 	deathzoneSize.x = jsonFile["deathZoneSizeX"];
 	deathzoneSize.y = jsonFile["deathZoneSizeY"];
 
+	bubbleDeathzoneSize.x = deathzoneSize.x - 5;
+	bubbleDeathzoneSize.y = deathzoneSize.y -5;
+
 	b2ToSDL = width / deathzoneSize.x;
 
 	background = &sdl->images().at(jsonFile["background"]);
@@ -134,6 +137,7 @@ void Stage::LoadJsonStage(std::string fileName, int width, int height)
 	}
 
 	deathZone = { 0, 0, (int)(deathzoneSize.x * b2ToSDL), (int)(deathzoneSize.y * b2ToSDL) };
+	bubbleDeathZone = { 40, 10, (int)(bubbleDeathzoneSize.x * b2ToSDL), (int)(bubbleDeathzoneSize.y * b2ToSDL) };
 
 	auto player = jsonFile["playerSpawns"];
 	assert(player.is_array());
@@ -154,6 +158,7 @@ void Stage::Update(SDL_Rect* camera)
 	sdl->clearRenderer(SDL_Color(build_sdlcolor(0xffffffff)));
 
 	SDL_Rect auxDeath = deathZone;
+	SDL_Rect auxDeathBubble = bubbleDeathZone;
 
 	float cameraWDiff = (float)mngr->GetActualWidth() - (float)camera->w;
 	float cameraHDiff = (float)mngr->GetActualHeight() - (float)camera->h;
@@ -242,6 +247,17 @@ void Stage::Update(SDL_Rect* camera)
 	auxDeath.h = (int)((float)auxDeath.h * hDiff);
 
 	SDL_RenderDrawRect(sdl->renderer(), &auxDeath);
+
+	auxDeathBubble = bubbleDeathZone;
+	auxDeathBubble.x -= camera->x;
+	auxDeathBubble.x *= (mngr->GetActualWidth() / (float)camera->w);
+
+	auxDeathBubble.y -= camera->y;
+	auxDeathBubble.y *= (mngr->GetActualWidth() / (float)camera->w);
+
+	auxDeathBubble.w *= (mngr->GetActualWidth() / (float)camera->w);
+	auxDeathBubble.h *= (mngr->GetActualWidth() / (float)camera->w);
+	SDL_RenderDrawRect(sdl->renderer(), &auxDeathBubble);
 
 #endif // _DEBUG
 }

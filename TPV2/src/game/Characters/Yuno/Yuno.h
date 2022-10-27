@@ -2,12 +2,15 @@
 #include "../../Character.h"
 
 class YunoBubble;
+enum Bubble { NEUTRAL, FORWARD, UP };
 
 class Yuno : public Character
 {
 public:
 	Yuno(FightManager* mngr, b2Vec2 pos, char input, ushort p);
 	virtual ~Yuno();
+
+	
 
 	string GetName() override { return "Yuno"; };
 
@@ -28,6 +31,9 @@ public:
 	virtual void update() override;
 
 	virtual void OnDeath() override;
+
+	void setExplotado(bool dime) { explotado = dime; };
+	bool getExplotado() { return explotado; };
 
 private:
 

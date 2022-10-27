@@ -41,6 +41,7 @@ class Stage
 	b2World* world;
 
 	SDL_Rect deathZone;
+	SDL_Rect bubbleDeathZone;
 	float b2ToSDL;
 
 	MyListener* listener;
@@ -48,6 +49,7 @@ class Stage
 	float backGroundParallax;
 
 	b2Vec2 deathzoneSize;
+	b2Vec2 bubbleDeathzoneSize;
 	float step;
 	void reset();
 
@@ -68,6 +70,8 @@ public:
 
 	SDL_Rect* GetDeathZone() { return &deathZone; };
 	b2Vec2* GetDeathZoneB2() { return &deathzoneSize; };
+	SDL_Rect* GetBubbleDeathZone() { return &bubbleDeathZone; };
+	b2Vec2* GetBubbleDeathZoneB2() { return &bubbleDeathzoneSize; };
 	b2World* GetWorld() { return world; };
 	SDLUtils* GetSDLU() { return sdl; }
 

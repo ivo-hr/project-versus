@@ -3,7 +3,7 @@
 #include "../../../utils/CheckML.h"
 
 
-YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, InputConfig* input) : Entity(manager, pos, 1.5f, 1.5f), yuno(owner), hndlr(input)
+YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, int iniSpan, int moreSpan, Bubble bubbleType, InputConfig* input) : Entity(manager, pos, 3.f, 3.f), yuno(owner), hndlr(input)
 {
 	body->SetGravityScale(0.f);
 
@@ -21,6 +21,16 @@ YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, InputConf
 	AddTag(Tags::Hitable);
 
 	alive = true;
+
+	lifespan = iniSpan * 60;
+	moarSpan = moreSpan;
+
+	pompa = bubbleType;
+	
+	if (pompa == UP) {
+		GetInsideBubble(yuno);
+		invFrames = iniSpan*30;
+	}
 }
 
 YunoBubble::~YunoBubble()
@@ -30,32 +40,49 @@ YunoBubble::~YunoBubble()
 
 void YunoBubble::update()
 {
-	if (hndlr)
-	{
-		if (hndlr->up())
+	if (pompa != FORWARD) {
+		if (hndlr)
 		{
-			body->ApplyLinearImpulseToCenter(b2Vec2(0, -2), true);
+			if (hndlr->up() && pompa == NEUTRAL)
+			{
+				body->ApplyLinearImpulseToCenter(b2Vec2(0, -3.5), true);
+			}
+			if (hndlr->down() && pompa == NEUTRAL)
+			{
+				body->ApplyLinearImpulseToCenter(b2Vec2(0, 3.5), true);
+			}
+			if (hndlr->left())
+			{
+				body->ApplyLinearImpulseToCenter(b2Vec2(-3.5, 0), true);
+			}
+			if (hndlr->right())
+			{
+				body->ApplyLinearImpulseToCenter(b2Vec2(3.5, 0), true);
+			}
+			if(pompa == UP){
+				if (hndlr->special() && timeSinceBubble > 10) {
+					setToDelete();
+				}
+				body->ApplyLinearImpulseToCenter(b2Vec2(0, -2.5), true);
+			}
+
 		}
-		if (hndlr->down())
+		else if (pompa == NEUTRAL)
 		{
-			body->ApplyLinearImpulseToCenter(b2Vec2(0, 2), true);
-		}
-		if (hndlr->left())
-		{
-			body->ApplyLinearImpulseToCenter(b2Vec2(-2, 0), true);
-		}
-		if (hndlr->right())
-		{
-			body->ApplyLinearImpulseToCenter(b2Vec2(2, 0), true);
+			body->SetLinearVelocity(b2Vec2(dir * 5, 0));
 		}
 	}
+<<<<<<< Updated upstream
 	else
 	{
 		body->SetLinearVelocity(b2Vec2((float)(dir * 5), 0.f));
 	}
+=======
+>>>>>>> Stashed changes
 
-	if (bubbledEntity)
+	if (bubbledEntity){
 		bubbledEntity->GetBody()->SetTransform(body->GetPosition(), 0);
+	}
 
 	if (bubbledEntity && bubbledEntity->ToDelete())
 	{
@@ -64,7 +91,47 @@ void YunoBubble::update()
 		setToDelete();
 	}
 
-	Entity::update();
+	if (hitLag > 0)
+	{
+		hitLag--;
+		if (hitLag == 0)
+		{
+			body->SetEnabled(true);
+		}
+		return;
+	}
+
+	if (body->IsEnabled())
+	{
+		hurtbox.x = manager->b2ToSDLX(body, width);
+		hurtbox.y = manager->b2ToSDLY(body, height);
+	}
+	else
+	{
+		hurtbox.x = -100;
+	}
+
+	if (!SDL_HasIntersection(&hurtbox, manager->GetBubbleDeathZone()) && invFrames == 0)
+	{
+		if (bubbledEntity) {
+			if (bubbledEntity->HasTag(Tags::IsCharacter))
+			{
+				auto chr = static_cast<Character*>(bubbledEntity);
+				chr->setBubbled(false);
+			}
+		}
+		OnDeath();
+	}
+	if (invFrames != 0) {
+		invFrames--;
+	}
+	if (lifespan != 0) {
+		lifespan--;
+	}
+	else {
+		setToDelete();
+	}
+	timeSinceBubble++;
 }
 
 void YunoBubble::draw(SDL_Rect* camera)
@@ -143,6 +210,8 @@ void YunoBubble::CheckHits()
 				if (SDL_HasIntersection(&hurtbox, oponent->GetHurtbox()))
 				{
 					GetInsideBubble(oponent);
+					body->SetLinearVelocity(b2Vec2(dir * 0.5, 0));
+					lifespan += moarSpan * 60;
 				}
 			}
 		}
@@ -184,10 +253,12 @@ void YunoBubble::GetInsideBubble(Entity* ent)
 	{
 		auto chr = static_cast<Character*>(ent);
 		chr->ResetChar();
+		chr->setBubbled(true);
 	}
 
 	bubbledEntity = ent;
 	manager->RemoveEntity(bubbledEntity, false);
+
 
 	bubbledEntity->GetBody()->SetEnabled(false);
 	bubbledEntity->GetHurtbox()->x = -100;
@@ -209,6 +280,15 @@ void YunoBubble::Pop()
 		bubbledEntity->GetBody()->SetEnabled(true);
 
 		bubbledEntity->GetBody()->SetLinearVelocity(b2Vec2(0, -1));
+		if (bubbledEntity->HasTag(Tags::IsCharacter))
+		{
+			auto chr = static_cast<Character*>(bubbledEntity);
+			chr->setBubbled(false);
+			if (bubbledEntity == yuno) {
+				yuno->setExplotado(true);
+				yuno->setRecovery(false);
+			}
+		}
 	}
 
 	toDelete = true;

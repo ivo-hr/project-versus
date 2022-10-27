@@ -142,6 +142,8 @@ public:
 	std::vector<Entity*>* GetEntities();
 	SDL_Rect* GetDeathZone();
 	b2Vec2* GetDeathZoneB2();
+	SDL_Rect* GetBubbleDeathZone();
+	b2Vec2* GetBubbleDeathZoneB2();
 	b2World* GetWorld();
 	SDLUtils* GetSDLU() { return sdl; };
 

@@ -160,7 +160,7 @@ void Yuno::SpecialNeutral(ushort frameNumber)
 		releasedSpec = false;
 		if (!bubble && !explotado)
 		{
-			bubble = new YunoBubble(manager, body->GetPosition(), this, input);
+			bubble = new YunoBubble(manager, body->GetPosition(), this, 3, 2, NEUTRAL, input);
 			manager->AddEntity(bubble, 0);
 		}
 	}
@@ -176,7 +176,7 @@ void Yuno::SpecialNeutral(ushort frameNumber)
 		explotado = true;	
 	}
 
-	if (frameNumber > 5 && !bubble)
+	if (frameNumber > 4 && !bubble)
 	{
 		currentMove = nullptr;
 	}
@@ -189,21 +189,30 @@ void Yuno::SpecialForward(ushort frameNumber)
 	{
 		if (!bubble)
 		{
-			bubble = new YunoBubble(manager, body->GetPosition(), this);
+			bubble = new YunoBubble(manager, body->GetPosition()+b2Vec2(dir, 0), this, 1, 2, FORWARD);
 			manager->AddEntity(bubble, 0);
 		}
-		else
-		{
-			bubble->setToDelete();
-		}
-
+	}
+	if (frameNumber == attacks["specialL"].totalFrames) {
 		currentMove = nullptr;
 	}
 }
 
 void Yuno::SpecialUpward(ushort frameNumber)
 {
-	currentMove = nullptr;
+	if (frameNumber == 4)
+	{
+		if (!bubble && !explotado)
+		{
+			bubble = new YunoBubble(manager, body->GetPosition(), this, 5, 0, UP, input);
+			manager->AddEntity(bubble, 0);
+		}
+	}
+	if (frameNumber > 4 && !bubble)
+	{
+		currentMove = nullptr;
+		recovery = false;
+	}
 }
 
 void Yuno::SpecialDownward(ushort frameNumber)
@@ -263,7 +272,7 @@ void Yuno::BubblePopped()
 
 void Yuno::update()
 {
-	if (explotado && lastBubble < 5) {
+	if (explotado && lastBubble < 10) {
 		lastBubble++;
 	}
 	else {
@@ -317,12 +326,6 @@ void Yuno::BuildBoxes()
 			body->GetPosition().y,
 			width *1.2f,
 			height);
-
-	attacks["specialU"].hitBoxes[0].box = 
-		manager->GetSDLCoors(body, width, height);
-
-	attacks["specialLHit"].hitBoxes[0].box = 
-		manager->GetSDLCoors(body, width * 1.8f, height * 0.6f);
 
 	attacks["specialD"].hitBoxes[0].box =
 		manager->GetSDLCoors(body->GetPosition().x,
