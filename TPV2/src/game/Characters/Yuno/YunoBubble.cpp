@@ -45,25 +45,25 @@ void YunoBubble::update()
 		{
 			if (hndlr->up() && pompa == NEUTRAL)
 			{
-				body->ApplyLinearImpulseToCenter(b2Vec2(0, -3.5), true);
+				body->ApplyLinearImpulseToCenter(b2Vec2(0, -3.5f), true);
 			}
 			if (hndlr->down() && pompa == NEUTRAL)
 			{
-				body->ApplyLinearImpulseToCenter(b2Vec2(0, 3.5), true);
+				body->ApplyLinearImpulseToCenter(b2Vec2(0, 3.5f), true);
 			}
 			if (hndlr->left())
 			{
-				body->ApplyLinearImpulseToCenter(b2Vec2(-3.5, 0), true);
+				body->ApplyLinearImpulseToCenter(b2Vec2(-3.5f, 0), true);
 			}
 			if (hndlr->right())
 			{
-				body->ApplyLinearImpulseToCenter(b2Vec2(3.5, 0), true);
+				body->ApplyLinearImpulseToCenter(b2Vec2(3.5f, 0), true);
 			}
 			if(pompa == UP){
 				if (hndlr->special() && timeSinceBubble > 10) {
 					setToDelete();
 				}
-				body->ApplyLinearImpulseToCenter(b2Vec2(0, -2.5), true);
+				body->ApplyLinearImpulseToCenter(b2Vec2(0, -2.5f), true);
 			}
 
 		}
@@ -72,13 +72,6 @@ void YunoBubble::update()
 			body->SetLinearVelocity(b2Vec2(dir * 5, 0));
 		}
 	}
-<<<<<<< Updated upstream
-	else
-	{
-		body->SetLinearVelocity(b2Vec2((float)(dir * 5), 0.f));
-	}
-=======
->>>>>>> Stashed changes
 
 	if (bubbledEntity){
 		bubbledEntity->GetBody()->SetTransform(body->GetPosition(), 0);
@@ -210,7 +203,7 @@ void YunoBubble::CheckHits()
 				if (SDL_HasIntersection(&hurtbox, oponent->GetHurtbox()))
 				{
 					GetInsideBubble(oponent);
-					body->SetLinearVelocity(b2Vec2(dir * 0.5, 0));
+					body->SetLinearVelocity(b2Vec2(dir * 0.5f, 0));
 					lifespan += moarSpan * 60;
 				}
 			}
