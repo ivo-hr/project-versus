@@ -178,6 +178,7 @@ public:
 	FightManager* GetManager() { return manager; };
 
 	virtual short GetDir() { return dir; };
+	ushort GetLives() { return lives; };
 	virtual float GetWidth() { return width; };
 	virtual float GetHeight() { return height; };
 	virtual SDL_Rect* GetHurtbox();

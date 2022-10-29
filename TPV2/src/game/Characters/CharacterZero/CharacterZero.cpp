@@ -58,6 +58,8 @@ void CharacterZero::BasicNeutral(ushort frameNumber)
 		{
 			if (hit.second)
 				numHit++;
+			if (hit.first->GetLives() == 1)
+				numHit++;
 		}
 
 		if (rand() % 150 < numHit)
