@@ -134,7 +134,7 @@ void Entity::update()
 		hurtbox.x = -100;
 	}
 
-	if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()))
+	if (IsOutOfBounds())
 	{
 		OnDeath();
 	}

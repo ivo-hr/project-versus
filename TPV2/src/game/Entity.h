@@ -190,6 +190,8 @@ public:
 	void SetGround(bool ground);
 	bool GetGround() { return onGround; };
 
+	virtual bool IsOutOfBounds() { return !SDL_HasIntersection(&hurtbox, manager->GetDeathZone()); }
+
 	virtual bool changeDir() { return false; };
 
 	void resetHit();

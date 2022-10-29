@@ -160,7 +160,7 @@ void Yuno::SpecialNeutral(ushort frameNumber)
 		releasedSpec = false;
 		if (!bubble && !explotado)
 		{
-			bubble = new YunoBubble(manager, body->GetPosition(), this, 3, 2, NEUTRAL, input);
+			bubble = new YunoBubble(manager, body->GetPosition(), this, 3, 2, Bubble::NEUTRAL, input);
 			manager->AddEntity(bubble, 0);
 		}
 	}
@@ -189,7 +189,7 @@ void Yuno::SpecialForward(ushort frameNumber)
 	{
 		if (!bubble)
 		{
-			bubble = new YunoBubble(manager, body->GetPosition()+b2Vec2(dir, 0), this, 1, 2, FORWARD);
+			bubble = new YunoBubble(manager, body->GetPosition()+b2Vec2(dir, 0), this, 1, 2, Bubble::FORWARD);
 			manager->AddEntity(bubble, 0);
 		}
 	}
@@ -204,7 +204,8 @@ void Yuno::SpecialUpward(ushort frameNumber)
 	{
 		if (!bubble && !explotado)
 		{
-			bubble = new YunoBubble(manager, body->GetPosition(), this, 5, 0, UP, input);
+			bubbled = true;
+			bubble = new YunoBubble(manager, body->GetPosition(), this, 5, 0, Bubble::UP, input);
 			manager->AddEntity(bubble, 0);
 		}
 	}
@@ -268,6 +269,7 @@ bool Yuno::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& contro
 void Yuno::BubblePopped()
 {
 	bubble = nullptr;
+	bubbled = false;
 }
 
 void Yuno::update()
@@ -290,6 +292,11 @@ void Yuno::OnDeath()
 		bubble = nullptr;
 	}
 	Character::OnDeath();
+}
+
+bool Yuno::IsOutOfBounds()
+{
+	return Character::IsOutOfBounds() && !bubbled;
 }
 
 void Yuno::BuildBoxes()

@@ -2,7 +2,7 @@
 #include "../../Character.h"
 
 class YunoBubble;
-enum Bubble { NEUTRAL, FORWARD, UP };
+enum class Bubble { NEUTRAL, FORWARD, UP };
 
 class Yuno : public Character
 {
@@ -32,7 +32,10 @@ public:
 
 	virtual void OnDeath() override;
 
+	virtual bool IsOutOfBounds() override;
+
 	void setExplotado(bool dime) { explotado = dime; };
+
 	bool getExplotado() { return explotado; };
 
 private:
@@ -44,6 +47,8 @@ private:
 	bool explotado = false;
 
 	int lastBubble = 0;
+
+	bool bubbled = false;
 
 	bool boosted = false;
 

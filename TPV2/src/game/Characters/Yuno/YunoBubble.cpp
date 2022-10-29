@@ -3,7 +3,7 @@
 #include "../../../utils/CheckML.h"
 
 
-YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, int iniSpan, int moreSpan, Bubble bubbleType, InputConfig* input) : Entity(manager, pos, 3.f, 3.f), yuno(owner), hndlr(input)
+YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, int iniSpan, int moreSpan, Bubble bubbleType, InputConfig* input) : Entity(manager, pos, bubbleType == Bubble::UP ? 3.f : 2.f, bubbleType == Bubble::UP ? 3.f : 2.f), yuno(owner), hndlr(input)
 {
 	body->SetGravityScale(0.f);
 
@@ -22,12 +22,15 @@ YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, int iniSp
 
 	alive = true;
 
-	lifespan = iniSpan * 60;
-	moarSpan = moreSpan;
+	lifespan = (float)(iniSpan * 60);
+	moarSpan = (float)moreSpan;
 
 	pompa = bubbleType;
+
+	b2Vec2* dethZoneOriginal = manager->GetDeathZoneB2();
+	bubbleDeathZone = { manager->ToSDL(width), manager->ToSDL(height), (int)(manager->ToSDL(dethZoneOriginal->x) - (manager->ToSDL(width) * 2)), (int)(manager->ToSDL(dethZoneOriginal->y) - (manager->ToSDL(height) * 2)) };
 	
-	if (pompa == UP) {
+	if (pompa == Bubble::UP) {
 		GetInsideBubble(yuno);
 		invFrames = iniSpan*30;
 	}
@@ -40,14 +43,14 @@ YunoBubble::~YunoBubble()
 
 void YunoBubble::update()
 {
-	if (pompa != FORWARD) {
+	if (pompa != Bubble::FORWARD) {
 		if (hndlr)
 		{
-			if (hndlr->up() && pompa == NEUTRAL)
+			if (hndlr->up() && pompa == Bubble::NEUTRAL)
 			{
 				body->ApplyLinearImpulseToCenter(b2Vec2(0, -3.5f), true);
 			}
-			if (hndlr->down() && pompa == NEUTRAL)
+			if (hndlr->down() && pompa == Bubble::NEUTRAL)
 			{
 				body->ApplyLinearImpulseToCenter(b2Vec2(0, 3.5f), true);
 			}
@@ -59,7 +62,7 @@ void YunoBubble::update()
 			{
 				body->ApplyLinearImpulseToCenter(b2Vec2(3.5f, 0), true);
 			}
-			if(pompa == UP){
+			if(pompa == Bubble::UP){
 				if (hndlr->special() && timeSinceBubble > 10) {
 					setToDelete();
 				}
@@ -67,7 +70,7 @@ void YunoBubble::update()
 			}
 
 		}
-		else if (pompa == NEUTRAL)
+		else if (pompa == Bubble::NEUTRAL)
 		{
 			body->SetLinearVelocity(b2Vec2(dir * 5, 0));
 		}
@@ -84,37 +87,6 @@ void YunoBubble::update()
 		setToDelete();
 	}
 
-	if (hitLag > 0)
-	{
-		hitLag--;
-		if (hitLag == 0)
-		{
-			body->SetEnabled(true);
-		}
-		return;
-	}
-
-	if (body->IsEnabled())
-	{
-		hurtbox.x = manager->b2ToSDLX(body, width);
-		hurtbox.y = manager->b2ToSDLY(body, height);
-	}
-	else
-	{
-		hurtbox.x = -100;
-	}
-
-	if (!SDL_HasIntersection(&hurtbox, manager->GetBubbleDeathZone()) && invFrames == 0)
-	{
-		if (bubbledEntity) {
-			if (bubbledEntity->HasTag(Tags::IsCharacter))
-			{
-				auto chr = static_cast<Character*>(bubbledEntity);
-				chr->setBubbled(false);
-			}
-		}
-		OnDeath();
-	}
 	if (invFrames != 0) {
 		invFrames--;
 	}
@@ -125,6 +97,8 @@ void YunoBubble::update()
 		setToDelete();
 	}
 	timeSinceBubble++;
+
+	Entity::update();
 }
 
 void YunoBubble::draw(SDL_Rect* camera)
@@ -176,6 +150,19 @@ void YunoBubble::draw(SDL_Rect* camera)
 
 		SDL_RenderDrawRect(sdl->renderer(), &aux);
 
+		SDL_Rect auxDeathBubble = bubbleDeathZone;
+
+		auxDeathBubble.x -= camera->x;
+		auxDeathBubble.x = (int)((float)auxDeathBubble.x * wDiff);
+
+		auxDeathBubble.y -= camera->y;
+		auxDeathBubble.y = (int)((float)auxDeathBubble.y * hDiff);
+
+		auxDeathBubble.w = (int)((float)auxDeathBubble.w * wDiff);
+		auxDeathBubble.h = (int)((float)auxDeathBubble.h * hDiff);
+
+		SDL_RenderDrawRect(sdl->renderer(), &auxDeathBubble);
+
 #endif // _DEBUG
 
 		/*if (anim >= 1) {
@@ -198,7 +185,7 @@ void YunoBubble::CheckHits()
 		Entity* oponent = nullptr;
 		while (manager->GetNextEntity(oponent, yuno->GetLayer()))
 		{
-			if (oponent->GetName() != this->GetName())
+			if (oponent->GetName() != this->GetName() && oponent->GetName() != "Togo_Shield")
 			{
 				if (SDL_HasIntersection(&hurtbox, oponent->GetHurtbox()))
 				{
@@ -246,7 +233,6 @@ void YunoBubble::GetInsideBubble(Entity* ent)
 	{
 		auto chr = static_cast<Character*>(ent);
 		chr->ResetChar();
-		chr->setBubbled(true);
 	}
 
 	bubbledEntity = ent;
@@ -276,7 +262,6 @@ void YunoBubble::Pop()
 		if (bubbledEntity->HasTag(Tags::IsCharacter))
 		{
 			auto chr = static_cast<Character*>(bubbledEntity);
-			chr->setBubbled(false);
 			if (bubbledEntity == yuno) {
 				yuno->setExplotado(true);
 				yuno->setRecovery(false);

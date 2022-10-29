@@ -385,7 +385,7 @@ void Character::update()
 
 	anim->update();
 
-	if (!SDL_HasIntersection(&hurtbox, manager->GetDeathZone()) && (hurtbox.y > -hurtbox.h || !invencible) && !bubbled)
+	if (IsOutOfBounds() && (hurtbox.y > -hurtbox.h || !invencible))
 	{
 		OnDeath();
 	}

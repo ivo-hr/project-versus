@@ -781,16 +781,6 @@ b2Vec2* FightManager::GetDeathZoneB2()
 	return stage->GetDeathZoneB2();
 }
 
-SDL_Rect* FightManager::GetBubbleDeathZone()
-{
-	return stage->GetBubbleDeathZone();
-}
-
-b2Vec2* FightManager::GetBubbleDeathZoneB2()
-{
-	return stage->GetBubbleDeathZoneB2();
-}
-
 b2World* FightManager::GetWorld()
 {
 	return stage->GetWorld();

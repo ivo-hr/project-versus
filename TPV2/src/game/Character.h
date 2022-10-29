@@ -58,11 +58,8 @@ protected:
 
 	ushort damageTaken = 0;
 	ushort totalDamageTaken = 0;
-
 	
 	bool recovery = true;
-
-	bool bubbled = false;
 
 	//frame actual del movimiento que este haciendo
 	short moveFrame = 0;
@@ -188,6 +185,5 @@ public:
 	int getInput() { return input_; }
 	int getDamageTaken() { return totalDamageTaken; }
 	int getDeaths() { return maxLives - lives; }
-	void setBubbled(bool dime) { bubbled = dime; };
 	void setRecovery(bool dime) { recovery = dime; };
 };

@@ -21,6 +21,7 @@ public:
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox; };
 	virtual void setToDelete() { toDelete = true; timeSinceBubble = 0; yuno->BubblePopped(); };
 	virtual void OnDeath() override;
+	virtual bool IsOutOfBounds() override { return !SDL_HasIntersection(&hurtbox, &bubbleDeathZone); }
 
 	void GetInsideBubble(Entity* ent);
 	void Pop();
@@ -41,6 +42,8 @@ private:
 	int moarSpan = 0;
 	int timeSinceBubble = 0;
 	float invFrames = 0;
+
+	SDL_Rect bubbleDeathZone = {};
 
 	Bubble pompa;
 
