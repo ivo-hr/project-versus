@@ -89,7 +89,7 @@ void AnimationManager::UpdateIndex()
 
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
-AnimationManager::AnimationManager(Entity* entity, Texture* textura, spriteSheetData data) : texture(textura), info(data)
+AnimationManager::AnimationManager(Entity* entity, Texture*& textura, spriteSheetData data) : texture(textura), info(data)
 {
 	ent = entity;
 

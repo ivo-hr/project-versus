@@ -23,16 +23,16 @@ YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, int iniSp
 	alive = true;
 
 	lifespan = (float)(iniSpan * 60);
-	moarSpan = (float)moreSpan;
+	moarSpan = moreSpan;
 
 	pompa = bubbleType;
 
 	b2Vec2* dethZoneOriginal = manager->GetDeathZoneB2();
-	bubbleDeathZone = { manager->ToSDL(width), manager->ToSDL(height), (int)(manager->ToSDL(dethZoneOriginal->x) - (manager->ToSDL(width) * 2)), (int)(manager->ToSDL(dethZoneOriginal->y) - (manager->ToSDL(height) * 2)) };
+	bubbleDeathZone = { manager->ToSDL(width), manager->ToSDL(height), (int)(manager->ToSDL(dethZoneOriginal->x) - (manager->ToSDL(width) * 2)), pompa == Bubble::UP ? (int)(manager->ToSDL(dethZoneOriginal->y)) : (int)(manager->ToSDL(dethZoneOriginal->y) - (manager->ToSDL(height) * 2)) };
 	
 	if (pompa == Bubble::UP) {
 		GetInsideBubble(yuno);
-		invFrames = iniSpan*30;
+		invFrames = (float)(iniSpan * 30);
 	}
 }
 
@@ -123,7 +123,10 @@ void YunoBubble::draw(SDL_Rect* camera)
 			aux.w = (int)((float)aux.w * wDiff);
 			aux.h = (int)((float)aux.h * hDiff);
 
-			bubbledEntity->getTexture()->render(texSrc, aux);
+			if (bubbledEntity->GetDir() > 0)
+				bubbledEntity->getTexture()->render(texSrc, aux);
+			else
+				bubbledEntity->getTexture()->render(texSrc, aux, 0, nullptr, SDL_FLIP_HORIZONTAL);
 
 		}
 

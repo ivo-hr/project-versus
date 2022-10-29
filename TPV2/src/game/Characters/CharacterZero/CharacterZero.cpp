@@ -51,6 +51,27 @@ void CharacterZero::BasicNeutral(ushort frameNumber)
 	{
 		CreateHitBox(&attacks["fuerte"].hitBoxes[0]);
 	}
+	else if (frameNumber == attacks["fuerte"].keyFrames[0] + 1)
+	{
+		ushort numHit = 0;
+		for (pair<Entity*, bool> hit : isHit)
+		{
+			if (hit.second)
+				numHit++;
+		}
+
+		if (rand() % 150 < numHit)
+		{
+			Music::haltMusic();
+			SoundEffect::haltChannel();
+
+			char a[] = { "Player   won" };
+			a[7] = playerNumber + 49;
+			SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags::SDL_MESSAGEBOX_WARNING, "Gg wp", a, sdl->window());
+
+			manager->userExit();
+		}
+	}
 	else if (frameNumber == attacks["fuerte"].totalFrames)
 	{
 		currentMove = nullptr;

@@ -289,17 +289,17 @@ void NasNas::SpecialDownward(ushort frameNumber)
 		if (estado == fire)
 		{
 			estado = water;
-			anim->ChangeSheet(&sdl->images().at("nasnasWater"));
+			texture = &sdl->images().at("nasnasWater");
 		}
 		else if (estado == water)
 		{
 			estado = electric;
-			anim->ChangeSheet(&sdl->images().at("nasnasElectric"));
+			texture = &sdl->images().at("nasnasElectric");
 		}
 		else if (estado == electric)
 		{
 			estado = fire;
-			anim->ChangeSheet(&sdl->images().at("nasnasFire"));
+			texture = &sdl->images().at("nasnasFire");
 		}
 	}
 	if (frameNumber == attacks["specialD"].totalFrames)

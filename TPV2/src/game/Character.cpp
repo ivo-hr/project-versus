@@ -109,7 +109,19 @@ json Character::ReadJson(std::string filename, spriteSheetData &spData)
 		auxAnim.keyFrame.clear();
 	}
 
+	for (pair<string, animationData> aData : spData.animations)
+	{
+		aData.second.keyFrame.shrink_to_fit();
+		aData.second.keySprite.shrink_to_fit();
+	}
+
 	BuildBoxes();
+
+	for (pair<string, attackData> atData : attacks)
+	{
+		atData.second.hitBoxes.shrink_to_fit();
+		atData.second.keyFrames.shrink_to_fit();
+	}
 
 	for (auto& a : attacks)
 	{
