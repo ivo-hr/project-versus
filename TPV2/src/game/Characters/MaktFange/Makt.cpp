@@ -9,9 +9,11 @@
 Makt::Makt(FightManager* mngr, b2Vec2 pos, char input, ushort p) :
 	Character(mngr, pos, input,p, 2.f, 3.5f)
 {
+	//guardamos la textura
+	texture = &sdl->images().at("makt");
+	portrait = &sdl->images().at("maktSelect");
 
 	spriteSheetData spData;
-
 	json js = ReadJson("resources/config/Characters/maketo.json", spData);
 
 	baseJump = jumpStr;
@@ -27,10 +29,6 @@ Makt::Makt(FightManager* mngr, b2Vec2 pos, char input, ushort p) :
 	weight = ballWeight;
 
 	ball = nullptr;
-
-	//guardamos la textura
-	texture = &sdl->images().at("makt");
-	portrait = &sdl->images().at("maktSelect");
 
 	anim = new AnimationManager(this, texture, spData);
 

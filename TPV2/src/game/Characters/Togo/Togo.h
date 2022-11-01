@@ -26,6 +26,9 @@ public:
 	virtual void SetSpear(bool spear);
 	void SpecialLHit(ushort frameNumber);
 	virtual void draw(SDL_Rect* camera)override;
+
+	virtual void OnParry(Entity* attacker, bool& controlHitLag, HitData& a, bool& controlCamShake, bool& controlShake) override;
+
 private:
 	bool lanza = true;
 	float spearTime;
@@ -34,5 +37,7 @@ private:
 	DinoShield* dShield = nullptr;
 	SDL_Rect bite;
 protected:
+
+	void BuildParticlePool() override;
 	void BuildBoxes() override;
 };

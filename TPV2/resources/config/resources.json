@@ -92,11 +92,11 @@
     { "id" : "parryS", "file" : "resources/images/ParrySpark.png"},
     { "id" : "parryB", "file" : "resources/images/ParryBack.png"},
     { "id" : "bubble", "file" : "resources/images/Bubble.png"}, 
-    {"id" : "bulletYuno", "file" : "resources/images/BulletYuno.png"}
+    {"id" : "bulletYuno", "file" : "resources/images/BulletYuno.png"}, 
+    {"id" : "togoParry", "file" : "resources/images/TogoParry.png"}
   ],
-  
-  "messages" : [
-    
+
+  "messages": [
   ],
 
   "sounds": [

@@ -10,13 +10,13 @@ using json = nlohmann::json;
 
 NasNas::NasNas(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mngr, pos, input,p, 1.5f, 2.7f)
 {
+	//guardamos la textura
+	texture = &sdl->images().at("nasnasFire");
+	portrait = &sdl->images().at("nasNasSelect");
 
 	spriteSheetData spData;
 
 	ReadJson("resources/config/Characters/nasnas.json", spData);
-	//guardamos la textura
-	texture = &sdl->images().at("nasnasFire");
-	portrait = &sdl->images().at("nasNasSelect");
 
 	eyePos = { (float)hurtbox.w / 1.6f, (float)hurtbox.h / 4.4f };
 

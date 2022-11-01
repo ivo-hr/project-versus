@@ -95,6 +95,7 @@ protected:
 	virtual void CreateHitBox(HitBoxData* data);
 
 	virtual void BuildBoxes() = 0;
+
 	virtual Vector2D BuildBoxOffset(const HitBoxData& data) {
 		return Vector2D((data.box.x + ((float)data.box.w / 2.f)) - (hurtbox.x + ((float)hurtbox.w / 2.f)), (data.box.y + ((float)data.box.h / 2.f)) - (hurtbox.y + ((float)hurtbox.h / 2.f)));
 	};
@@ -123,6 +124,8 @@ public:
 
 	virtual void CheckHits() override;
 	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
+
+	virtual void OnParry(Entity* attacker, bool& controlHitLag, HitData& a, bool& controlCamShake, bool& controlShake);
 
 	void SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag, Entity* attacker, bool& controlShake, bool& controlCamShake);
 	bool IsGoingToKill(const b2Vec2& angle);

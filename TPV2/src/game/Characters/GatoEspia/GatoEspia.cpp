@@ -8,11 +8,12 @@
 using json = nlohmann::json;
 GatoEspia::GatoEspia(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mngr, pos, input, p, 1.5f, 3.f)
 {
-	spriteSheetData spData;
-	ReadJson("resources/config/Characters/gato.json", spData);
 	//guardamos la textura
 	texture = &sdl->images().at("blinkMaster");
 	portrait = &sdl->images().at("blinkMasterSelect");
+
+	spriteSheetData spData;
+	ReadJson("resources/config/Characters/gato.json", spData);
 	//smolH = &sdl->soundEffects().at("zeroSmolHit");
 
 	anim = new AnimationManager(this, texture, spData);

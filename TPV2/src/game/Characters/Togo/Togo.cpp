@@ -10,22 +10,30 @@ using json = nlohmann::json;
 
 Togo::Togo(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mngr, pos, input,p, 1.5f, 3.5f)
 {
-
-	spriteSheetData spData;
-
-	ReadJson("resources/config/Characters/dino.json", spData);
 	//guardamos la textura
 	texture = &sdl->images().at("dinoSouls");
 	portrait = &sdl->images().at("dinoSoulsSelect");
 
+	spriteSheetData spData;
+
+	ReadJson("resources/config/Characters/dino.json", spData);
+
 	eyePos = { (float)hurtbox.w * 1.2f, (float)hurtbox.h / 2.2f };
 
 	anim = new AnimationManager(this, texture, spData);
+
+	particlePool["parryDino"].push_front(new Particle(
+		{ 0,0 }, ParticleData(&sdl->images().at("togoParry"), SDL_Rect({ 0, 0, 96, 96 }), 5, 3, 2, 30), this));
 }
 
 Togo::~Togo()
 {
 
+}
+
+void Togo::BuildParticlePool()
+{
+	Character::BuildParticlePool();
 }
 
 //Lo mismo que el de arriba pero mas rapido y debil xd
@@ -386,6 +394,12 @@ void Togo::draw(SDL_Rect* camera)
 #endif
 
 	Character::draw(camera);
+}
+
+void Togo::OnParry(Entity* attacker, bool& controlHitLag, HitData& a, bool& controlCamShake, bool& controlShake)
+{
+	AddParticle("parryDino", Vector2D(hurtbox.x + hurtbox.w / 2, hurtbox.y - hurtbox.h / 10), dir);
+	Character::OnParry(attacker, controlHitLag, a, controlCamShake, controlShake);
 }
 
 bool Togo::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)

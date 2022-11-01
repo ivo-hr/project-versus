@@ -4,15 +4,14 @@
 
 CharacterZero::CharacterZero(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mngr, pos, input,p)
 {
-	//importamos json del personaje
-
-	spriteSheetData spData;
-	
-	ReadJson("resources/config/Characters/zero.json", spData);
 
 	//guardamos la textura
 	texture = &sdl->images().at("zero");
 	portrait = &sdl->images().at("zeroSelect");
+
+	//importamos json del personaje
+	spriteSheetData spData;
+	ReadJson("resources/config/Characters/zero.json", spData);
 	//smolH = &sdl->soundEffects().at("zeroSmolHit");
 
 	eyePos = { (float)hurtbox.w / 1.1f, (float)hurtbox.h / 6.f };
@@ -57,9 +56,11 @@ void CharacterZero::BasicNeutral(ushort frameNumber)
 		for (pair<Entity*, bool> hit : isHit)
 		{
 			if (hit.second)
+			{
 				numHit++;
-			if (hit.first->GetLives() == 1)
-				numHit++;
+				if (hit.first->GetLives() == 1)
+					numHit++;
+			}
 		}
 
 		if (rand() % 150 < numHit)
@@ -69,7 +70,7 @@ void CharacterZero::BasicNeutral(ushort frameNumber)
 
 			char a[] = { "Player   won" };
 			a[7] = playerNumber + 49;
-			SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags::SDL_MESSAGEBOX_WARNING, "Gg wp", a, sdl->window());
+			SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags::SDL_MESSAGEBOX_WARNING, "Gg well played", a, sdl->window());
 
 			manager->userExit();
 		}

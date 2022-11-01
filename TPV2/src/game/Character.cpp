@@ -852,35 +852,7 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 	//Parry
 	if (parry > 0 && parry <= parryWindow)
 	{
-		if (!attacker->HasTag(Tags::IsProjectile))
-		{
-			AddHitLag(20);
-			attacker->AddHitLag(40);
-		}
-		else
-		{
-			AddHitLag(4);
-		}
-		currentMove = nullptr;
-		moveFrame = 0;
-		parry = 1;
-		shield = 0;
-		anim->StartAnimation("parry" + animAddon);
-		anim->update();
-		manager->MoveToFront(this);
-		controlHitLag = true;
-
-		manager->SetShake(Vector2D(a.direction.x * 2, a.direction.y * 3), 3);
-		controlCamShake = true;
-		controlShake = true;
-
-		float xEyeDiff = eyePos.getX() - (hurtbox.w / 2.f);
-
-		AddParticle("parryS", { hurtbox.x + (hurtbox.w / 2.f) + (xEyeDiff * dir), hurtbox.y + eyePos.getY() }, dir, true);
-		AddParticle("parryB", { hurtbox.x + hurtbox.w / 2.f, (float)hurtbox.y + hurtbox.h * 1.05f });
-
-		sdl->soundEffects().at("parry").play();
-
+		OnParry(attacker, controlHitLag, a, controlCamShake, controlShake);
 		return true;
 	}
 	//Shield is up
@@ -920,6 +892,38 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 
 	return false;
 
+}
+
+void Character::OnParry(Entity* attacker, bool& controlHitLag, HitData& a, bool& controlCamShake, bool& controlShake)
+{
+	if (!attacker->HasTag(Tags::IsProjectile))
+	{
+		AddHitLag(20);
+		attacker->AddHitLag(40);
+	}
+	else
+	{
+		AddHitLag(4);
+	}
+	currentMove = nullptr;
+	moveFrame = 0;
+	parry = 1;
+	shield = 0;
+	anim->StartAnimation("parry" + animAddon);
+	anim->update();
+	manager->MoveToFront(this);
+	controlHitLag = true;
+
+	manager->SetShake(Vector2D(a.direction.x * 2, a.direction.y * 3), 3);
+	controlCamShake = true;
+	controlShake = true;
+
+	float xEyeDiff = eyePos.getX() - (hurtbox.w / 2.f);
+
+	AddParticle("parryS", { hurtbox.x + (hurtbox.w / 2.f) + (xEyeDiff * dir), hurtbox.y + eyePos.getY() }, dir, true);
+	AddParticle("parryB", { hurtbox.x + hurtbox.w / 2.f, (float)hurtbox.y + hurtbox.h * 1.05f });
+
+	sdl->soundEffects().at("parry").play();
 }
 
 void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag, Entity* attacker, bool& controlShake, bool& controlCamShake)
