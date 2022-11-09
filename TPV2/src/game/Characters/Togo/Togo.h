@@ -40,4 +40,6 @@ protected:
 
 	void BuildParticlePool() override;
 	void BuildBoxes() override;
+
+	virtual void ResetChar() override;
 };

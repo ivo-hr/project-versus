@@ -173,7 +173,7 @@ void Yuno::SpecialNeutral(ushort frameNumber)
 
 	if (input->special() && bubble && releasedSpec)
 	{
-		bubble->setToDelete();
+		bubble->Pop();
 		explotado = true;	
 	}
 
@@ -257,7 +257,7 @@ bool Yuno::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& contro
 {
 	if (bubble)
 	{
-		bubble->setToDelete();
+		bubble->Pop();
 	}
 	if (casco)
 	{
@@ -289,7 +289,7 @@ void Yuno::OnDeath()
 {
 	if (bubble)
 	{
-		bubble->setToDelete();
+		bubble->Pop();
 		bubble = nullptr;
 	}
 	Character::OnDeath();

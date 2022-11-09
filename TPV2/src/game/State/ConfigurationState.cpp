@@ -133,7 +133,6 @@ void ConfigurationState::update() {
     if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent() || back->mouseClick() || back->pointerClick(p1->getRect()) && enter && keyRelease) {
         keyRelease = false;
         toReDraw = true;
-        std::cout << "unpause" << std::endl;
         State* tmp = fmngr->getState();
         State* saved = fmngr->getSavedState();
         fmngr->setState(saved);
@@ -145,7 +144,6 @@ void ConfigurationState::update() {
     if (exit->mouseClick() || exit->pointerClick(p1->getRect()) && enter && keyRelease) {
         keyRelease = false;
         toReDraw = true;
-        std::cout << "unpause" << std::endl;
         State* tmp = fmngr->getState();
         State* saved = fmngr->getSavedState();
         delete saved;
@@ -219,6 +217,5 @@ void ConfigurationState::draw() {
 }
 
 void ConfigurationState::next() {
-    cout << "Next State " << endl;
     delete this;
 }

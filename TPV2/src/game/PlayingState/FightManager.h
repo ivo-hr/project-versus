@@ -5,6 +5,8 @@
 #include <box2d.h>
 #include <string>
 #include <vector>
+#include <deque>
+#include <queue>
 
 #include "../../sdlutils/InputHandler.h"
 #include "../../sdlutils/macros.h"
@@ -35,17 +37,19 @@ enum class Tags
 class FightManager : public StateMachine
 {
 
-	std::vector<Entity*> entities = vector<Entity*>(0);
-	std::vector<Character*> characters = vector<Character*>(0);
+	std::deque<Entity*> entities = std::deque<Entity*>();
+	std::deque<Character*> characters = std::deque<Character*>();
 
-	std::vector<Entity*> camFollow = vector<Entity*>(0);
+	std::deque<Entity*> camFollow = std::deque<Entity*>();
+
+	std::queue<Entity*> toAdd = std::queue<Entity*>();
 
 	std::vector<vector<Entity*>> entityMatrix;
 	std::pair<ushort, short> ptrPlace = { 0, 0 };
 
 	// Team mode
-	std::vector<Character*> team1;
-	std::vector<Character*> team2;
+	std::deque<Character*> team1;
+	std::deque<Character*> team2;
 	vector<vector<ushort>>team1DeadStats;
 	vector<vector<ushort>>team2DeadStats;
 	vector<Texture*>team1DeadTextures;
@@ -94,6 +98,13 @@ class FightManager : public StateMachine
 	void startCount();
 	short scount = 4;
 	unsigned int startticks = 0;
+
+	std::deque<Entity*>::iterator RemoveEntity(std::deque<Entity*>::iterator ent);
+	std::deque<Entity*>::iterator DeleteEntity(std::deque<Entity*>::iterator ent);
+	bool DeleteCharacter(std::deque<Character*>::iterator character);
+	void RemoveFromFollowCamera(Entity* ent);
+	void AddToGame(Entity* ent);
+
 public:
 
 	FightManager(SDLUtils* sdl);
@@ -113,17 +124,13 @@ public:
 	void AddEntity(Entity* ent);
 	void AddEntity(Entity* ent, ushort layer);
 	void FollowCamera(Entity* ent);
-	void RemoveFromFollowCamera(Entity* ent);
-	bool RemoveEntity(Entity* ent, bool shouldDelete = true);
-	bool RemoveCharacter(Character* character);
+	bool RemoveEntity(Entity* ent);
 	void MoveToFront(Entity* ent);
 
 	void ChangeEntityLayer(Entity* ent, ushort newLayer);
 	bool GetNextEntity(Entity*& ent, ushort layer);
 
 	void KillingBlow();
-
-	void FighterLost(Character* loser);
 
 	SDL_Rect GetSDLCoors(b2Body* body, float width, float height);
 	SDL_Rect GetSDLCoors(float x, float y, float width, float height);
@@ -139,11 +146,9 @@ public:
 
 	vector<Texture*>getWinnersTextures() { return deadTextures; }
 
-	std::vector<Entity*>* GetEntities();
+	std::deque<Entity*>* GetEntities();
 	SDL_Rect* GetDeathZone();
 	b2Vec2* GetDeathZoneB2();
-	SDL_Rect* GetBubbleDeathZone();
-	b2Vec2* GetBubbleDeathZoneB2();
 	b2World* GetWorld();
 	SDLUtils* GetSDLU() { return sdl; };
 
@@ -158,5 +163,7 @@ public:
 	bool getTeammode() { return teammode; }
 
 	void SetShake(const Vector2D& dir, uint16 duration);
+
+	void LogEverything();
 
 };

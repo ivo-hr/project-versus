@@ -96,7 +96,6 @@ void GameOverState::draw() {
 }
 
 void GameOverState::next() {
-    cout << "Next State " << endl;
     fmngr->setState(new MenuState(fmngr));
     delete this;
 }

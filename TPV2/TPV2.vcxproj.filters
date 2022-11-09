@@ -204,9 +204,6 @@
     <ClInclude Include="src\game\Utils\PlayerSelectRect.h">
       <Filter>Header Files\game\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resources\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>

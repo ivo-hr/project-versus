@@ -120,7 +120,6 @@ void ConfigState::update() {
     if (config->mouseClick()) {
         if (fmngr->getSavedState() == nullptr) {
             //pause
-            std::cout << "pause" << std::endl;
             fmngr->saveState(fmngr->getState());
             fmngr->setState(new ConfigurationState(fmngr,playerInput[0]));
             return;
@@ -157,7 +156,6 @@ void ConfigState::draw() {
 }
 
 void ConfigState::next() {
-    cout << "Next State " << endl;
 
     if (!TeamModebool) {
         fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,map + 1)); //3 para el de noche
@@ -436,7 +434,6 @@ void ConfigState::checkButtonPointerClick()
                 keyRelease = false;
                 lastPointerClick = playerInput[i];
                 //pause
-                std::cout << "pause" << std::endl;
                 fmngr->saveState(fmngr->getState());
                 fmngr->setState(new ConfigurationState(fmngr, playerInput[0]));
 
@@ -711,7 +708,6 @@ void ConfigState::mapcheckButtonPointerClick()
         keyRelease = false;
         if (fmngr->getSavedState() == nullptr) {
             //pause
-            std::cout << "pause" << std::endl;
             fmngr->saveState(fmngr->getState());
             fmngr->setState(new ConfigurationState(fmngr, playerInput[0]));
             return;

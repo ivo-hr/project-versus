@@ -424,7 +424,7 @@ void NasNas::BuildBoxes()
 		manager->GetSDLCoors(
 		body->GetPosition().x + (dir * width * 2),
 		body->GetPosition().y - height * 0.2f,
-		width,
+		width * 1.2f,
 		height * 1.3f);
 
 	attacks["specialF"].hitBoxes[0].hitdata.estado = fire;

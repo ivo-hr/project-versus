@@ -85,6 +85,5 @@ void ExitState::draw()
 }
 
 void ExitState::next() {
-    cout << "Next State " << endl;
     delete this;
 }

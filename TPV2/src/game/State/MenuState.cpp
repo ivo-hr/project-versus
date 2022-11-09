@@ -27,7 +27,6 @@ MenuState::~MenuState()
 void MenuState::update() {
     for (auto i = 0; i < SDL_NumJoysticks(); i++) {
         if (ih.xboxGetAxesState(i, 1) == -1) {
-            std::cout << i << std::endl;
             Finput = i;
             fmngr->getState()->next();
             return;
@@ -51,7 +50,6 @@ void MenuState::update() {
     if (config->mouseClick()) {
         if (fmngr->getSavedState() == nullptr) {
             //pause
-            std::cout << "pause" << std::endl;
             fmngr->saveState(fmngr->getState());
             fmngr->setState(new ConfigurationState(fmngr,-1));
             return;
@@ -89,7 +87,6 @@ void MenuState::draw() {
 }
 
 void MenuState::next() {
-    cout << "Next State " << endl;
     fmngr->setState(new ConfigState(fmngr, Finput));
 
     sdl->soundEffects().at("uiSelect").play();

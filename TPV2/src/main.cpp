@@ -49,9 +49,6 @@ int main(int ac, char **av) {
 	SDL_RenderSetLogicalSize(sdl.renderer(), DM.w, DM.h);
 	sdl.toggleFullScreen();
 
-#ifndef _DEBUG
-
-#endif // !_DEBUG
 #ifdef _DEBUG
 
 	sdl.toggleFullScreen();
@@ -81,6 +78,9 @@ int main(int ac, char **av) {
 	try
 	{
 		fghtmngr = new FightManager(&sdl);
+#ifdef _DEBUG
+		fghtmngr->LogEverything();
+#endif // !_DEBUG
 		delete fghtmngr;
 	}
 	catch (const char* s)

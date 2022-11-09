@@ -10,8 +10,6 @@ public:
 	Yuno(FightManager* mngr, b2Vec2 pos, char input, ushort p);
 	virtual ~Yuno();
 
-	
-
 	string GetName() override { return "Yuno"; };
 
 	virtual void BasicNeutral(ushort frameNumber) override;

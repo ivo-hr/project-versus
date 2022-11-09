@@ -60,7 +60,7 @@
             "b2vecY": 1,
             "base": 10,
             "damage": 10,
-            "multiplier": 1.2,
+            "multiplier": 1.1,
             "stun": -1,
             "shieldBreak": false
           },
@@ -73,7 +73,7 @@
             "b2vecY": 1,
             "base": 10,
             "damage": 10,
-            "multiplier": 1.2,
+            "multiplier": 1.1,
             "stun": -1,
             "shieldBreak": false
           },
@@ -81,8 +81,8 @@
           "duration": 8
         }
       ],
-      "keyFrames": [7],
-      "totalFrames": 30
+      "keyFrames": [8],
+      "totalFrames": 36
     },
     {
       "id": "basicU",

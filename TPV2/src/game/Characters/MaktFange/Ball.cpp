@@ -2,7 +2,7 @@
 #include "../../Utils/Particle.h"
 #include "../../../utils/CheckML.h"
 
-MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, b2Vec2 respawn, ushort pNumber, ushort layer) :
+MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, const HitData& attack, b2Vec2 dir, b2Vec2 respawn, ushort pNumber, ushort layer) :
 	Projectile(manager, pos, dir, 1.5f, 1.5f, 20)
 {
 	arrowsTex = &sdl->images().at("arrows");
@@ -14,7 +14,7 @@ MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir
 
 	vecDir.Normalize();
 
-	vecDir *= attack.damage * 1.1f;
+	vecDir *= attack.damage * 1.15f;
 
 	duration = (int)(attack.damage * 2.2f);
 
@@ -68,6 +68,9 @@ void MaktBall::update()
 				body->SetGravityScale(10.f);
 
 				body->SetLinearDamping(3.);
+
+				data.damage /= 2;
+				data.base /= 2;
 			}
 		}
 
@@ -97,9 +100,6 @@ void MaktBall::CheckHits()
 				bool controlHitLag = false;
 				bool controlShake = false;
 				bool controlCamShake = false;
-
-				data.damage = (ushort)body->GetLinearVelocity().Length();
-				data.multiplier = body->GetLinearVelocity().Length() / 20.f;
 
 				if (oponent->GetHit(data, this, controlHitLag, controlShake, controlCamShake))
 				{
@@ -138,7 +138,6 @@ void MaktBall::OnDeath()
 	alive = false;
 	physic = true;
 	body->SetGravityScale(10.f);
-	manager->RemoveFromFollowCamera(this);
 }
 
 bool MaktBall::PickUp()
@@ -154,8 +153,6 @@ bool MaktBall::PickUp()
 
 void MaktBall::Respawn()
 {
-	manager->FollowCamera(this);
-
 	body->SetAwake(true);
 
 	body->SetLinearVelocity({ 0, 0 });

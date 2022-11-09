@@ -19,6 +19,8 @@ protected:
 
 	AnimationManager* anim = nullptr;
 
+	bool waitingToRespawn = false;
+
 	//Datos de los ataques (Deberian salir de jsons en un futuro)
 	std::unordered_map<std::string, attackData> attacks = unordered_map<string, attackData>();
 
@@ -40,7 +42,7 @@ protected:
 	ushort shieldHealth = 0;
 	int maxShield = 0;
 	ushort parry = 0;
-	ushort parryWindow = 5;
+	ushort parryWindow = 7;
 
 	bool dash = false;
 

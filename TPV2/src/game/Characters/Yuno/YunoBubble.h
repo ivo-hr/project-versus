@@ -25,6 +25,7 @@ public:
 
 	void GetInsideBubble(Entity* ent);
 	void Pop();
+	void Explode();
 
 private:
 	Yuno* yuno = nullptr;
@@ -37,6 +38,8 @@ private:
 	SDL_Rect texDest = SDL_Rect();
 
 	InputConfig* hndlr = nullptr;
+
+	bool toExplode = false;
 
 	float lifespan = 0;
 	int moarSpan = 0;

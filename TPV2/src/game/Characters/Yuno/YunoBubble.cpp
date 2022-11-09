@@ -30,7 +30,8 @@ YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, int iniSp
 	b2Vec2* dethZoneOriginal = manager->GetDeathZoneB2();
 	bubbleDeathZone = { manager->ToSDL(width), manager->ToSDL(height), (int)(manager->ToSDL(dethZoneOriginal->x) - (manager->ToSDL(width) * 2)), pompa == Bubble::UP ? (int)(manager->ToSDL(dethZoneOriginal->y)) : (int)(manager->ToSDL(dethZoneOriginal->y) - (manager->ToSDL(height) * 2)) };
 	
-	if (pompa == Bubble::UP) {
+	if (pompa == Bubble::UP)
+	{
 		GetInsideBubble(yuno);
 		invFrames = (float)(iniSpan * 30);
 	}
@@ -38,11 +39,16 @@ YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, int iniSp
 
 YunoBubble::~YunoBubble()
 {
-	Pop();
 }
 
 void YunoBubble::update()
 {
+	if (toExplode)
+	{
+		Explode();
+		return;
+	}
+
 	if (pompa != Bubble::FORWARD) {
 		if (hndlr)
 		{
@@ -64,7 +70,7 @@ void YunoBubble::update()
 			}
 			if(pompa == Bubble::UP){
 				if (hndlr->special() && timeSinceBubble > 10) {
-					setToDelete();
+					Pop();
 				}
 				body->ApplyLinearImpulseToCenter(b2Vec2(0, -2.5f), true);
 			}
@@ -76,15 +82,9 @@ void YunoBubble::update()
 		}
 	}
 
-	if (bubbledEntity){
-		bubbledEntity->GetBody()->SetTransform(body->GetPosition(), 0);
-	}
-
 	if (bubbledEntity && bubbledEntity->ToDelete())
 	{
-		delete bubbledEntity;
-		bubbledEntity = nullptr; 
-		setToDelete();
+		Pop();
 	}
 
 	if (invFrames != 0) {
@@ -93,8 +93,9 @@ void YunoBubble::update()
 	if (lifespan != 0) {
 		lifespan--;
 	}
-	else {
-		setToDelete();
+	else
+	{
+		Pop();
 	}
 	timeSinceBubble++;
 
@@ -209,15 +210,14 @@ bool YunoBubble::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& 
 	}
 	else
 	{
-		setToDelete();
+		Pop();
 	}
 	return false;
 }
 
 void YunoBubble::OnDeath()
 {
-	yuno->BubblePopped();
-	Entity::OnDeath();
+	Pop();
 }
 
 void YunoBubble::GetInsideBubble(Entity* ent)
@@ -239,38 +239,43 @@ void YunoBubble::GetInsideBubble(Entity* ent)
 	}
 
 	bubbledEntity = ent;
-	manager->RemoveEntity(bubbledEntity, false);
 
+	bubbledEntity->SetAlive(false);
 
 	bubbledEntity->GetBody()->SetEnabled(false);
-	bubbledEntity->GetHurtbox()->x = -100;
 
 	texSrc = bubbledEntity->getCurrentSpriteSrc();
 }
 
 void YunoBubble::Pop()
 {
+	toExplode = true;
+}
+
+void YunoBubble::Explode()
+{
 	if (bubbledEntity)
 	{
-		manager->AddEntity(bubbledEntity);
-
-		if (bubbledEntity->HasTag(Tags::CameraFollow))
-		{
-			manager->FollowCamera(bubbledEntity);
-		}
+		bubbledEntity->SetAlive(true);
 
 		bubbledEntity->GetBody()->SetEnabled(true);
 
-		bubbledEntity->GetBody()->SetLinearVelocity(b2Vec2(0, -1));
+		bubbledEntity->SetPosition(body->GetPosition());
+
+		bubbledEntity->GetBody()->SetLinearVelocity(b2Vec2(0, -2));
+
 		if (bubbledEntity->HasTag(Tags::IsCharacter))
 		{
 			auto chr = static_cast<Character*>(bubbledEntity);
-			if (bubbledEntity == yuno) {
+			chr->ResetChar();
+			if (bubbledEntity == yuno)
+			{
 				yuno->setExplotado(true);
 				yuno->setRecovery(false);
 			}
 		}
 	}
 
+	yuno->BubblePopped();
 	toDelete = true;
 }

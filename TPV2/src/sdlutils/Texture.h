@@ -90,6 +90,13 @@ public:
 		render(src, dest, rotation);
 	}
 
+	// renders the complete texture at a destination rectangle (dest),
+	// with rotation
+	inline SDL_Texture* GetSDLTex() {
+		return texture_;
+	}
+
+
 private:
 
 	// Construct from text

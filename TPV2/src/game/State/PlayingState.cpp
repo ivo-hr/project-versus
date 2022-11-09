@@ -215,7 +215,6 @@ void PlayingState::draw() {
 }
 
 void PlayingState::next() {
-	cout << "Next State " << endl;
 	vector<Texture*>winnersTextures = fmngr->getWinnersTextures();
 	vector<vector<ushort>>gameStats = fmngr->getGameStats();
 	fmngr->setState(new GameOverState(fmngr, winnersTextures, gameStats, fmngr->getWinnerInput(), playersInput_));

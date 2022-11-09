@@ -129,10 +129,6 @@ void Entity::update()
 		hurtbox.x = manager->b2ToSDLX(body, width);
 		hurtbox.y = manager->b2ToSDLY(body, height);
 	}
-	else
-	{
-		hurtbox.x = -100;
-	}
 
 	if (IsOutOfBounds())
 	{
@@ -241,6 +237,17 @@ void Entity::RemoveParticle(Particle* par, ushort posInVec, bool front)
 SDL_Rect* Entity::GetHurtbox()
 {
 	return &hurtbox;
+}
+
+void Entity::SetPosition(const b2Vec2& newPos)
+{
+	body->SetTransform(newPos, 0);
+
+	if (body->IsEnabled())
+	{
+		hurtbox.x = manager->b2ToSDLX(body, width);
+		hurtbox.y = manager->b2ToSDLY(body, height);
+	}
 }
 
 void Entity::AddHitLag(ushort lag)

@@ -323,14 +323,16 @@ void Togo::SpecialDownward(ushort frameNumber)
 	}
 	else if (frameNumber == attacks["specialD"].keyFrames[0])
 	{
+		manager->SetShake(Vector2D(-dir, 2), 6);
 		CreateHitBox(&attacks["specialD"].hitBoxes[0]);
-	}
-	else if (frameNumber == attacks["specialD"].keyFrames[1] - 2)
-	{
-		dir = -dir;
 	}
 	else if (frameNumber == attacks["specialD"].keyFrames[1])
 	{
+		dir = -dir;
+	}
+	else if (frameNumber == attacks["specialD"].keyFrames[2])
+	{
+		manager->SetShake(Vector2D(-dir, 3), 8);
 		CreateHitBox(&attacks["specialD"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["specialD"].totalFrames)
@@ -467,4 +469,14 @@ void Togo::BuildBoxes()
 		width * 2,
 		height * 1.2f);
 
+}
+
+void Togo::ResetChar()
+{
+	if (dShield)
+	{
+		dShield->setToDelete();
+		dShield = nullptr;
+	}
+	Character::ResetChar();
 }

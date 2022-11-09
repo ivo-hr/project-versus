@@ -104,6 +104,8 @@ private:
 
 protected:
 
+	bool alive = true;
+
 	ushort layer;
 	ushort placeInLayer;
 
@@ -129,8 +131,6 @@ protected:
 	std::unordered_map<Entity*, bool> isHit;
 
 	bool onGround;
-
-	bool alive = true;
 	ushort respawnTimer = 0;
 	ushort respawnFrames;
 
@@ -153,6 +153,9 @@ public:
 	virtual ~Entity();
 
 	virtual string GetName() = 0;
+
+	bool IsAlive() { return alive; }
+	void SetAlive(bool is) { alive = is; }
 
 	void AddTag(const Tags& tag) { tags[tag] = true; };
 	void RemoveTag(const Tags& tag) { tags[tag] = false; };
@@ -183,6 +186,8 @@ public:
 	virtual float GetHeight() { return height; };
 	virtual SDL_Rect* GetHurtbox();
 	virtual b2Body* GetBody() { return body; };
+
+	virtual void SetPosition(const b2Vec2& newPos);
 
 	void AddHitLag(ushort lag);
 

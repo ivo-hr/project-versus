@@ -34,6 +34,9 @@ Projectile::~Projectile()
 
 void Projectile::update()
 {
+	if (!alive)
+		return;
+
 	outFor++;
 	if (outFor <= duration)
 	{
