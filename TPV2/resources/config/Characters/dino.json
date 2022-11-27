@@ -125,7 +125,7 @@
             "b2vecY": 3,
             "base": 40,
             "damage": 25,
-            "multiplier": 1.12,
+            "multiplier": 0.7,
             "stun": -1,
             "shieldBreak": true
           },

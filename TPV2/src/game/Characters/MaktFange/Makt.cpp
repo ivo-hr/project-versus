@@ -267,7 +267,7 @@ void Makt::ThrowRecover(ushort frameNumber)
 
 	if (frameNumber == attacks["specialLThrow"].keyFrames[0])
 	{
-		CreateHitBox(&attacks["specialLThrow"].hitBoxes[0]);
+		CreateHitBox(&attacks["specialLThrow"].hitBoxes[1]);
 		ThrowBall(attacks["specialLThrow"].hitBoxes[0].hitdata, timeHeld);
 	}
 	else if (frameNumber >= attacks["specialLThrow"].totalFrames)
@@ -474,7 +474,7 @@ void Makt::BuildBoxes()
 		width * 1.7f,
 		height);
 
-	attacks["specialLThrow"].hitBoxes[0].box = manager->GetSDLCoors(
+	attacks["specialLThrow"].hitBoxes[1].box = manager->GetSDLCoors(
 		body->GetPosition().x + (dir * 1.4f),
 		body->GetPosition().y,
 		width * 1.3f,

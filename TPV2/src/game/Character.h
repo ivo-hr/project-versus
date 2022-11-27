@@ -66,7 +66,6 @@ protected:
 	//frame actual del movimiento que este haciendo
 	short moveFrame = 0;
 
-	bool alive = true;
 	int respawnFrames = 150;
 	//Metodo del movimiento que este haciendo (esto es una variable que guarda metodos :v)
 	std::function<void(int)> currentMove;
@@ -103,6 +102,16 @@ protected:
 	};
 
 	virtual void BuildParticlePool() override;
+
+	void ChangeTexMod(Uint8 r, Uint8 g, Uint8 b)
+	{
+		Uint8 r_, g_, b_;
+		texture->GetTexMod(r_, g_, b_);
+		if (r != r_ || g != g_ || b != b_)
+		{
+			texture->SetTexMod(r, g, b);
+		}
+	}
 
 public:
 
@@ -186,6 +195,8 @@ public:
 	void StartMove(std::function<void(ushort)> newMove);
 	void ChangeMove(std::function<void(ushort)> newMove);
 
+	virtual InputConfig* GetInputConfig() { return input; };
+	virtual void SetInputConfig(InputConfig* value) { input = value; };
 	virtual SDL_Rect getCurrentSpriteSrc() override;
 	int getInput() { return input_; }
 	int getDamageTaken() { return totalDamageTaken; }

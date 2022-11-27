@@ -21,7 +21,6 @@ PlayingState::PlayingState(FightManager* game, vector<char>playersInput, vector<
 	string s = "resources/config/Stages/stage" + to_string(map) + ".json";
 	fmngr->LoadStage(s);
 
-
 	for (auto i = 0u; i < playersInput.size(); i++) {
 		switch (characters[i])
 		{
@@ -37,15 +36,31 @@ PlayingState::PlayingState(FightManager* game, vector<char>playersInput, vector<
 		case 3: //Maketo
 			entities.push_back(new Makt(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i],i));
 			break;
-			
 		case 4://Yuno
 			entities.push_back(new Yuno(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			break;
+		case 5://Melvin
+			entities.push_back(new Melvin(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
+			break;
 		case -1://Aleatorio
-			int charac = sdl->rand().nextInt(0, 11);
+			int charac = sdl->rand().nextInt(0, 13);
+
+			switch (playersInput[i])
+			{
+			case -1:
+				if (ih.isKeyDown(playerPrefs.Keyboard1Down()))charac = 10;
+				break;
+			case -2:
+				if (ih.isKeyDown(playerPrefs.Keyboard2Down()))charac = 10;
+				break;
+			default:
+				if (ih.xboxGetAxesState(playersInput[i], 1) == 1 || ih.xboxGetDpadState(playersInput[i], 2))
+					charac = 10;
+				break;
+			}
 
 #ifdef _DEBUG
-			charac = sdl->rand().nextInt(10, 11);		//Si estamos en debug siempre sale Ciro
+			charac = 12;		//Si estamos en debug siempre sale Ciro
 #endif // _DEBUG
 
 			switch (charac)
@@ -70,7 +85,11 @@ PlayingState::PlayingState(FightManager* game, vector<char>playersInput, vector<
 			case 9:
 				entities.push_back(new Yuno(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				break;
-			case 10: //Zero
+			case 10: //Yuno
+			case 11:
+				entities.push_back(new Melvin(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
+				break;
+			case 12: //Zero
 				entities.push_back(new CharacterZero(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				break;
 			}
@@ -136,8 +155,35 @@ PlayingState::PlayingState(FightManager* game, vector<char> playersInput, vector
 				team2.push_back(new Yuno(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			}
 			break;
+		case 5://Melvin
+			if (teams[i] == 0)
+				team1.push_back(new Melvin(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
+			else
+			{
+				team2.push_back(new Melvin(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
+			}
+			break;
 		case -1://Aleatorio
-			ushort charac = sdl->rand().nextInt(0, 9);
+			ushort charac = sdl->rand().nextInt(0, 13);
+
+			switch (playersInput[i])
+			{
+			case -1:
+				if (ih.isKeyDown(playerPrefs.Keyboard1Down()))charac = 10;
+				break;
+			case -2:
+				if (ih.isKeyDown(playerPrefs.Keyboard2Down()))charac = 10;
+				break;
+			default:
+				if (ih.xboxGetAxesState(playersInput[i], 1) == 1 || ih.xboxGetDpadState(playersInput[i], 2))
+					charac = 10;
+				break;
+			}
+
+#ifdef _DEBUG
+			charac = 12;		//Si estamos en debug siempre sale Ciro
+#endif // _DEBUG
+
 			switch (charac)
 			{
 			case 0: //Nasnas
@@ -176,7 +222,7 @@ PlayingState::PlayingState(FightManager* game, vector<char> playersInput, vector
 					team2.push_back(new Makt(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				}
 				break;
-			case 8:
+			case 8://Yuno
 			case 9:
 				if (teams[i] == 0)
 					team1.push_back(new Yuno(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
@@ -184,7 +230,16 @@ PlayingState::PlayingState(FightManager* game, vector<char> playersInput, vector
 				{
 					team2.push_back(new Yuno(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				}
-			case 10: //Zero
+			case 10://Melvin
+			case 11:
+				if (teams[i] == 0)
+					team1.push_back(new Melvin(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
+				else
+				{
+					team2.push_back(new Melvin(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
+				}
+				break;
+			case 12: //Zero
 				if (teams[i] == 0)
 					team1.push_back(new CharacterZero(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				else

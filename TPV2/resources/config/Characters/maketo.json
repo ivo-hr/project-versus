@@ -154,11 +154,24 @@
           "hitData": {
             "b2vecX": 1,
             "b2vecY": 1.1,
-            "base": 30,
-            "damage": 12,
-            "multiplier": 0.6,
+            "base": 50,
+            "damage": 25,
+            "multiplier": 0.2,
             "stun": -1,
             "shieldBreak": true
+          },
+          "hitlag": -1,
+          "duration": 3
+        },
+        {
+          "hitData": {
+            "b2vecX": 1,
+            "b2vecY": 1.1,
+            "base": 40,
+            "damage": 7,
+            "multiplier": 0.2,
+            "stun": -1,
+            "shieldBreak": false
           },
           "hitlag": -1,
           "duration": 3

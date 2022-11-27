@@ -188,8 +188,10 @@ Character::~Character()
 {
 	r = 0;
 	g = 255;
-	delete input;
-	delete anim;
+	if (input)
+		delete input;
+	if (anim)
+		delete anim;
 }
 
 void Character::SetSpawn(b2Vec2 spawn, short dir)
@@ -202,7 +204,6 @@ void Character::SetSpawn(b2Vec2 spawn, short dir)
 void Character::SetPNumber(ushort num)
 {
 	playerNumber = num;
-	arrowSrc.y = arrowSrc.h * num;
 }
 
 void Character::update()
@@ -250,8 +251,6 @@ void Character::update()
 	if (stun > 0)
 	{
 		stun--;
-		if (stun == 0)
-			SDL_SetTextureColorMod(texture->GetSDLTex(), 255, 255, 255);
 		if (!recovery) recovery = true;
 	}
 
@@ -691,6 +690,25 @@ void Character::draw()
 
 void Character::draw(SDL_Rect* camera)
 {
+	if (dash)
+	{
+		ChangeTexMod(162, 208, 208);
+	}
+	else if (shield > 0)
+	{
+		Uint8 rg = 144 - ((shieldHealth / (float)maxShield) * 128);
+		Uint8 b = 192 - ((shieldHealth / (float)maxShield) * 128);
+		ChangeTexMod(rg, rg, b);
+	}
+	else if (stun > 0)
+	{
+		ChangeTexMod(255, 128, 128);
+	}
+	else
+	{
+		ChangeTexMod(255, 255, 255);
+	}
+
 	if (!alive)
 	{
 		return;
@@ -737,7 +755,10 @@ void Character::draw(SDL_Rect* camera)
 		aux.w = int((float)aux.w * (float)manager->GetActualWidth() / (float)camera->w);
 		aux.h = int((float)aux.h * (float)manager->GetActualWidth() / (float)camera->w);
 		int xpos = aux.x + (aux.w / 2);
+		arrowSrc.y = arrowSrc.h * (layer - 1);
 		arrowsTex->render(arrowSrc, { xpos - 15, aux.y - 44, 30, 16 });
+
+		ChangeTexMod(255, 255, 255);
 
 
 #ifdef _DEBUG
@@ -890,7 +911,6 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 		//Shield broken
 		else
 		{
-			SDL_SetTextureColorMod(texture->GetSDLTex(), 255, 255, 255);
 			SuccessfulHit(true, a, controlHitLag, attacker, controlShake, controlCamShake);
 		}
 		return true;
@@ -925,7 +945,6 @@ void Character::OnParry(Entity* attacker, bool& controlHitLag, HitData& a, bool&
 	currentMove = nullptr;
 	moveFrame = 0;
 	parry = 1;
-	SDL_SetTextureColorMod(texture->GetSDLTex(), 255, 255, 255);
 	shield = 0;
 	anim->StartAnimation("parry" + animAddon);
 	anim->update();
@@ -961,7 +980,6 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 	else
 		recoil = (a.base + ((damageTaken * a.multiplier) / (weight * .1f)));
 
-	SDL_SetTextureColorMod(texture->GetSDLTex(), 255, 128, 128);
 	stun = a.GetStun(recoil);
 
 	controlHitLag = false;
@@ -1087,7 +1105,6 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 				}
 				if (a.estado == electric)
 				{
-					SDL_SetTextureColorMod(texture->GetSDLTex(), 255, 128, 128);
 					stun += (ushort)((float)statePower * 1.5f);
 
 					AddParticle("electric", Vector2D(hurtbox.x, hurtbox.y), 1, true);
@@ -1105,7 +1122,6 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 			statePower = a.power;
 			if (efEstado == electric)
 			{
-				SDL_SetTextureColorMod(texture->GetSDLTex(), 255, 128, 128);
 				stun += (ushort)((float)statePower * 1.5f);
 			}
 		}
@@ -1288,9 +1304,6 @@ void Character::StartShield(ushort frameNumber)
 
 	if (frameNumber >= shieldStartUp)
 	{
-		Uint8 rg = 32 + ((shieldHealth / (float)maxShield) * 112);
-		Uint8 b = 64 + ((shieldHealth / (float)maxShield) * 128);
-		SDL_SetTextureColorMod(texture->GetSDLTex(), rg, rg, b);
 		shield++;
 	}
 	if (frameNumber == shieldStartUp)
@@ -1305,14 +1318,12 @@ void Character::StartShield(ushort frameNumber)
 	}
 	if (input->basic())
 	{
-		SDL_SetTextureColorMod(texture->GetSDLTex(), 255, 255, 255);
 		shield = 0;
 		parry = 0;
 		ChangeMove([this](int f) { BasicDownward(f); });
 	}
 	else if (input->special())
 	{
-		SDL_SetTextureColorMod(texture->GetSDLTex(), 255, 255, 255);
 		shield = 0;
 		parry = 0;
 		ChangeMove([this](int f) { SpecialDownward(f); });
@@ -1322,7 +1333,6 @@ void Character::EndShield(ushort frameNumber)
 {
 	if (frameNumber == 0)
 	{
-		SDL_SetTextureColorMod(texture->GetSDLTex(), 255, 255, 255);
 		shield = 0;
 		parry = 0;
 		anim->StartAnimation("idle" + animAddon);
@@ -1345,7 +1355,6 @@ void Character::Dash(ushort frameNumber)
 	}
 	else if (frameNumber == dashStartUp)
 	{
-		SDL_SetTextureColorMod(texture->GetSDLTex(), 128, 144, 144);
 		dash = true;
 		anim->StartAnimation("dash" + animAddon);
 	}
@@ -1355,7 +1364,6 @@ void Character::Dash(ushort frameNumber)
 	}
 	else if (frameNumber >= 60)
 	{
-		SDL_SetTextureColorMod(texture->GetSDLTex(), 255, 255, 255);
 		dash = false;
 		currentMove = nullptr;
 		anim->StartAnimation("idle" + animAddon);
@@ -1363,7 +1371,6 @@ void Character::Dash(ushort frameNumber)
 
 	if (onGround)
 	{
-		SDL_SetTextureColorMod(texture->GetSDLTex(), 255, 255, 255);
 		dash = false;
 		if (frameNumber < dashStartUp)
 		{
@@ -1410,7 +1417,6 @@ SDL_Rect* Character::GetHurtbox()
 
 void Character::OnDeath()
 {
-	SDL_SetTextureColorMod(texture->GetSDLTex(), 255, 255, 255);
 	body->SetGravityScale(10.0f);
 	//Canal 1 , (antes a veces no se escucha)
 	sdl->soundEffects().at("death").play(0,1);
@@ -1568,7 +1574,6 @@ void Character::Elements()
 	}
 	else if (efEstado == wElectric)
 	{
-		SDL_SetTextureColorMod(texture->GetSDLTex(), 255, 128, 128);
 		stun += ushort((statePower / (stateDur / 60)) * 1.5f);
 		body->SetLinearVelocity({ 0, 0 }); 
 		ResetChar();

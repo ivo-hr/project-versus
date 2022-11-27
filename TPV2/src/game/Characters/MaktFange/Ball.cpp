@@ -14,9 +14,9 @@ MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, const HitData& attack, b2V
 
 	vecDir.Normalize();
 
-	vecDir *= attack.damage * 1.15f;
+	vecDir *= attack.damage * 0.8f;
 
-	duration = (int)(attack.damage * 2.2f);
+	duration = (int)(attack.damage * 1.5f);
 
 	physic = false;
 
@@ -69,8 +69,9 @@ void MaktBall::update()
 
 				body->SetLinearDamping(3.);
 
-				data.damage /= 2;
-				data.base /= 2;
+				data.damage *= 0.75f;
+				data.base *= 0.5f;
+				lag = 10;
 			}
 		}
 
@@ -142,7 +143,7 @@ void MaktBall::OnDeath()
 
 bool MaktBall::PickUp()
 {
-	if (physic)
+	if (physic && alive)
 	{
 		toDelete = true;
 		return true;

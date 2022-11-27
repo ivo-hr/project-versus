@@ -10,6 +10,13 @@
 
 #include "Font.h"
 
+struct RGB
+{
+	Uint8 r;
+	Uint8 g;
+	Uint8 b;
+};
+
 class Texture {
 public:
 
@@ -95,6 +102,16 @@ public:
 	inline SDL_Texture* GetSDLTex() {
 		return texture_;
 	}
+
+	inline void GetTexMod(Uint8& r, Uint8& g, Uint8& b) {
+		SDL_GetTextureColorMod(texture_, &r, &g, &b);
+	}
+
+	inline void SetTexMod(Uint8 r, Uint8 g, Uint8 b) {
+		SDL_SetTextureColorMod(texture_, r, g, b);
+	}
+
+
 
 
 private:

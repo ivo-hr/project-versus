@@ -56,6 +56,7 @@ ConfigState::~ConfigState()
     delete togo;
     delete nasnas;
     delete yuno;
+    delete melvin;
     delete aleatorio;
     delete plusB;
     delete minusB;
@@ -372,6 +373,15 @@ void ConfigState::checkButtonPointerClick()
 
             sdl->soundEffects().at("uiMov").play();
         }
+        else if (melvin->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
+            playerTexture[i]->setFront(&sdl->images().at("melvinSelect"));
+            charactersSelect[i] = 5;
+            keyRelease = false;
+            lastPointerClick = playerInput[i];
+            selected[i] = true;
+
+            sdl->soundEffects().at("uiMov").play();
+        }
         else if (aleatorio->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
             playerTexture[i]->setFront(&sdl->images().at("aleatorioSelect"));
             charactersSelect[i] = -1;
@@ -627,6 +637,7 @@ void ConfigState::playerMenuRender()
     togo->render();
     maketo->render();
     yuno->render();
+    melvin->render();
     plusB->render();
     minusB->render();
     normalmode->render();
@@ -778,12 +789,13 @@ void ConfigState::initcharact()
     charName.push_back("     Togo");
     yuno = new Button(&sdl->images().at("yunoSelect"), dist * 4 + offset, offsetY, buttonSize);
     charName.push_back("     Yuno");
+    melvin = new Button(&sdl->images().at("melvinSelect"), offset, distY + offsetY, buttonSize);
+    charName.push_back("    Melvin");
 
     charName.push_back(" Coming Soon");
     charName.push_back(" Coming Soon");
     charName.push_back(" Coming Soon");
-    charName.push_back(" Coming Soon");
 
-    aleatorio = new Button(&sdl->images().at("aleatorioSelect"), dist * 4 + offset, (distY + offsetY), buttonSize);
+    aleatorio = new Button(&sdl->images().at("aleatorioSelect"), dist * 4 + offset, distY + offsetY, buttonSize);
     charName.push_back("    Random");
 }

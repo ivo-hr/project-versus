@@ -1,14 +1,12 @@
 #include "../../Character.h"
 
-class DinoShield;
-
 class NasNas : public Character
 {
 public:
 	NasNas(FightManager* mngr, b2Vec2 pos, char input, ushort p);
 	virtual ~NasNas();
 
-	string GetName() override { return "Nas"; };
+	string GetName() override { return "NasNas"; };
 
 	virtual void BasicNeutral(ushort frameNumber) override;
 	virtual void BasicForward(ushort frameNumber) override;
