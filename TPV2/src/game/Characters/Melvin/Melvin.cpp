@@ -68,6 +68,7 @@ void Melvin::BasicNeutral(ushort frameNumber)
 	}
 	else if (frameNumber == attacks["basicN"].keyFrames[0])
 	{
+		CreateHitBox(&attacks["basicN"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["basicN"].totalFrames)
 	{
@@ -88,6 +89,7 @@ void Melvin::BasicForward(ushort frameNumber)
 	}
 	else if (frameNumber == attacks["basicF"].keyFrames[0])
 	{
+		CreateHitBox(&attacks["basicF"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["basicF"].totalFrames)
 	{
@@ -108,6 +110,7 @@ void Melvin::BasicUpward(ushort frameNumber)
 	}
 	else if (frameNumber == attacks["basicU"].keyFrames[0])
 	{
+		CreateHitBox(&attacks["basicU"].hitBoxes[0]);
 	}
 	else if (frameNumber == attacks["basicU"].totalFrames)
 	{
@@ -129,6 +132,11 @@ void Melvin::BasicDownward(ushort frameNumber)
 	}
 	else if (frameNumber == attacks["basicD"].keyFrames[0])
 	{
+		CreateHitBox(&attacks["basicD"].hitBoxes[0]);
+	}
+	else if (frameNumber == attacks["basicD"].keyFrames[1])
+	{
+		CreateHitBox(&attacks["basicD"].hitBoxes[1]);
 	}
 	else if (frameNumber == attacks["basicD"].totalFrames)
 	{
@@ -271,5 +279,39 @@ void Melvin::UnPosses()
 
 void Melvin::BuildBoxes()
 {
+	attacks["basicN"].hitBoxes[0].box =
+		manager->GetSDLCoors(
+			body->GetPosition().x,
+			body->GetPosition().y,
+			width * 1.4f,
+			height * 1.4f);
+
+	attacks["basicF"].hitBoxes[0].box =
+		manager->GetSDLCoors(
+			body->GetPosition().x + (dir),
+			body->GetPosition().y,
+			width * 1.5f,
+			height * 1.8f);
+
+	attacks["basicD"].hitBoxes[0].box =
+		manager->GetSDLCoors(
+			body->GetPosition().x + (dir * width * 0.6f),
+			body->GetPosition().y + height / 2,
+			width * 1.f,
+			height / 2);
+
+	attacks["basicD"].hitBoxes[1].box =
+		manager->GetSDLCoors(
+			body->GetPosition().x + (dir * width * 1.2f),
+			body->GetPosition().y + height / 2,
+			width * 0.5f,
+			height / 2);
+
+	attacks["basicU"].hitBoxes[0].box =
+		manager->GetSDLCoors(
+			body->GetPosition().x,
+			body->GetPosition().y - height * 0.6f,
+			width * 1.2f,
+			height * 0.7f);
 }
 

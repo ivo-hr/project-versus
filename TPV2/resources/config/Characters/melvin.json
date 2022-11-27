@@ -16,11 +16,11 @@
       "hitBoxes": [
         {
           "hitData": {
-            "damage": 8,
+            "damage": 4,
             "b2vecX": 1,
-            "b2vecY": 1.8,
-            "base": 20,
-            "multiplier": 0.6,
+            "b2vecY": 2.4,
+            "base": 25,
+            "multiplier": 0.05,
             "stun": -1,
             "shieldBreak": false
           },
@@ -29,7 +29,7 @@
         }
       ],
       "keyFrames": [ 2 ],
-      "totalFrames": 18
+      "totalFrames": 14
     },
     {
       "id": "basicF",
@@ -37,10 +37,10 @@
         {
           "hitData": {
             "b2vecX": 1,
-            "b2vecY": 1.5,
-            "base": 15,
-            "damage": 15,
-            "multiplier": 0.8,
+            "b2vecY": 1.8,
+            "base": 30,
+            "damage": 6,
+            "multiplier": 0.2,
             "stun": -1,
             "shieldBreak": false
           },
@@ -48,19 +48,19 @@
           "duration": 8
         }
       ],
-      "keyFrames": [ 5 ],
-      "totalFrames": 28
+      "keyFrames": [ 4 ],
+      "totalFrames": 22
     },
     {
       "id": "basicD",
       "hitBoxes": [
         {
           "hitData": {
-            "b2vecX": 1.5,
-            "b2vecY": 1,
+            "b2vecX": 1,
+            "b2vecY": 10,
             "base": 40,
-            "damage": 10,
-            "multiplier": 0.7,
+            "damage": 6,
+            "multiplier": 0.1,
             "stun": -1,
             "shieldBreak": false
           },
@@ -69,11 +69,11 @@
         },
         {
           "hitData": {
-            "b2vecX": -1.5,
+            "b2vecX": 1,
             "b2vecY": 1,
-            "base": 40,
-            "damage": 10,
-            "multiplier": 0.7,
+            "base": 30,
+            "damage": 7,
+            "multiplier": 0.2,
             "stun": -1,
             "shieldBreak": false
           },
@@ -81,45 +81,32 @@
           "duration": 4
         }
       ],
-      "keyFrames": [ 9 ],
-      "totalFrames": 46
+      "keyFrames": [ 3, 8 ],
+      "totalFrames": 16
     },
     {
       "id": "basicU",
       "hitBoxes": [
         {
           "hitData": {
-            "b2vecX": 1,
-            "b2vecY": 9,
-            "base": 40,
-            "damage": 9,
-            "multiplier": 0.5,
+            "b2vecX": 0,
+            "b2vecY": 1,
+            "base": 50,
+            "damage": 14,
+            "multiplier": 0.1,
             "stun": -1,
             "shieldBreak": false
           },
           "hitlag": -1,
-          "duration": 10
+          "duration": 7
         }
       ],
-      "keyFrames": [ 5 ],
-      "totalFrames": 25
+      "keyFrames": [ 4 ],
+      "totalFrames": 32
     },
     {
       "id": "specialN",
       "hitBoxes": [
-        {
-          "hitData": {
-            "b2vecX": 1,
-            "b2vecY": 1,
-            "base": 1,
-            "damage": 10,
-            "multiplier": 0.2,
-            "stun": -1,
-            "shieldBreak": false
-          },
-          "hitlag": -1,
-          "duration": 5
-        }
       ],
       "keyFrames": [ 1, 30 ],
       "totalFrames": 45
@@ -203,7 +190,7 @@
 
   "spData": {
     "leftOffset": 22,
-    "upOffset": 13,
+    "upOffset": 10,
     "sizeXOffset": 42,
     "sizeYOffset": 16,
     "spritesInX": 1,
