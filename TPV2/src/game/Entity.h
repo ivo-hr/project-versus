@@ -49,6 +49,8 @@ struct HitData {
 
 	state estado = state::none;
 	ushort power = 0;
+
+	bool isValid = true;
 };
 
 struct HitBoxData
@@ -65,6 +67,8 @@ struct HitBoxData
 
 	Vector2D charOffset;	//Offset que tiene con respecto a la entidad para que la siga
 	Vector2D normalOffset;
+
+	std::function<void(Entity*)> specialEffect;
 };
 
 struct attackData

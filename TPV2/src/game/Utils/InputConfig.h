@@ -4,14 +4,19 @@ using namespace std;
 #include "../../sdlutils/InputHandler.h"
 #include "PlayerConfigs.h"
 
+class Character;
+
 class InputConfig {
 	PlayerConfigs& playerPrefs = *PlayerConfigs::instance();
 	InputHandler& ih = *InputHandler::instance();
 	char typeofInput = 4;
 
+	Character* owner = nullptr;
+
 public:
-	InputConfig(char c) {
+	InputConfig(char c, Character* from) {
 		 typeofInput = c;
+		 owner = from;
 	};
 	virtual ~InputConfig() {};
 
@@ -28,6 +33,8 @@ public:
 	void refresh() {
 		ih.refresh();
 	};
+
+	Character* OriginalOwner() { return owner; };
 
 	// Metodo para hacer pruebas con los mandos
 	// Se llama en update de character

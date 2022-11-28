@@ -166,7 +166,21 @@ FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 
 		if (frameTime < (step * 1000))
 		{
-			SDL_Delay((Uint32)(step * 1000));
+			SDL_Delay((Uint32)((step * 1000) - frameTime));
+		}
+		else
+		{
+			cout << "----------" << endl;
+			cout << frameTime << "/" << (step * 1000) << endl;
+			for (vector<Entity*> a : entityMatrix)
+			{
+				for (Entity* b : a)
+				{
+					cout << b->GetName() << "  ";
+				}
+				cout << endl;
+			}
+			cout << endl;
 		}
 	}
 	// En ExitState se borran el state y el exitState, el savedState se borra en esta destructora
@@ -321,8 +335,8 @@ ushort FightManager::StartFight(std::vector<Character*> ent)
 	for (auto i = 0u; i < characters.size(); i++) {
 		numPlayers++;
 		listener->AddCharacter(entities[i]);
-		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i)); 
 		characters[i]->SetPNumber(i);
+		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
 	}
 
 	auto mus = RandomNumberGenerator().nextInt(0, 3);
@@ -383,14 +397,14 @@ ushort FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Cha
 	for (auto i = 0u; i < ateam1.size(); i++) {
 		//numPlayers++;
 		listener->AddCharacter(characters[i]);
-		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
 		characters[i]->SetPNumber(0);
+		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
 	}
 	for (auto i = ateam1.size(); i < ateam2.size()+ateam1.size() ; i++) {
 		//numPlayers++;
 		listener->AddCharacter(characters[i]);
-		characters[i]->SetSpawn(stage->GetPlayerSpawns((int)i), stage->GetPlayerDir((int)i));
 		characters[i]->SetPNumber(1);
+		characters[i]->SetSpawn(stage->GetPlayerSpawns((int)i), stage->GetPlayerDir((int)i));
 	}
 	sdl->musics().at("cube").play();
 	//Music::setMusicVolume(1);
@@ -448,15 +462,6 @@ void FightManager::InitMatrix()
 		}
 	}
 	entityMatrix.shrink_to_fit();
-
-	for (vector<Entity*> a : entityMatrix)
-	{
-		for (Entity* b : a)
-		{
-			cout << b->GetName() << "  ";
-		}
-		cout << endl;
-	}
 }
 
 void FightManager::FollowCamera(Entity* ent)
@@ -522,7 +527,9 @@ std::deque<Entity*>::iterator FightManager::RemoveEntity(std::deque<Entity*>::it
 		}
 		if (*it == *ent)
 			if (DeleteCharacter(it))
-				 aux = DeleteEntity(ent);
+				aux = DeleteEntity(ent);
+			else
+				aux = ent;
 	}
 	else
 	{
@@ -791,6 +798,11 @@ void FightManager::onNewGame()
 		listener->RemoveCharacter(entities[i]);
 		delete entities[i];
 	}
+	for (auto a : entityMatrix)
+	{
+		a.clear();
+	}
+	entityMatrix.clear();
 	entities.clear();
 	characters.clear();
 	camFollow.clear();

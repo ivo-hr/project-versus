@@ -35,7 +35,7 @@ void Melvin::update()
 {
 	if (toPosses && hitLag <= 1)
 	{
-		possesedChar = toPosses;
+		possesedChar = toPosses->GetInputConfig()->OriginalOwner();
 		possesedLayer = possesedChar->GetLayer();
 		possesedInput = possesedChar->GetInputConfig();
 		possesedChar->SetInputConfig(input);
@@ -47,6 +47,11 @@ void Melvin::update()
 	}
 	if (possesedChar)
 	{
+		if (possesedChar->GetInputConfig()->OriginalOwner() != input->OriginalOwner())
+		{
+			possesedChar->SetInputConfig(input);
+			manager->ChangeEntityLayer(possesedChar, layer);
+		}
 		possesTimer++;
 		if (possesTimer >= possesionTime)
 			UnPosses();
@@ -175,6 +180,8 @@ void Melvin::SpecialNeutral(ushort frameNumber)
 
 void Melvin::SpecialForward(ushort frameNumber)
 {
+	currentMove = nullptr;
+	moveFrame = -1;
 
 	if (!onGround)
 	{
@@ -196,6 +203,8 @@ void Melvin::SpecialForward(ushort frameNumber)
 
 void Melvin::SpecialUpward(ushort frameNumber)
 {
+	currentMove = nullptr;
+	moveFrame = -1;
 
 	if (!onGround)
 	{
@@ -217,6 +226,8 @@ void Melvin::SpecialUpward(ushort frameNumber)
 
 void Melvin::SpecialDownward(ushort frameNumber)
 {
+	currentMove = nullptr;
+	moveFrame = -1;
 
 	if (!onGround)
 	{
@@ -266,10 +277,12 @@ void Melvin::UnPosses()
 {
 	body->SetEnabled(true);
 	SetPosition(possesedChar->GetBody()->GetPosition());
+	ResetChar();
+
 	possesedChar->SetInputConfig(possesedInput);
 	manager->ChangeEntityLayer(possesedChar, possesedLayer);
 	possesedChar->ResetChar();
-	ResetChar();
+
 	possesedChar = nullptr;
 	possesedInput = nullptr;
 	possesedLayer = 0;
@@ -312,6 +325,6 @@ void Melvin::BuildBoxes()
 			body->GetPosition().x,
 			body->GetPosition().y - height * 0.6f,
 			width * 1.2f,
-			height * 0.7f);
+			height * 1.5f);
 }
 

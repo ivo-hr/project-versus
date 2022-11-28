@@ -42,13 +42,20 @@ json Character::ReadJson(std::string filename, spriteSheetData &spData)
 
 		for (uint16 j = 0u; j < hitBoxes.size(); j++)
 		{
-			hitboxDataAux.hitdata.damage = hitBoxes[j]["hitData"]["damage"];
-			hitboxDataAux.hitdata.direction = b2Vec2((float)hitBoxes[j]["hitData"]["b2vecX"], (float)hitBoxes[j]["hitData"]["b2vecY"]);
-			hitboxDataAux.hitdata.direction.Normalize();
-			hitboxDataAux.hitdata.base = hitBoxes[j]["hitData"]["base"];
-			hitboxDataAux.hitdata.multiplier = hitBoxes[j]["hitData"]["multiplier"];
-			hitboxDataAux.hitdata.stun = hitBoxes[j]["hitData"]["stun"];
-			hitboxDataAux.hitdata.shieldBreak = hitBoxes[j]["hitData"]["shieldBreak"];
+			if (!hitBoxes[j]["hitData"].is_null())
+			{
+				hitboxDataAux.hitdata.damage = hitBoxes[j]["hitData"]["damage"];
+				hitboxDataAux.hitdata.direction = b2Vec2((float)hitBoxes[j]["hitData"]["b2vecX"], (float)hitBoxes[j]["hitData"]["b2vecY"]);
+				hitboxDataAux.hitdata.direction.Normalize();
+				hitboxDataAux.hitdata.base = hitBoxes[j]["hitData"]["base"];
+				hitboxDataAux.hitdata.multiplier = hitBoxes[j]["hitData"]["multiplier"];
+				hitboxDataAux.hitdata.stun = hitBoxes[j]["hitData"]["stun"];
+				hitboxDataAux.hitdata.shieldBreak = hitBoxes[j]["hitData"]["shieldBreak"];
+			}
+			else
+			{
+				hitboxDataAux.hitdata.isValid = false;
+			}
 
 			hitboxDataAux.hitlag = hitBoxes[j]["hitlag"];
 			hitboxDataAux.duration = hitBoxes[j]["duration"];
@@ -175,7 +182,7 @@ Character::Character(FightManager* manager, b2Vec2 pos, char input, ushort playe
 	dash = false;
 	shield = 0;
 	lives = maxLives;
-	this->input = new InputConfig(input);
+	this->input = new InputConfig(input, this);
 	input_ = input;
 	totalDamageTaken = 0;
 	kills = 0;
@@ -834,42 +841,49 @@ void Character::CheckHits()
 					manager->MoveToFront(this);
 					bool hitLagApplied = false, shakeApplied = false, camShakeApplied = false;
 					//Le hace daño xddd
-					if (oponent->GetHit(hitboxes[i]->hitdata, this, hitLagApplied, shakeApplied, camShakeApplied))
+					if (hitboxes[i]->hitdata.isValid)
 					{
-						if (!hitLagApplied)
+						if (oponent->GetHit(hitboxes[i]->hitdata, this, hitLagApplied, shakeApplied, camShakeApplied))
 						{
-							AddHitLag(hitboxes[i]->GetHitlag());
-							oponent->AddHitLag(hitboxes[i]->GetHitlag());
-						}
-
-						if (!shakeApplied)
-						{
-							oponent->SetShake(Vector2D(hitboxes[i]->hitdata.direction.x, hitboxes[i]->hitdata.direction.y), hitboxes[i]->GetHitlag());
-
-							if (hitboxes[i]->GetHitlag() >= 15)
+							if (!hitLagApplied)
 							{
-								AddParticle("bigHit",
-									Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-									1, false);
-
-								manager->GetSDLU()->soundEffects().at("hitStr").play();
+								AddHitLag(hitboxes[i]->GetHitlag());
+								oponent->AddHitLag(hitboxes[i]->GetHitlag());
 							}
-							else
+
+							if (!shakeApplied)
 							{
-								AddParticle("smallHit",
-									Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
-									1, false);
+								oponent->SetShake(Vector2D(hitboxes[i]->hitdata.direction.x, hitboxes[i]->hitdata.direction.y), hitboxes[i]->GetHitlag());
 
-								manager->GetSDLU()->soundEffects().at("hitMed").play();
+								if (hitboxes[i]->GetHitlag() >= 15)
+								{
+									AddParticle("bigHit",
+										Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+										1, false);
+
+									manager->GetSDLU()->soundEffects().at("hitStr").play();
+								}
+								else
+								{
+									AddParticle("smallHit",
+										Vector2D(hitArea.x + hitArea.w / 2, hitArea.y + hitArea.h / 2),
+										1, false);
+
+									manager->GetSDLU()->soundEffects().at("hitMed").play();
+								}
 							}
-						}
 
-						if (!camShakeApplied)
-						{
-							manager->SetShake(Vector2D(hitboxes[i]->hitdata.direction.x * -hitboxes[i]->GetHitlag() * 0.3f, hitboxes[i]->hitdata.direction.y * hitboxes[i]->GetHitlag() * 0.1f), hitboxes[i]->GetHitlag());
-						}
+							if (!camShakeApplied)
+							{
+								manager->SetShake(Vector2D(hitboxes[i]->hitdata.direction.x * -hitboxes[i]->GetHitlag() * 0.3f, hitboxes[i]->hitdata.direction.y * hitboxes[i]->GetHitlag() * 0.1f), hitboxes[i]->GetHitlag());
+							}
 
-						oponent->setLastCharacer(this);
+							oponent->setLastCharacer(this);
+						}
+					}
+					if (hitboxes[i]->specialEffect != nullptr)
+					{
+						(hitboxes[i]->specialEffect)(oponent);
 					}
 					isHit[oponent] = true;
 				}
