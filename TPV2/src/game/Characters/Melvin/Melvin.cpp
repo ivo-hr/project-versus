@@ -1,5 +1,9 @@
 #include "Melvin.h"
+#include "Melvin_Davin.h"
+#include "Melvin_Kyp.h"
+#include "Melvin_Cientifico.h"
 #include "../../Utils/AnimationManager.h"
+#include "../../Utils/MyListener.h"
 #include "../../../json/json.hpp"
 #include "../../Utils/Particle.h"
 #include "../../../utils/CheckML.h"
@@ -20,6 +24,14 @@ Melvin::Melvin(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character
 	eyePos = { (float)0, (float)0 };
 
 	anim = new AnimationManager(this, texture, spData);
+
+	davin = new Melvin_Davin(manager, pos, input, this->input, p);
+	kyp = new Melvin_Kyp(manager, pos, input, this->input, p);
+	cientifico = new Melvin_Cientifico(manager, pos, input, this->input, p);
+
+	davin->SetOtherChar(this, kyp, cientifico);
+	kyp->SetOtherChar(this, davin, cientifico);
+	cientifico->SetOtherChar(this, davin, kyp);
 }
 
 Melvin::~Melvin()
@@ -28,6 +40,15 @@ Melvin::~Melvin()
 	{
 		input = nullptr;
 		delete possesedInput;
+	}
+	if (kyp)
+	{
+		kyp->HandledDelete();
+		delete kyp;
+		davin->HandledDelete();
+		delete davin;
+		cientifico->HandledDelete();
+		delete cientifico;
 	}
 }
 
@@ -180,22 +201,14 @@ void Melvin::SpecialNeutral(ushort frameNumber)
 
 void Melvin::SpecialForward(ushort frameNumber)
 {
-	currentMove = nullptr;
-	moveFrame = -1;
-
 	if (!onGround)
 	{
 		AllowMovement(0.7f);
 	}
 
-	if (frameNumber == 0)
+	if (frameNumber == attacks["specialF"].totalFrames)
 	{
-	}
-	/*else if (frameNumber == attacks["specialF"].keyFrames[0])
-	{
-	}*/
-	else if (frameNumber == attacks["specialF"].totalFrames)
-	{
+		TransformInto(this, davin);
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
@@ -203,22 +216,14 @@ void Melvin::SpecialForward(ushort frameNumber)
 
 void Melvin::SpecialUpward(ushort frameNumber)
 {
-	currentMove = nullptr;
-	moveFrame = -1;
-
 	if (!onGround)
 	{
-		AllowMovement(0.5f);
+		AllowMovement(0.7f);
 	}
 
-	if (frameNumber == 0)
+	if (frameNumber == attacks["specialU"].totalFrames)
 	{
-	}
-	else if (frameNumber == attacks["specialU"].keyFrames[0])
-	{
-	}
-	else if (frameNumber > attacks["specialU"].totalFrames)
-	{
+		TransformInto(this, cientifico);
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
@@ -226,26 +231,17 @@ void Melvin::SpecialUpward(ushort frameNumber)
 
 void Melvin::SpecialDownward(ushort frameNumber)
 {
-	currentMove = nullptr;
-	moveFrame = -1;
-
 	if (!onGround)
 	{
-		AllowMovement(0.1f);
+		AllowMovement(0.7f);
 	}
 
-	if (frameNumber == 0)
-	{
-	}
-	if (frameNumber == attacks["specialD"].keyFrames[0])
-	{
-	}
 	if (frameNumber == attacks["specialD"].totalFrames)
 	{
+		TransformInto(this, kyp);
 		currentMove = nullptr;
 		moveFrame = -1;
 	}
-
 }
 
 bool Melvin::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake)
@@ -257,6 +253,10 @@ bool Melvin::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& cont
 	}
 	readyToPosses = false;
 	return Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
+}
+
+void Melvin::OnEntityAdded()
+{
 }
 
 void Melvin::Posses(Entity* attacker, bool& controlHitLag, bool& controlCamShake)
@@ -288,6 +288,26 @@ void Melvin::UnPosses()
 	possesedLayer = 0;
 	alive = true;
 	possesTimer = 0;
+}
+
+void Melvin::TransformInto(Character* current, Character* to)
+{
+	current->GetManager()->GetEntityReferenceTo(current) = to;
+	current->GetManager()->GetCharacterReferenceTo(current) = to;
+	current->GetManager()->GetCameraReferenceTo(current) = to;
+	current->GetManager()->GetMatrixReferenceTo(current) = to;
+
+	current->GetManager()->GetListener()->AddCharacter(to);
+	current->GetManager()->GetListener()->RemoveCharacter(current);
+	to->SetGround(current->GetGround());
+	to->SetLayer(current->GetLayer());
+	to->SetPlaceInLayer(current->GetPlaceInLayer());
+	to->SetPNumber(current->GetPNumber());
+	to->SetPosition(current->GetBody()->GetPosition());
+	to->SetDamage(current->GetDamageTaken());
+	to->GetBody()->ApplyLinearImpulseToCenter({ 0.1f, 0 }, true);
+
+	current->GetOgInput()->SetOriginalOwner(to);
 }
 
 void Melvin::BuildBoxes()
@@ -326,5 +346,19 @@ void Melvin::BuildBoxes()
 			body->GetPosition().y - height * 0.6f,
 			width * 1.2f,
 			height * 1.5f);
+
+	/*
+	attacks["basicU"].hitBoxes[0].specialEffect = 
+		[this](Entity* f, Entity* a)
+		{
+			auto w = static_cast<Character*>(a);
+			if (w)
+			{
+				w->ResetChar();
+			}
+			a->AddHitLag(1000);
+			attacks["basicU"].hitBoxes[0].hitdata.isValid = false;
+		};
+	*/
 }
 

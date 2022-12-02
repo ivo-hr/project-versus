@@ -108,83 +108,29 @@
       "id": "specialN",
       "hitBoxes": [
       ],
-      "keyFrames": [ 1, 30 ],
+      "keyFrames": [2, 30],
       "totalFrames": 45
     },
     {
       "id": "specialL",
       "hitBoxes": [
       ],
-      "keyFrames": [ 6, 9 ],
-      "totalFrames": 15
-    },
-    {
-      "id": "specialLHit",
-      "hitBoxes": [
-        {
-          "hitData": {
-            "b2vecX": 1,
-            "b2vecY": 3,
-            "base": 50,
-            "damage": 30,
-            "multiplier": 1,
-            "stun": -1,
-            "shieldBreak": true
-          },
-          "hitlag": -1,
-          "duration": 8
-        }
-      ],
-      "keyFrames": [ 3 ],
-      "totalFrames": 45
+      "keyFrames": [],
+      "totalFrames": 10
     },
     {
       "id": "specialU",
       "hitBoxes": [
-        {
-          "hitData": {
-            "b2vecX": 1,
-            "b2vecY": 1,
-            "base": 30,
-            "damage": 10,
-            "multiplier": 0.2,
-            "stun": -1,
-            "shieldBreak": true
-          },
-          "hitlag": -1,
-          "duration": 5
-        }
       ],
-      "keyFrames": [ 4, 7, 9 ],
-      "totalFrames": 19
+      "keyFrames": [],
+      "totalFrames": 2
     },
     {
       "id": "specialD",
       "hitBoxes": [
       ],
-      "keyFrames": [ 3, 24 ],
-      "totalFrames": 60
-    },
-    {
-      "id": "specialDHit",
-      "hitBoxes": [
-        {
-          "hitData": {
-            "b2vecX": 1,
-            "b2vecY": 2,
-            "base": 20,
-            "damage": 30,
-            "multiplier": 1.6,
-            "stun": -1,
-            "shieldBreak": true
-          },
-          "hitlag": -1,
-          "duration": 1
-        }
-      ],
-      "keyFrames": [ 3 ],
-      "startUp": 3,
-      "totalFrames": 20
+      "keyFrames": [],
+      "totalFrames": 12
     }
   ],
 

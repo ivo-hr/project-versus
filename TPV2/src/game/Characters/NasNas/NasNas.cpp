@@ -320,7 +320,7 @@ void NasNas::SpecialUpHit(ushort frameNumber)
 
 	if (frameNumber == 0)
 	{
-		manager->SetShake(Vector2D(-dir, 5), 6);
+		manager->SetShake(Vector2D(-dir, 8), 10);
 		anim->StartAnimation("especialUHit");
 		sdl->soundEffects().at("nasSpecU").play();
 	}

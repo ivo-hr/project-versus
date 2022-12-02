@@ -26,6 +26,9 @@
     <ClInclude Include="src\game\Characters\GatoEspia\Bullet.h" />
     <ClInclude Include="src\game\Characters\GatoEspia\GatoEspia.h" />
     <ClInclude Include="src\game\Characters\Melvin\Melvin.h" />
+    <ClInclude Include="src\game\Characters\Melvin\Melvin_Cientifico.h" />
+    <ClInclude Include="src\game\Characters\Melvin\Melvin_Davin.h" />
+    <ClInclude Include="src\game\Characters\Melvin\Melvin_Kyp.h" />
     <ClInclude Include="src\game\Characters\NasNas\Explosion.h" />
     <ClInclude Include="src\game\Characters\NasNas\NasNas.h" />
     <ClInclude Include="src\game\Characters\NasNas\Spell.h" />
@@ -82,6 +85,9 @@
     <ClCompile Include="src\game\Characters\GatoEspia\Bullet.cpp" />
     <ClCompile Include="src\game\Characters\GatoEspia\GatoEspia.cpp" />
     <ClCompile Include="src\game\Characters\Melvin\Melvin.cpp" />
+    <ClCompile Include="src\game\Characters\Melvin\Melvin_Cientifico.cpp" />
+    <ClCompile Include="src\game\Characters\Melvin\Melvin_Davin.cpp" />
+    <ClCompile Include="src\game\Characters\Melvin\Melvin_Kyp.cpp" />
     <ClCompile Include="src\game\Characters\NasNas\Explosion.cpp" />
     <ClCompile Include="src\game\Characters\NasNas\NasNas.cpp" />
     <ClCompile Include="src\game\Characters\NasNas\Spell.cpp" />

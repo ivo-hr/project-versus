@@ -16,8 +16,11 @@ protected:
 	ushort playerPosition = 0;//P1 ,P2 ,P3,P4..
 	//InputHandler& ih = *InputHandler::instance();
 	InputConfig *input = nullptr;
+	InputConfig* ogInput = nullptr;
 
 	AnimationManager* anim = nullptr;
+
+	string jsonPath;
 
 	bool waitingToRespawn = false;
 
@@ -60,6 +63,8 @@ protected:
 
 	ushort damageTaken = 0;
 	ushort totalDamageTaken = 0;
+
+	const float stunnedBounciness = 0.8f;
 	
 	bool recovery = true;
 
@@ -143,6 +148,8 @@ public:
 	virtual SDL_Rect* GetHurtbox();
 	Texture* getPortrait() { return portrait; };
 
+	void SetDamage(ushort a) { damageTaken = a; };
+
 	virtual void OnDeath() override;
 	void AddDeathParticle();
 	virtual void Respawn();
@@ -196,10 +203,12 @@ public:
 	void ChangeMove(std::function<void(ushort)> newMove);
 
 	virtual InputConfig* GetInputConfig() { return input; };
+	virtual InputConfig* GetOgInput() { return ogInput; };
 	virtual void SetInputConfig(InputConfig* value) { input = value; };
 	virtual SDL_Rect getCurrentSpriteSrc() override;
 	int getInput() { return input_; }
-	int getDamageTaken() { return totalDamageTaken; }
+	ushort GetDamageTaken() { return damageTaken; }
+	ushort getDamageTaken() { return totalDamageTaken; }
 	int getDeaths() { return maxLives - lives; }
 	void setRecovery(bool dime) { recovery = dime; };
 };

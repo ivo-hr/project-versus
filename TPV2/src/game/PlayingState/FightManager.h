@@ -48,8 +48,8 @@ class FightManager : public StateMachine
 	std::pair<ushort, short> ptrPlace = { 0, 0 };
 
 	// Team mode
-	std::deque<Character*> team1;
-	std::deque<Character*> team2;
+	std::deque<Character**> team1;
+	std::deque<Character**> team2;
 	vector<vector<ushort>>team1DeadStats;
 	vector<vector<ushort>>team2DeadStats;
 	vector<Texture*>team1DeadTextures;
@@ -144,12 +144,19 @@ public:
 	double GetScreenRatio();
 	double GetScreeAdjust();
 
-	vector<Texture*>getWinnersTextures() { return deadTextures; }
+	vector<Texture*> getWinnersTextures() { return deadTextures; }
 
-	std::deque<Entity*>* GetEntities();
+	void GetAllReferencesTo(Entity* toCheck, Entity*& entQue, Character*& chr, Entity*& cam, Entity*& mat);
+
+	Entity*& GetEntityReferenceTo(Entity* toCheck);
+	Character*& GetCharacterReferenceTo(Character* toCheck);
+	Entity*& GetCameraReferenceTo(Entity* toCheck);
+	Entity*& GetMatrixReferenceTo(Entity* toCheck);
+
 	SDL_Rect* GetDeathZone();
 	b2Vec2* GetDeathZoneB2();
 	b2World* GetWorld();
+	MyListener* GetListener() { return listener; };
 	SDLUtils* GetSDLU() { return sdl; };
 
 	short getWinnerInput() { return winnerInput; }

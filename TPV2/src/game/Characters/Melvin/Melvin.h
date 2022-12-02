@@ -1,5 +1,9 @@
 #include "../../Character.h"
 
+class Melvin_Kyp;
+class Melvin_Davin;
+class Melvin_Cientifico;
+
 class Melvin : public Character
 {
 public:
@@ -22,10 +26,20 @@ public:
 
 	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
 
+	virtual void OnEntityAdded() override;
+
 	void Posses(Entity* attacker, bool& controlHitLag, bool& controlCamShake);
 	void UnPosses();
 
+	static void TransformInto(Character*, Character*);
+
+	void HandledDelete() { kyp = nullptr; davin = nullptr; cientifico = nullptr; input = nullptr; };
+
 private:
+
+	Melvin_Kyp* kyp = nullptr;
+	Melvin_Davin* davin = nullptr;
+	Melvin_Cientifico* cientifico = nullptr;
 
 	bool readyToPosses = false;
 	InputConfig* possesedInput = nullptr;

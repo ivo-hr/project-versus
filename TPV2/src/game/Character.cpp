@@ -8,6 +8,7 @@
 
 json Character::ReadJson(std::string filename, spriteSheetData &spData)
 {
+	jsonPath = filename;
 	std::ifstream file(filename);
 	json jsonFile;
 	file >> jsonFile;
@@ -183,10 +184,13 @@ Character::Character(FightManager* manager, b2Vec2 pos, char input, ushort playe
 	shield = 0;
 	lives = maxLives;
 	this->input = new InputConfig(input, this);
+	ogInput = this->input;
 	input_ = input;
 	totalDamageTaken = 0;
 	kills = 0;
 	AddTag(Tags::Hitable);
+	AddTag(Tags::IsCharacter);
+	AddTag(Tags::CameraFollow);
 	resetLastCharacter();
 	BuildParticlePool();
 }
@@ -258,6 +262,7 @@ void Character::update()
 	if (stun > 0)
 	{
 		stun--;
+		if (stun == 0) body->GetFixtureList()->GetNext()->SetRestitution(0);
 		if (!recovery) recovery = true;
 	}
 
@@ -411,6 +416,7 @@ void Character::update()
 		OnDeath();
 	}
 
+	onGroundRemember = onGround;
 }
 
 void Character::UpdateAnimations()
@@ -603,9 +609,13 @@ void Character::AllowMovement(float multiplier, bool changeDirection, bool showP
 
 void Character::StunBehaviour()
 {
-
 	if (anim->CurrentAnimation() != "stun" + animAddon)
 		anim->StartAnimation("stun" + animAddon);
+
+	if (body->GetLinearVelocity().y < 10.f)
+	{
+		body->GetFixtureList()->GetNext()->SetRestitution(0);
+	}
 
 	if (!onGround)
 	{
@@ -840,6 +850,12 @@ void Character::CheckHits()
 				{
 					manager->MoveToFront(this);
 					bool hitLagApplied = false, shakeApplied = false, camShakeApplied = false;
+
+					if (hitboxes[i]->specialEffect != nullptr)
+					{
+						(hitboxes[i]->specialEffect)(oponent);
+					}
+
 					//Le hace daño xddd
 					if (hitboxes[i]->hitdata.isValid)
 					{
@@ -880,10 +896,6 @@ void Character::CheckHits()
 
 							oponent->setLastCharacer(this);
 						}
-					}
-					if (hitboxes[i]->specialEffect != nullptr)
-					{
-						(hitboxes[i]->specialEffect)(oponent);
 					}
 					isHit[oponent] = true;
 				}
@@ -1009,11 +1021,8 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 	aux *= recoil;
 	aux.y *= -1;
 	aux.x *= attacker->GetDir();
-
-	if (onGround && aux.y > 0)
-	{
-		aux.y *= -0.9f;
-	}
+	if (abs(aux.y) > 10.f)
+		body->GetFixtureList()->GetNext()->SetRestitution(stunnedBounciness);
 
 	if (IsGoingToKill(aux))
 	{
@@ -1439,6 +1448,7 @@ void Character::OnDeath()
 	lives--;
 	totalDamageTaken += damageTaken;
 
+	ResetChar();
 	recovery = true;
 	AddDeathParticle();
 	body->SetTransform(respawnPos, 0);
@@ -1519,6 +1529,7 @@ void Character::ResetChar()
 	anim->update();
 	currentMove = nullptr;
 	moveFrame = -1;
+	body->GetFixtureList()->GetNext()->SetRestitution(0);
 }
 
 void Character::Taunt(ushort frameNumber)

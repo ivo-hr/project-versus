@@ -35,6 +35,7 @@ public:
 	};
 
 	Character* OriginalOwner() { return owner; };
+	void SetOriginalOwner(Character* a) { owner = a; };
 
 	// Metodo para hacer pruebas con los mandos
 	// Se llama en update de character

@@ -372,9 +372,9 @@ ushort FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Cha
 	std::vector<Entity*> aux2;
 	for (Character* a : ateam1)
 	{
-		team1.push_back(a);
 		entities.push_back(a);
 		characters.push_back(a);
+		team1.push_back(&characters[characters.size() - 1]);
 		aux1.push_back(a);
 		camFollow.push_back(a);
 		a->AddTag(Tags::IsCharacter);
@@ -383,9 +383,9 @@ ushort FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Cha
 
 	for (Character* a : ateam2)
 	{
-		team2.push_back(a);
 		entities.push_back(a);
 		characters.push_back(a);
+		team2.push_back(&characters[characters.size() - 1]);
 		aux2.push_back(a);
 		camFollow.push_back(a);
 		a->AddTag(Tags::IsCharacter);
@@ -439,14 +439,14 @@ void FightManager::InitMatrix()
 			entityMatrix = vector<vector<Entity*>>(3);
 			for (int i = 0; i < team1.size(); i++)
 			{
-				entityMatrix[1].push_back(team1[i]);
-				team1[i]->SetLayer(1);
+				entityMatrix[1].push_back(*team1[i]);
+				(*team1[i])->SetLayer(1);
 				entities[i]->SetPlaceInLayer((ushort)entityMatrix[1].size());
 			}
 			for (int i = 0; i < team2.size(); i++)
 			{
-				entityMatrix[2].push_back(team2[i]);
-				team2[i]->SetLayer(2);
+				entityMatrix[2].push_back(*team2[i]);
+				(*team2[i])->SetLayer(2);
 				entities[i]->SetPlaceInLayer((ushort)entityMatrix[2].size());
 			}
 		}
@@ -584,7 +584,7 @@ bool FightManager::DeleteCharacter(std::deque<Character*>::iterator character)
 			
 			while (team1It != team1.end())
 			{
-				if (*team1It == *character)
+				if (**team1It == *character)
 				{
 					belongsTeam1 = true;
 					break;
@@ -606,7 +606,7 @@ bool FightManager::DeleteCharacter(std::deque<Character*>::iterator character)
 
 				while (team2It != team2.end())
 				{
-					if (*team2It == *character)
+					if (**team2It == *character)
 					{
 						break;
 					}
@@ -763,11 +763,6 @@ bool FightManager::GetNextEntity(Entity*& ent, ushort layerToIgnore)
 	return true;
 }
 
-std::deque<Entity*>* FightManager::GetEntities()
-{
-	return &entities;
-}
-
 SDL_Rect* FightManager::GetDeathZone()
 {
 	return stage->GetDeathZone();
@@ -902,6 +897,54 @@ double FightManager::GetScreenRatio()
 double FightManager::GetScreeAdjust()
 {
 	return sizeDiff;
+}
+
+void FightManager::GetAllReferencesTo(Entity* toCheck, Entity*& entQue, Character*& chr, Entity*& cam, Entity*& mat)
+{
+	for (auto i = 0u; i < entities.size(); i++)
+		if (entities[i] == toCheck)
+			entQue = entities[i];
+
+	for (auto i = 0u; i < characters.size(); i++)
+		if (characters[i] == toCheck)
+			chr = characters[i];
+
+	for (auto i = 0u; i < camFollow.size(); i++)
+		if (camFollow[i] == toCheck)
+			cam = camFollow[i];
+
+	for (auto j = 0u; j < entityMatrix.size(); j++)
+	{
+		for (auto i = 0u; i < entityMatrix[j].size(); i++)
+			if (entityMatrix[j][i] == toCheck)
+				mat = entityMatrix[j][i];
+	}
+}
+
+Entity*& FightManager::GetEntityReferenceTo(Entity* toCheck)
+{
+	for (auto i = 0u; i < entities.size(); i++)
+		if (entities[i] == toCheck)
+			return entities[i];
+}
+Character*& FightManager::GetCharacterReferenceTo(Character* toCheck)
+{
+	for (auto i = 0u; i < characters.size(); i++)
+		if (characters[i] == toCheck)
+			return characters[i];
+}
+Entity*& FightManager::GetCameraReferenceTo(Entity* toCheck)
+{
+	for (auto i = 0u; i < camFollow.size(); i++)
+		if (camFollow[i] == toCheck)
+			return camFollow[i];
+}
+Entity*& FightManager::GetMatrixReferenceTo(Entity* toCheck)
+{
+	for (auto j = 0u; j < entityMatrix.size(); j++)
+		for (auto i = 0u; i < entityMatrix[j].size(); i++)
+			if (entityMatrix[j][i] == toCheck)
+				return entityMatrix[j][i];
 }
 
 void FightManager::LogEverything()

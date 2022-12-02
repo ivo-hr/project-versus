@@ -95,7 +95,13 @@
     { "id" : "bulletYuno", "file" : "resources/images/BulletYuno.png"}, 
     { "id" : "togoParry", "file" : "resources/images/TogoParry.png"}, 
     { "id" : "melvin", "file" : "resources/images/CharMelvinSheet.png"}, 
-    { "id" : "melvinSelect", "file" : "resources/images/MelvinSelect.png"}
+    { "id" : "melvinSelect", "file" : "resources/images/MelvinSelect.png"},
+    { "id" : "davin", "file" : "resources/images/CharMelvDavinSheet.png"}, 
+    { "id" : "davinSelect", "file" : "resources/images/MelvDavinSelect.png"},
+    { "id" : "kyp", "file" : "resources/images/CharMelvKypSheet.png"}, 
+    { "id" : "kypSelect", "file" : "resources/images/MelvKypSelect.png"},
+    { "id" : "cientifico", "file" : "resources/images/CharMelvCientificoSheet.png"}, 
+    { "id" : "cientificoSelect", "file" : "resources/images/MelvCientificoSelect.png"}
   ],
 
   "messages": [

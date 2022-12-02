@@ -7,6 +7,8 @@
 
 class AnimationManager;
 
+class MyListener;
+
 enum state { none, fire, electric, water, wElectric };
 
 struct animationData
@@ -134,7 +136,8 @@ protected:
 	std::vector<HitBoxData*> hitboxes;
 	std::unordered_map<Entity*, bool> isHit;
 
-	bool onGround;
+	bool onGround = false;
+	bool onGroundRemember = false;
 	ushort respawnTimer = 0;
 	ushort respawnFrames;
 
@@ -169,6 +172,8 @@ public:
 	ushort GetLayer() { return layer; }
 	void SetPlaceInLayer(ushort placeInLayer) { this->placeInLayer = placeInLayer; }
 	ushort GetPlaceInLayer() { return placeInLayer; }
+
+	virtual void OnEntityAdded() {};
 
 	virtual void updateParticles();
 	virtual void update();

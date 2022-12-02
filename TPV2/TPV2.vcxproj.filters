@@ -231,6 +231,15 @@
     <ClInclude Include="src\game\Characters\Melvin\Melvin.h">
       <Filter>Header Files\game\Characters</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\Characters\Melvin\Melvin_Cientifico.h">
+      <Filter>Header Files\game\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\Characters\Melvin\Melvin_Davin.h">
+      <Filter>Header Files\game\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\Characters\Melvin\Melvin_Kyp.h">
+      <Filter>Header Files\game\Characters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\json\JSONValue.cpp">
@@ -360,6 +369,15 @@
       <Filter>Source Files\game\Characters</Filter>
     </ClCompile>
     <ClCompile Include="src\game\Characters\Melvin\Melvin.cpp">
+      <Filter>Source Files\game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Characters\Melvin\Melvin_Cientifico.cpp">
+      <Filter>Source Files\game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Characters\Melvin\Melvin_Davin.cpp">
+      <Filter>Source Files\game\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Characters\Melvin\Melvin_Kyp.cpp">
       <Filter>Source Files\game\Characters</Filter>
     </ClCompile>
   </ItemGroup>
