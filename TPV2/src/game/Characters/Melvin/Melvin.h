@@ -26,6 +26,8 @@ public:
 
 	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
 
+	void SetSpawn(b2Vec2 spawn, short dir) override;
+
 	virtual void OnEntityAdded() override;
 
 	void Posses(Entity* attacker, bool& controlHitLag, bool& controlCamShake);
@@ -44,9 +46,9 @@ private:
 	bool readyToPosses = false;
 	InputConfig* possesedInput = nullptr;
 	Character* toPosses = nullptr;
-	Character* possesedChar = nullptr;
+	ushort possesedCharIndex = USHRT_MAX;
 	ushort possesedLayer = 0;
-	ushort possesionTime = 180;
+	ushort possesionTime = 300;
 	ushort possesTimer = 0;
 
 protected:

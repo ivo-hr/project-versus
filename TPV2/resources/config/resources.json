@@ -101,7 +101,8 @@
     { "id" : "kyp", "file" : "resources/images/CharMelvKypSheet.png"}, 
     { "id" : "kypSelect", "file" : "resources/images/MelvKypSelect.png"},
     { "id" : "cientifico", "file" : "resources/images/CharMelvCientificoSheet.png"}, 
-    { "id" : "cientificoSelect", "file" : "resources/images/MelvCientificoSelect.png"}
+    { "id" : "cientificoSelect", "file" : "resources/images/MelvCientificoSelect.png"},
+    { "id" : "melvin_pos", "file" : "resources/images/Nubemelvin.png"}
   ],
 
   "messages": [

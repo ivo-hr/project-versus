@@ -153,6 +153,9 @@ public:
 	Entity*& GetCameraReferenceTo(Entity* toCheck);
 	Entity*& GetMatrixReferenceTo(Entity* toCheck);
 
+	ushort GetCharacterIndex(Character* toCheck) { for (auto i = 0u; i < characters.size(); i++) if (characters[i] == toCheck) return i; return USHRT_MAX; };
+	Character* GetCharacter(ushort index) { return characters[index]; };
+
 	SDL_Rect* GetDeathZone();
 	b2Vec2* GetDeathZoneB2();
 	b2World* GetWorld();

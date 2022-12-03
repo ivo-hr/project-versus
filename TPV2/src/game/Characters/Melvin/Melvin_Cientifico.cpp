@@ -16,6 +16,7 @@ Melvin_Cientifico::Melvin_Cientifico(FightManager* mngr, b2Vec2 pos, char input,
 {
 	delete this->input;
 	this->input = input_;
+	ogInput = this->input;
 
 	//guardamos la textura
 	texture = &sdl->images().at("cientifico");

@@ -36,7 +36,7 @@ Melvin::Melvin(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character
 
 Melvin::~Melvin()
 {
-	if (possesedChar)
+	if (possesedCharIndex != USHRT_MAX)
 	{
 		input = nullptr;
 		delete possesedInput;
@@ -56,18 +56,26 @@ void Melvin::update()
 {
 	if (toPosses && hitLag <= 1)
 	{
-		possesedChar = toPosses->GetInputConfig()->OriginalOwner();
+		possesedCharIndex = manager->GetCharacterIndex(toPosses->GetInputConfig()->OriginalOwner());
+		auto possesedChar = manager->GetCharacter(possesedCharIndex);
 		possesedLayer = possesedChar->GetLayer();
 		possesedInput = possesedChar->GetInputConfig();
 		possesedChar->SetInputConfig(input);
 		SetPosition(toPosses->GetBody()->GetPosition());
 		alive = false;
 		manager->ChangeEntityLayer(possesedChar, layer);
+
+		if (possesedChar->GetParticlePool()["posses"].size() == 0)
+			possesedChar->GetParticlePool()["posses"].push_front(new Particle(
+				{ 0,0 }, ParticleData(&sdl->images().at("melvin_pos"), SDL_Rect({ 0, 0, 96, 96 }), 6, 2, 3, 30), this));
+
+		possesedChar->AddParticle("posses", Vector2D(possesedChar->GetHurtbox()->x + possesedChar->GetHurtbox()->w / 2, possesedChar->GetHurtbox()->y + possesedChar->GetHurtbox()->h / 2), dir, true);
 		//body->SetEnabled(false);
 		toPosses = nullptr;
 	}
-	if (possesedChar)
+	if (possesedCharIndex != USHRT_MAX)
 	{
+		auto possesedChar = manager->GetCharacter(possesedCharIndex);
 		if (possesedChar->GetInputConfig()->OriginalOwner() != input->OriginalOwner())
 		{
 			possesedChar->SetInputConfig(input);
@@ -255,6 +263,14 @@ bool Melvin::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& cont
 	return Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);
 }
 
+void Melvin::SetSpawn(b2Vec2 spawn, short dir)
+{
+	Character::SetSpawn(spawn, dir);
+	kyp->SetSpawn(spawn, dir);
+	davin->SetSpawn(spawn, dir);
+	cientifico->SetSpawn(spawn, dir);
+}
+
 void Melvin::OnEntityAdded()
 {
 }
@@ -275,6 +291,8 @@ void Melvin::Posses(Entity* attacker, bool& controlHitLag, bool& controlCamShake
 
 void Melvin::UnPosses()
 {
+	auto possesedChar = manager->GetCharacter(possesedCharIndex);
+
 	body->SetEnabled(true);
 	SetPosition(possesedChar->GetBody()->GetPosition());
 	ResetChar();
@@ -283,7 +301,11 @@ void Melvin::UnPosses()
 	manager->ChangeEntityLayer(possesedChar, possesedLayer);
 	possesedChar->ResetChar();
 
-	possesedChar = nullptr;
+	possesedChar->AddParticle("posses", Vector2D(possesedChar->GetHurtbox()->x + possesedChar->GetHurtbox()->w / 2, possesedChar->GetHurtbox()->y + possesedChar->GetHurtbox()->h / 2), dir, true);
+
+	manager->MoveToFront(this);
+
+	possesedCharIndex = USHRT_MAX;
 	possesedInput = nullptr;
 	possesedLayer = 0;
 	alive = true;
@@ -305,9 +327,14 @@ void Melvin::TransformInto(Character* current, Character* to)
 	to->SetPNumber(current->GetPNumber());
 	to->SetPosition(current->GetBody()->GetPosition());
 	to->SetDamage(current->GetDamageTaken());
-	to->GetBody()->ApplyLinearImpulseToCenter({ 0.1f, 0 }, true);
+	to->GetBody()->SetLinearVelocity(current->GetBody()->GetLinearVelocity());
+	to->SetInputConfig(current->GetInputConfig());
+	to->GetAnimationManager()->update();
+	to->ChangeDir(current->GetDir());
 
-	current->GetOgInput()->SetOriginalOwner(to);
+	current->ResetChar();
+
+	to->GetOgInput()->SetOriginalOwner(to);
 }
 
 void Melvin::BuildBoxes()

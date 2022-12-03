@@ -123,7 +123,7 @@ public:
 	Character(FightManager* manager, b2Vec2 pos, char input, ushort player, float w = 3.f, float h = 3.f);
 	virtual ~Character();
 
-	void SetSpawn(b2Vec2 spawn, short dir);
+	virtual void SetSpawn(b2Vec2 spawn, short dir);
 	void SetPNumber(ushort num);
 	ushort GetPNumber() { return playerNumber; };
 
@@ -137,6 +137,10 @@ public:
 	virtual void draw() override;
 	virtual void draw(SDL_Rect* camera) override;
 	virtual void drawHUD(ushort numOfPlayer) ;
+
+	AnimationManager* GetAnimationManager() { return anim; };
+
+	void ChangeDir(short newDir) { dir = newDir; };
 
 	virtual void CheckHits() override;
 	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;

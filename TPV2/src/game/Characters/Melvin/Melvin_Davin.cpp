@@ -16,6 +16,7 @@ Melvin_Davin::Melvin_Davin(FightManager* mngr, b2Vec2 pos, char input, InputConf
 {
 	delete this->input;
 	this->input = input_;
+	ogInput = this->input;
 
 	//guardamos la textura
 	texture = &sdl->images().at("davin");

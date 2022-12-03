@@ -26,8 +26,7 @@ struct spriteSheetData
 {
 	ushort leftOffset = 0;		//Cuanto debe sobresalir la spritesheet a la izquierda (par que el dibujo coincida con la hurtbox)
 	ushort upOffset = 0;		//bruh
-	ushort sizeXOffset = 0;	//Que tan grande se tiene que hacer el sprite en X para que coincida
-	ushort sizeYOffset = 0;	//bruh
+	ushort size = 0;			//bruh (En un futuro, debe ser constante
 
 	ushort spritesInX = 0;		//Cuantos frames hay en una fila de la spritesheet entera
 	ushort spritesInY = 0;		//Cuantos frames hay en una columna de la spritesheet entera
@@ -219,6 +218,8 @@ public:
 	virtual SDL_Rect getCurrentSpriteSrc() { return { 0, 0, texture->width(), texture->height() }; }
 	//virtual void SendToHUD(Texture* tex);
 	bool ToDelete() { return toDelete; };
+
+	map<string, deque<Particle*>>& GetParticlePool() { return particlePool; };
 
 	void SetShake(Vector2D dir, ushort value);
 };
