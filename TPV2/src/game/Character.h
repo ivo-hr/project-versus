@@ -215,4 +215,6 @@ public:
 	ushort getDamageTaken() { return totalDamageTaken; }
 	int getDeaths() { return maxLives - lives; }
 	void setRecovery(bool dime) { recovery = dime; };
+	void SetLives(ushort newLives) { lives = newLives; };
+	ushort GetLives() { return lives; };
 };

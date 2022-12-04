@@ -29,6 +29,9 @@ Melvin_Cientifico::Melvin_Cientifico(FightManager* mngr, b2Vec2 pos, char input,
 	eyePos = { (float)0, (float)0 };
 
 	anim = new AnimationManager(this, texture, spData);
+
+	particlePool["posses"].push_front(new Particle(
+		{ 0,0 }, ParticleData(&sdl->images().at("melvin_pos"), SDL_Rect({ 0, 0, 96, 96 }), 6, 2, 3, 30), this));
 }
 
 Melvin_Cientifico::~Melvin_Cientifico()

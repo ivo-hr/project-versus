@@ -28,9 +28,8 @@ public:
 
 	void SetSpawn(b2Vec2 spawn, short dir) override;
 
-	virtual void OnEntityAdded() override;
-
-	void Posses(Entity* attacker, bool& controlHitLag, bool& controlCamShake);
+	void ReadyToPosses(Entity* attacker, bool& controlHitLag, bool& controlCamShake);
+	void Posses();
 	void UnPosses();
 
 	static void TransformInto(Character*, Character*);
