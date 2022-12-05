@@ -20,6 +20,8 @@ struct RGB
 class Texture {
 public:
 
+	Texture();
+
 	// cannot copy textures
 	Texture(const Texture&) = delete;
 	Texture& operator=(const Texture&) = delete;
@@ -30,6 +32,12 @@ public:
 
 	// Construct from image
 	Texture(SDL_Renderer *renderer, const std::string &fileName);
+
+	// Construct from surface
+	Texture(SDL_Renderer* renderer, SDL_Surface* surface);
+
+	// Construct from window (a screenshot)
+	Texture(SDL_Renderer* renderer, SDL_Window* window);
 
 	// Construct from text
 	Texture(SDL_Renderer *renderer, const std::string &text, const Font &font,
@@ -110,9 +118,6 @@ public:
 	inline void SetTexMod(Uint8 r, Uint8 g, Uint8 b) {
 		SDL_SetTextureColorMod(texture_, r, g, b);
 	}
-
-
-
 
 private:
 

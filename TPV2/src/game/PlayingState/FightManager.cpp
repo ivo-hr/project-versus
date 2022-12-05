@@ -275,7 +275,6 @@ void FightManager::Update()
 	{
 		c->drawHUD(numPlayers);
 	}
-
 	// present new frame
 	sdl->presentRenderer();
 	

@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <iostream>
 #include <box2d.h>
+#include <cstdlib>
 #include "sdlutils/InputHandler.h"
 #include "sdlutils/macros.h"
 

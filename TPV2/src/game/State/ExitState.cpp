@@ -33,14 +33,12 @@ ExitState::~ExitState()
     delete no;
 }
 
-
-
 void ExitState::update() {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent() || no->mouseClick()) {
         State* tmp = fmngr->getState();
-        State* saved = fmngr->getExitState();
+        State* saved = fmngr->getSavedState();
         fmngr->setState(saved);
         fmngr->clearExitState();
         delete tmp;
@@ -62,9 +60,6 @@ void ExitState::update() {
     
     if (yes->mouseClick()) {
         fmngr->userExit();
-        State* saved = fmngr->getExitState();
-        fmngr->setState(saved);
-        delete this;
     }
 }
 

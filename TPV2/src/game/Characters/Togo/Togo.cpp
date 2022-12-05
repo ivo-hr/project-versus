@@ -12,6 +12,7 @@ Togo::Togo(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mng
 {
 	//guardamos la textura
 	texture = &sdl->images().at("dinoSouls");
+	//texture = new Texture(sdl->renderer(), sdl->window());
 	portrait = &sdl->images().at("dinoSoulsSelect");
 
 	spriteSheetData spData;
@@ -28,7 +29,6 @@ Togo::Togo(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mng
 
 Togo::~Togo()
 {
-
 }
 
 void Togo::BuildParticlePool()

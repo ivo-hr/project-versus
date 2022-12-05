@@ -137,7 +137,7 @@ void ConfigState::update() {
     if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
         if (fmngr->getExitState() == nullptr) {
             //pause
-            fmngr->saveExitState(fmngr->getState());
+            fmngr->saveState(fmngr->getState());
             fmngr->setState(new ExitState(fmngr));
             return;
         }

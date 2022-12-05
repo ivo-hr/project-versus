@@ -26,9 +26,7 @@ json Character::ReadJson(std::string filename, spriteSheetData &spData)
 	shieldHealth = maxShield;
 	jumpCooldown = true;
 
-
 	//Aqui defino las caracteristicas de cada hitbox (podriamos hacerlo dentro de cada metodo, y vendria de json)(tambien podríamos poner framedata)
-
 
 	attackData aux;
 	auto aData = jsonFile["attacksData"];
