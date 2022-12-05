@@ -26,7 +26,8 @@ struct spriteSheetData
 {
 	ushort leftOffset = 0;		//Cuanto debe sobresalir la spritesheet a la izquierda (par que el dibujo coincida con la hurtbox)
 	ushort upOffset = 0;		//bruh
-	ushort size = 0;			//bruh (En un futuro, debe ser constante
+	ushort sizeXOffset = 0;	//Que tan grande se tiene que hacer el sprite en X para que coincida
+	ushort sizeYOffset = 0;	//bruh
 
 	ushort spritesInX = 0;		//Cuantos frames hay en una fila de la spritesheet entera
 	ushort spritesInY = 0;		//Cuantos frames hay en una columna de la spritesheet entera

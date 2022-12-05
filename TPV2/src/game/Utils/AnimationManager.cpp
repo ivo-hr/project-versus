@@ -96,8 +96,6 @@ AnimationManager::AnimationManager(Entity* entity, Texture*& textura, spriteShee
 	w = textura->width() / data.spritesInX;			//Sacamos la anchura de cada sprite
 	h = textura->height() / data.spritesInY;		//bruh
 
-	data.size = 1.15f * w;
-
 	for (int i = 0; i < data.spritesInY; i++)
 	{
 		for (int j = 0; j < data.spritesInX; j++)
@@ -119,8 +117,12 @@ AnimationManager::AnimationManager(Entity* entity, Texture*& textura, spriteShee
 
 
 	//Este rect representa donde se va a renderizar la textura una vez recortada
-	dest = { 0, 0, data.size, (int)(data.size * ((float)h / (float)w)) };
+	dest = *entity->GetHurtbox();
 
+	dest.w += (int)(((float)data.sizeXOffset * ent->GetWidth()) * ent->GetManager()->GetScreenRatio() / 4.7f);		//En zero (offset = 28, width = 3, tiene que dar APROX 68
+	//dest.w += 68;
+	dest.h += (int)(((float)data.sizeYOffset * ent->GetHeight()) * ent->GetManager()->GetScreenRatio() / 4.7f);		//En zero (offset = 48, height = 3, tiene que dar APROX 115
+	//dest.h += 115.f;
 
 	//Inicializamos la animacion primera (en zero es idle)
 	StartAnimation("idle");
@@ -149,7 +151,7 @@ void AnimationManager::update()
 		lookingRight = true;
 	}
 	else {
-		dest.x = aux.x + aux.w + xOffset - dest.w;
+		dest.x = aux.x + xOffset - (short)((float)((float)info.sizeXOffset * ent->GetWidth()) * ent->GetManager()->GetScreenRatio() / 4.7f);
 		dest.y = aux.y - yOffset;
 
 		recorteSheet = { w * (int)SpriteIndex[currIndex].getX(), h * (int)SpriteIndex[currIndex].getY(), w, h };
@@ -223,15 +225,6 @@ void AnimationManager::render(SDL_Rect* camera, const Vector2D& offset)
 	else {
 		texture->render(recorteSheet, aux, 0., nullptr, SDL_FLIP_HORIZONTAL);
 	}
-
-#ifdef _DEBUG
-
-	SDL_SetRenderDrawColor(ent->GetManager()->GetSDLU()->renderer(), 255, 255, 0, 255);
-	// SDL_RenderDrawRect(ent->GetManager()->GetSDLU()->renderer(), &aux);
-
-#endif // _DEBUG
-
-
 }
 
 void AnimationManager::StartAnimation(std::string index)
