@@ -230,8 +230,10 @@
   ],
   
     "spData": {
-      "leftOffset": 61,
-      "upOffset": 50,
+      "leftOffset": 71,
+      "upOffset": 67,
+      "sizeXOffset": 180,
+      "sizeYOffset": 70,
       "spritesInX": 11,
       "spritesInY": 14
     },
