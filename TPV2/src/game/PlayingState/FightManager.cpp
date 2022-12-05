@@ -876,7 +876,7 @@ int FightManager::b2ToSDLY(b2Body* body, float height)
 
 int FightManager::ToSDL(float x)
 {
-	return (int)(x * stage->getb2ToSDL());
+	return (int)nearbyint(x * stage->getb2ToSDL());
 }
 
 ushort FightManager::GetActualWidth()
