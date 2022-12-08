@@ -82,9 +82,14 @@ void YunoBubble::update()
 		}
 	}
 
-	if (bubbledEntity && bubbledEntity->ToDelete())
+	if (bubbledEntity)
 	{
-		Pop();
+		bubbledEntity->SetPosition(body->GetPosition());
+
+		if (bubbledEntity->ToDelete())
+		{
+			Pop();
+		}
 	}
 
 	if (invFrames != 0) {
@@ -197,6 +202,10 @@ void YunoBubble::CheckHits()
 					body->SetLinearVelocity(b2Vec2(dir * 0.5f, 0));
 					lifespan += moarSpan * 60;
 				}
+			}
+			if (bubbledEntity)
+			{
+				break;
 			}
 		}
 	}

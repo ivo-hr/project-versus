@@ -190,7 +190,8 @@ FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 
 FightManager::~FightManager()
 {
-	delete getSavedState();
+	if (getSavedState())
+		delete getSavedState();
 	delete listener;
 	for (auto e : entities)
 		delete e;
@@ -275,6 +276,14 @@ void FightManager::Update()
 	{
 		c->drawHUD(numPlayers);
 	}
+
+	if (ih.isKeyDown(SDLK_1) && ih.keyDownEvent()) {
+		TakeScreenShot();
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 0, 0);
+		SDL_Rect a = { 0, 0, width, height };
+		SDL_RenderFillRect(sdl->renderer(), &a);
+	}
+
 	// present new frame
 	sdl->presentRenderer();
 	
@@ -944,6 +953,73 @@ Entity*& FightManager::GetMatrixReferenceTo(Entity* toCheck)
 		for (auto i = 0u; i < entityMatrix[j].size(); i++)
 			if (entityMatrix[j][i] == toCheck)
 				return entityMatrix[j][i];
+}
+
+void FightManager::TakeScreenShot()
+{
+	SDL_Surface* sshot = SDL_CreateRGBSurface(0, width, height, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+	SDL_LockSurface(sshot);
+	SDL_Rect a = { 0, 0, width, height };
+	SDL_RenderReadPixels(sdl->renderer(), &a, sshot->format->format, sshot->pixels, sshot->pitch);
+	string full = "ScreenShot_";
+	vector<char> aaaa = vector<char>();
+	const int size = 30;
+	char sshotName[size] = { "" };
+	_strdate_s(sshotName, size);
+
+	for (int i = 0; i < 8; i++)
+	{
+		if (sshotName[i] == '/')
+		{
+			for (int j = i; j < 8; j++)
+			{
+				if (sshotName[j + 1] != '/')
+					sshotName[j] = sshotName[j + 1];
+				else
+					for (int k = j + 1; k < 7; k++)
+					{
+						sshotName[k] = sshotName[k + 1];
+					}
+			}
+			break;
+		}
+	}
+
+	full += sshotName;
+	full += "_";
+	_strtime_s(sshotName, size);
+
+	for (int i = 0; i < 8; i++)
+	{
+		if (sshotName[i] == ':')
+		{
+			for (int j = i; j < 8; j++)
+			{
+				if (sshotName[j + 1] != ':')
+					sshotName[j] = sshotName[j + 1];
+				else
+					for (int k = j + 1; k < 8; k++)
+					{
+						sshotName[k] = sshotName[k + 1];
+					}
+			}
+			break;
+		}
+	}
+
+	full += sshotName;
+	full += ".jpg";
+
+	char gay[30] = { "" };
+
+	for (int i = 0; i < 30; i++)
+	{
+		gay[i] = full[i];
+	}
+
+	SDL_SaveBMP(sshot, gay);
+	SDL_UnlockSurface(sshot);
+	SDL_FreeSurface(sshot);
 }
 
 void FightManager::LogEverything()

@@ -166,6 +166,8 @@ public:
 	void addCharacterStats(Character* character);
 	vector<vector<ushort>>getGameStats() { return gameStats; }
 
+	ushort GetNumOfPlayers() { return numPlayers; };
+
 	void userExit() { exit_ = true; };
 
 	void onNewGame();
@@ -174,6 +176,9 @@ public:
 
 	void SetShake(const Vector2D& dir, uint16 duration);
 
+	void TakeScreenShot();
+
 	void LogEverything();
 
 };
+

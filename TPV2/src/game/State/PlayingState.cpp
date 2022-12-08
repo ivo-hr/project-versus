@@ -48,14 +48,14 @@ PlayingState::PlayingState(FightManager* game, vector<char>playersInput, vector<
 			switch (playersInput[i])
 			{
 			case -1:
-				if (ih.isKeyDown(playerPrefs.Keyboard1Down()))charac = 10;
+				if (ih.isKeyDown(playerPrefs.Keyboard1Down()))charac = 12;
 				break;
 			case -2:
-				if (ih.isKeyDown(playerPrefs.Keyboard2Down()))charac = 10;
+				if (ih.isKeyDown(playerPrefs.Keyboard2Down()))charac = 12;
 				break;
 			default:
 				if (ih.xboxGetAxesState(playersInput[i], 1) == 1 || ih.xboxGetDpadState(playersInput[i], 2))
-					charac = 10;
+					charac = 12;
 				break;
 			}
 
@@ -85,7 +85,7 @@ PlayingState::PlayingState(FightManager* game, vector<char>playersInput, vector<
 			case 9:
 				entities.push_back(new Yuno(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				break;
-			case 10: //Yuno
+			case 10: //Melvin
 			case 11:
 				entities.push_back(new Melvin(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 				break;
@@ -115,12 +115,12 @@ PlayingState::PlayingState(FightManager* game, vector<char> playersInput, vector
 	for (auto i = 0u; i < playersInput.size(); i++) {
 		switch (characters[i])
 		{
-		case 0: //zero
+		case 0: //NasNas
 			if (teams[i] == 0)
-				team1.push_back(new CharacterZero(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
+				team1.push_back(new NasNas(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			else
 			{
-				team2.push_back(new CharacterZero(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
+				team2.push_back(new NasNas(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			}
 			break;
 		case 1://Gato espia
@@ -169,14 +169,14 @@ PlayingState::PlayingState(FightManager* game, vector<char> playersInput, vector
 			switch (playersInput[i])
 			{
 			case -1:
-				if (ih.isKeyDown(playerPrefs.Keyboard1Down()))charac = 10;
+				if (ih.isKeyDown(playerPrefs.Keyboard1Down()))charac = 12;
 				break;
 			case -2:
-				if (ih.isKeyDown(playerPrefs.Keyboard2Down()))charac = 10;
+				if (ih.isKeyDown(playerPrefs.Keyboard2Down()))charac = 12;
 				break;
 			default:
 				if (ih.xboxGetAxesState(playersInput[i], 1) == 1 || ih.xboxGetDpadState(playersInput[i], 2))
-					charac = 10;
+					charac = 12;
 				break;
 			}
 
