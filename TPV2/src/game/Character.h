@@ -9,8 +9,6 @@
 
 using json = nlohmann::json;
 
-class HudElements;
-
 class Character abstract : public Entity
 {
 protected:
@@ -23,8 +21,6 @@ protected:
 	AnimationManager* anim = nullptr;
 
 	string jsonPath;
-
-	HudElements* hud;
 
 	bool waitingToRespawn = false;
 
@@ -89,6 +85,9 @@ protected:
 	float ralentizar = 0;
 //	void (Character::* currentMove)(int);
 	ushort input_ = 0;
+
+	short r = 0;
+	short g = 255;
 
 	unsigned int arrowCont = 0;
 	bool invencible = false;
