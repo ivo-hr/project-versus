@@ -26,6 +26,8 @@ class MyListener;
 
 class Stage;
 
+class HudManager;
+
 enum class Tags
 {
 	CameraFollow,
@@ -36,7 +38,6 @@ enum class Tags
 
 class FightManager : public StateMachine
 {
-
 	std::deque<Entity*> entities = std::deque<Entity*>();
 	std::deque<Character*> characters = std::deque<Character*>();
 
@@ -56,6 +57,8 @@ class FightManager : public StateMachine
 	vector<Texture*>team2DeadTextures;
 
 	SDLUtils* sdl;
+
+	HudManager* hud = nullptr;
 
 	InputHandler& ih = *InputHandler::instance();
 
@@ -153,6 +156,8 @@ public:
 	Entity*& GetCameraReferenceTo(Entity* toCheck);
 	Entity*& GetMatrixReferenceTo(Entity* toCheck);
 
+	std::deque<Character*>& GetCharacters() { return characters; };
+
 	ushort GetCharacterIndex(Character* toCheck) { for (auto i = 0u; i < characters.size(); i++) if (characters[i] == toCheck) return i; return USHRT_MAX; };
 	Character* GetCharacter(ushort index) { return characters[index]; };
 
@@ -161,6 +166,8 @@ public:
 	b2World* GetWorld();
 	MyListener* GetListener() { return listener; };
 	SDLUtils* GetSDLU() { return sdl; };
+
+	HudManager* GetHUD() { return hud; };
 
 	short getWinnerInput() { return winnerInput; }
 	void addCharacterStats(Character* character);

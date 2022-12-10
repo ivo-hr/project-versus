@@ -195,8 +195,6 @@ Character::Character(FightManager* manager, b2Vec2 pos, char input, ushort playe
 
 Character::~Character()
 {
-	r = 0;
-	g = 255;
 	if (input)
 		delete input;
 	if (anim)
@@ -930,6 +928,7 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 		if (shieldHealth > 0)	//A
 		{
 			damageTaken += (ushort)(a.damage * 0.4f);
+			hud->UpdateDmg(this, damageTaken);
 			controlHitLag = false;
 		}
 		//Shield broken
@@ -1013,6 +1012,8 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 		damageTaken += a.damage * 2;
 	else
 		damageTaken += a.damage;
+
+	hud->UpdateDmg(this, damageTaken);
 
 	b2Vec2 aux = a.direction;
 
@@ -1445,6 +1446,7 @@ void Character::OnDeath()
 	waitingToRespawn = true;
 	lives--;
 	totalDamageTaken += damageTaken;
+	damageTaken = 0;
 
 	ResetChar();
 	recovery = true;
@@ -1470,6 +1472,8 @@ void Character::OnDeath()
 	if (lastCharacter != nullptr) {
 		lastCharacter->increaseKills();
 	}
+	hud->UpdateDmg(this, damageTaken);
+	hud->UpdateLives(this, lives);
 
 	if (lives <= 0) {
 		toDelete = true;
@@ -1500,7 +1504,6 @@ void Character::Respawn()
 	speed = 0;
 
 	waitingToRespawn = false;
-	damageTaken = 0;
 	moving = false;
 
 	currentMove = nullptr;
@@ -1509,8 +1512,6 @@ void Character::Respawn()
 	resetLastCharacter();
 
 	anim->StartAnimation("idle" + animAddon);
-	r = 0;
-	g = 255;
 
 	invencible = true;
 	dash = true;
@@ -1594,6 +1595,7 @@ void Character::Elements()
 	if (efEstado == fire)
 	{
 		damageTaken += statePower/(stateDur/60);
+		hud->UpdateDmg(this, damageTaken);
 	}
 	else if (efEstado == wElectric)
 	{
@@ -1604,70 +1606,14 @@ void Character::Elements()
 }
 void Character::drawHUD(ushort numOfPlayer)
 {
-	//Portrait y posiciones
-	int w_ = manager->GetActualWidth();
-	int h_ = manager->GetActualHeight();
-	int dist = w_/ numOfPlayer;
-	int offset = (w_ / 2) / numOfPlayer - w_/30;
-	int x = (int)(playerPosition * dist + offset);
-	int y = h_ - (h_ / 6);
-	portrait->render({ x, y, w_ / 14, w_ / 14 });
-	//Porcentaje
-	string fontstring = "nes" + to_string(7 * w_/sdl->width());
-	auto& font = sdl->fonts().at(fontstring);
-	string damage = to_string(damageTaken) + "%";
-	if (damageTaken < 255)
-	{
-		if (r < 255) {
-			r = damageTaken * 2;
-			if (r > 255)r = 255;
-		}
-		else
-		{
-			g = 255 - damageTaken;
-			if (g < 0)g = 0;
-		}
-	}
-	else
-	{
-		Uint32 a = (Uint32)((((float)damageTaken - 255.f) / (float)SDL_MAX_SINT16) * 255 * 20);
-		if (a < 255)
-			r = 255 - a;
-		else
-			r = 0;
-		g = 0;
-	}
-	Uint32 color = (Uint32)(r * pow(16, 6) + g * pow(16, 4));
-	SDL_Color c = build_sdlcolor(color);
-	string fontstringp = "nes" + to_string(10 * w_ / sdl->width());
-	auto& fontp = sdl->fonts().at(fontstringp);
-	string key = fontstringp + damage + to_string(c.r) + to_string(c.g) + to_string(c.b);
-	if (sdl->msgs().count(key) == 0) {
-		sdl->msgs().emplace(key, Texture(sdl->renderer(), damage, fontp, c));
-	}
-	sdl->msgs().at(key).render(x+w_/15 , y+w_/22);
+	auto w_ = manager->GetActualWidth();
 
+	//Retrato
+	portrait->render(hud->PRect(this));
+	//Daño recibido
+	hud->Percent(this).render(hud->X(this) + w_/15 , hud->Y(this) + w_/22);
 	//Numero jugador
-	//
-	string player = "Player " + to_string(playerPosition + 1);
-	if (playerPosition == 0)c = build_sdlcolor(0xFF000000);
-	else if (playerPosition == 1)c = build_sdlcolor(0x002EFF00);
-	else if (playerPosition == 2)c = build_sdlcolor(0x00FF6100);
-	else if (playerPosition == 3)c = build_sdlcolor(0xFFF00000);
-	key = fontstring + player + to_string(c.r) + to_string(c.g) + to_string(c.b);
-	if (sdl->msgs().count(key) == 0) {
-		sdl->msgs().emplace(key, Texture(sdl->renderer(), player, font, c));
-	}
-	sdl->msgs().at(key).render(x, y);
-
-
+	hud->PNumber(this).render(hud->X(this), hud->Y(this));
 	//Vidas
-	//
-	string vidas = "Lives:" + to_string(lives);
-	c = build_sdlcolor(0x00F7FF00);
-	key = fontstring + vidas + to_string(c.r) + to_string(c.g) + to_string(c.b);
-	if (sdl->msgs().count(key) == 0) {
-		sdl->msgs().emplace(key, Texture(sdl->renderer(), vidas, font, c));
-	}
-	sdl->msgs().at(key).render(x, y+w_/15);
+	hud->Lives(this).render(hud->X(this), hud->Y(this) + w_/15);
 }

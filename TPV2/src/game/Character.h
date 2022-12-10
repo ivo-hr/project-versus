@@ -6,6 +6,7 @@
 #include "../json/json.hpp"
 #include <fstream>
 #include "Utils/Particle.h"
+#include "Utils/HUDManager.h"
 
 using json = nlohmann::json;
 
@@ -14,7 +15,6 @@ class Character abstract : public Entity
 protected:
 	ushort playerNumber = 0;
 	ushort playerPosition = 0;//P1 ,P2 ,P3,P4..
-	//InputHandler& ih = *InputHandler::instance();
 	InputConfig *input = nullptr;
 	InputConfig* ogInput = nullptr;
 
@@ -32,6 +32,8 @@ protected:
 	SDL_Rect arrowSrc = { };
 	ushort stun = 0;
 	ushort lives = 0;
+
+	HudManager* hud;
 
 	const ushort maxLives = 3;
 
@@ -86,9 +88,6 @@ protected:
 //	void (Character::* currentMove)(int);
 	ushort input_ = 0;
 
-	short r = 0;
-	short g = 255;
-
 	unsigned int arrowCont = 0;
 	bool invencible = false;
 	bool drawArrow = false;
@@ -126,6 +125,8 @@ public:
 	virtual void SetSpawn(b2Vec2 spawn, short dir);
 	void SetPNumber(ushort num);
 	ushort GetPNumber() { return playerNumber; };
+
+	virtual void OnFightBegin() { hud = manager->GetHUD(); };
 
 	virtual void update() override;
 	void UpdateAnimations();

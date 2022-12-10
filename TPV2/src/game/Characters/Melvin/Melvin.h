@@ -32,6 +32,8 @@ public:
 	void Posses();
 	void UnPosses();
 
+	void OnFightBegin() override;
+
 	static void TransformInto(Character*, Character*);
 
 	void HandledDelete() { kyp = nullptr; davin = nullptr; cientifico = nullptr; input = nullptr; };

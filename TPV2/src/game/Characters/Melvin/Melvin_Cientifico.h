@@ -6,6 +6,9 @@ class Melvin;
 
 class Melvin_Cientifico : public Character
 {
+
+	friend class Melvin;
+
 public:
 	Melvin_Cientifico(FightManager* mngr, b2Vec2 pos, char input, InputConfig* input_, ushort p);
 	~Melvin_Cientifico();

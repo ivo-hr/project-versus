@@ -6,6 +6,9 @@ class Melvin_Cientifico;
 
 class Melvin_Kyp : public Character
 {
+
+	friend class Melvin;
+
 public:
 	Melvin_Kyp(FightManager* mngr, b2Vec2 pos, char input, InputConfig* input_, ushort p);
 	~Melvin_Kyp();

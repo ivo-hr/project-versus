@@ -41,7 +41,6 @@ void ExitState::update() {
         State* saved = fmngr->getSavedState();
         fmngr->setState(saved);
         fmngr->clearExitState();
-        fmngr->clearSavedState();
         delete tmp;
         return;
     }

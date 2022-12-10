@@ -5,6 +5,7 @@
 #include "../Utils/MyListener.h"
 #include "../PlayingState/Stage.h"
 #include "../../utils/CheckML.h"
+#include "../Utils/HUDManager.h"
 
 void FightManager::MoveCamera()
 {
@@ -364,6 +365,12 @@ ushort FightManager::StartFight(std::vector<Character*> ent)
 	numPlayers = (short)characters.size();
 
 	InitMatrix();
+
+	hud = new HudManager(this);
+
+	for (auto i = 0u; i < characters.size(); i++) {
+		characters[i]->OnFightBegin();
+	}
 	
 	scount = 4;
 	startticks = 0;
@@ -419,6 +426,12 @@ ushort FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Cha
 	numPlayers = (short)characters.size();
 
 	InitMatrix();
+
+	hud = new HudManager(this);
+
+	for (auto i = 0u; i < characters.size(); i++) {
+		characters[i]->OnFightBegin();
+	}
 
 	scount = 4;
 	startticks = 0;
@@ -812,6 +825,7 @@ void FightManager::onNewGame()
 	team1.clear();
 	team2.clear();
 	stage->UnLoadStage();
+	delete hud;
 	deadTextures.clear();
 	team1DeadStats.clear();
 	team1DeadTextures.clear();

@@ -344,6 +344,14 @@ void Melvin::UnPosses()
 	possesTimer = 0;
 }
 
+void Melvin::OnFightBegin()
+{
+	Character::OnFightBegin();
+	kyp->OnFightBegin();
+	davin->OnFightBegin();
+	cientifico->OnFightBegin();
+}
+
 void Melvin::TransformInto(Character* current, Character* to)
 {
 	current->GetManager()->GetEntityReferenceTo(current) = to;
