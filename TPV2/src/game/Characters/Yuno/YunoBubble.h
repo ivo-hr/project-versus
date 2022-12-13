@@ -41,6 +41,7 @@ private:
 
 	bool toExplode = false;
 
+	float totalLifespan = 0;
 	float lifespan = 0;
 	int moarSpan = 0;
 	int timeSinceBubble = 0;

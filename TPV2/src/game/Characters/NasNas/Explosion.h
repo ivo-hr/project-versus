@@ -19,6 +19,8 @@ public:
 	virtual void CheckHits() override;
 	virtual SDL_Rect* GetHurtbox() { return &hurtbox; };
 private:
+	bool type;
+
 	int anim = 0;
 	int spDur = 0;
 

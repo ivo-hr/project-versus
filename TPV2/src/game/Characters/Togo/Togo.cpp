@@ -235,30 +235,16 @@ void Togo::SpecialForward(ushort frameNumber)
 		anim->StartAnimation("especialL");
 		sdl->soundEffects().at("dinoSpecS").play();
 	}
+	else if (frameNumber == attacks["specialL"].keyFrames[0])
+	{
+		CreateHitBox(&attacks["specialL"].hitBoxes[0]);
+	}
 	else if (frameNumber >= attacks["specialL"].keyFrames[0] && frameNumber < attacks["specialL"].keyFrames[1])
 	{
 		moving = false;
 		body->SetLinearVelocity(b2Vec2(dir * 30, 0));
 		speed = dir * 34.f;
-		
-		bite = manager->GetSDLCoors(
-			body->GetPosition().x + (dir * width * 1.5f),
-			body->GetPosition().y - height * 0.2f,
-			width * 3.8f,
-			height * 0.8f);
 
-		Entity* oponent = nullptr;
-		while (manager->GetNextEntity(oponent, layer)) {
-			if (SDL_HasIntersection(&bite, oponent->GetHurtbox())) {
-				ChangeMove([this](int f) { SpecialLHit(f); });
-				bite = { 0, 0, 0, 0 };
-			}
-		}
-
-	}
-	else if (frameNumber == attacks["specialL"].keyFrames[1])
-	{
-		bite = { 0, 0, 0, 0 };
 	}
 	else if (frameNumber == attacks["specialL"].totalFrames)
 	{
@@ -450,6 +436,19 @@ void Togo::BuildBoxes()
 		body->GetPosition().y - height * 0.7f,
 		width * 4.f,
 		height * 0.4f);
+
+	attacks["specialL"].hitBoxes[0].box = manager->GetSDLCoors(
+		body->GetPosition().x + (dir * width * 1.5f),
+		body->GetPosition().y - height * 0.2f,
+		width * 3.8f,
+		height * 0.8f);
+
+	attacks["specialL"].hitBoxes[0].specialEffect =
+		[this](Entity* a)
+	{
+		ChangeMove([this](int f) { SpecialLHit(f); });
+		attacks["specialL"].hitBoxes[0].outFor = attacks["specialL"].hitBoxes[0].duration;
+	};
 
 	attacks["specialLHit"].hitBoxes[0].box = manager->GetSDLCoors(
 		body->GetPosition().x + (dir * width * 1.5f),

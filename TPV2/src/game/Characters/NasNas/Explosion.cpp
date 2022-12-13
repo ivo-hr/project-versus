@@ -12,22 +12,26 @@ Explosion::Explosion(FightManager* manager, b2Vec2 pos, int power, int type, boo
 	//agua y fuego
 	if (type == 0)
 	{
-		data.base = power;
+		data.base = power * 0.7f;
 		data.damage = 10;
-		data.multiplier = 1.2f;
+		data.multiplier = 0.9f;
 		texture = &sdl->images().at("ExplosionWF");
+		sdl->soundEffects().at("FWexplosion").play();
 	}
 	else
 	{
 		data.base = 40;
 		data.damage = power;
-		data.multiplier = 0.1f;
+		data.multiplier = 0.05f;
 		texture = &sdl->images().at("ExplosionEF");
+		sdl->soundEffects().at("FEexplosion").play();
 	}
 
 	dir = lookRight ? 1 : -1;
 
 	spDur = duration / 5;
+
+	this->type = type == 0;
 }
 
 Explosion::~Explosion()
@@ -62,7 +66,7 @@ void Explosion::update()
 }
 void Explosion::CheckHits()
 {
-	if (time >= 3)
+	if (time >= 2)
 	{
 		Entity* oponent = nullptr;
 		while (manager->GetNextEntity(oponent, 0))
@@ -70,16 +74,48 @@ void Explosion::CheckHits()
 			SDL_Rect hitArea;
 			if (SDL_IntersectRect(&hurtbox, oponent->GetHurtbox(), &hitArea) && !isHit[oponent])
 			{
+				manager->MoveToFront(this);
 				bool controlHitLag = false;
 				bool controlShake = false;
 				bool controlCamShake = false;
 
 				if (oponent->GetHit(data, this, controlHitLag, controlShake, controlCamShake))
 				{
-					if (!controlHitLag)
+					if (type)
 					{
-						oponent->AddHitLag(20);
-						AddHitLag(20);
+						if (!controlHitLag)
+						{
+							oponent->AddHitLag(20);
+							AddHitLag(20);
+						}
+
+						if (!controlShake)
+						{
+							oponent->SetShake(Vector2D(data.direction.x * 0.4f, data.direction.y * 0.4f), 10);
+						}
+
+						if (!controlCamShake)
+						{
+							manager->SetShake(Vector2D(data.direction.x * -3, data.direction.y * 6), 30);
+						}
+					}
+					else
+					{
+						if (!controlHitLag)
+						{
+							oponent->AddHitLag(30);
+							AddHitLag(30);
+						}
+
+						if (!controlShake)
+						{
+							oponent->SetShake(Vector2D(data.direction.x, data.direction.y), 15);
+						}
+
+						if (!controlCamShake)
+						{
+							manager->SetShake(Vector2D(data.direction.x * -6, data.direction.y * 9), 25);
+						}
 					}
 
 					isHit[oponent] = true;

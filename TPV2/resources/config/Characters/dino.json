@@ -112,9 +112,13 @@
     {
       "id": "specialL",
       "hitBoxes": [
+        {
+          "hitlag": -1,
+          "duration": 20
+        }
       ],
-      "keyFrames": [10, 35],
-      "totalFrames": 50
+      "keyFrames": [15, 40],
+      "totalFrames": 55
     },
     {
       "id": "specialLHit",
@@ -122,19 +126,19 @@
         {
           "hitData": {
             "b2vecX": 1.2,
-            "b2vecY": 3,
-            "base": 40,
+            "b2vecY": 2.8,
+            "base": 35,
             "damage": 25,
-            "multiplier": 0.7,
+            "multiplier": 0.75,
             "stun": -1,
             "shieldBreak": true
           },
           "hitlag": -1,
-          "duration": 3
+          "duration": 5
         }
       ],
       "keyFrames": [2],
-      "totalFrames": 27
+      "totalFrames": 32
     },
     {
       "id": "specialU",

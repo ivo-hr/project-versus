@@ -22,7 +22,8 @@ YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, int iniSp
 
 	alive = true;
 
-	lifespan = (float)(iniSpan * 60);
+	totalLifespan = (float)(iniSpan * 60);
+	lifespan = totalLifespan;
 	moarSpan = moreSpan;
 
 	pompa = bubbleType;
@@ -39,6 +40,7 @@ YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, int iniSp
 
 YunoBubble::~YunoBubble()
 {
+	texture->SetTexMod(255, 255, 255);
 }
 
 void YunoBubble::update()
@@ -103,6 +105,11 @@ void YunoBubble::update()
 		Pop();
 	}
 	timeSinceBubble++;
+
+	if (lifespan * 2 == totalLifespan || lifespan * 2 == totalLifespan - 1)
+	{
+		texture->SetTexMod(255, 64, 64);
+	}
 
 	Entity::update();
 }
@@ -201,6 +208,9 @@ void YunoBubble::CheckHits()
 					GetInsideBubble(oponent);
 					body->SetLinearVelocity(b2Vec2(dir * 0.5f, 0));
 					lifespan += moarSpan * 60;
+					totalLifespan = lifespan;
+
+					texture->SetTexMod(255, 255, 255);
 				}
 			}
 			if (bubbledEntity)

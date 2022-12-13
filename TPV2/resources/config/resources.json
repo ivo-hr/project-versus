@@ -158,6 +158,14 @@
       "file": "resources/sound/01General/shieldBreak.wav"
     },
     {
+      "id": "FWexplosion",
+      "file": "resources/sound/01General/FWexplosion.wav"
+    },
+    {
+      "id": "FEexplosion",
+      "file": "resources/sound/01General/FEexplosion.wav"
+    },
+    {
       "id": "zeroAtk0",
       "file": "resources/sound/ZeroChar/atk0.wav"
     },
