@@ -82,16 +82,14 @@ int main(int ac, char **av) {
 #ifdef _DEBUG
 		fghtmngr->LogEverything();
 #endif // !_DEBUG
-		delete fghtmngr;
 	}
 	catch (const char* s)
 	{
 		const char* title = "The game crashed :(     ";
 
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title, s, nullptr);
-
-		delete fghtmngr;
 	}
+	delete fghtmngr;
 
 	SDL_Quit();
 
