@@ -6,10 +6,19 @@
 #include <iostream>
 
 
-json Character::ReadJson(std::string filename, spriteSheetData &spData)
+json Character::ReadJson(const std::string& filename, spriteSheetData &spData)
 {
 	jsonPath = filename;
 	std::ifstream file(filename);
+
+	if (file.fail())
+	{
+		string a = "The file at '" + filename + "' could not be found";
+		char* aux = new char[a.length() + 1];
+		strcpy_s(aux, a.length() + 1, a.c_str());
+		throw(aux);
+	}
+
 	json jsonFile;
 	file >> jsonFile;
 
@@ -21,10 +30,9 @@ json Character::ReadJson(std::string filename, spriteSheetData &spData)
 	maxJumps = jsonFile["maxJumps"];
 	jumpStr = jsonFile["jumpStr"];
 	maxShield = jsonFile["maxShield"];
+
 	jumpCounter = maxJumps;
-	damageTaken = 0;
 	shieldHealth = maxShield;
-	jumpCooldown = true;
 
 	//Aqui defino las caracteristicas de cada hitbox (podriamos hacerlo dentro de cada metodo, y vendria de json)(tambien podríamos poner framedata)
 
@@ -115,6 +123,8 @@ json Character::ReadJson(std::string filename, spriteSheetData &spData)
 		auxAnim.keyFrame.clear();
 	}
 
+	file.close();
+
 	for (pair<string, animationData> aData : spData.animations)
 	{
 		aData.second.keyFrame.shrink_to_fit();
@@ -186,6 +196,8 @@ Character::Character(FightManager* manager, b2Vec2 pos, char input, ushort playe
 	input_ = input;
 	totalDamageTaken = 0;
 	kills = 0;
+	damageTaken = 0;
+	jumpCooldown = true;
 	AddTag(Tags::Hitable);
 	AddTag(Tags::IsCharacter);
 	AddTag(Tags::CameraFollow);

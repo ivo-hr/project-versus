@@ -1,21 +1,21 @@
 #pragma once
 
-#include <SDL.h>
-#include <iostream>
+//#include <SDL.h>
+//#include <iostream>
 #include <box2d.h>
 #include <string>
 #include <vector>
 #include <deque>
 #include <queue>
 
-#include "../../sdlutils/InputHandler.h"
-#include "../../sdlutils/macros.h"
+//#include "../../sdlutils/InputHandler.h"
+//#include "../../sdlutils/macros.h"
 #include "../../sdlutils/SDLUtils.h"
 #include "../State/StateMachine.h"
 #include "../State/MenuState.h"
-#include "../State/PlayingState.h"
-#include "../State/GameOverState.h"
-#include "../Utils/PlayerSelectRect.h"
+//#include "../State/PlayingState.h"
+//#include "../State/GameOverState.h"
+//#include "../Utils/PlayerSelectRect.h"
 #include "../State/ConfigurationState.h"
 
 class Entity;

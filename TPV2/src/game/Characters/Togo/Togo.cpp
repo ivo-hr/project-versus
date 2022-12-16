@@ -1,11 +1,9 @@
 ﻿#include "Togo.h"
-#include "../../Utils/AnimationManager.h"
-#include "../../../json/json.hpp"
-#include "../../../utils/CheckML.h"
 #include "Spear.h"
 #include "DinoShield.h"
-#include <fstream>
-#include <iostream>
+#include "../../Utils/AnimationManager.h"
+#include "../../Utils/Particle.h"
+#include "../../../utils/CheckML.h"
 using json = nlohmann::json;
 
 Togo::Togo(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mngr, pos, input,p, 1.5f, 3.5f)
@@ -443,8 +441,7 @@ void Togo::BuildBoxes()
 		width * 3.8f,
 		height * 0.8f);
 
-	attacks["specialL"].hitBoxes[0].specialEffect =
-		[this](Entity* a)
+	attacks["specialL"].hitBoxes[0].specialEffect = [this](Entity* a)
 	{
 		ChangeMove([this](int f) { SpecialLHit(f); });
 		attacks["specialL"].hitBoxes[0].outFor = attacks["specialL"].hitBoxes[0].duration;

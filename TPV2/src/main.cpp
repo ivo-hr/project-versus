@@ -1,18 +1,17 @@
 // This file is part of the course Proyectos2@UCM - LeftOvers Productions �
 
-#include <SDL.h>
-#include <iostream>
-#include <box2d.h>
-#include <cstdlib>
-#include "sdlutils/InputHandler.h"
-#include "sdlutils/macros.h"
-
-#include "utils/CheckML.h"
-
-#include "sdlutils/sdlutils_demo.h"
-#include "sdlutils/SDLUtils.h"
+//#include <SDL.h>
+//#include <iostream>
+//#include <box2d.h>
+//#include <cstdlib>
+//
+//#include "sdlutils/InputHandler.h"
+//#include "sdlutils/macros.h"
+//#include "sdlutils/sdlutils_demo.h"
+//#include "sdlutils/SDLUtils.h"
 
 #include "game/PlayingState/FightManager.h"
+#include "utils/CheckML.h"
 
 int main(int ac, char **av) {
 
@@ -79,17 +78,20 @@ int main(int ac, char **av) {
 	try
 	{
 		fghtmngr = new FightManager(&sdl);
-#ifdef _DEBUG
-		fghtmngr->LogEverything();
-#endif // !_DEBUG
+
+		delete fghtmngr;
 	}
 	catch (const char* s)
 	{
-		const char* title = "The game crashed :(     ";
+		delete fghtmngr;
 
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title, s, nullptr);
+		const char* title = "The game crashed :(";
+
+		if (s == nullptr)
+			s = "And we don't know why";
+
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, title, s, sdl.window());
 	}
-	delete fghtmngr;
 
 	SDL_Quit();
 

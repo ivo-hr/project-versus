@@ -5,7 +5,6 @@
 #include "Utils/InputConfig.h"
 #include "../json/json.hpp"
 #include <fstream>
-#include "Utils/Particle.h"
 #include "Utils/HUDManager.h"
 
 using json = nlohmann::json;
@@ -77,7 +76,7 @@ protected:
 	//Metodo del movimiento que este haciendo (esto es una variable que guarda metodos :v)
 	std::function<void(int)> currentMove;
 
-	json ReadJson(std::string file, spriteSheetData& spData);
+	json ReadJson(const std::string& file, spriteSheetData& spData);
 
 	// efectos de estado
 	enum state efEstado = none;
