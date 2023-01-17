@@ -112,6 +112,7 @@
     <ClCompile Include="src\game\State\State.cpp" />
     <ClCompile Include="src\game\Utils\AnimationManager.cpp" />
     <ClCompile Include="src\game\Utils\Button.cpp" />
+    <ClCompile Include="src\game\Utils\HUDManager.cpp" />
     <ClCompile Include="src\game\Utils\InputConfig.cpp" />
     <ClCompile Include="src\game\Utils\Particle.cpp" />
     <ClCompile Include="src\game\Utils\PlayerPointer.cpp" />

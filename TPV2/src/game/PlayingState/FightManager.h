@@ -7,6 +7,7 @@
 #include <vector>
 #include <deque>
 #include <queue>
+#include <functional>
 
 //#include "../../sdlutils/InputHandler.h"
 //#include "../../sdlutils/macros.h"

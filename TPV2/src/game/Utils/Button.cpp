@@ -1,52 +1,168 @@
 #include "Button.h"
 #include "../../utils/CheckML.h"
 
+bool Button::MouseOver()
+{
+	int mx = ih.getMousePos().first;
+	int my = ih.getMousePos().second;
+
+	return (mx > x) && (mx < x + w) && (my > y) && (my < y + h);
+}
+
+Button::Button(Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :tex(t), x(x), y(y), pointers(p), hasHoverSprite(hasHoverOver), hasPressedSprite(hasPressed)
+{
+	w = size;
+	h = size * tex->height() / tex->width();
+
+	if (hasHoverSprite && hasPressedSprite)
+	{
+		defTex = { 0, 0, tex->width(), tex->height() / 3 };
+		hoverTex = { 0, tex->height() / 3, tex->width(), tex->height() / 3 };
+		pressTex = { 0, tex->height() * 2 / 3, tex->width(), tex->height() / 3 };
+	}
+	else
+	{
+		if (hasHoverSprite || hasPressedSprite)
+		{
+			defTex = { 0, 0, tex->width(), tex->height() / 2 };
+			hasHoverSprite ?
+				hoverTex = { 0, tex->height() / 2, tex->width(), tex->height() / 2 } :
+				pressTex = { 0, tex->height() / 2, tex->width(), tex->height() / 2 };
+		}
+		else
+		{
+			defTex = { 0, 0, tex->width(), tex->height() };
+		}
+	}
+	currentSprite = defTex;
+}
+
+Button::Button(Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :tex(t), x(x), y(y), w(w), h(h), pointers(p), hasHoverSprite(hasHoverOver), hasPressedSprite(hasPressed)
+{
+	if (hasHoverSprite && hasPressedSprite)
+	{
+		defTex = { 0, 0, tex->width(), tex->height() / 3 };
+		hoverTex = { 0, tex->height() / 3, tex->width(), tex->height() / 3 };
+		pressTex = { 0, tex->height() * 2 / 3, tex->width(), tex->height() / 3 };
+	}
+	else
+	{
+		if (hasHoverSprite || hasPressedSprite)
+		{
+			defTex = { 0, 0, tex->width(), tex->height() / 2 };
+			hasHoverSprite ?
+				hoverTex = { 0, tex->height() / 2, tex->width(), tex->height() / 2 } :
+				pressTex = { 0, tex->height() / 2, tex->width(), tex->height() / 2 };
+		}
+		else
+		{
+			defTex = { 0, 0, tex->width(), tex->height() };
+		}
+	}
+	currentSprite = defTex;
+}
+
+void Button::SetActive(bool f)
+{
+	active = f;
+}
+
+void Button::update()
+{
+	if (rendered && active)
+	{
+		if (onMouseClick != nullptr)
+		{
+			if (MouseOver())
+			{
+				SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
+				if (!ih.getMouseButtonState(ih.LEFT))
+				{
+					if (pressed)
+					{
+						onMouseClick();
+						pressed = false;
+						if (hasBeenDeleted)
+							return;
+					}
+					if (hasHoverSprite)
+					{
+						currentSprite = hoverTex;
+					}
+					else
+					{
+						Uint8 r;
+						tex->GetTexMod(r, r, r);
+						if (r != hoverOverTint)
+						{
+							tex->SetTexMod(hoverOverTint);
+						}
+					}
+				}
+				else
+				{
+					pressed = true;
+					if (hasPressedSprite)
+					{
+						currentSprite = pressTex;
+					}
+					else
+					{
+						Uint8 r;
+						tex->GetTexMod(r, r, r);
+						if (r != pressedTint)
+						{
+							tex->SetTexMod(pressedTint);
+						}
+					}
+				}
+			}
+			else
+			{
+				pressed = false;
+				currentSprite = defTex;
+				Uint8 r;
+				tex->GetTexMod(r, r, r);
+				if (r != defaultTint)
+				{
+					tex->SetTexMod(defaultTint);
+					SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
+				}
+			}
+		}
+
+		if (onPointerClick != nullptr)
+		{
+			for (auto i = 0; i < pointers.size(); i++)
+			{
+				SDL_Rect r = {x, y, w, h};
+				SDL_Rect p = pointers[i]->getRect();
+				if (pointers[i]->Click() && SDL_HasIntersection(&r, &p))
+				{
+					onPointerClick(i);
+					if (hasBeenDeleted)
+						return;
+				}
+			}
+		}
+	}
+	else if (!active)
+	{
+		currentSprite = defTex;
+		Uint8 r;
+		tex->GetTexMod(r, r, r);
+		if (r != defaultTint)
+		{
+			tex->SetTexMod(defaultTint);
+		}
+	}
+	rendered = false;
+}
+
 void Button::render()
 {
 	rendered = true;
-	if (!activated && destex != nullptr) {
-		destex->render({ x,y,w,h });
-	}
-	else
-	{
-		tex->render({ x,y,w,h });
-	}
-}
-
-void Button::render(const SDL_Rect& recorte)
-{
-	rendered = true;
-	if (!activated && destex != nullptr) {
-		destex->render(recorte, { x,y,w,h });
-	}
-	else
-	{
-		tex->render(recorte, { x,y,w,h });
-	}
-}
-
-bool Button::mouseClick()
-{
-	if (rendered) {
-		int mx = ih.getMousePos().first;
-		int my = ih.getMousePos().second;
-
-		if ((mx > x - (w / 20)) && (mx < (x - (w / 20)) + (w + (w / 10))) && (my > y - (h / 20)) && (my < (y - (h / 20)) + (h + h / 10)))
-		{
-			if (!ih.mouseButtonEvent())
-			{
-				pressed = false;
-				return false;
-			}
-			if (ih.getMouseButtonState(ih.LEFT) && !pressed) {
-				pressed = true;
-				rendered = false;
-				return true;
-			}
-			
-		}
-	}
-	return false;
+	tex->render(currentSprite, { x,y,w,h });
 }
 
 SDL_Rect Button::getRect()
@@ -55,19 +171,20 @@ SDL_Rect Button::getRect()
 	return r;
 }
 
-bool Button::pointerClick(SDL_Rect rect)
+PlayButton::PlayButton(Texture* t, int x, int y, float size, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
+	Button(t, x, y, size, p, hasHoverOver, hasPressed)
 {
-	if (rendered) {
-		SDL_Rect r = build_sdlrect((float)x - (float)w / 20.f, (float)y - (float)h / 20.f, w + (float)w / 10.f, h + (float)h / 10.f);
-		return SDL_HasIntersection(&r, &rect);
-		rendered = false;
+	for (auto i = 0u; i < 22; i++) {
+		std::string key = "C" + std::to_string(i);
+		std::string file = "resources/images/rompe_cristal/" + std::to_string(i) + ".png";
+		sdl->images().emplace(key, Texture(sdl->renderer(), file));
+		txV.push_back(&sdl->images().at(key));
 	}
-	return false;
 }
 
-PlayButton::PlayButton(Texture* t, int x, int y, int width, int height) :Button(t, x, y, width, height)
+PlayButton::PlayButton(Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
+	Button(t, x, y, w, h, p, hasHoverOver, hasPressed)
 {
-
 	for (auto i = 0u; i < 22; i++) {
 		std::string key = "C" + std::to_string(i);
 		std::string file = "resources/images/rompe_cristal/" + std::to_string(i) + ".png";
@@ -87,4 +204,37 @@ void PlayButton::render()
 	}
 	txV[frame]->render({ x, y, w, h });
 
+}
+
+ToggleButton::ToggleButton(Texture* t, int x, int y, float size, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
+	Button(t, x, y, size, p, hasHoverOver, hasPressed)
+{
+	defTex.w /= 2;
+	hoverTex.w /= 2;
+	pressTex.w /= 2;
+	currentSprite = defTex;
+}
+
+ToggleButton::ToggleButton(Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
+	Button(t, x, y, w, h, p, hasHoverOver, hasPressed)
+{
+	defTex.w /= 2;
+	hoverTex.w /= 2;
+	pressTex.w /= 2;
+	currentSprite = defTex;
+}
+
+void ToggleButton::render()
+{
+	rendered = true;
+	if (enabled)
+		currentSprite.x = 0;
+	else
+		currentSprite.x = currentSprite.w;
+	tex->render(currentSprite, { x,y,w,h });
+}
+
+void ToggleButton::SetEnabled(bool a)
+{
+	enabled = a;
 }

@@ -146,7 +146,7 @@ public:
 	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
 
 	virtual void OnParry(Entity* attacker, bool& controlHitLag, HitData& a, bool& controlCamShake, bool& controlShake);
-
+	bool IsParrying() { return parry > 0 && parry <= parryWindow; }
 	void SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag, Entity* attacker, bool& controlShake, bool& controlCamShake);
 	bool IsGoingToKill(const b2Vec2& angle);
 	virtual SDL_Rect* GetHurtbox();

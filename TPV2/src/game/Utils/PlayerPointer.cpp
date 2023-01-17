@@ -2,8 +2,53 @@
 #include "../../utils/CheckML.h"
 
 void PlayerPointer::render()
-{	if(active)
-	texture->render({ x,y,w,h });
+{	
+	if(active)
+		texture->render({ x,y,w,h });
+}
+
+void PlayerPointer::update()
+{
+	if (input < -2 || !active)
+		return;
+
+	clickedLastFrame = clicked;
+	clicked = false;
+
+	switch (input)
+	{
+	case -1:
+		if (ih.isKeyDown(playerPrefs.Keyboard1Up()))move(0);
+		if (ih.isKeyDown(playerPrefs.Keyboard1Down()))move(1);
+		if (ih.isKeyDown(playerPrefs.Keyboard1Left()))move(2);
+		if (ih.isKeyDown(playerPrefs.Keyboard1Right()))move(3);
+		if (ih.isKeyDown(playerPrefs.Keyboard1Basic()))clicked = true;
+		break;
+	case -2:
+		if (ih.isKeyDown(playerPrefs.Keyboard2Up()))move(0);
+		if (ih.isKeyDown(playerPrefs.Keyboard2Down()))move(1);
+		if (ih.isKeyDown(playerPrefs.Keyboard2Left()))move(2);
+		if (ih.isKeyDown(playerPrefs.Keyboard2Right()))move(3);
+		if (ih.isKeyDown(playerPrefs.Keyboard2Basic()))clicked = true;
+		break;
+	default:
+		if (ih.xboxGetAxesState(input, 1) == -1 || ih.xboxGetDpadState(input, 0))
+			move(0);
+		if (ih.xboxGetAxesState(input, 1) == 1 || ih.xboxGetDpadState(input, 2))
+			move(1);
+		if (ih.xboxGetAxesState(input, 0) == -1 || ih.xboxGetDpadState(input, 3))
+			move(2);
+		if (ih.xboxGetAxesState(input, 0) == 1 || ih.xboxGetDpadState(input, 1))
+			move(3);
+		if (ih.xboxGetButtonState(input, playerPrefs.ControllerBasic()))
+			clicked = true;
+		break;
+	}
+}
+
+bool PlayerPointer::Click()
+{
+	return clicked && !clickedLastFrame;
 }
 
 void PlayerPointer::move(int dir)

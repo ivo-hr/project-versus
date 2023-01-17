@@ -24,7 +24,7 @@ PlayingState::PlayingState(FightManager* game, vector<char>playersInput, vector<
 	for (auto i = 0u; i < playersInput.size(); i++) {
 		switch (characters[i])
 		{
-		case 0: //zero
+		case 0: //nasnas
 			entities.push_back(new NasNas(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i],i));
 			break;
 		case 1://Gato espia

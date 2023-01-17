@@ -5,9 +5,11 @@
 
 class ConfigurationState : public State {
     Texture* backgr, * sfx, * music, * c1, * c2,*instru;
-    Button* sfxp, * sfxm, * muscp, * muscm, * fullSCheck;
+    Button* sfxp, * sfxm, * muscp, * muscm;
+    ToggleButton *fullSCheck;
     Button* exit , *back;
-    PlayerPointer *p1;
+    vector<PlayerPointer*> pointers = vector<PlayerPointer*>(1);
+    PlayerPointer*& p1;
 
     int musicV = 10;
     int sfxV = 10;
@@ -21,6 +23,13 @@ public:
     virtual  ~ConfigurationState();
 
     void update() override;
+    void IncreaseSFX();
+    void DecreaseSFX();
+    void IncreaseMusic();
+    void DecreaseMusic();
+    void GoBack();
+    void ExitState();
+    void ToggleFullScreen();
     void draw() override;
     void next() override;
     void OnEnable() override { SDL_ShowCursor(1); };

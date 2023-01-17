@@ -7,8 +7,11 @@
 class ConfigState : public State {
     Texture* background , *charselbg;
     ushort numOfplayer;
-    Button *gatoespia, *maketo ,*togo , *nasnas , *yuno , *melvin , *aleatorio , *plusB, *minusB ,*play;
-    Button* teammode, * normalmode , *team1, *team2 ,*config;
+
+    vector<Button*> buttons = vector<Button*>(10);
+
+    Button *play;
+    ToggleButton* teammode, * normalmode;
     bool TeamModebool = false;
     bool charsel = false;
     bool ready = false;
@@ -18,7 +21,7 @@ class ConfigState : public State {
     bool mapkeyRelease = true;
 
     bool selectMap = true;
-    int map = -1;
+    int mapChosen = -1;
     int lastPointerClick = -3;
     ushort nMandos;
 
@@ -31,7 +34,7 @@ class ConfigState : public State {
     vector<PlayerPointer*> playerPointers;
     vector<PlayerSelectRect*> playerTexture;
     vector<Texture*> charactTexture;
-    vector<vector<Button*>> p;
+    vector<vector<ToggleButton*>> p;
     vector<Button*> maps;
     vector<string> charName;
     void configTeamChoose();
@@ -39,15 +42,17 @@ class ConfigState : public State {
     void searchInput();
     void movePointers();
     void checkButtonPointerClick();
-    void checkButtonMouseClick();
-    void setTeams();
     void checkPlayerReady();
     void initMapBut();
     void playerMenuRender();
     void mapMenuRender();
-    void mapcheckButtonPointerClick();
-    void mapcheckButtonMouseClick();
     void initcharact();
+
+    void SelectCharacter(int i, const string& name, char character);
+    void RemovePlayer();
+    void AddPlayer();
+    void ChangeTeam(int pl, bool t1);
+    void OpenConfig();
     int timerMapkeyRelease = 0;
 public:
 
@@ -64,5 +69,5 @@ public:
         return "Config state";
     };
 private:
-    void setPointer();
+    void setPointer(short input);
 };

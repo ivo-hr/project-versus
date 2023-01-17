@@ -8,7 +8,8 @@ class GameOverState : public State {
     //FightManager* fmngr;
     vector<Texture*>winnersTextures_;
     Button* playAgain;
-    PlayerPointer* pointer;
+    vector<PlayerPointer*> pointers = vector<PlayerPointer*>(1);
+    PlayerPointer*& pointer;
     short playersInput_;
     vector<vector<ushort>>gameStats_;
 

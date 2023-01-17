@@ -52,18 +52,30 @@ void CharacterZero::BasicNeutral(ushort frameNumber)
 	}
 	else if (frameNumber == attacks["fuerte"].keyFrames[0] + 1)
 	{
-		ushort numHit = 0;
+		ushort CharsHit = 0;
+		ushort CharsToKill = 0;
+
+		float percentPerHit = 1.f, percentIfGoingToKill = 10.f;
+		if (manager->GetCharacters().size() == 2)
+			percentIfGoingToKill = 100.f;
 		for (pair<Entity*, bool> hit : isHit)
 		{
 			if (hit.second)
 			{
-				numHit++;
-				if (hit.first->GetLives() == 1)
-					numHit++;
+				auto a = static_cast<Character*>(hit.first);
+				if (a)
+				{
+						if (a->GetLives() == 1 && a->GetDamageTaken() >= 250)
+							CharsToKill++;
+						else
+							CharsHit++;
+				}
 			}
 		}
 
-		if (rand() % 150 < numHit)
+		float totalChance = CharsHit * percentPerHit + CharsToKill * percentIfGoingToKill;
+
+		if (rand() % 100 < totalChance)
 		{
 			Music::haltMusic();
 			SoundEffect::haltChannel();

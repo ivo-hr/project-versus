@@ -4,27 +4,46 @@
 #include "../Utils/PlayerConfigs.h"
 
 
-ConfigurationState::ConfigurationState(FightManager* game , short pI) : State(game) {
+ConfigurationState::ConfigurationState(FightManager* game , short pI) : State(game), p1(pointers[0])
+{
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     backgr = &sdl->images().at("ConfigBack");
     music = &sdl->images().at("BgmT");
     sfx = &sdl->images().at("SfxT");
     instru = &sdl->images().at("instru");
-    exit = new Button(&sdl->images().at("backToMenu"), 0, h - w / 12, w / 16, w / 12);
-    back = new Button(&sdl->images().at("BackBut"), 0, 0, w / 12, w / 12);
+
+    pointers[0] = new PlayerPointer(&sdl->images().at("P1P"), w / 2, h / 2, w, h, pI);
+
+    exit = new Button(&sdl->images().at("backToMenu"), 0, h - w / 12, w / 16, w / 12, pointers);
+    exit->SetOnClick([this]() {ExitState(); });
+    exit->SetOnPointerClick([this](int s) {ExitState(); });
+    back = new Button(&sdl->images().at("BackBut"), 0, 0, w / 12, w / 12, pointers);
+    back->SetOnClick([this]() {GoBack(); });
+    back->SetOnPointerClick([this](int s) {GoBack(); });
 
     int butW = w / 50;
 
-    muscm = new Button(&sdl->images().at("minusB"), (int)(w * 29 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - butW / 2), butW, butW);
-    muscp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - butW / 2), butW, butW);
+    muscm = new Button(&sdl->images().at("minusB"), (int)(w * 29 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - butW / 2), butW, butW, pointers);
+    muscm->SetOnClick([this]() {DecreaseMusic(); });
+    muscm->SetOnPointerClick([this](int s) {DecreaseMusic(); });
+    muscp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - butW / 2), butW, butW, pointers);
+    muscp->SetOnClick([this]() {IncreaseMusic(); });
+    muscp->SetOnPointerClick([this](int s) {IncreaseMusic(); });
   
-    sfxm = new Button(&sdl->images().at("minusB"), (int)(w * 29 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - butW / 2), butW, butW);
-    sfxp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - butW / 2), butW, butW);
+    sfxm = new Button(&sdl->images().at("minusB"), (int)(w * 29 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - butW / 2), butW, butW, pointers);
+    sfxm->SetOnClick([this]() {DecreaseSFX(); });
+    sfxm->SetOnPointerClick([this](int s) {DecreaseSFX(); });
+    sfxp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - butW / 2), butW, butW, pointers);
+    sfxp->SetOnClick([this]() {IncreaseSFX(); });
+    sfxp->SetOnPointerClick([this](int s) {IncreaseSFX(); });
 
-    fullSCheck = new Button(&sdl->images().at("check"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)(h * 1.2f / 2 - butW), butW * 2, butW * 2);
+    fullSCheck = new ToggleButton(&sdl->images().at("check"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)(h * 1.2f / 2 - butW), butW * 2, butW * 2, pointers);
+    fullSCheck->SetEnabled(SDL_GetWindowFlags(sdl->window()) & SDL_WINDOW_FULLSCREEN);
+    fullSCheck->SetOnClick([this]() {ToggleFullScreen(); });
+    fullSCheck->SetOnPointerClick([this](int s) {ToggleFullScreen(); });
     
-    p1 = new PlayerPointer(&sdl->images().at("P1P"), w/2, h/2, w, h);
+    p1 = pointers[0];
     p1->setActive(true);
     pInput = pI;
 
@@ -43,126 +62,101 @@ ConfigurationState::~ConfigurationState()
     delete fullSCheck;
 }
 
+void ConfigurationState::update()
+{
+    fullSCheck->update();
 
+    sfxm->update();
+    sfxp->update();
+    muscm->update();
+    muscp->update();
+    exit->update();
+    back->update();
 
-void ConfigurationState::update() {
-
-    bool enter = false;
-    switch (pInput)
-    {
-    case -1:
-        if (ih.isKeyDown(playerPrefs.Keyboard1Up())) { p1->move(0); toReDraw = true; }
-        if (ih.isKeyDown(playerPrefs.Keyboard1Down())) { p1->move(1); toReDraw = true; }
-        if (ih.isKeyDown(playerPrefs.Keyboard1Basic())) { p1->move(2); toReDraw = true; }
-        if (ih.isKeyDown(playerPrefs.Keyboard1Right())) { p1->move(3); toReDraw = true; }
-        if (ih.isKeyDown(playerPrefs.Keyboard1Basic())) { enter = true; toReDraw = true; }
-        break;
-    case -2:
-        if (ih.isKeyDown(playerPrefs.Keyboard2Up())) { p1->move(0); toReDraw = true; }
-        if (ih.isKeyDown(playerPrefs.Keyboard2Down())) { p1->move(1); toReDraw = true; }
-        if (ih.isKeyDown(playerPrefs.Keyboard2Basic())) { p1->move(2); toReDraw = true; }
-        if (ih.isKeyDown(playerPrefs.Keyboard2Right())) { p1->move(3); toReDraw = true; }
-        if (ih.isKeyDown(playerPrefs.Keyboard2Basic())) { enter = true; toReDraw = true; }
-        break;
-    default:
-        if (ih.xboxGetAxesState(pInput, 1) == -1 || ih.xboxGetDpadState(pInput, 0)) { p1->move(0); toReDraw = true; }
-        if (ih.xboxGetAxesState(pInput, 1) == 1 || ih.xboxGetDpadState(pInput, 2)) { p1->move(1); toReDraw = true; }
-        if (ih.xboxGetAxesState(pInput, 0) == -1 || ih.xboxGetDpadState(pInput, 3)) { p1->move(2); toReDraw = true; }
-        if (ih.xboxGetAxesState(pInput, 0) == 1 || ih.xboxGetDpadState(pInput, 1)) { p1->move(3); toReDraw = true; }
-        if (ih.xboxGetButtonState(pInput, playerPrefs.ControllerBasic())) { enter = true; toReDraw = true; }
-        break;
-    }
-    if (muscm->mouseClick() || muscm->pointerClick(p1->getRect())&&enter && keyRelease ) {
-        if (musicV > 0) {
-            musicV--;
-            Music::setMusicVolume((int)(128 * musicV) / 10);
-            keyRelease = false;
-            toReDraw = true;
-        }
-    }
-    else if (muscp->mouseClick()  || muscp->pointerClick(p1->getRect()) && enter && keyRelease) {
-        if (musicV < 10) {
-            musicV++;
-            Music::setMusicVolume((int)(128 * musicV) / 10);
-            keyRelease = false;
-            toReDraw = true;
-        }
-
-    }
-    else if (sfxm->mouseClick() || sfxm->pointerClick(p1->getRect()) && enter && keyRelease) {
-        if (sfxV > 0) {
-            sfxV--;
-            SoundEffect::setChannelVolume((int)(128 * sfxV) / 10);
-            SoundEffect::setChannelVolume((int)(128 * sfxV) / 10,1);
-
-            keyRelease = false;
-
-            sdl->soundEffects().at("uiSelect").play(1);
-            toReDraw = true;
-
-        }
-    }
-    else if (sfxp->mouseClick() || sfxp->pointerClick(p1->getRect()) && enter && keyRelease) {
-        if (sfxV < 10) {
-            sfxV++;
-            SoundEffect::setChannelVolume((int)(128 * sfxV) / 10);
-            SoundEffect::setChannelVolume((int)(128 * sfxV) / 10,1);
-
-            keyRelease = false;
-
-            sdl->soundEffects().at("uiSelect").play(1);
-            toReDraw = true;
-
-        }
-    }
-    else if (fullSCheck->mouseClick() || fullSCheck->pointerClick(p1->getRect()) && enter && keyRelease)
-    {
-        SDL_MaximizeWindow(sdl->window());
-        sdl->toggleFullScreen();
-
-        auto flags = SDL_GetWindowFlags(sdl->window());
-        if (!(flags & SDL_WINDOW_FULLSCREEN))
-        {
-            SDL_SetWindowResizable(sdl->window(), SDL_TRUE);
-        }
-
-        keyRelease = false;
-        toReDraw = true;
-
-    }
-    if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent() || back->mouseClick() || back->pointerClick(p1->getRect()) && enter && keyRelease) {
-        keyRelease = false;
-        toReDraw = true;
-        State* tmp = fmngr->getState();
-        State* saved = fmngr->getSavedState();
-        fmngr->setState(saved);
-        fmngr->saveState(tmp);
-        //fmngr->clearSavedState();
-        //delete tmp;
-        return;
-    }
-    if (exit->mouseClick() || exit->pointerClick(p1->getRect()) && enter && keyRelease) {
-        keyRelease = false;
-        toReDraw = true;
-        State* tmp = fmngr->getState();
-        State* saved = fmngr->getSavedState();
-        delete saved;
-        fmngr->saveState(tmp);
-        fmngr->setState(new MenuState(fmngr));
-        return;
-    }
-    enter = false;
-
-    if (pInput < 0)
-    {
-        if (!ih.isKeyDown(playerPrefs.KeyboardBasic(pInput == -1)))keyRelease = true;
-    }
-    else
-    {
-        if (!ih.xboxGetButtonState(pInput, playerPrefs.ControllerBasic()))keyRelease = true;
-    }
-
+    pointers[0]->update();
 }
+
+void ConfigurationState::IncreaseSFX()
+{
+    if (sfxV < 10) {
+        sfxV++;
+        SoundEffect::setChannelVolume((int)(128 * sfxV) / 10);
+        SoundEffect::setChannelVolume((int)(128 * sfxV) / 10, 1);
+
+        keyRelease = false;
+
+        sdl->soundEffects().at("uiSelect").play(1);
+        toReDraw = true;
+
+    }
+}
+void ConfigurationState::DecreaseSFX()
+{
+    if (sfxV > 0) {
+        sfxV--;
+        SoundEffect::setChannelVolume((int)(128 * sfxV) / 10);
+        SoundEffect::setChannelVolume((int)(128 * sfxV) / 10, 1);
+
+        keyRelease = false;
+
+        sdl->soundEffects().at("uiSelect").play(1);
+        toReDraw = true;
+
+    }
+}
+void ConfigurationState::IncreaseMusic()
+{
+    if (musicV < 10) {
+        musicV++;
+        Music::setMusicVolume((int)(128 * musicV) / 10);
+        keyRelease = false;
+        toReDraw = true;
+    }
+}
+void ConfigurationState::DecreaseMusic()
+{
+    if (musicV > 0) {
+        musicV--;
+        Music::setMusicVolume((int)(128 * musicV) / 10);
+        keyRelease = false;
+        toReDraw = true;
+    }
+}
+void ConfigurationState::GoBack()
+{
+    keyRelease = false;
+    toReDraw = true;
+    State* tmp = fmngr->getState();
+    State* saved = fmngr->getSavedState();
+    fmngr->setState(saved);
+    fmngr->saveState(tmp);
+}
+void ConfigurationState::ExitState()
+{
+    keyRelease = false;
+    toReDraw = true;
+    State* tmp = fmngr->getState();
+    State* saved = fmngr->getSavedState();
+    delete saved;
+    fmngr->saveState(tmp);
+    fmngr->setState(new MenuState(fmngr));
+}
+void ConfigurationState::ToggleFullScreen()
+{
+
+    SDL_MaximizeWindow(sdl->window());
+    sdl->toggleFullScreen();
+
+    auto flags = SDL_GetWindowFlags(sdl->window());
+    if (!(flags & SDL_WINDOW_FULLSCREEN))
+    {
+        SDL_SetWindowResizable(sdl->window(), SDL_TRUE);
+    }
+
+    fullSCheck->SetEnabled(flags & SDL_WINDOW_FULLSCREEN);
+    toReDraw = true;
+}
+
 void ConfigurationState::draw() {
 
     int w = fmngr->GetActualWidth();
@@ -190,17 +184,7 @@ void ConfigurationState::draw() {
 
     showText("FULLSCREEN", fontSiz, (int)(w - (w * 5 / 6 + w / 16)), (int)(h * 1.2f / 2 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
 
-    auto flags = SDL_GetWindowFlags(sdl->window());
-    if (flags & SDL_WINDOW_FULLSCREEN)
-    {
-        fullSCheck->render({ 0, 32, 32, 32 });
-    }
-    else
-    {
-        fullSCheck->render({ 0, 0, 32, 32 });
-    }
-
-
+    fullSCheck->render();
     instru->render(instruRect);
 
     sfxm->render();

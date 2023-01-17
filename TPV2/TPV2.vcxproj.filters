@@ -383,6 +383,9 @@
     <ClCompile Include="src\game\Characters\Melvin\Melvin_Kyp.cpp">
       <Filter>Source Files\game\Characters</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\Utils\HUDManager.cpp">
+      <Filter>Source Files\game\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\PVS.ico">

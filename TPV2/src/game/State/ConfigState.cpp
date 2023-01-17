@@ -5,23 +5,96 @@
 #include "../../utils/CheckML.h"
 #include "../Utils/PlayerConfigs.h"
 
-ConfigState::ConfigState(FightManager* game , short fInput) : State(game), numOfplayer(2) {
+ConfigState::ConfigState(FightManager* game , short fInput) : State(game), numOfplayer(2)
+{
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
+
+    int dist = (w * 12 / 13) / numOfplayer;
+    int offset = dist - w / 13;
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P1P"), 0u * dist + offset, 676, w, h, fInput));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P2P"), 1u, 676, w, h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P3P"), 2u, 676, w, h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P4P"), 3u, 676, w, h));
+    playerPointers[0]->setActive(true);
+    sdl->musics().at("sawtines").play();
+
     initcharact();
-    plusB = new Button(&sdl->images().at("pB"),  (int)(w * 14 / 15), (int)(h - w * 2.4f / 15), (int)(w / 15));
-    minusB = new Button(&sdl->images().at("mB"), (int)(w * 14 / 15), (int)(h - w * 1.2f / 15), (int)(w / 15));
-    play = new PlayButton(&sdl->images().at("play"), 0, 0, w, h);
-    normalmode = new Button(&sdl->images().at("MNormalC"), &sdl->images().at("MNormalB"), (w / 2) + (h / 168), h / 168, h / 7, h / 14);
-    normalmode->active(true);
-    teammode = new Button(&sdl->images().at("MTeamC"), &sdl->images().at("MTeamB"), (w / 2) + h / 84 + h / 7, h / 168, h / 7, h / 14);
-    config = new Button(&sdl->images().at("ConfigBut"), w * 20 / 21, 0 , w / 21, w / 21);
+
+    buttons[7] = new Button(&sdl->images().at("pB"), (int)(w * 14 / 15), (int)(h - w * 2.4f / 15), (int)(w / 15), playerPointers);
+    buttons[7]->SetOnClick([this]() {AddPlayer(); });
+    buttons[7]->SetOnPointerClick([this](int a) {AddPlayer(); });
+
+    buttons[8] = new Button(&sdl->images().at("mB"), (int)(w * 14 / 15), (int)(h - w * 1.2f / 15), (int)(w / 15), playerPointers);
+    buttons[8]->SetOnClick([this]() {RemovePlayer(); });
+    buttons[8]->SetOnPointerClick([this](int a) {RemovePlayer(); });
+
+    buttons[9] = new Button(&sdl->images().at("ConfigBut"), w * 20 / 21, 0, w / 21, playerPointers);
+    buttons[9]->SetOnClick([this]() {OpenConfig(); });
+    buttons[9]->SetOnPointerClick([this](int a) {OpenConfig(); });
+
+    play = new PlayButton(&sdl->images().at("play"), 0, 0, w, h, playerPointers);
+    play->SetOnClick([this]() { fmngr->getState()->next(); });
+    play->SetOnPointerClick([this](int a) { fmngr->getState()->next(); });
+
+
+    normalmode = new ToggleButton(&sdl->images().at("MNormal"), (w / 2) + (h / 168), h / 168, h / 7, h / 14, playerPointers);
+    normalmode->SetOnClick([this]()
+    {
+        TeamModebool = false;
+        normalmode->SetEnabled(true);
+        teammode->SetEnabled(false);
+
+        normalmode->SetActive(false);
+        teammode->SetActive(true);
+
+        sdl->soundEffects().at("uiMov").play();
+    });
+    normalmode->SetOnPointerClick([this](int a)
+    {
+        TeamModebool = false;
+        normalmode->SetEnabled(true);
+        teammode->SetEnabled(false);
+
+        normalmode->SetActive(false);
+        teammode->SetActive(true);
+
+        sdl->soundEffects().at("uiMov").play();
+    });
+    normalmode->SetEnabled(true);
+    normalmode->SetActive(false);
+
+    teammode = new ToggleButton(&sdl->images().at("MTeam"), (w / 2) + h / 84 + h / 7, h / 168, h / 7, h / 14, playerPointers);
+    teammode->SetOnClick([this]()
+    {
+        TeamModebool = true;
+        normalmode->SetEnabled(false);
+        teammode->SetEnabled(true);
+
+        normalmode->SetActive(true);
+        teammode->SetActive(false);
+
+        sdl->soundEffects().at("uiMov").play();
+    }); 
+    teammode->SetOnPointerClick([this](int a)
+    {
+        TeamModebool = true;
+        normalmode->SetEnabled(false);
+        teammode->SetEnabled(true);
+
+        normalmode->SetActive(true);
+        teammode->SetActive(false);
+
+        sdl->soundEffects().at("uiMov").play();
+    }); 
+    teammode->SetEnabled(false);
  
     configTeamChoose();
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P1")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P2")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P3")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P4")));
+
     initMapBut();
     usedKeyboard.resize(2);
     playerInput.resize(1);
@@ -37,36 +110,18 @@ ConfigState::ConfigState(FightManager* game , short fInput) : State(game), numOf
     else if (fInput == -2) { usedKeyboard[1] = true; playerTexture[0]->setFront(&sdl->images().at("k2"));
     }
 
-    int dist = (w * 12 / 13) / numOfplayer;
-    int offset = dist - w / 13;
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P1P"), 0u * dist + offset, 676, w, h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P2P"), 1u, 676, w, h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P3P"), 2u, 676, w, h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P4P"), 3u, 676, w, h));
-    playerPointers[0]->setActive(true);
-    sdl->musics().at("sawtines").play();
-
     SDL_ShowCursor(1);
 }
 
 ConfigState::~ConfigState()
 {
-    delete gatoespia;
-    delete maketo;
-    delete togo;
-    delete nasnas;
-    delete yuno;
-    delete melvin;
-    delete aleatorio;
-    delete plusB;
-    delete minusB;
     delete play;
     delete teammode;
     delete normalmode;
-    delete config;
     for (auto e : playerPointers)delete e;
     for (auto e : playerTexture)delete e;
     for (auto e : charactTexture)delete e;
+    for (auto e : buttons) delete e;
     for (auto e : p)
     {
         for (auto a : e)delete a;
@@ -74,82 +129,58 @@ ConfigState::~ConfigState()
     for (auto e : maps)delete e;
 }
 
-void ConfigState::update() {
-
-    if (!selectMap)
-    {
-        searchInput();
-        movePointers();
-        checkButtonPointerClick();
-        checkButtonMouseClick();
-        setTeams();
-        checkPlayerReady();
-      
-    }
-    else {
-        movePointers();
-        mapcheckButtonPointerClick();
-        mapcheckButtonMouseClick();
-        if (map >= 0) selectMap = false;
-    }
-    if (ready) {
-        if (play->mouseClick()) {
-            fmngr->getState()->next();
-            return;
-        }
-        for (auto i = 0; i < playerInput.size(); i++) {
-            bool enter = false;
-            switch (playerInput[i])
-            {
-            case -1:
-                if (ih.isKeyDown(SDLK_LCTRL))enter = true;
-                break;
-            case -2:
-                if (ih.isKeyDown(SDLK_RCTRL))enter = true;
-                break;
-            default:
-                if (ih.xboxGetButtonState(playerInput[i], SDL_CONTROLLER_BUTTON_B))enter = true;
-                break;
-            }
-            if (play->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
-                fmngr->getState()->next();
-                return;
-            }
-        }
-    }
- 
-    if (config->mouseClick()) {
-        if (fmngr->getSavedState() == nullptr) {
-            //pause
-            fmngr->saveState(fmngr->getState());
-            fmngr->setState(new ConfigurationState(fmngr,playerInput[0]));
-            return;
-        }
-        else
-        {
-            State* tmp = fmngr->getState();
-            State* saved = fmngr->getSavedState();
-            fmngr->setState(saved);
-            fmngr->saveState(tmp);
-            return;
-        }
-    }
+void ConfigState::update()
+{
     if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
-        if (fmngr->getExitState() == nullptr) {
+        if (fmngr->getSavedState() == nullptr) {
             //pause
             fmngr->saveState(fmngr->getState());
             fmngr->setState(new ExitState(fmngr));
             return;
         }
     }
+
+    if (!selectMap)
+    {
+        searchInput();
+        movePointers();
+        checkButtonPointerClick();
+        checkPlayerReady();
+        for (auto e : buttons)
+        {
+            e->update();
+        }
+        teammode->update();
+        normalmode->update();
+        for (auto e : p)
+        {
+            for (auto t : e)
+            {
+                t->update();
+            }
+        }
+        play->update();
+    }
+    else
+    {
+        movePointers();
+        for (auto e : maps)
+        {
+            e->update();
+        }
+        buttons[9]->update();
+        if (mapChosen >= 0) selectMap = false;
+    }
 }
 
 void ConfigState::draw() {
 
-    if (selectMap) {
+    if (selectMap)
+    {
         mapMenuRender();
     }
-    else {
+    else
+    {
         playerMenuRender();
     }
 
@@ -158,50 +189,83 @@ void ConfigState::draw() {
 
 void ConfigState::next() {
 
-    if (!TeamModebool) {
-        fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,map + 1)); //3 para el de noche
+    if (!TeamModebool)
+    {
+        fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,mapChosen + 1)); //3 para el de noche
     }
     else
     {
-        fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,charactersTeam,map+1));
+        fmngr->setState(new PlayingState(fmngr, playerInput, charactersSelect,charactersTeam,mapChosen+1));
     }
 
     delete this;
 }
 
-void ConfigState::setPointer()
+void ConfigState::setPointer(short input)
 {
     int w = fmngr->GetActualWidth();
     int dist = (w * 12 / 13) / numOfplayer;
     int offset = dist - w / 13;
     playerPointers[playerInput.size() - 1]->setActive(true);
     playerPointers[playerInput.size() - 1]->setPosition(((int)playerInput.size() - 1) * dist + offset, (int)(fmngr->GetActualHeight() / 2.f));
+    playerPointers[playerInput.size() - 1]->setInput(input);
 }
 void ConfigState::configTeamChoose()
 {
-
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
 
     charactersTeam.resize(4);
+
+    // ChangeTeamButtons
+    {
+    vector<ToggleButton*> p1;
+    p1.push_back(new ToggleButton(&sdl->images().at("T1"), 0, 0, w / 30, w / 30, playerPointers));
+    p1[0]->SetOnClick([this]() { ChangeTeam(0, true); });
+    p1[0]->SetOnPointerClick([this](int a) { ChangeTeam(0, true); });
+    p1.push_back(new ToggleButton(&sdl->images().at("T2"), 0, 0, w / 30, w / 30, playerPointers));
+    p1[1]->SetOnClick([this]() { ChangeTeam(0, false); });
+    p1[1]->SetOnPointerClick([this](int a) { ChangeTeam(0, false); });
+    p.push_back(p1);
+    p1.clear();
+
+    p1.push_back(new ToggleButton(&sdl->images().at("T1"), 0, 0, w / 30, w / 30, playerPointers));
+    p1[0]->SetOnClick([this]() { ChangeTeam(1, true); });
+    p1[0]->SetOnPointerClick([this](int a) { ChangeTeam(1, true); });
+
+    p1.push_back(new ToggleButton(&sdl->images().at("T2"), 0, 0, w / 30, w / 30, playerPointers));
+    p1[1]->SetOnClick([this]() { ChangeTeam(1, false); });
+    p1[1]->SetOnPointerClick([this](int a) { ChangeTeam(1, false); });
+
+    p.push_back(p1);
+    p1.clear();
+
+    p1.push_back(new ToggleButton(&sdl->images().at("T1"), 0, 0, w / 30, w / 30, playerPointers));
+    p1[0]->SetOnClick([this]() { ChangeTeam(2, true); });
+    p1[0]->SetOnPointerClick([this](int a) { ChangeTeam(2, true); });
+
+    p1.push_back(new ToggleButton(&sdl->images().at("T2"), 0, 0, w / 30, w / 30, playerPointers));
+    p1[1]->SetOnClick([this]() { ChangeTeam(2, false); });
+    p1[1]->SetOnPointerClick([this](int a) { ChangeTeam(2, false); });
+
+    p.push_back(p1);
+    p1.clear();
+
+    p1.push_back(new ToggleButton(&sdl->images().at("T1"), 0, 0, w / 30, w / 30, playerPointers));
+    p1[0]->SetOnClick([this]() { ChangeTeam(3, true); });
+    p1[0]->SetOnPointerClick([this](int a) { ChangeTeam(3, true); });
+
+    p1.push_back(new ToggleButton(&sdl->images().at("T2"), 0, 0, w / 30, w / 30, playerPointers));
+    p1[1]->SetOnClick([this]() { ChangeTeam(3, false); });
+    p1[1]->SetOnPointerClick([this](int a) { ChangeTeam(3, false); });
+
+    p.push_back(p1);
+    p1.clear();
+    }
+
     for (int i = 0; i < 4; i++)
     {
-        vector<Button*> p1;
-        p1.push_back(new Button(&sdl->images().at("T1C"), &sdl->images().at("T1B"), 0, 0, w / 30, w / 30));
-        p1.push_back(new Button(&sdl->images().at("T2C"), &sdl->images().at("T2B"), 0, 0, w / 30, w / 30));
-        p.push_back(p1);
-    }
-    for (int i = 0; i < 4; i++) {
-        if (i < 2) {
-            p[i][0]->active(true);
-            charactersTeam[i] = 0;
-        }
-        else
-        {
-            p[i][1]->active(true);
-            charactersTeam[i] = 1;
-        }
-      
+        ChangeTeam(i, i < 2);
     }
 }
 
@@ -215,7 +279,7 @@ void ConfigState::searchInput()
                 if (ih.xboxGetAxesState(i, 1) == -1 && !usedPad[i]) {
                     usedPad[i] = true;
                     playerInput.push_back(i);
-                    setPointer();
+                    setPointer(i);
                     playerTexture[playerInput.size() - 1]->setgotInput(true);
                     playerTexture[playerInput.size() - 1]->setFront(&sdl->images().at("Mando"));
                     charactersSelect.resize(playerInput.size());
@@ -248,7 +312,7 @@ void ConfigState::searchInput()
                     usedPad[i] = true;
                     aux.push_back(i);
                     playerInput = aux;
-                    setPointer();
+                    setPointer(i);
                     playerTexture[playerInput.size() - 1]->setgotInput(true);
                     playerTexture[playerInput.size() - 1]->setFront(&sdl->images().at("Mando"));
                     charactersSelect.resize(playerInput.size());
@@ -260,14 +324,14 @@ void ConfigState::searchInput()
         if (ih.isKeyDown(playerPrefs.Keyboard2Up()) && !usedKeyboard[1]) {
             usedKeyboard[1] = true;
             playerInput.push_back(-2);
-            setPointer();
+            setPointer(-2);
             playerTexture[playerInput.size() - 1]->setgotInput(true);
             playerTexture[playerInput.size() - 1]->setFront(&sdl->images().at("k2"));
         }
         if (ih.isKeyDown(playerPrefs.Keyboard1Up()) && !usedKeyboard[0]) {
             usedKeyboard[0] = true;
             playerInput.push_back(-1);
-            setPointer();
+            setPointer(-1);
             playerTexture[playerInput.size() - 1]->setgotInput(true);
             playerTexture[playerInput.size() - 1]->setFront(&sdl->images().at("k1"));
         }
@@ -278,308 +342,47 @@ void ConfigState::searchInput()
 void ConfigState::movePointers()
 {
     //Movimiento de los punteros
-    for (auto i = 0; i < playerInput.size(); i++) {
-        switch (playerInput[i])
-        {
-        case -1:
-            if (ih.isKeyDown(playerPrefs.Keyboard1Up()))playerPointers[i]->move(0);
-            if (ih.isKeyDown(playerPrefs.Keyboard1Down()))playerPointers[i]->move(1);
-            if (ih.isKeyDown(playerPrefs.Keyboard1Left()))playerPointers[i]->move(2);
-            if (ih.isKeyDown(playerPrefs.Keyboard1Right()))playerPointers[i]->move(3);
-            break;
-        case -2:
-            if (ih.isKeyDown(playerPrefs.Keyboard2Up()))playerPointers[i]->move(0);
-            if (ih.isKeyDown(playerPrefs.Keyboard2Down()))playerPointers[i]->move(1);
-            if (ih.isKeyDown(playerPrefs.Keyboard2Left()))playerPointers[i]->move(2);
-            if (ih.isKeyDown(playerPrefs.Keyboard2Right()))playerPointers[i]->move(3);
-            break;
-        default:
-            if (ih.xboxGetAxesState(playerInput[i], 1) == -1 || ih.xboxGetDpadState(playerInput[i], 0))
-                playerPointers[i]->move(0);
-            if (ih.xboxGetAxesState(playerInput[i], 1) == 1 || ih.xboxGetDpadState(playerInput[i], 2))
-                playerPointers[i]->move(1);
-            if (ih.xboxGetAxesState(playerInput[i], 0) == -1 || ih.xboxGetDpadState(playerInput[i], 3))
-                playerPointers[i]->move(2);
-            if (ih.xboxGetAxesState(playerInput[i], 0) == 1 || ih.xboxGetDpadState(playerInput[i], 1))
-                playerPointers[i]->move(3);
-            break;
-        }
+    for (auto i = 0; i < playerInput.size(); i++)
+    {
+        playerPointers[i]->update();
     }
 }
 
 void ConfigState::checkButtonPointerClick()
 {
-    
-
-    //Comprobacion de punteros con los botones
-    for (auto i = 0; i < playerInput.size(); i++) {
-        bool enter = false;
-        //Pulsacion de A
-        switch (playerInput[i])
-        {
-        case -1:
-            if (ih.isKeyDown(playerPrefs.Keyboard1Basic()))enter = true;
-            break;
-        case -2:
-            if (ih.isKeyDown(playerPrefs.Keyboard2Basic()))enter = true;
-            break;
-        default:
-            if (ih.xboxGetButtonState(playerInput[i], playerPrefs.ControllerBasic()))enter = true;
-            break;
-        }
-        //Comprobacion con cada boton
-        if (nasnas->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
-            playerTexture[i]->setFront(&sdl->images().at("nasNasSelect"));
-            charactersSelect[i] = 0;
-            keyRelease = false;
-            lastPointerClick = playerInput[i];
-            selected[i] = true;
-
-            sdl->soundEffects().at("uiMov").play();
-        }
-        else if (gatoespia->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
-            playerTexture[i]->setFront(&sdl->images().at("blinkMasterSelect"));
-            charactersSelect[i] = 1;
-            keyRelease = false;
-            lastPointerClick = playerInput[i];
-            selected[i] = true;
-
-            sdl->soundEffects().at("uiMov").play();
-        }
-        else if (togo->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
-            playerTexture[i]->setFront(&sdl->images().at("dinoSoulsSelect"));
-            charactersSelect[i] = 2;
-            keyRelease = false;
-            lastPointerClick = playerInput[i];
-            selected[i] = true;
-
-            sdl->soundEffects().at("uiMov").play();
-        }
-        else if (maketo->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
-            playerTexture[i]->setFront(&sdl->images().at("maktSelect"));
-            charactersSelect[i] = 3;
-            keyRelease = false;
-            lastPointerClick = playerInput[i];
-            selected[i] = true;
-
-            sdl->soundEffects().at("uiMov").play();
-        }
-        else if (yuno->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
-            playerTexture[i]->setFront(&sdl->images().at("yunoSelect"));
-            charactersSelect[i] = 4;
-            keyRelease = false;
-            lastPointerClick = playerInput[i];
-            selected[i] = true;
-
-            sdl->soundEffects().at("uiMov").play();
-        }
-        else if (melvin->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
-            playerTexture[i]->setFront(&sdl->images().at("melvinSelect"));
-            charactersSelect[i] = 5;
-            keyRelease = false;
-            lastPointerClick = playerInput[i];
-            selected[i] = true;
-
-            sdl->soundEffects().at("uiMov").play();
-        }
-        else if (aleatorio->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease && !selected[i]) {
-            playerTexture[i]->setFront(&sdl->images().at("aleatorioSelect"));
-            charactersSelect[i] = -1;
-            keyRelease = false;
-            lastPointerClick = playerInput[i];
-            selected[i] = true;
-
-            sdl->soundEffects().at("uiMov").play();
-        }
-        else if (minusB->pointerClick(playerPointers[i]->getRect()) && enter && numOfplayer > 2 && keyRelease) {
-            numOfplayer--;
-
-            sdl->soundEffects().at("uiMov").play();
-
-            if (playerInput.size() > numOfplayer) {
-                switch (playerInput[playerInput.size() - 1])
-                {
-                case -1:
-                    usedKeyboard[0] = false;
-                    break;
-                case -2:
-                    usedKeyboard[1] = false;
-                    break;
-                default:
-                    usedPad[playerInput[playerInput.size() - 1]] = false;
-                    break;
-                }
-                playerInput.resize(numOfplayer);
-                playerPointers[playerInput.size()]->setActive(false);
-                playerTexture[playerInput.size()]->setgotInput(false);
-            }
-            charactersSelect.resize(playerInput.size());
-            keyRelease = false;
-            lastPointerClick = playerInput[i];
-        }
-        else if (plusB->pointerClick(playerPointers[i]->getRect()) && enter && numOfplayer < 4 && keyRelease) {
-            numOfplayer++;
-            charactersSelect.resize(playerInput.size());
-            keyRelease = false;
-            lastPointerClick = playerInput[i];
-
-            sdl->soundEffects().at("uiMov").play();
-        }
-        else if (normalmode->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
-            TeamModebool = false;
-            normalmode->active(true);
-            teammode->active(false);
-
-            sdl->soundEffects().at("uiMov").play();
-        }
-        else if (teammode->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
-            TeamModebool = true;
-            normalmode->active(false);
-            teammode->active(true);
-
-            sdl->soundEffects().at("uiMov").play();
-        }
-        else if (config->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
-            if (fmngr->getSavedState() == nullptr) {
-                keyRelease = false;
-                lastPointerClick = playerInput[i];
-                //pause
-                fmngr->saveState(fmngr->getState());
-                fmngr->setState(new ConfigurationState(fmngr, playerInput[0]));
-
-                return;
-            }
-            else
-            {
-                keyRelease = false;
-                lastPointerClick = playerInput[i];
-                State* tmp = fmngr->getState();
-                State* saved = fmngr->getSavedState();
-                fmngr->setState(saved);
-                fmngr->saveState(tmp);
-                return;
-            }
-        }
-        //Teams
-        for (auto j = 0u; j < 2; j++) {
-            if (p[i][j]->pointerClick(playerPointers[i]->getRect()) && enter && keyRelease) {
-                if (j == 0) {
-                    p[i][1]->active(false);
-                    p[i][0]->active(true);
-                    charactersTeam[i] = 0;
-                }
-                else
-                {
-                    p[i][1]->active(true);
-                    p[i][0]->active(false);
-                    charactersTeam[i] = 1;
-                }
-            }
-        }
-        //Release del Key
-        if (!keyRelease) {
-            switch (lastPointerClick)
-            {
-            case -1:
-                if (!ih.isKeyDown(playerPrefs.Keyboard1Basic()))keyRelease = true;
-                break;
-            case -2:
-                if (!ih.isKeyDown(playerPrefs.Keyboard2Basic()))keyRelease = true;
-                break;
-            case -3:
-                break;
-            default:
-                if (!ih.xboxGetButtonState(lastPointerClick, playerPrefs.ControllerBasic()))keyRelease = true;
-                break;
-            }
-        }
-    
-    }
     //Seleccion del personaje
     for (auto i = 0; i < playerInput.size(); i++) {
         switch (playerInput[i])
         {
         case -1:
-            if (ih.isKeyDown(playerPrefs.Keyboard1Special()))selected[i] = false;
+            if (ih.isKeyDown(playerPrefs.Keyboard1Special())) selected[i] = false;
             break;
         case -2:
-            if (ih.isKeyDown(playerPrefs.Keyboard2Special()))selected[i] = false;
+            if (ih.isKeyDown(playerPrefs.Keyboard2Special())) selected[i] = false;
             break;
         default:
-            if (ih.xboxGetButtonState(playerInput[i], playerPrefs.ControllerSpecial()))selected[i] = false;
+            if (ih.xboxGetButtonState(playerInput[i], playerPrefs.ControllerSpecial())) selected[i] = false;
             break;
         }
     }
 }
 
-void ConfigState::checkButtonMouseClick()
+void ConfigState::OpenConfig()
 {
-    
-    if (minusB->mouseClick() && numOfplayer > 2) {
-        numOfplayer--;
-
-        sdl->soundEffects().at("uiMov").play();
-
-        if (playerInput.size() > numOfplayer) {
-            switch (playerInput[playerInput.size() - 1])
-            {
-            case -1:
-                usedKeyboard[0] = false;
-                break;
-            case -2:
-                usedKeyboard[1] = false;
-                break;
-            default:
-                usedPad[playerInput[playerInput.size() - 1]] = false;
-                break;
-            }
-            playerInput.resize(numOfplayer);
-            playerPointers[playerInput.size()]->setActive(false);
-            playerTexture[playerInput.size()]->setgotInput(false);
-        }
-        charactersSelect.resize(playerInput.size());
+    if (fmngr->getSavedState() == nullptr)
+    {
+        keyRelease = false;
+        //pause
+        fmngr->saveState(fmngr->getState());
+        fmngr->setState(new ConfigurationState(fmngr, playerInput[0]));
     }
-    else if (plusB->mouseClick() && numOfplayer < 4) {
-        numOfplayer++;
-        charactersSelect.resize(playerInput.size());
-
-        sdl->soundEffects().at("uiMov").play();
-    }
-    else if (normalmode->mouseClick()) {
-        TeamModebool = false;
-        normalmode->active(true);
-        teammode->active(false);
-
-        sdl->soundEffects().at("uiMov").play();
-
-    }
-    else if (teammode->mouseClick()) {
-        TeamModebool = true;
-        normalmode->active(false);
-        teammode->active(true);
-
-        sdl->soundEffects().at("uiMov").play();
-    }
-}
-
-void ConfigState::setTeams()
-{
-    for (auto i = 0u; i < playerInput.size(); i++) {
-        for (auto j = 0u; j < 2; j++) {
-            if (p[i][j]->mouseClick()) {
-                if (j == 0) {
-                    p[i][1]->active(false);
-                    p[i][0]->active(true);
-                    charactersTeam[i] = 0;
-                }
-                else
-                {
-                    p[i][1]->active(true);
-                    p[i][0]->active(false);
-                    charactersTeam[i] = 1;
-                }
-            }
-        }
+    else
+    {
+        keyRelease = false;
+        State* tmp = fmngr->getState();
+        State* saved = fmngr->getSavedState();
+        fmngr->setState(saved);
+        fmngr->saveState(tmp);
     }
 }
 
@@ -597,6 +400,7 @@ void ConfigState::checkPlayerReady()
     ready = true;
     sdl->soundEffects().at("uiPlay").play(0,1);
 }
+
 void ConfigState::playerMenuRender()
 {
     background = &sdl->images().at("selectbg");
@@ -632,18 +436,9 @@ void ConfigState::playerMenuRender()
             }
         }
     }
-    nasnas->render();
-    gatoespia->render();
-    togo->render();
-    maketo->render();
-    yuno->render();
-    melvin->render();
-    plusB->render();
-    minusB->render();
+    for (auto b : buttons) b->render();
     normalmode->render();
     teammode->render();
-    aleatorio->render();
-    config->render();
     if (ready) {
         play->render(); 
     }
@@ -665,11 +460,41 @@ void ConfigState::initMapBut()
     int offsetY = (fmngr->GetActualHeight() - totalH) / 2;
 
     int i = 0;
-    maps.push_back(new Button(&sdl->images().at("fondo"), offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH));
+    maps.push_back(new Button(&sdl->images().at("fondo"), offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH, playerPointers));
+    maps[i]->SetOnClick([this]()
+        {
+            mapChosen = 0;
+            sdl->soundEffects().at("uiSelect").play();
+        });
+    maps[i]->SetOnPointerClick([this](int a)
+        {
+            mapChosen = 0;
+            sdl->soundEffects().at("uiSelect").play();
+        });
     i++;
-    maps.push_back(new Button(&sdl->images().at("mazmorra"), offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH));
+    maps.push_back(new Button(&sdl->images().at("mazmorra"), offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH, playerPointers));
+    maps[i]->SetOnClick([this]()
+        {
+            mapChosen = 1;
+            sdl->soundEffects().at("uiSelect").play();
+        });
+    maps[i]->SetOnPointerClick([this](int a)
+        {
+            mapChosen = 1;
+            sdl->soundEffects().at("uiSelect").play();
+        });
     i++;
-    maps.push_back(new Button(&sdl->images().at("night"), offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH));
+    maps.push_back(new Button(&sdl->images().at("night"), offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH, playerPointers));
+    maps[i]->SetOnClick([this]()
+        {
+            mapChosen = 2;
+            sdl->soundEffects().at("uiSelect").play();
+        });
+    maps[i]->SetOnPointerClick([this](int a)
+        {
+            mapChosen = 2;
+            sdl->soundEffects().at("uiSelect").play();
+        });
 }
 
 
@@ -686,79 +511,8 @@ void ConfigState::mapMenuRender()
     {
         e->render();
     }
-    config->render();
+    buttons[9]->render();
     playerPointers[0]->render();
-}
-
-void ConfigState::mapcheckButtonPointerClick()
-{
-    bool enter = false;
-    //Pulsacion de A
-    switch (playerInput[0])
-    {
-    case -1:
-        if (ih.isKeyDown(playerPrefs.Keyboard1Basic()))enter = true;
-        break;
-    case -2:
-        if (ih.isKeyDown(playerPrefs.Keyboard2Basic()))enter = true;
-        break;
-    default:
-        if (ih.xboxGetButtonState(playerInput[0], playerPrefs.ControllerBasic()))enter = true;
-        break;
-    }
-    for (int i = 0u; i < maps.size(); i++) {    
-        if (maps[i]->pointerClick(playerPointers[0]->getRect())&&enter && keyRelease) {
-            map = i;
-            keyRelease = false;
-            lastPointerClick = playerInput[0];
-
-            sdl->soundEffects().at("uiMov").play();
-        }
-    }
-    if (config->pointerClick(playerPointers[0]->getRect()) && enter && keyRelease) {
-        keyRelease = false;
-        if (fmngr->getSavedState() == nullptr) {
-            //pause
-            fmngr->saveState(fmngr->getState());
-            fmngr->setState(new ConfigurationState(fmngr, playerInput[0]));
-            return;
-        }
-        else
-        {
-            State* tmp = fmngr->getState();
-            State* saved = fmngr->getSavedState();
-            fmngr->setState(saved);
-            fmngr->saveState(tmp);
-            return;
-        }
-    }
-    if (!keyRelease) {
-        switch (playerInput[0])
-        {
-        case -1:
-            if (!ih.isKeyDown(playerPrefs.Keyboard1Basic()))keyRelease = true;
-            break;
-        case -2:
-            if (!ih.isKeyDown(playerPrefs.Keyboard2Basic()))keyRelease = true;
-            break;
-        case -3:
-            break;
-        default:
-            if (!ih.xboxGetButtonState(playerInput[0], playerPrefs.ControllerBasic()))keyRelease = true;
-            break;
-        }
-    }
-   
-}
-
-void ConfigState::mapcheckButtonMouseClick()
-{
-    for (int i = 0u; i < maps.size(); i++) {
-        if (maps[i]->mouseClick()) {
-            map = i;
-            sdl->soundEffects().at("uiSelect").play();
-        }
-    }
 }
 
 void ConfigState::initcharact()
@@ -771,7 +525,7 @@ void ConfigState::initcharact()
     int distY = (int)((float)w * 3.f / 24.f);
     int offsetY = (int)((float)w / 12.f + (float)w / 70.f);
 
-    int buttonSize = (int)((float)w / 15.4f);
+    float buttonSize = (int)((float)w / 15.4f);
     //c % 4 * dist + offset), (int)((ts(80) * j) + ts(50));
 
    // { 
@@ -779,23 +533,107 @@ void ConfigState::initcharact()
    // (int)(((w * 3 / 24) * j) + w / 12), 
    //     (int)w / 12, (int)w / 12 }
  
-    nasnas = new Button(&sdl->images().at("nasNasSelect"), offset , offsetY, buttonSize);
+    buttons[0] = new Button(&sdl->images().at("nasNasSelect"), offset , offsetY, buttonSize, playerPointers);
+    buttons[0]->SetOnPointerClick([this](int as) { SelectCharacter(as, "nasNasSelect", 0); });
     charName.push_back("    NasNas");
-    gatoespia = new Button(&sdl->images().at("blinkMasterSelect"), dist + offset, offsetY, buttonSize);
+
+    buttons[1] = new Button(&sdl->images().at("blinkMasterSelect"), dist + offset, offsetY, buttonSize, playerPointers);
+    buttons[1]->SetOnPointerClick([this](int as) { SelectCharacter(as, "blinkMasterSelect", 1); });
     charName.push_back(" Blink Master");
-    maketo = new Button(&sdl->images().at("maktSelect"), dist * 2 + offset, offsetY, buttonSize);
+
+    buttons[2] = new Button(&sdl->images().at("maktSelect"), dist * 2 + offset, offsetY, buttonSize, playerPointers);
+    buttons[2]->SetOnPointerClick([this](int as) { SelectCharacter(as, "maktSelect", 2); });
     charName.push_back("  Makt Fange");
-    togo = new Button(&sdl->images().at("dinoSoulsSelect"), dist * 3 + offset, offsetY, buttonSize);
+
+    buttons[3] = new Button(&sdl->images().at("dinoSoulsSelect"), dist * 3 + offset, offsetY, buttonSize, playerPointers);
+    buttons[3]->SetOnPointerClick([this](int as) { SelectCharacter(as, "dinoSoulsSelect", 3); });
     charName.push_back("     Togo");
-    yuno = new Button(&sdl->images().at("yunoSelect"), dist * 4 + offset, offsetY, buttonSize);
+
+    buttons[4] = new Button(&sdl->images().at("yunoSelect"), dist * 4 + offset, offsetY, buttonSize, playerPointers);
+    buttons[4]->SetOnPointerClick([this](int as) { SelectCharacter(as, "yunoSelect", 4); });
     charName.push_back("     Yuno");
-    melvin = new Button(&sdl->images().at("melvinSelect"), offset, distY + offsetY, buttonSize);
+
+    buttons[5] = new Button(&sdl->images().at("melvinSelect"), offset, distY + offsetY, buttonSize, playerPointers);
+    buttons[5]->SetOnPointerClick([this](int as) { SelectCharacter(as, "melvinSelect", 5); });
     charName.push_back("    Melvin");
 
     charName.push_back(" Coming Soon");
     charName.push_back(" Coming Soon");
     charName.push_back(" Coming Soon");
 
-    aleatorio = new Button(&sdl->images().at("aleatorioSelect"), dist * 4 + offset, distY + offsetY, buttonSize);
+    buttons[6] = new Button(&sdl->images().at("aleatorioSelect"), dist * 4 + offset, distY + offsetY, buttonSize, playerPointers);
+    buttons[6]->SetOnPointerClick([this](int as) { SelectCharacter(as, "aleatorioSelect", -1); });
     charName.push_back("    Random");
+}
+
+void ConfigState::SelectCharacter(int i, const string& name, char character)
+{
+    if (!selected[i])
+    {
+        playerTexture[i]->setFront(&sdl->images().at(name));
+        charactersSelect[i] = character;
+        keyRelease = false;
+        selected[i] = true;
+
+        sdl->soundEffects().at("uiMov").play();
+    }
+}
+void ConfigState::RemovePlayer()
+{
+    if (numOfplayer > 2)
+    {
+        numOfplayer--;
+
+        sdl->soundEffects().at("uiMov").play();
+
+        if (playerInput.size() > numOfplayer) {
+            switch (playerInput[playerInput.size() - 1])
+            {
+            case -1:
+                usedKeyboard[0] = false;
+                break;
+            case -2:
+                usedKeyboard[1] = false;
+                break;
+            default:
+                usedPad[playerInput[playerInput.size() - 1]] = false;
+                break;
+            }
+            playerInput.resize(numOfplayer);
+            playerPointers[playerInput.size()]->setActive(false);
+            playerTexture[playerInput.size()]->setgotInput(false);
+        }
+        charactersSelect.resize(playerInput.size());
+        keyRelease = false;
+    }
+}
+void ConfigState::AddPlayer()
+{
+    if (numOfplayer < 4)
+    {
+        numOfplayer++;
+        charactersSelect.resize(playerInput.size());
+        keyRelease = false;
+
+        sdl->soundEffects().at("uiMov").play();
+    }
+}
+void ConfigState::ChangeTeam(int pl, bool t1)
+{
+    if (t1)
+    {
+        p[pl][1]->SetEnabled(false);
+        p[pl][0]->SetEnabled(true);
+        p[pl][1]->SetActive(true);
+        p[pl][0]->SetActive(false);
+        charactersTeam[pl] = 0;
+    }
+    else
+    {
+        p[pl][1]->SetEnabled(true);
+        p[pl][0]->SetEnabled(false);
+        p[pl][1]->SetActive(false);
+        p[pl][0]->SetActive(true);
+        charactersTeam[pl] = 1;
+    }
 }

@@ -6,25 +6,34 @@
 #include "../Utils/PlayerConfigs.h"
 
 
-GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures, vector<vector<ushort>>gameStats, short playersInput, vector<char>playersInputV) : State(game) {
+GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures, vector<vector<ushort>>gameStats, short playersInput, vector<char>playersInputV) : 
+    State(game), pointer(pointers[0])
+{
+    ushort w = fmngr->GetActualWidth();
+    ushort h = fmngr->GetActualHeight();
 
-    //ts(15) = w / 64
+    int winnerInput = 1;
+    for (auto i = 0u; i < playersInputV.size(); i++) {
+        if (playersInputV[i] == playersInput)winnerInput = i + 1;
+    }
+    string inputString = "P" + to_string(winnerInput) + "P";
+    pointers[0] = new PlayerPointer(&sdl->images().at(inputString), w / 2 - w / 64 / 2, h / 2 - w / 64 / 2, w, h, playersInput);
 
     background = &sdl->images().at("gameoverscreen1");
     //fmngr = game;
     winnersTextures_ = winnersTextures;
 
-    ushort w = fmngr->GetActualWidth();
-    ushort h = fmngr->GetActualHeight();
+    playAgain = new Button(&sdl->images().at("playagain"), w / 3, h / 4, w/3, h/4, pointers);
+    playAgain->SetOnClick([this]()
+        {
+            fmngr->getState()->next();
+        });
+    playAgain->SetOnPointerClick([this](int a)
+        {
+            fmngr->getState()->next();
+        });
 
-    playAgain = new Button(&sdl->images().at("playagain"), w / 3, h / 4, w/3, h/4);
-
-    int winnerInput=1;
-    for (auto i = 0u; i < playersInputV.size(); i++) {
-        if (playersInputV[i] == playersInput)winnerInput = i+1;
-    }
-    string inputString = "P" + to_string(winnerInput) + "P";
-    pointer = new PlayerPointer(&sdl->images().at(inputString), w / 2 - w / 64 / 2, h / 2 - w / 64 / 2, w, h);
+    pointer = pointers[0];
     pointer->setActive(true);
     playersInput_ = playersInput;
     gameStats_ = gameStats;
@@ -40,47 +49,11 @@ GameOverState::~GameOverState()
     delete pointer;
 }
 
-void GameOverState::update() {
+void GameOverState::update()
+{
 
-    if (playersInput_ < 0)
-    {
-        if (ih.isKeyDown(playerPrefs.KeyboardUp(playersInput_ == -1)))pointer->move(0);
-        if (ih.isKeyDown(playerPrefs.KeyboardDown(playersInput_ == -1)))pointer->move(1);
-        if (ih.isKeyDown(playerPrefs.KeyboardLeft(playersInput_ == -1)))pointer->move(2);
-        if (ih.isKeyDown(playerPrefs.KeyboardRight(playersInput_ == -1)))pointer->move(3);
-    }
-    else
-    {
-        if (ih.xboxGetAxesState(playersInput_, 1) == -1 || ih.xboxGetDpadState(playersInput_, 0))pointer->move(0);
-        if (ih.xboxGetAxesState(playersInput_, 1) == 1 || ih.xboxGetDpadState(playersInput_, 2))pointer->move(1);
-        if (ih.xboxGetAxesState(playersInput_, 0) == -1 || ih.xboxGetDpadState(playersInput_, 3))pointer->move(2);
-        if (ih.xboxGetAxesState(playersInput_, 0) == 1 || ih.xboxGetDpadState(playersInput_, 1))pointer->move(3);
-    }
-
-    bool enter = false;
-
-    if (playersInput_ < 0)
-    {
-        if (ih.isKeyDown(playerPrefs.KeyboardBasic(playersInput_ == -1)))enter = true;
-    }
-    else
-    {
-        if (ih.xboxGetButtonState(playersInput_, playerPrefs.ControllerBasic()))enter = true;
-    }
-
-    if ((playAgain->pointerClick(pointer->getRect()) && enter) || playAgain->mouseClick()) {
-        fmngr->getState()->next();
-        return;
-    }
-
-    if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
-        if (fmngr->getExitState() == nullptr) {
-            //pause
-            fmngr->saveExitState(fmngr->getState());
-            fmngr->setState(new ExitState(fmngr));
-            return;
-        }
-    }
+    pointers[0]->update();
+    playAgain->update();
     //if (ih.isKeyDown(SDLK_e))fmngr->getState()->next();
 }
 

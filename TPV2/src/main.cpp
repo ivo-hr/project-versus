@@ -78,12 +78,9 @@ int main(int ac, char **av) {
 	try
 	{
 		fghtmngr = new FightManager(&sdl);
-
-		delete fghtmngr;
 	}
 	catch (const char* s)
 	{
-		delete fghtmngr;
 
 		const char* title = "The game crashed :(";
 
@@ -92,7 +89,7 @@ int main(int ac, char **av) {
 
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, title, s, sdl.window());
 	}
-
+	delete fghtmngr;
 	SDL_Quit();
 
 	return 0;

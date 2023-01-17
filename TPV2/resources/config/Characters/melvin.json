@@ -136,21 +136,21 @@
 
   "spData": {
     "leftOffset": 22,
-    "upOffset": 10,
+    "upOffset": 57,
     "sizeXOffset": 42,
-    "sizeYOffset": 16,
-    "spritesInX": 1,
-    "spritesInY": 1
+    "sizeYOffset": 64,
+    "spritesInX": 4,
+    "spritesInY": 3
   },
   "animationData": {
     "anim": [
       {
         "id": "idle",
         "iniSprite": 0,
-        "totalSprites": 1,
+        "totalSprites": 4,
         "keySprite": [],
         "attack": "",
-        "totalFrames": 24,
+        "totalFrames": 50,
         "loop": true
       },
       {
@@ -200,20 +200,20 @@
       },
       {
         "id": "run",
-        "iniSprite": 0,
-        "totalSprites": 1,
+        "iniSprite": 4,
+        "totalSprites": 4,
         "keySprite": [],
         "attack": "",
-        "totalFrames": 50,
+        "totalFrames": 24,
         "loop": true
       },
       {
         "id": "airborne",
-        "iniSprite": 0,
-        "totalSprites": 1,
+        "iniSprite": 10,
+        "totalSprites": 2,
         "keySprite": [],
         "attack": "",
-        "totalFrames": 50,
+        "totalFrames": 10,
         "loop": true
       },
       {
@@ -290,11 +290,11 @@
       },
       {
         "id": "jump",
-        "iniSprite": 0,
-        "totalSprites": 1,
+        "iniSprite": 8,
+        "totalSprites": 2,
         "keySprite": [],
         "attack": "",
-        "totalFrames": 50,
+        "totalFrames": 10,
         "loop": true
       },
       {

@@ -7,13 +7,33 @@
 #include "../Utils/PlayerConfigs.h"
 
 
-MenuState::MenuState(FightManager* game) : State(game) {
+MenuState::MenuState(FightManager* game) : State(game)
+{
+    auto aux = vector<PlayerPointer*>(0);
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     background = &sdl->images().at("menu");
-    exit = new Button( &sdl->images().at("ExitBut"), 0, h * 11 / 12, w / 12, h / 12);
+
+    exit = new Button(&sdl->images().at("ExitBut"), 0, h * 11 / 12, w / 12, h / 12, aux);
+    exit->SetOnClick([this]() {fmngr->userExit(); });
+    config = new Button(&sdl->images().at("ConfigBut"), w * 15 / 16, h - w / 16, w / 16, w / 16, aux);
+    config->SetOnClick([this]() {
+        if (fmngr->getSavedState() == nullptr) {
+            //pause
+            fmngr->saveState(fmngr->getState());
+            fmngr->setState(new ConfigurationState(fmngr, -1));
+            return;
+        }
+        else
+        {
+            State* tmp = fmngr->getState();
+            State* saved = fmngr->getSavedState();
+            fmngr->setState(saved);
+            fmngr->saveState(tmp);
+        }
+        });
+
     sdl->musics().at("main").play();
-    config = new Button(&sdl->images().at("ConfigBut"), w * 15 / 16, h - w / 16, w / 16, w / 16);
 
     SDL_ShowCursor(1);
 }
@@ -47,25 +67,11 @@ void MenuState::update() {
         textTimer = SDL_GetTicks();
         drawText = !drawText;
     }
-    if (config->mouseClick()) {
-        if (fmngr->getSavedState() == nullptr) {
-            //pause
-            fmngr->saveState(fmngr->getState());
-            fmngr->setState(new ConfigurationState(fmngr,-1));
-            return;
-        }
-        else
-        {
-            State* tmp = fmngr->getState();
-            State* saved = fmngr->getSavedState();
-            fmngr->setState(saved);
-            fmngr->saveState(tmp);
-        }
-    }
-    if (exit->mouseClick()) fmngr->userExit();
+    exit->update();
+    config->update();
 
     if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
-        if (fmngr->getExitState() == nullptr) {
+        if (fmngr->getSavedState() == nullptr) {
             //pause
             fmngr->saveState(fmngr->getState());
             fmngr->setState(new ExitState(fmngr));

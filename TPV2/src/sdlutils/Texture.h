@@ -119,6 +119,10 @@ public:
 		SDL_SetTextureColorMod(texture_, r, g, b);
 	}
 
+	inline void SetTexMod(Uint8 rgb) {
+		SDL_SetTextureColorMod(texture_, rgb, rgb, rgb);
+	}
+
 private:
 
 	// Construct from text
