@@ -465,11 +465,13 @@ void ConfigState::initMapBut()
         {
             mapChosen = 0;
             sdl->soundEffects().at("uiSelect").play();
+            SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
         });
     maps[i]->SetOnPointerClick([this](int a)
         {
             mapChosen = 0;
             sdl->soundEffects().at("uiSelect").play();
+            SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
         });
     i++;
     maps.push_back(new Button(&sdl->images().at("mazmorra"), offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH, playerPointers));
@@ -477,11 +479,13 @@ void ConfigState::initMapBut()
         {
             mapChosen = 1;
             sdl->soundEffects().at("uiSelect").play();
+            SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
         });
     maps[i]->SetOnPointerClick([this](int a)
         {
             mapChosen = 1;
             sdl->soundEffects().at("uiSelect").play();
+            SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
         });
     i++;
     maps.push_back(new Button(&sdl->images().at("night"), offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH, playerPointers));
@@ -489,11 +493,13 @@ void ConfigState::initMapBut()
         {
             mapChosen = 2;
             sdl->soundEffects().at("uiSelect").play();
+            SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
         });
     maps[i]->SetOnPointerClick([this](int a)
         {
             mapChosen = 2;
             sdl->soundEffects().at("uiSelect").play();
+            SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
         });
 }
 

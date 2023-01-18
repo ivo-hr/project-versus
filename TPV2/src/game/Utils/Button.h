@@ -32,6 +32,14 @@ protected:
 	bool rendered = false;
 
 	bool MouseOver();
+	bool MouseEnter();
+	bool MouseExit();
+
+	bool mouseOver = false;
+	bool mouseOverRemember = false;
+
+	bool pressedLeft = false;
+	bool isClicking = false;
 
 	static const Uint8 defaultTint = 255;
 	static const Uint8 hoverOverTint = 210;

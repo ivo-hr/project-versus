@@ -48,6 +48,7 @@ ConfigurationState::ConfigurationState(FightManager* game , short pI) : State(ga
     pInput = pI;
 
     SDL_ShowCursor(1);
+    SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
 }
 
 ConfigurationState::~ConfigurationState()

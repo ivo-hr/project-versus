@@ -9,6 +9,16 @@ bool Button::MouseOver()
 	return (mx > x) && (mx < x + w) && (my > y) && (my < y + h);
 }
 
+bool Button::MouseEnter()
+{
+	return mouseOver && !mouseOverRemember;
+}
+
+bool Button::MouseExit()
+{
+	return !mouseOver && mouseOverRemember;
+}
+
 Button::Button(Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :tex(t), x(x), y(y), pointers(p), hasHoverSprite(hasHoverOver), hasPressedSprite(hasPressed)
 {
 	w = size;
@@ -65,6 +75,7 @@ Button::Button(Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer
 void Button::SetActive(bool f)
 {
 	active = f;
+	SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
 }
 
 void Button::update()
@@ -73,33 +84,23 @@ void Button::update()
 	{
 		if (onMouseClick != nullptr)
 		{
-			if (MouseOver())
+			bool toAct = false;
+			if (ih.getMouseButtonState(ih.LEFT))
 			{
-				SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
-				if (!ih.getMouseButtonState(ih.LEFT))
+				isClicking = true;
+			}
+			if (isClicking)
+			{
+				if (ih.mouseButtonEvent() && !ih.getMouseButtonState(ih.LEFT))
 				{
-					if (pressed)
-					{
-						onMouseClick();
-						pressed = false;
-						if (hasBeenDeleted)
-							return;
-					}
-					if (hasHoverSprite)
-					{
-						currentSprite = hoverTex;
-					}
-					else
-					{
-						Uint8 r;
-						tex->GetTexMod(r, r, r);
-						if (r != hoverOverTint)
-						{
-							tex->SetTexMod(hoverOverTint);
-						}
-					}
+					isClicking = false;
+					toAct = true;
 				}
-				else
+			}
+			mouseOver = MouseOver();
+			if (mouseOver)
+			{
+				if (isClicking)
 				{
 					pressed = true;
 					if (hasPressedSprite)
@@ -116,9 +117,34 @@ void Button::update()
 						}
 					}
 				}
+				else if (toAct)
+				{
+					onMouseClick();
+					pressed = false;
+					if (hasBeenDeleted)
+						return;
+				}
 			}
-			else
+			if (MouseEnter())
 			{
+				SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
+				if (hasHoverSprite)
+				{
+					currentSprite = hoverTex;
+				}
+				else
+				{
+					Uint8 r;
+					tex->GetTexMod(r, r, r);
+					if (r != hoverOverTint)
+					{
+						tex->SetTexMod(hoverOverTint);
+					}
+				}
+			}
+			else if (MouseExit())
+			{
+				SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
 				pressed = false;
 				currentSprite = defTex;
 				Uint8 r;
@@ -126,7 +152,6 @@ void Button::update()
 				if (r != defaultTint)
 				{
 					tex->SetTexMod(defaultTint);
-					SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
 				}
 			}
 		}
@@ -157,6 +182,7 @@ void Button::update()
 		}
 	}
 	rendered = false;
+	mouseOverRemember = mouseOver;
 }
 
 void Button::render()
