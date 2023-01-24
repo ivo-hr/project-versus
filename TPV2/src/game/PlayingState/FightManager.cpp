@@ -142,6 +142,23 @@ FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 	}
 
 	setState(new MenuState(this));
+
+}
+
+FightManager::~FightManager()
+{
+	delete getState();
+	if (getSavedState())
+		delete getSavedState();
+	delete listener;
+	for (auto e : entities)
+		delete e;
+	entities.clear();
+	delete stage;
+}
+
+void FightManager::InitMainLoop()
+{
 	while (!exit_) {
 
 		Uint32 startTime = sdl->currRealTime();
@@ -169,35 +186,27 @@ FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 		{
 			SDL_Delay((Uint32)((step * 1000) - frameTime));
 		}
+#ifdef _DEBUG
 		else
 		{
 			cout << "----------" << endl;
 			cout << frameTime << "/" << (step * 1000) << endl;
-			for (vector<Entity*> a : entityMatrix)
+			ushort cont = 0;
+			for (const auto& a : entityMatrix)
 			{
+				cout << cont << ":  ";
 				for (Entity* b : a)
 				{
 					cout << b->GetName() << "  ";
 				}
 				cout << endl;
+				cont++;
 			}
 			cout << endl;
 		}
+
+#endif // _DEBUG
 	}
-	// En ExitState se borran el state y el exitState, el savedState se borra en esta destructora
-	delete getState();
-
-}
-
-FightManager::~FightManager()
-{
-	if (getSavedState())
-		delete getSavedState();
-	delete listener;
-	for (auto e : entities)
-		delete e;
-	entities.clear();
-	delete stage;
 }
 
 void FightManager::Update()
@@ -252,14 +261,7 @@ void FightManager::Update()
 		}
 	}
 
-	auto it = entities.end();
-	//Dibuja las entidades
-	while (it != entities.begin())
-	{
-		it--;
-		if ((*it)->IsAlive())
-			(*it)->draw(&camera);
-	}
+	auto it = entities.begin();
 
 	//Elimina entidades a borrar;
 	while (it != entities.end())
@@ -273,26 +275,40 @@ void FightManager::Update()
 			++it;
 	}
 
-	for (Character* c : characters)
-	{
-		c->drawHUD(numPlayers);
-	}
-
 	if (ih.isKeyDown(SDLK_1) && ih.keyDownEvent()) {
 		TakeScreenShot();
 		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 0, 0);
 		SDL_Rect a = { 0, 0, width, height };
 		SDL_RenderFillRect(sdl->renderer(), &a);
 	}
-
-	// present new frame
-	sdl->presentRenderer();
 	
 	if (endGameTimer + 1000 < SDL_GetTicks() && endGame) {
 
 		getState()->next();
 	}
 
+}
+
+void FightManager::DrawFight()
+{
+
+	auto it = entities.end();
+
+	//Dibuja las entidades
+	while (it != entities.begin())
+	{
+		it--;
+		if ((*it)->IsAlive())
+			(*it)->draw(&camera);
+	}
+
+	for (Character* c : characters)
+	{
+		c->drawHUD(numPlayers);
+	}
+
+	// present new frame
+	sdl->presentRenderer();
 }
 
 void FightManager::LoadStage(std::string file)

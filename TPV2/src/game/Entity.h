@@ -168,14 +168,12 @@ public:
 	void RemoveTag(const Tags& tag) { tags[tag] = false; };
 	bool HasTag(const Tags& tag) { return tags[tag]; };
 
-	virtual void SetLayer(ushort layer) { this->layer = layer; }
+	void SetLayer(ushort layer) { this->layer = layer; }
 	ushort GetLayer() { return layer; }
 	void SetPlaceInLayer(ushort placeInLayer) { this->placeInLayer = placeInLayer; }
 	ushort GetPlaceInLayer() { return placeInLayer; }
 
-	virtual void OnEntityAdded() {};
-
-	virtual void updateParticles();
+	void updateParticles();
 	virtual void update();
 	virtual void draw();
 	virtual void draw(SDL_Rect* camera);
@@ -189,14 +187,14 @@ public:
 
 	FightManager* GetManager() { return manager; };
 
-	virtual short GetDir() { return dir; };
+	short GetDir() { return dir; };
 	ushort GetLives() { return lives; };
-	virtual float GetWidth() { return width; };
-	virtual float GetHeight() { return height; };
-	virtual SDL_Rect* GetHurtbox();
-	virtual b2Body* GetBody() { return body; };
+	float GetWidth() { return width; };
+	float GetHeight() { return height; };
+	SDL_Rect* GetHurtbox();
+	b2Body* GetBody() { return body; };
 
-	virtual void SetPosition(const b2Vec2& newPos);
+	void SetPosition(const b2Vec2& newPos);
 
 	void AddHitLag(ushort lag);
 
@@ -206,8 +204,6 @@ public:
 	bool GetGround() { return onGround; };
 
 	virtual bool IsOutOfBounds() { return !SDL_HasIntersection(&hurtbox, manager->GetDeathZone()); }
-
-	virtual bool changeDir() { return false; };
 
 	void resetHit();
 	void increaseKills() { kills++; }

@@ -266,7 +266,7 @@ void PlayingState::update() {
 }
 
 void PlayingState::draw() {
-
+	fmngr->DrawFight();
 }
 
 void PlayingState::next() {

@@ -114,9 +114,12 @@ public:
 	FightManager(SDLUtils* sdl);
 	virtual ~FightManager();
 
+	void InitMainLoop();
+
 	bool isExit() { return exit_; };
 	bool isFinish() { return fightEnded; };
 	void Update();
+	void DrawFight();
 
 	void LoadStage(std::string file);
 	void InitCamera();

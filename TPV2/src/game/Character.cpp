@@ -1444,11 +1444,6 @@ SDL_Rect Character::getCurrentSpriteSrc()
 	return anim->getCurrentSpriteSrc();
 }
 
-SDL_Rect* Character::GetHurtbox()
-{
-	return &hurtbox;
-}
-
 void Character::OnDeath()
 {
 	body->SetGravityScale(10.0f);

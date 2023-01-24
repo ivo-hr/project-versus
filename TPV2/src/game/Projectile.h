@@ -16,13 +16,13 @@ protected:
 
 public:
 	Projectile(FightManager* manager, b2Vec2 pos, b2Vec2 dir, float width, float height, int speed);
-	virtual ~Projectile();
+	~Projectile();
 
-	virtual void update() override;
-	virtual void draw() override;
-	virtual void draw(SDL_Rect* camera) override;
-	virtual void CheckHits() override;
-	virtual SDL_Rect* GetHurtbox() { return &hurtbox;};
-	virtual bool changeDir() override;
+	void update() override;
+	void draw() override;
+	void draw(SDL_Rect* camera) override;
+	void CheckHits() override;
+	SDL_Rect* GetHurtbox() { return &hurtbox;};
+	bool changeDir();
 
 };

@@ -18,13 +18,13 @@ class Spell : public Projectile
 
 public:
 	Spell(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, state state);
-	virtual ~Spell();
+	~Spell();
 
 	string GetName() override { return "Nas_Spell"; };
 
-	virtual SDL_Rect* GetHurtbox() { return &hurtbox;};
+	SDL_Rect* GetHurtbox() { return &hurtbox;};
 
-	virtual void draw(SDL_Rect* camera) override;
+	void draw(SDL_Rect* camera) override;
 
 	SDL_Rect getCurrentSpriteSrc() override { return { 0, 1264, 35, 16 }; }
 

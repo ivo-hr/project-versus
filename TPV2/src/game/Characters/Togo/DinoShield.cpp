@@ -2,6 +2,7 @@
 #include "Togo.h"
 #include "../../PlayingState/FightManager.h"
 #include "../../../utils/CheckML.h"
+#include "../../Projectile.h"
 
 DinoShield::DinoShield(FightManager* manager, b2Vec2 pos) :
 	Entity(manager, pos, 7.5f, 5.f)
@@ -76,7 +77,8 @@ bool DinoShield::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& 
 {
 	if (attacker->HasTag(Tags::IsProjectile))
 	{
-		attacker->changeDir();
+		auto charac = static_cast<Projectile*>(attacker);
+		charac->changeDir();
 		manager->ChangeEntityLayer(attacker, layer);
 	}
 	return false;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Entity.h"
-#include "../sdlutils/InputHandler.h"
 #include "Utils/InputConfig.h"
 #include "../json/json.hpp"
 #include <fstream>
@@ -96,11 +95,11 @@ protected:
 
 	Vector2D eyePos = { 0,0 };
 
-	virtual void CreateHitBox(HitBoxData* data);
+	void CreateHitBox(HitBoxData* data);
 
 	virtual void BuildBoxes() = 0;
 
-	virtual Vector2D BuildBoxOffset(const HitBoxData& data) {
+	Vector2D BuildBoxOffset(const HitBoxData& data) {
 		return Vector2D((data.box.x + ((float)data.box.w / 2.f)) - (hurtbox.x + ((float)hurtbox.w / 2.f)), (data.box.y + ((float)data.box.h / 2.f)) - (hurtbox.y + ((float)hurtbox.h / 2.f)));
 	};
 
@@ -134,8 +133,8 @@ public:
 	void AllowMovement(float multiplier, bool changeDirection = false, bool showParticles = false);
 	void StunBehaviour();
 	void DropPlatform();
-	virtual void draw() override;
-	virtual void draw(SDL_Rect* camera) override;
+	void draw() override;
+	void draw(SDL_Rect* camera) override;
 	virtual void drawHUD(ushort numOfPlayer) ;
 
 	AnimationManager* GetAnimationManager() { return anim; };
@@ -149,7 +148,6 @@ public:
 	bool IsParrying() { return parry > 0 && parry <= parryWindow; }
 	void SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag, Entity* attacker, bool& controlShake, bool& controlCamShake);
 	bool IsGoingToKill(const b2Vec2& angle);
-	virtual SDL_Rect* GetHurtbox();
 	Texture* getPortrait() { return portrait; };
 
 	void SetDamage(ushort a) { damageTaken = a; };
@@ -206,9 +204,9 @@ public:
 	void StartMove(std::function<void(ushort)> newMove);
 	void ChangeMove(std::function<void(ushort)> newMove);
 
-	virtual InputConfig* GetInputConfig() { return input; };
-	virtual InputConfig* GetOgInput() { return ogInput; };
-	virtual void SetInputConfig(InputConfig* value) { input = value; };
+	InputConfig* GetInputConfig() { return input; };
+	InputConfig* GetOgInput() { return ogInput; };
+	void SetInputConfig(InputConfig* value) { input = value; };
 	virtual SDL_Rect getCurrentSpriteSrc() override;
 	int getInput() { return input_; }
 	ushort GetDamageTaken() { return damageTaken; }

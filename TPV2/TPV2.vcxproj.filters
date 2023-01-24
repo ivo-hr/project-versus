@@ -210,12 +210,6 @@
     <ClInclude Include="src\game\Characters\NasNas\Explosion.h">
       <Filter>Header Files\game\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\State\ConfigurationState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\State\ExitState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\utils\CheckML.h">
       <Filter>Source Files\utils</Filter>
     </ClInclude>
@@ -242,6 +236,12 @@
     </ClInclude>
     <ClInclude Include="src\game\Utils\HUDManager.h">
       <Filter>Header Files\game\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\State\ConfigurationState.h">
+      <Filter>Header Files\game\State</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\State\ExitState.h">
+      <Filter>Header Files\game\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

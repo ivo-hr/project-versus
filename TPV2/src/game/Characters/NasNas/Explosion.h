@@ -9,15 +9,15 @@ protected:
 	HitData data;
 public:
 	Explosion(FightManager* manager, b2Vec2 pos, int power, int type, bool lookRight);
-	virtual ~Explosion();
+	~Explosion();
 
 	string GetName() override { return "Nas_Explosion"; };
 
-	virtual void update() override;
-	virtual void draw() override;
-	virtual void draw(SDL_Rect* camera) override;
-	virtual void CheckHits() override;
-	virtual SDL_Rect* GetHurtbox() { return &hurtbox; };
+	void update() override;
+	void draw() override;
+	void draw(SDL_Rect* camera) override;
+	void CheckHits() override;
+	SDL_Rect* GetHurtbox() { return &hurtbox; };
 private:
 	bool type;
 

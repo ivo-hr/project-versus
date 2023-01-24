@@ -15,15 +15,15 @@ public:
 
 	string GetName() override { return "Melvin_Davin"; };
 
-	virtual void BasicNeutral(ushort frameNumber) override;
-	virtual void BasicForward(ushort frameNumber) override;
-	virtual void BasicUpward(ushort frameNumber) override;
-	virtual void BasicDownward(ushort frameNumber) override;
+	void BasicNeutral(ushort frameNumber) override;
+	void BasicForward(ushort frameNumber) override;
+	void BasicUpward(ushort frameNumber) override;
+	void BasicDownward(ushort frameNumber) override;
 
-	virtual void SpecialNeutral(ushort frameNumber) override;
-	virtual void SpecialForward(ushort frameNumber) override;
-	virtual void SpecialUpward(ushort frameNumber) override;
-	virtual void SpecialDownward(ushort frameNumber) override;
+	void SpecialNeutral(ushort frameNumber) override;
+	void SpecialForward(ushort frameNumber) override;
+	void SpecialUpward(ushort frameNumber) override;
+	void SpecialDownward(ushort frameNumber) override;
 
 	void SetOtherChar(Melvin* m, Melvin_Kyp* k, Melvin_Cientifico* c) { melvin = m; kyp = k; cientifico = c; };
 

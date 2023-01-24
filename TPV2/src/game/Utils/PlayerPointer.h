@@ -1,8 +1,6 @@
 #pragma once
-#include "../../sdlutils/Texture.h"
 #include "../../sdlutils/SDLUtils.h"
 #include "../Utils/PlayerConfigs.h"
-#include "../../sdlutils/InputHandler.h"
 
 class PlayerPointer
 {

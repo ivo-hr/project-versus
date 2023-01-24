@@ -53,7 +53,7 @@ class Stage
 
 public:
 	Stage(FightManager* mngr, SDLUtils* sdl, MyListener* _listener, float step);
-	virtual ~Stage();
+	~Stage();
 
 	void UnLoadStage();
 

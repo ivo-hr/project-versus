@@ -1,10 +1,6 @@
 #pragma once
-#include "../../sdlutils/Texture.h"
-#include "../../sdlutils/InputHandler.h"
 #include "../../sdlutils/SDLUtils.h"
 #include "PlayerPointer.h"
-#include <iostream>
-#include <string>
 #include <functional>
 #include <vector>
 

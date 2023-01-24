@@ -6,25 +6,25 @@ class Makt : public Character
 {
 public:
 	Makt(FightManager* mngr, b2Vec2 pos, char input, ushort p);
-	virtual ~Makt();
+	~Makt();
 
 	string GetName() override { return "Makt"; };
 
-	virtual void BasicNeutral(ushort frameNumber) override;
-	virtual void BasicForward(ushort frameNumber) override;
-	virtual void BasicUpward(ushort frameNumber) override;
-	virtual void BasicDownward(ushort frameNumber) override;
+	void BasicNeutral(ushort frameNumber) override;
+	void BasicForward(ushort frameNumber) override;
+	void BasicUpward(ushort frameNumber) override;
+	void BasicDownward(ushort frameNumber) override;
 
-	virtual void SpecialNeutral(ushort frameNumber) override;
-	virtual void SpecialForward(ushort frameNumber) override;
-	virtual void SpecialUpward(ushort frameNumber) override;
-	virtual void SpecialDownward(ushort frameNumber) override;
+	void SpecialNeutral(ushort frameNumber) override;
+	void SpecialForward(ushort frameNumber) override;
+	void SpecialUpward(ushort frameNumber) override;
+	void SpecialDownward(ushort frameNumber) override;
 
-	virtual void ThrowRecover(ushort frameNumber);
-	virtual void BallPickUp(ushort frameNumber);
+	void ThrowRecover(ushort frameNumber);
+	void BallPickUp(ushort frameNumber);
 
-	virtual void update() override;
-	virtual bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
+	void update() override;
+	bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
 
 private:
 

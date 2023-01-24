@@ -1,6 +1,7 @@
 #include "YunoBubble.h"
 #include "../../Utils/InputConfig.h"
 #include "../../../utils/CheckML.h"
+#include "../../Projectile.h"
 
 
 YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, int iniSpan, int moreSpan, Bubble bubbleType, InputConfig* input) : Entity(manager, pos, bubbleType == Bubble::UP ? 3.f : 2.f, bubbleType == Bubble::UP ? 3.f : 2.f), yuno(owner), hndlr(input)
@@ -248,7 +249,8 @@ void YunoBubble::GetInsideBubble(Entity* ent)
 
 	if (ent->HasTag(Tags::IsProjectile))
 	{
-		ent->changeDir();
+		auto charac = static_cast<Projectile*>(ent);
+		charac->changeDir();
 		manager->ChangeEntityLayer(ent, yuno->GetLayer());
 	}
 	else if (ent->HasTag(Tags::IsCharacter))

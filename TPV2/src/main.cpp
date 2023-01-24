@@ -74,14 +74,14 @@ int main(int ac, char **av) {
 	//------------------------------------------------------------------------------------------
 
 	FightManager* fghtmngr = nullptr;
+	fghtmngr = new FightManager(&sdl);
 
 	try
 	{
-		fghtmngr = new FightManager(&sdl);
+		fghtmngr->InitMainLoop();
 	}
 	catch (const char* s)
 	{
-
 		const char* title = "The game crashed :(";
 
 		if (s == nullptr)
