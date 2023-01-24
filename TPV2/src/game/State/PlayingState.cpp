@@ -27,19 +27,19 @@ PlayingState::PlayingState(FightManager* game, vector<char>playersInput, vector<
 		case 0: //nasnas
 			entities.push_back(new NasNas(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i],i));
 			break;
-		case 1://Gato espia
+		case 1: //Gato espia
 			entities.push_back(new GatoEspia(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i],i));
 			break;
-		case 2://Togo
+		case 2: //Maketo
+			entities.push_back(new Makt(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
+			break;
+		case 3: //Togo
 			entities.push_back(new Togo(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i],i));
 			break;
-		case 3: //Maketo
-			entities.push_back(new Makt(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i],i));
-			break;
-		case 4://Yuno
+		case 4: //Yuno
 			entities.push_back(new Yuno(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			break;
-		case 5://Melvin
+		case 5: //Melvin
 			entities.push_back(new Melvin(fmngr, b2Vec2((float)(20 + i * 10), 0.f), playersInput[i], i));
 			break;
 		case -1://Aleatorio
@@ -48,14 +48,14 @@ PlayingState::PlayingState(FightManager* game, vector<char>playersInput, vector<
 			switch (playersInput[i])
 			{
 			case -1:
-				if (ih.isKeyDown(playerPrefs.Keyboard1Down()))charac = 10;
+				if (ih.isKeyDown(playerPrefs.Keyboard1Down()))charac = 12;
 				break;
 			case -2:
-				if (ih.isKeyDown(playerPrefs.Keyboard2Down()))charac = 10;
+				if (ih.isKeyDown(playerPrefs.Keyboard2Down()))charac = 12;
 				break;
 			default:
 				if (ih.xboxGetAxesState(playersInput[i], 1) == 1 || ih.xboxGetDpadState(playersInput[i], 2))
-					charac = 10;
+					charac = 12;
 				break;
 			}
 
