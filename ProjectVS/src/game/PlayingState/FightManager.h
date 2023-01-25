@@ -143,7 +143,9 @@ public:
 	SDL_Rect GetSDLCoors(float x, float y, float width, float height);
 	int b2ToSDLX(b2Body* body, float width);
 	int b2ToSDLY(b2Body* body, float height);
+
 	int ToSDL(float x);
+	float ToSDLf(float x);
 
 	ushort GetActualWidth();
 	ushort GetActualHeight();

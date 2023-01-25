@@ -917,6 +917,11 @@ int FightManager::ToSDL(float x)
 	return (int)nearbyint(x * stage->getb2ToSDL());
 }
 
+float FightManager::ToSDLf(float x)
+{
+	return x * stage->getb2ToSDL();
+}
+
 ushort FightManager::GetActualWidth()
 {
 	return width;

@@ -89,8 +89,8 @@ json Character::ReadJson(const std::string& filename, spriteSheetData &spData)
 
 	spData.leftOffset = sData["leftOffset"];		//Pixeles en sprite que se dibujaran fuera de la hurtbox a la izquierda
 	spData.upOffset = sData["upOffset"];
-	spData.sizeXOffset = sData["sizeXOffset"];	//Cuantos pixeles en X NO estan dentro de la hurtbox
-	spData.sizeYOffset = sData["sizeYOffset"];
+
+	spData.pixelSize = sData["pixelSize"];
 
 	spData.spritesInX = sData["spritesInX"];
 	spData.spritesInY = sData["spritesInY"];

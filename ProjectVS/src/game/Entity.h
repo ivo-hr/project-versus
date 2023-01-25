@@ -32,6 +32,8 @@ struct spriteSheetData
 	ushort spritesInX = 0;		//Cuantos frames hay en una fila de la spritesheet entera
 	ushort spritesInY = 0;		//Cuantos frames hay en una columna de la spritesheet entera
 
+	float pixelSize;
+
 	std::unordered_map<std::string, animationData> animations = std::unordered_map<std::string, animationData>();
 	//std::unordered_map<std::string, animationData> animations;
 };

@@ -108,21 +108,17 @@ AnimationManager::AnimationManager(Entity* entity, Texture*& textura, spriteShee
 	//recorteSheet 
 	recorteSheet = { w * data.spritesInX, h * data.spritesInY, w, h };
 
+	float currentPSize = ent->GetManager()->ToSDLf(data.pixelSize);
 
-
-	// TODO: por favor
-	xOffset = (short)(((float)data.leftOffset * ent->GetWidth()) * ent->GetManager()->GetScreenRatio() / 4.7f);		//En zero (offset = 4, width = 3, tiene que dar APROX 10
+	xOffset = (short)((float)data.leftOffset * currentPSize);		//En zero (offset = 4, width = 3, tiene que dar APROX 10
 	//xOffset = 10.f;
-	yOffset = (short)(((float)data.upOffset * ent->GetHeight()) * ent->GetManager()->GetScreenRatio() / 4.7f);		//En zero (offset = 48, height = 3, tiene que dar APROX 115
+	yOffset = (short)((float)data.upOffset * currentPSize);		//En zero (offset = 48, height = 3, tiene que dar APROX 115
 	//yOffset = 115.f;
 
 
-	//Este rect representa donde se va a renderizar la textura una vez recortada
-	dest = *entity->GetHurtbox();
-
-	dest.w += (int)(((float)data.sizeXOffset * ent->GetWidth()) * ent->GetManager()->GetScreenRatio() / 4.7f);		//En zero (offset = 28, width = 3, tiene que dar APROX 68
+	dest.w = (int)(currentPSize * (float)w);		//En zero (offset = 28, width = 3, tiene que dar APROX 68
 	//dest.w += 68;
-	dest.h += (int)(((float)data.sizeYOffset * ent->GetHeight()) * ent->GetManager()->GetScreenRatio() / 4.7f);		//En zero (offset = 48, height = 3, tiene que dar APROX 115
+	dest.h = (int)(currentPSize * (float)h);		//En zero (offset = 48, height = 3, tiene que dar APROX 115
 	//dest.h += 115.f;
 
 	//Inicializamos la animacion primera (en zero es idle)
@@ -152,7 +148,7 @@ void AnimationManager::update()
 		lookingRight = true;
 	}
 	else {
-		dest.x = aux.x + xOffset - (short)((float)((float)info.sizeXOffset * ent->GetWidth()) * ent->GetManager()->GetScreenRatio() / 4.7f);
+		dest.x = aux.x + xOffset + aux.w - dest.w;
 		dest.y = aux.y - yOffset;
 
 		recorteSheet = { w * (int)SpriteIndex[currIndex].getX(), h * (int)SpriteIndex[currIndex].getY(), w, h };
@@ -226,6 +222,13 @@ void AnimationManager::render(SDL_Rect* camera, const Vector2D& offset)
 	else {
 		texture->render(recorteSheet, aux, 0., nullptr, SDL_FLIP_HORIZONTAL);
 	}
+
+#ifdef _DEBUG
+	SDL_SetRenderDrawColor(ent->GetManager()->GetSDLU()->renderer(), 255, 255, 0, 255);
+	SDL_RenderDrawRect(ent->GetManager()->GetSDLU()->renderer(), &aux);
+#endif // _DEBUG
+
+
 }
 
 void AnimationManager::StartAnimation(std::string index)
