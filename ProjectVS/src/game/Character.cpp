@@ -1448,12 +1448,19 @@ void Character::OnDeath()
 {
 	body->SetGravityScale(10.0f);
 	//Canal 1 , (antes a veces no se escucha)
-	sdl->soundEffects().at("death").play(0,1);
+	sdl->soundEffects().at("death").play(0);
 
 	waitingToRespawn = true;
 	lives--;
 	totalDamageTaken += damageTaken;
 	damageTaken = 0;
+
+	auto aux = Vector2D(
+		((manager->ToSDLf(body->GetPosition().x) / (float)manager->GetDeathZone()->w) - 0.5f) * 10,
+		((manager->ToSDLf(body->GetPosition().y) / (float)manager->GetDeathZone()->h) - 0.5f) * 10
+	);
+
+	manager->SetShake(aux, 15);
 
 	ResetChar();
 	recovery = true;

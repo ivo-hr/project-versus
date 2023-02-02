@@ -1,6 +1,7 @@
 #include "GameOverState.h"
 #include "MenuState.h"
 #include "ExitState.h"
+#include "ConfigState.h"
 #include "../PlayingState/FightManager.h"
 #include "../../utils/CheckML.h"
 #include "../Utils/PlayerConfigs.h"
@@ -11,6 +12,8 @@ GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures
 {
     ushort w = fmngr->GetActualWidth();
     ushort h = fmngr->GetActualHeight();
+
+    allInputs = playersInputV;
 
     int winnerInput = 1;
     for (auto i = 0u; i < playersInputV.size(); i++) {
@@ -25,10 +28,6 @@ GameOverState::GameOverState(FightManager* game, vector<Texture*>winnersTextures
 
     playAgain = new Button(&sdl->images().at("playagain"), w / 3, h / 4, w/3, h/4, pointers);
     playAgain->SetOnClick([this]()
-        {
-            fmngr->getState()->next();
-        });
-    playAgain->SetOnPointerClick([this](int a)
         {
             fmngr->getState()->next();
         });
@@ -69,7 +68,7 @@ void GameOverState::draw() {
 }
 
 void GameOverState::next() {
-    fmngr->setState(new MenuState(fmngr));
+    fmngr->setState(new ConfigState(fmngr, allInputs));
     delete this;
 }
 

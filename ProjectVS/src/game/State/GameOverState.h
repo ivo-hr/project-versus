@@ -10,6 +10,7 @@ class GameOverState : public State {
     Button* playAgain;
     vector<PlayerPointer*> pointers = vector<PlayerPointer*>(1);
     PlayerPointer*& pointer;
+    vector<char> allInputs = vector<char>();
     short playersInput_;
     vector<vector<ushort>>gameStats_;
 

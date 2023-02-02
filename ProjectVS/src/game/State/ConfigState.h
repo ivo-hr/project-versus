@@ -56,9 +56,11 @@ class ConfigState : public State {
     int timerMapkeyRelease = 0;
 public:
 
-    ConfigState(FightManager* game , short fInput) ;
-    virtual  ~ConfigState();
+    ConfigState(FightManager* game , short fInput);
+    ConfigState(FightManager* game , const vector<char>& inputs);
+    ~ConfigState();
 
+    void InitAllButtons(int w, int h);
     void update() override;
     void draw() override;
     void next() override;

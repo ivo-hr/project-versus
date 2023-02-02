@@ -77,6 +77,11 @@ public:
 		return channels_ = Mix_AllocateChannels(n);
 	}
 
+	inline void test(int& freq, Uint16& form, int& chCount)
+	{
+		Mix_QuerySpec(&freq, &form, &chCount);  // query specs
+	}
+
 private:
 
 	inline static void checkChannel(int channel) {

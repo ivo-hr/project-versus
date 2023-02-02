@@ -17,38 +17,30 @@ ConfigurationState::ConfigurationState(FightManager* game , short pI) : State(ga
 
     exit = new Button(&sdl->images().at("backToMenu"), 0, h - w / 12, w / 16, w / 12, pointers);
     exit->SetOnClick([this]() {ExitState(); });
-    exit->SetOnPointerClick([this](int s) {ExitState(); });
     back = new Button(&sdl->images().at("BackBut"), 0, 0, w / 12, w / 12, pointers);
     back->SetOnClick([this]() {GoBack(); });
-    back->SetOnPointerClick([this](int s) {GoBack(); });
 
     int butW = w / 50;
 
     muscm = new Button(&sdl->images().at("minusB"), (int)(w * 29 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - butW / 2), butW, butW, pointers);
     muscm->SetOnClick([this]() {DecreaseMusic(); });
-    muscm->SetOnPointerClick([this](int s) {DecreaseMusic(); });
     muscp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - butW / 2), butW, butW, pointers);
     muscp->SetOnClick([this]() {IncreaseMusic(); });
-    muscp->SetOnPointerClick([this](int s) {IncreaseMusic(); });
   
     sfxm = new Button(&sdl->images().at("minusB"), (int)(w * 29 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - butW / 2), butW, butW, pointers);
     sfxm->SetOnClick([this]() {DecreaseSFX(); });
-    sfxm->SetOnPointerClick([this](int s) {DecreaseSFX(); });
     sfxp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - butW / 2), butW, butW, pointers);
     sfxp->SetOnClick([this]() {IncreaseSFX(); });
-    sfxp->SetOnPointerClick([this](int s) {IncreaseSFX(); });
 
     fullSCheck = new ToggleButton(&sdl->images().at("check"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)(h * 1.2f / 2 - butW), butW * 2, butW * 2, pointers);
     fullSCheck->SetEnabled(SDL_GetWindowFlags(sdl->window()) & SDL_WINDOW_FULLSCREEN);
     fullSCheck->SetOnClick([this]() {ToggleFullScreen(); });
-    fullSCheck->SetOnPointerClick([this](int s) {ToggleFullScreen(); });
     
     p1 = pointers[0];
     p1->setActive(true);
     pInput = pI;
 
     SDL_ShowCursor(1);
-    SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
 }
 
 ConfigurationState::~ConfigurationState()

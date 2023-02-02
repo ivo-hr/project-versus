@@ -33,6 +33,9 @@ MenuState::MenuState(FightManager* game) : State(game)
         }
         });
 
+    exit->SetNoPointers();
+    config->SetNoPointers();
+
     sdl->musics().at("main").play();
 
     SDL_ShowCursor(1);
@@ -67,6 +70,7 @@ void MenuState::update() {
         textTimer = SDL_GetTicks();
         drawText = !drawText;
     }
+
     exit->update();
     config->update();
 

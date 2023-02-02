@@ -10,92 +10,20 @@ ConfigState::ConfigState(FightManager* game , short fInput) : State(game), numOf
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
 
-    int dist = (w * 12 / 13) / numOfplayer;
-    int offset = dist - w / 13;
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P1P"), 0u * dist + offset, 676, w, h, fInput));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P2P"), 1u, 676, w, h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P3P"), 2u, 676, w, h));
-    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P4P"), 3u, 676, w, h));
+
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P1P"), w / 2, h / 2, w, h, fInput));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P2P"), w / 2, h / 2, w, h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P3P"), w / 2, h / 2, w, h));
+    playerPointers.push_back(new PlayerPointer(&sdl->images().at("P4P"), w / 2, h / 2, w, h));
     playerPointers[0]->setActive(true);
-    sdl->musics().at("sawtines").play();
 
-    initcharact();
+    InitAllButtons(w, h);
 
-    buttons[7] = new Button(&sdl->images().at("pB"), (int)(w * 14 / 15), (int)(h - w * 2.4f / 15), (int)(w / 15), playerPointers);
-    buttons[7]->SetOnClick([this]() {AddPlayer(); });
-    buttons[7]->SetOnPointerClick([this](int a) {AddPlayer(); });
-
-    buttons[8] = new Button(&sdl->images().at("mB"), (int)(w * 14 / 15), (int)(h - w * 1.2f / 15), (int)(w / 15), playerPointers);
-    buttons[8]->SetOnClick([this]() {RemovePlayer(); });
-    buttons[8]->SetOnPointerClick([this](int a) {RemovePlayer(); });
-
-    buttons[9] = new Button(&sdl->images().at("ConfigBut"), w * 20 / 21, 0, w / 21, playerPointers);
-    buttons[9]->SetOnClick([this]() {OpenConfig(); });
-    buttons[9]->SetOnPointerClick([this](int a) {OpenConfig(); });
-
-    play = new PlayButton(&sdl->images().at("play"), 0, 0, w, h, playerPointers);
-    play->SetOnClick([this]() { fmngr->getState()->next(); });
-    play->SetOnPointerClick([this](int a) { fmngr->getState()->next(); });
-
-
-    normalmode = new ToggleButton(&sdl->images().at("MNormal"), (w / 2) + (h / 168), h / 168, h / 7, h / 14, playerPointers);
-    normalmode->SetOnClick([this]()
-    {
-        TeamModebool = false;
-        normalmode->SetEnabled(true);
-        teammode->SetEnabled(false);
-
-        normalmode->SetActive(false);
-        teammode->SetActive(true);
-
-        sdl->soundEffects().at("uiMov").play();
-    });
-    normalmode->SetOnPointerClick([this](int a)
-    {
-        TeamModebool = false;
-        normalmode->SetEnabled(true);
-        teammode->SetEnabled(false);
-
-        normalmode->SetActive(false);
-        teammode->SetActive(true);
-
-        sdl->soundEffects().at("uiMov").play();
-    });
-    normalmode->SetEnabled(true);
-    normalmode->SetActive(false);
-
-    teammode = new ToggleButton(&sdl->images().at("MTeam"), (w / 2) + h / 84 + h / 7, h / 168, h / 7, h / 14, playerPointers);
-    teammode->SetOnClick([this]()
-    {
-        TeamModebool = true;
-        normalmode->SetEnabled(false);
-        teammode->SetEnabled(true);
-
-        normalmode->SetActive(true);
-        teammode->SetActive(false);
-
-        sdl->soundEffects().at("uiMov").play();
-    }); 
-    teammode->SetOnPointerClick([this](int a)
-    {
-        TeamModebool = true;
-        normalmode->SetEnabled(false);
-        teammode->SetEnabled(true);
-
-        normalmode->SetActive(true);
-        teammode->SetActive(false);
-
-        sdl->soundEffects().at("uiMov").play();
-    }); 
-    teammode->SetEnabled(false);
- 
-    configTeamChoose();
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P1")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P2")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P3")));
     playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P4")));
 
-    initMapBut();
     usedKeyboard.resize(2);
     playerInput.resize(1);
     playerInput[0] = (char)fInput;
@@ -110,6 +38,60 @@ ConfigState::ConfigState(FightManager* game , short fInput) : State(game), numOf
     else if (fInput == -2) { usedKeyboard[1] = true; playerTexture[0]->setFront(&sdl->images().at("k2"));
     }
 
+    sdl->musics().at("sawtines").play();
+    SDL_ShowCursor(1);
+}
+
+ConfigState::ConfigState(FightManager* game, const vector<char>& inputs) : State(game), numOfplayer(inputs.size())
+{
+    int w = fmngr->GetActualWidth();
+    int h = fmngr->GetActualHeight();
+
+    int dist = (w * 12 / 13) / numOfplayer;
+    int offset = dist - w / 13;
+
+    ushort i = 0;
+    for (; i < inputs.size(); i++)
+    {
+        string a = "P" + std::to_string((i + 1)) + "P";
+        playerPointers.push_back(new PlayerPointer(&sdl->images().at(a), i * dist + offset, h / 2, w, h, inputs[i]));
+        playerPointers[i]->setActive(true);
+    }
+    for (; i < 4; i++)
+    {
+        string a = "P" + std::to_string((i + 1)) + "P";
+        playerPointers.push_back(new PlayerPointer(&sdl->images().at(a), i * dist + offset, h / 2, w, h));
+    }
+
+    InitAllButtons(w, h);
+
+    playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P1")));
+    playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P2")));
+    playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P3")));
+    playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P4")));
+
+    nMandos = SDL_NumJoysticks();
+    usedPad.resize(4);
+    selected.resize(4);
+    usedKeyboard.resize(2);
+
+    charactersSelect.resize(inputs.size());
+    playerInput.resize(inputs.size());
+
+    for (ushort i = 0; i < inputs.size(); i++)
+    {
+        playerInput[i] = (char)inputs[i];
+        playerTexture[i]->setgotInput(true);
+        if (inputs[i] >= 0) { usedPad[inputs[i]] = true; playerTexture[i]->setFront(&sdl->images().at("Mando")); }
+        else if (inputs[i] == -1) {
+            usedKeyboard[0] = true; playerTexture[i]->setFront(&sdl->images().at("k1"));
+        }
+        else if (inputs[i] == -2) {
+            usedKeyboard[1] = true; playerTexture[i]->setFront(&sdl->images().at("k2"));
+        }
+    }
+
+    sdl->musics().at("sawtines").play();
     SDL_ShowCursor(1);
 }
 
@@ -127,6 +109,49 @@ ConfigState::~ConfigState()
         for (auto a : e)delete a;
     }
     for (auto e : maps)delete e;
+}
+
+void ConfigState::InitAllButtons(int w, int h)
+{
+    initcharact();
+
+    buttons[7] = new Button(&sdl->images().at("pB"), (int)(w * 14 / 15), (int)(h - w * 2.4f / 15), (int)(w / 15), playerPointers);
+    buttons[7]->SetOnClick([this]() {AddPlayer(); });
+
+    buttons[8] = new Button(&sdl->images().at("mB"), (int)(w * 14 / 15), (int)(h - w * 1.2f / 15), (int)(w / 15), playerPointers);
+    buttons[8]->SetOnClick([this]() {RemovePlayer(); });
+
+    buttons[9] = new Button(&sdl->images().at("ConfigBut"), w * 20 / 21, 0, w / 21, playerPointers);
+    buttons[9]->SetOnClick([this]() {OpenConfig(); });
+
+    play = new PlayButton(&sdl->images().at("play"), 0, 0, w, h, playerPointers);
+    play->SetOnClick([this]() { fmngr->getState()->next(); });
+
+
+    normalmode = new ToggleButton(&sdl->images().at("MNormal"), (w / 2) + (h / 168), h / 168, h / 7, h / 14, playerPointers);
+    normalmode->SetOnClick([this]()
+        {
+            TeamModebool = !TeamModebool;
+            normalmode->SetEnabled(!TeamModebool);
+            teammode->SetEnabled(TeamModebool);
+
+            sdl->soundEffects().at("uiMov").play();
+        });
+    normalmode->SetEnabled(true);
+
+    teammode = new ToggleButton(&sdl->images().at("MTeam"), (w / 2) + h / 84 + h / 7, h / 168, h / 7, h / 14, playerPointers);
+    teammode->SetOnClick([this]()
+        {
+            TeamModebool = !TeamModebool;
+            normalmode->SetEnabled(!TeamModebool);
+            teammode->SetEnabled(TeamModebool);
+
+            sdl->soundEffects().at("uiMov").play();
+        });
+    teammode->SetEnabled(false);
+
+    configTeamChoose();
+    initMapBut();
 }
 
 void ConfigState::update()
@@ -222,42 +247,35 @@ void ConfigState::configTeamChoose()
     vector<ToggleButton*> p1;
     p1.push_back(new ToggleButton(&sdl->images().at("T1"), 0, 0, w / 30, w / 30, playerPointers));
     p1[0]->SetOnClick([this]() { ChangeTeam(0, true); });
-    p1[0]->SetOnPointerClick([this](int a) { ChangeTeam(0, true); });
+
     p1.push_back(new ToggleButton(&sdl->images().at("T2"), 0, 0, w / 30, w / 30, playerPointers));
     p1[1]->SetOnClick([this]() { ChangeTeam(0, false); });
-    p1[1]->SetOnPointerClick([this](int a) { ChangeTeam(0, false); });
     p.push_back(p1);
     p1.clear();
 
     p1.push_back(new ToggleButton(&sdl->images().at("T1"), 0, 0, w / 30, w / 30, playerPointers));
     p1[0]->SetOnClick([this]() { ChangeTeam(1, true); });
-    p1[0]->SetOnPointerClick([this](int a) { ChangeTeam(1, true); });
 
     p1.push_back(new ToggleButton(&sdl->images().at("T2"), 0, 0, w / 30, w / 30, playerPointers));
     p1[1]->SetOnClick([this]() { ChangeTeam(1, false); });
-    p1[1]->SetOnPointerClick([this](int a) { ChangeTeam(1, false); });
 
     p.push_back(p1);
     p1.clear();
 
     p1.push_back(new ToggleButton(&sdl->images().at("T1"), 0, 0, w / 30, w / 30, playerPointers));
     p1[0]->SetOnClick([this]() { ChangeTeam(2, true); });
-    p1[0]->SetOnPointerClick([this](int a) { ChangeTeam(2, true); });
 
     p1.push_back(new ToggleButton(&sdl->images().at("T2"), 0, 0, w / 30, w / 30, playerPointers));
     p1[1]->SetOnClick([this]() { ChangeTeam(2, false); });
-    p1[1]->SetOnPointerClick([this](int a) { ChangeTeam(2, false); });
 
     p.push_back(p1);
     p1.clear();
 
     p1.push_back(new ToggleButton(&sdl->images().at("T1"), 0, 0, w / 30, w / 30, playerPointers));
     p1[0]->SetOnClick([this]() { ChangeTeam(3, true); });
-    p1[0]->SetOnPointerClick([this](int a) { ChangeTeam(3, true); });
 
     p1.push_back(new ToggleButton(&sdl->images().at("T2"), 0, 0, w / 30, w / 30, playerPointers));
     p1[1]->SetOnClick([this]() { ChangeTeam(3, false); });
-    p1[1]->SetOnPointerClick([this](int a) { ChangeTeam(3, false); });
 
     p.push_back(p1);
     p1.clear();
@@ -467,12 +485,6 @@ void ConfigState::initMapBut()
             sdl->soundEffects().at("uiSelect").play();
             SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
         });
-    maps[i]->SetOnPointerClick([this](int a)
-        {
-            mapChosen = 0;
-            sdl->soundEffects().at("uiSelect").play();
-            SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
-        });
     i++;
     maps.push_back(new Button(&sdl->images().at("mazmorra"), offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH, playerPointers));
     maps[i]->SetOnClick([this]()
@@ -481,21 +493,9 @@ void ConfigState::initMapBut()
             sdl->soundEffects().at("uiSelect").play();
             SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
         });
-    maps[i]->SetOnPointerClick([this](int a)
-        {
-            mapChosen = 1;
-            sdl->soundEffects().at("uiSelect").play();
-            SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
-        });
     i++;
     maps.push_back(new Button(&sdl->images().at("night"), offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH, playerPointers));
     maps[i]->SetOnClick([this]()
-        {
-            mapChosen = 2;
-            sdl->soundEffects().at("uiSelect").play();
-            SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
-        });
-    maps[i]->SetOnPointerClick([this](int a)
         {
             mapChosen = 2;
             sdl->soundEffects().at("uiSelect").play();
@@ -518,7 +518,8 @@ void ConfigState::mapMenuRender()
         e->render();
     }
     buttons[9]->render();
-    playerPointers[0]->render();
+
+    for (auto e : playerPointers)e->render();
 }
 
 void ConfigState::initcharact()

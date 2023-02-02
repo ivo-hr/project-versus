@@ -27,6 +27,8 @@ protected:
 	bool pressed = false;
 	bool rendered = false;
 
+	bool validPointers = true;
+
 	bool MouseOver();
 	bool MouseEnter();
 	bool MouseExit();
@@ -59,6 +61,8 @@ public:
 		hasBeenDeleted = true;
 	};
 
+	void SetNoPointers() { validPointers = false; };
+
 	void SetOnClick(std::function<void()> a) { onMouseClick = a; };
 	void SetOnPointerClick(std::function<void(int)> a) { onPointerClick = a; };
 
@@ -69,7 +73,7 @@ public:
 	void setY(int y0) { y = y0; };
 	void setW(int w0) { w = w0; };
 	void setH(int h0) { h = h0; };
-	virtual void update();
+	void update();
 	virtual void render();
 	void setUnrendered() { rendered = false; };
 	SDL_Rect getRect();

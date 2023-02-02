@@ -156,7 +156,7 @@ void Button::update()
 			}
 		}
 
-		if (onPointerClick != nullptr)
+		if (validPointers && (onPointerClick != nullptr || onMouseClick != nullptr))
 		{
 			for (auto i = 0; i < pointers.size(); i++)
 			{
@@ -164,7 +164,12 @@ void Button::update()
 				SDL_Rect p = pointers[i]->getRect();
 				if (pointers[i]->Click() && SDL_HasIntersection(&r, &p))
 				{
-					onPointerClick(i);
+					if (onMouseClick != nullptr)
+						onMouseClick();
+					if (hasBeenDeleted)
+						return;
+					if (onPointerClick != nullptr)
+						onPointerClick(i);
 					if (hasBeenDeleted)
 						return;
 				}
