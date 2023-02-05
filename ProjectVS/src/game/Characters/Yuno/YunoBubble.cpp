@@ -14,7 +14,8 @@ YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, int iniSp
 	texDest = { 0, 0, 0, 0 };
 
 	arrowsTex = &sdl->images().at("arrows");
-	arrowSrc = { 0, arrowsTex->height() * yuno->GetPNumber() / 4, arrowsTex->width(), arrowsTex->height() / 4 };
+	arrowSrc = { 0, 0, arrowsTex->width(), arrowsTex->height() / 4 };
+	arrowSrc.y = arrowSrc.h * (yuno->GetLayer() - 1);
 
 	dir = yuno->GetDir();
 

@@ -6,7 +6,7 @@ MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, const HitData& attack, b2V
 	Projectile(manager, pos, dir, 1.5f, 1.5f, 20)
 {
 	arrowsTex = &sdl->images().at("arrows");
-	arrowSrc = { 0, arrowsTex->height() * pNumber / 4, arrowsTex->width(), arrowsTex->height() / 4 };
+	arrowSrc = { 0, 0, arrowsTex->width(), arrowsTex->height() / 4 };
 
 	texture = &sdl->images().at("makt");
 
@@ -191,6 +191,7 @@ void MaktBall::draw(SDL_Rect* camera)
 
 		int xpos = aux.x + (aux.w / 2);
 
+		arrowSrc.y = arrowSrc.h * (GetLayer() - 1);
 		arrowsTex->render(arrowSrc, { xpos - 15, aux.y - 34, 30, 16 });
 
 #ifdef _DEBUG

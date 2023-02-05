@@ -28,10 +28,10 @@ void HudManager::Boot(FightManager* man)
 
 		string player = "Player " + to_string((var->GetPNumber() + 1));
 		SDL_Color c;
-		if (var->GetPNumber() == 0) c = build_sdlcolor(0xFF000000);
-		else if (var->GetPNumber() == 1) c = build_sdlcolor(0x002EFF00);
-		else if (var->GetPNumber() == 2) c = build_sdlcolor(0x00FF6100);
-		else if (var->GetPNumber() == 3) c = build_sdlcolor(0xFFF00000);
+		if (var->GetLayer() == 1) c = build_sdlcolor(0xFF000000);
+		else if (var->GetLayer() == 2) c = build_sdlcolor(0x002EFF00);
+		else if (var->GetLayer() == 3) c = build_sdlcolor(0x00FF6100);
+		else if (var->GetLayer() == 4) c = build_sdlcolor(0xFFF00000);
 		else c = build_sdlcolor(0x00000000);
 		data[i].pNumber = Texture(sdl->renderer(), player, *font, c);
 		UpdateDmg(var, 0);

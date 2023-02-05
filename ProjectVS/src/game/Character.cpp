@@ -5,7 +5,10 @@
 #include "../utils/CheckML.h"
 #include <iostream>
 
-
+/// @brief aaaaa
+/// @param filename name of file
+/// @param spData spritesheetdata to write the info on, should be then sent to the AnimationManager (anim)
+/// @return returns the opened json file, in case you need to read more variables
 json Character::ReadJson(const std::string& filename, spriteSheetData &spData)
 {
 	jsonPath = filename;
@@ -21,6 +24,8 @@ json Character::ReadJson(const std::string& filename, spriteSheetData &spData)
 
 	json jsonFile;
 	file >> jsonFile;
+
+	file.close();
 
 	// variables
 	codeName = jsonFile["codeName"];

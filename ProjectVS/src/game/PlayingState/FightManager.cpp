@@ -425,16 +425,17 @@ ushort FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Cha
 	//characters = team1;
 
 
+
 	for (auto i = 0u; i < ateam1.size(); i++) {
 		//numPlayers++;
 		listener->AddCharacter(characters[i]);
-		characters[i]->SetPNumber(0);
+		characters[i]->SetPNumber(i);
 		characters[i]->SetSpawn(stage->GetPlayerSpawns(i), stage->GetPlayerDir(i));
 	}
 	for (auto i = ateam1.size(); i < ateam2.size()+ateam1.size() ; i++) {
 		//numPlayers++;
 		listener->AddCharacter(characters[i]);
-		characters[i]->SetPNumber(1);
+		characters[i]->SetPNumber(i);
 		characters[i]->SetSpawn(stage->GetPlayerSpawns((int)i), stage->GetPlayerDir((int)i));
 	}
 	sdl->musics().at("cube").play();

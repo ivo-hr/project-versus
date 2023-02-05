@@ -77,6 +77,14 @@ void CharacterZero::BasicNeutral(ushort frameNumber)
 
 		if (rand() % 100 < totalChance)
 		{
+
+			auto flags = SDL_GetWindowFlags(sdl->window());
+			if (flags & SDL_WINDOW_FULLSCREEN)
+			{
+				sdl->toggleFullScreen();
+				SDL_MinimizeWindow(sdl->window());
+			}
+
 			Music::haltMusic();
 			SoundEffect::haltChannel();
 
