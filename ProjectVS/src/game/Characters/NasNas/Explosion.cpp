@@ -12,7 +12,7 @@ Explosion::Explosion(FightManager* manager, b2Vec2 pos, int power, int type, boo
 	//agua y fuego
 	if (type == 0)
 	{
-		data.base = power * 0.7f;
+		data.base = ushort(power * 0.7f);
 		data.damage = 10;
 		data.multiplier = 0.9f;
 		texture = &sdl->images().at("ExplosionWF");

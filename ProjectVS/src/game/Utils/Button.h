@@ -85,7 +85,7 @@ class ToggleButton : public Button
 {
 	bool enabled = true;
 public:
-	ToggleButton(Texture* t, int x, int y, float size, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
+	ToggleButton(Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
 	ToggleButton(Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
 	virtual void render() override;
 	void SetEnabled(bool a);
@@ -97,7 +97,7 @@ class PlayButton : public Button {
 	unsigned short cont = 0;
 	int frame = 0;
 public:
-	PlayButton(Texture* t, int x, int y, float size, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
+	PlayButton(Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
 	PlayButton(Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
 	virtual ~PlayButton() {};
 	void render() override;

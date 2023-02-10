@@ -202,7 +202,7 @@ SDL_Rect Button::getRect()
 	return r;
 }
 
-PlayButton::PlayButton(Texture* t, int x, int y, float size, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
+PlayButton::PlayButton(Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
 	Button(t, x, y, size, p, hasHoverOver, hasPressed)
 {
 	for (auto i = 0u; i < 22; i++) {
@@ -237,7 +237,7 @@ void PlayButton::render()
 
 }
 
-ToggleButton::ToggleButton(Texture* t, int x, int y, float size, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
+ToggleButton::ToggleButton(Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
 	Button(t, x, y, size, p, hasHoverOver, hasPressed)
 {
 	defTex.w /= 2;

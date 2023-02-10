@@ -44,7 +44,7 @@ ConfigState::ConfigState(FightManager* game, short fInput) : State(game), numOfp
 	SDL_ShowCursor(1);
 }
 
-ConfigState::ConfigState(FightManager* game, const vector<char>& inputs) : State(game), numOfplayer(inputs.size())
+ConfigState::ConfigState(FightManager* game, const vector<char>& inputs) : State(game), numOfplayer((ushort)inputs.size())
 {
 	int w = fmngr->GetActualWidth();
 	int h = fmngr->GetActualHeight();
@@ -536,7 +536,7 @@ void ConfigState::initcharact()
 	int distY = (int)((float)w * 3.f / 24.f);
 	int offsetY = (int)((float)w / 12.f + (float)w / 70.f);
 
-	float buttonSize = (int)((float)w / 15.4f);
+	int buttonSize = (int)((float)w / 15.4f);
 	//c % 4 * dist + offset), (int)((ts(80) * j) + ts(50));
 
    // { 

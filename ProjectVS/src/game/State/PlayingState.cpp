@@ -58,7 +58,7 @@ PlayingState::~PlayingState()
 	fmngr->onNewGame();
 }
 
-Character* PlayingState::GetCharacter(char input, char character, ushort pNum)
+Character* PlayingState::GetCharacter(char input, short character, ushort pNum)
 {
 	auto i = pNum;
 	switch (character)
@@ -134,6 +134,7 @@ Character* PlayingState::GetCharacter(char input, char character, ushort pNum)
 		}
 		break;
 	}
+	return nullptr;
 }
 
 

@@ -86,6 +86,10 @@ protected:
 //	void (Character::* currentMove)(int);
 	ushort input_ = 0;
 
+	Uint8 baseR = 255;
+	Uint8 baseG = 255;
+	Uint8 baseB = 255;
+
 	unsigned int arrowCont = 0;
 	bool invencible = false;
 	bool drawArrow = false;

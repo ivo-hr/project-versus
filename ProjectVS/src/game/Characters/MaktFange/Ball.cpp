@@ -69,8 +69,8 @@ void MaktBall::update()
 
 				body->SetLinearDamping(3.);
 
-				data.damage *= 0.75f;
-				data.base *= 0.5f;
+				data.damage = (ushort)(data.damage * 0.75f);
+				data.base = (ushort)(data.base * 0.5f);
 				lag = 10;
 			}
 		}

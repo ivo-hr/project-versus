@@ -14,7 +14,7 @@ public:
     PlayingState(FightManager* fmngr, vector<char>player, vector<short>characters, vector<short>teams , ushort map);
     virtual  ~PlayingState();
 
-    Character* GetCharacter(char index, char character, ushort pNum);
+    Character* GetCharacter(char index, short character, ushort pNum);
 
     void update() override;
     void draw() override;

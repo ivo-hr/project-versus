@@ -435,7 +435,7 @@ ushort FightManager::StartFight(std::vector<Character*> ateam1 , std::vector<Cha
 	for (auto i = ateam1.size(); i < ateam2.size()+ateam1.size() ; i++) {
 		//numPlayers++;
 		listener->AddCharacter(characters[i]);
-		characters[i]->SetPNumber(i);
+		characters[i]->SetPNumber((ushort)i);
 		characters[i]->SetSpawn(stage->GetPlayerSpawns((int)i), stage->GetPlayerDir((int)i));
 	}
 	sdl->musics().at("cube").play();
@@ -970,18 +970,21 @@ Entity*& FightManager::GetEntityReferenceTo(Entity* toCheck)
 	for (auto i = 0u; i < entities.size(); i++)
 		if (entities[i] == toCheck)
 			return entities[i];
+	return entities[0];
 }
 Character*& FightManager::GetCharacterReferenceTo(Character* toCheck)
 {
 	for (auto i = 0u; i < characters.size(); i++)
 		if (characters[i] == toCheck)
 			return characters[i];
+	return characters[0];
 }
 Entity*& FightManager::GetCameraReferenceTo(Entity* toCheck)
 {
 	for (auto i = 0u; i < camFollow.size(); i++)
 		if (camFollow[i] == toCheck)
 			return camFollow[i];
+	return camFollow[0];
 }
 Entity*& FightManager::GetMatrixReferenceTo(Entity* toCheck)
 {
@@ -989,6 +992,7 @@ Entity*& FightManager::GetMatrixReferenceTo(Entity* toCheck)
 		for (auto i = 0u; i < entityMatrix[j].size(); i++)
 			if (entityMatrix[j][i] == toCheck)
 				return entityMatrix[j][i];
+	return entityMatrix[1][0];
 }
 
 void FightManager::TakeScreenShot()

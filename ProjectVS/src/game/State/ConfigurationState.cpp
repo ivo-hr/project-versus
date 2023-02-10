@@ -136,7 +136,6 @@ void ConfigurationState::ExitState()
 }
 void ConfigurationState::ToggleFullScreen()
 {
-
     SDL_MaximizeWindow(sdl->window());
     sdl->toggleFullScreen();
 

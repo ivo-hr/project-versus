@@ -414,6 +414,10 @@ void Character::update()
 		stateCont = 0;
 		statePower = 0;
 		efEstado = none;
+
+		baseR = 255;
+		baseG = 255;
+		baseB = 255;
 	}
 
 	if (body->IsEnabled())
@@ -720,29 +724,31 @@ void Character::draw()
 
 void Character::draw(SDL_Rect* camera)
 {
+
+	if (!alive)
+	{
+		return;
+	}
+
 	if (dash)
 	{
 		ChangeTexMod(162, 208, 208);
 	}
 	else if (shield > 0)
 	{
-		Uint8 rg = 144 - ((shieldHealth / (float)maxShield) * 128);
-		Uint8 b = 192 - ((shieldHealth / (float)maxShield) * 128);
+		Uint8 rg = 144 - Uint8((shieldHealth / (float)maxShield) * 128);
+		Uint8 b = 192 - Uint8((shieldHealth / (float)maxShield) * 128);
 		ChangeTexMod(rg, rg, b);
 	}
 	else if (stun > 0)
 	{
-		ChangeTexMod(255, 128, 128);
+		ChangeTexMod(baseR, baseG / 2, baseB / 2);
 	}
 	else
 	{
-		ChangeTexMod(255, 255, 255);
+		ChangeTexMod(baseR, baseG, baseB);
 	}
 
-	if (!alive)
-	{
-		return;
-	}
 	//xd
 	for (Particle* ent : backParticles)
 	{
@@ -1117,6 +1123,10 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 				efEstado = none;
 				statePower = 0;
 				stateCont = 0;
+
+				baseR = 255;
+				baseG = 255;
+				baseB = 255;
 			}
 			//fuego y agua
 			else if ((efEstado == fire && a.estado == water) || (efEstado == water && a.estado == fire))
@@ -1133,6 +1143,10 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 				efEstado = none;
 				statePower = 0;
 				stateCont = 0;
+
+				baseR = 255;
+				baseG = 255;
+				baseB = 255;
 			}
 			// agua y rayo
 			else if ((efEstado == water && a.estado == electric) || (efEstado == electric && a.estado == water))
@@ -1174,6 +1188,11 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 				stun += (ushort)((float)statePower * 1.5f);
 
 				AddParticle("electric", Vector2D(hurtbox.x, hurtbox.y), 1, true);
+
+				baseR = 255;
+				baseG = 255 - statePower * 2;
+				baseB = 255;
+
 			}
 			else if (efEstado == water)
 			{
@@ -1181,10 +1200,18 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 				maxSpeed -= (ushort)ralentizar;
 
 				AddParticle("water", Vector2D(hurtbox.x, hurtbox.y), 1, true);
+
+				baseR = 255 - statePower * 2;
+				baseG = 255 - statePower * 2;
+				baseB = 255;
 			}
 			else if (efEstado == fire)
 			{
 				AddParticle("fire", Vector2D(hurtbox.x, hurtbox.y), 1, true);
+
+				baseR = 255;
+				baseG = 255 - statePower * 2;
+				baseB = 255 - statePower * 2;
 			}
 		}
 	}
@@ -1487,6 +1514,10 @@ void Character::OnDeath()
 		}
 		efEstado = none;
 		statePower = 0;
+
+		baseR = 255;
+		baseG = 255;
+		baseB = 255;
 	}
 	if (lastCharacter != nullptr) {
 		lastCharacter->increaseKills();
