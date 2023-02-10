@@ -28,7 +28,18 @@ public:
         return savedState;
     }
 
-    void clearSavedState() {
+    void clearSavedState()
+    {
+        if (savedState != nullptr)
+            delete savedState;
         savedState = nullptr;
+    }
+
+    void loadSavedState()
+    {
+        auto aux = getState();
+        setState(getSavedState());
+        saveState(aux);
+        clearSavedState();
     }
 };

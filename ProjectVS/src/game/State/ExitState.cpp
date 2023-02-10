@@ -22,6 +22,7 @@ ExitState::ExitState(FightManager* game) : State(game) {
         {
             fmngr->userExit();
         });
+    yes->SetNoPointers();
 
     c = build_sdlcolor(0x33FFFC00);
     key = fontstring + "NO" + to_string(c.r) + to_string(c.g) + to_string(c.b);
@@ -31,13 +32,9 @@ ExitState::ExitState(FightManager* game) : State(game) {
     no = new Button(&sdl->msgs().at(key), w / 2 - w / 10, (h * 2 / 3) - w / 20, w / 20, w / 20, aux);
     no->SetOnClick([this]()
         {
-            State* tmp = fmngr->getState();
-            State* saved = fmngr->getSavedState();
-            fmngr->setState(saved);
-            fmngr->clearSavedState();
-            delete tmp;
-            return;
+            fmngr->loadSavedState();
         });
+    no->SetNoPointers();
 
     SDL_ShowCursor(1);
 }
@@ -52,11 +49,7 @@ void ExitState::update() {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
     if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
-        State* tmp = fmngr->getState();
-        State* saved = fmngr->getSavedState();
-        fmngr->setState(saved);
-        fmngr->clearSavedState();
-        delete tmp;
+        fmngr->loadSavedState();
         return;
     }
 
@@ -72,6 +65,9 @@ void ExitState::update() {
             return;
         }
     }
+
+    yes->update();
+    no->update();
 }
 
 void ExitState::draw() 

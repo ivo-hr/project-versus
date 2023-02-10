@@ -17,6 +17,7 @@ class ConfigurationState : public State {
     bool keyRelease = true;
 
     bool toReDraw = true;
+    bool exited = false;
 public:
 
     ConfigurationState(FightManager* fmngr , short pI);

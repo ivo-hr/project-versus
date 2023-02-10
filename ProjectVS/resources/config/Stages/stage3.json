@@ -7,29 +7,126 @@
 
   "elements": [
     {
-      "image": "nubePlat",
+      "image": "luna",
+      "whereToDraw": [
+        {
+          "x": 75.0,
+          "y": 6.0,
+          "w": 8,
+          "h": 8,
+          "parallaxValue": 0.05
+        }
+      ]
+    },
+    {
+      "image": "nube1",
       "whereToDraw": [
         {
           "x": 10.0,
-          "y": 20.0,
+          "y": 6.0,
           "w": 12.0,
           "h": 3,
-          "parallaxValue": 0.2
+          "parallaxValue": 0.1
         },
         {
           "x": 70.0,
-          "y": 25.0,
+          "y": 12.0,
           "w": 14.0,
           "h": 4,
-          "parallaxValue": 0.4
+          "parallaxValue": 0.2
         },
         {
           "x": 30.0,
-          "y": 35.0,
+          "y": 7.0,
           "w": 18.0,
           "h": 5,
+          "parallaxValue": 0.2
+        },
+        {
+          "x": 80.0,
+          "y": 12.0,
+          "w": 14.0,
+          "h": 4,
           "parallaxValue": 0.7
         },
+        {
+          "x": 40.0,
+          "y": 12.0,
+          "w": 18.0,
+          "h": 5,
+          "parallaxValue": 0.5
+        }
+      ]
+    },
+    {
+      "image": "nube2",
+      "whereToDraw": [
+        {
+          "x": 30.0,
+          "y": 15.0,
+          "w": 12.0,
+          "h": 3,
+          "parallaxValue": 0.3
+        },
+        {
+          "x": 12.0,
+          "y": 13.0,
+          "w": 18.0,
+          "h": 4.5,
+          "parallaxValue": 0.4
+        },
+        {
+          "x": 60.0,
+          "y": 9.0,
+          "w": 14.0,
+          "h": 4,
+          "parallaxValue": 0.3
+        },
+        {
+          "x": 45.0,
+          "y": 8.0,
+          "w": 18.0,
+          "h": 5,
+          "parallaxValue": 0.4
+        },
+        {
+          "x": 85.0,
+          "y": 6.0,
+          "w": 19.0,
+          "h": 5.2,
+          "parallaxValue": 0.5
+        }
+      ]
+    },
+    {
+      "image": "nube3",
+      "whereToDraw": [
+        {
+          "x": 5.0,
+          "y": 13.0,
+          "w": 12.0,
+          "h": 3,
+          "parallaxValue": 0.5
+        },
+        {
+          "x": 64.0,
+          "y": 12.0,
+          "w": 14.0,
+          "h": 4,
+          "parallaxValue": 0.6
+        },
+        {
+          "x": 30.0,
+          "y": 10.0,
+          "w": 24.0,
+          "h": 5,
+          "parallaxValue": 0.7
+        }
+      ]
+    },
+    {
+      "image": "nubePlat",
+      "whereToDraw": [
         {
           "x": 45.0,
           "y": 45.0,

@@ -59,6 +59,8 @@ void ConfigurationState::update()
 {
     fullSCheck->update();
 
+    pointers[0]->update();
+
     sfxm->update();
     sfxp->update();
     muscm->update();
@@ -66,7 +68,10 @@ void ConfigurationState::update()
     exit->update();
     back->update();
 
-    pointers[0]->update();
+    if (exited)
+    {
+        fmngr->loadSavedState();
+    }
 }
 
 void ConfigurationState::IncreaseSFX()
@@ -119,20 +124,15 @@ void ConfigurationState::GoBack()
 {
     keyRelease = false;
     toReDraw = true;
-    State* tmp = fmngr->getState();
-    State* saved = fmngr->getSavedState();
-    fmngr->setState(saved);
-    fmngr->saveState(tmp);
+    exited = true;
 }
 void ConfigurationState::ExitState()
 {
     keyRelease = false;
     toReDraw = true;
-    State* tmp = fmngr->getState();
-    State* saved = fmngr->getSavedState();
-    delete saved;
-    fmngr->saveState(tmp);
-    fmngr->setState(new MenuState(fmngr));
+    fmngr->clearSavedState();
+    fmngr->saveState(new MenuState(fmngr));
+    exited = true;
 }
 void ConfigurationState::ToggleFullScreen()
 {

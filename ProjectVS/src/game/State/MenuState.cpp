@@ -76,7 +76,6 @@ void MenuState::update() {
 
     if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
         if (fmngr->getSavedState() == nullptr) {
-            //pause
             fmngr->saveState(fmngr->getState());
             fmngr->setState(new ExitState(fmngr));
             return;
