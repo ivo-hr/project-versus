@@ -57,11 +57,7 @@ void ExitState::update() {
     int i2 = (w * 2 / 3);
     if (ih.getMousePos().first < i1 || ih.getMousePos().first > i2 || ih.getMousePos().second < (h / 3) || ih.getMousePos().second >(h * 2 / 3)) {
         if (ih.getMouseButtonState(ih.LEFT)) {
-            State* tmp = fmngr->getState();
-            State* saved = fmngr->getSavedState();
-            fmngr->setState(saved);
-            fmngr->clearSavedState();
-            delete tmp;
+            fmngr->loadSavedState();
             return;
         }
     }

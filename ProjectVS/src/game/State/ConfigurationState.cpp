@@ -57,6 +57,11 @@ ConfigurationState::~ConfigurationState()
 
 void ConfigurationState::update()
 {
+
+    if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
+        GoBack();
+    }
+
     fullSCheck->update();
 
     pointers[0]->update();

@@ -257,6 +257,7 @@ void NasNas::SpecialUpward(ushort frameNumber)
 	}
 	else if (frameNumber == attacks["specialU"].keyFrames[1])
 	{
+		anim->StartAnimation("especialUFall");
 		body->SetLinearVelocity(b2Vec2(0, 70));
 	}
 	else if (frameNumber > attacks["specialU"].keyFrames[1] && onGround)
@@ -264,9 +265,10 @@ void NasNas::SpecialUpward(ushort frameNumber)
 		mana -= 450;
 		ChangeMove([this](int f) { SpecialUpHit(f); });
 	}
-	if (body->GetLinearVelocity().x > 0 || body->GetLinearVelocity().x < 0)
+	else if (frameNumber >= attacks["specialU"].totalFrames)
 	{
-		body->SetLinearVelocity(b2Vec2(0, body->GetLinearVelocity().y));
+		currentMove = nullptr;
+		moveFrame = -1;
 	}
 }
 

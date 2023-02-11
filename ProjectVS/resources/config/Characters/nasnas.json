@@ -385,6 +385,15 @@
         "loop": false
       },
       {
+        "id": "especialUFall",
+        "iniSprite": 57,
+        "totalSprites": 1,
+        "keySprite": [ ],
+        "attack": "",
+        "totalFrames": 10,
+        "loop": true
+      },
+      {
         "id": "especialUHit",
         "iniSprite": 85,
         "totalSprites": 5,

@@ -441,10 +441,10 @@ void Character::UpdateAnimations()
 
 	if (!GetGround())
 	{
-		if (body->GetLinearVelocity().y > 0.01f && anim->CurrentAnimation() != "airborne" + animAddon)
-			anim->StartAnimation("airborne" + animAddon);
-		else if (body->GetLinearVelocity().y < -0.01f && anim->CurrentAnimation() != "jump" + animAddon)
+		if (body->GetLinearVelocity().y < -0.01f && anim->CurrentAnimation() != "jump" + animAddon)
 			anim->StartAnimation("jump" + animAddon);
+		else if (body->GetLinearVelocity().y > 0.01f && anim->CurrentAnimation() != "airborne" + animAddon)
+			anim->StartAnimation("airborne" + animAddon);
 	}
 	else
 	{
