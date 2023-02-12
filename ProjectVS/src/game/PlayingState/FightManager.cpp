@@ -212,6 +212,13 @@ void FightManager::InitMainLoop()
 void FightManager::Update()
 {
 
+	if (ih.isKeyDown(SDLK_1) && ih.keyDownEvent()) {
+		TakeScreenShot();
+		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 0, 0);
+		SDL_Rect a = { 0, 0, width, height };
+		SDL_RenderFillRect(sdl->renderer(), &a);
+	}
+
 	if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
 		if (getSavedState() == nullptr) {
 			//pause
@@ -273,13 +280,6 @@ void FightManager::Update()
 		}
 		if (it != entities.end())
 			++it;
-	}
-
-	if (ih.isKeyDown(SDLK_1) && ih.keyDownEvent()) {
-		TakeScreenShot();
-		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 0, 0);
-		SDL_Rect a = { 0, 0, width, height };
-		SDL_RenderFillRect(sdl->renderer(), &a);
 	}
 	
 	if (endGameTimer + 1000 < SDL_GetTicks() && endGame) {
