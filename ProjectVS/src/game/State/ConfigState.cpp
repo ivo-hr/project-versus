@@ -105,7 +105,7 @@ ConfigState::~ConfigState()
 	for (auto e : playerPointers)delete e;
 	for (auto e : playerTexture)delete e;
 	for (auto e : charactTexture)delete e;
-	for (auto e : buttons) delete e;
+	for (auto e : buttons) if (e) delete e;
 	for (auto e : p)
 	{
 		for (auto a : e)delete a;
@@ -175,7 +175,8 @@ void ConfigState::update()
 		checkPlayerReady();
 		for (auto e : buttons)
 		{
-			e->update();
+			if (e)
+				e->update();
 		}
 		teammode->update();
 		normalmode->update();
@@ -458,7 +459,11 @@ void ConfigState::playerMenuRender()
 			}
 		}
 	}
-	for (auto b : buttons) b->render();
+	for (auto b : buttons)
+	{
+		if (b)
+			b->render();
+	}
 	normalmode->render();
 	teammode->render();
 	if (ready) {
@@ -560,6 +565,7 @@ void ConfigState::initcharact()
 	buttons[3]->SetOnPointerClick([this](int as) { SelectCharacter(as, "dinoSoulsSelect", 3); });
 	charName.push_back("     Togo");
 
+	/*
 	buttons[4] = new Button(&sdl->images().at("yunoSelect"), dist * 4 + offset, offsetY, buttonSize, playerPointers);
 	buttons[4]->SetOnPointerClick([this](int as) { SelectCharacter(as, "yunoSelect", 4); });
 	charName.push_back("     Yuno");
@@ -567,6 +573,10 @@ void ConfigState::initcharact()
 	buttons[5] = new Button(&sdl->images().at("melvinSelect"), offset, distY + offsetY, buttonSize, playerPointers);
 	buttons[5]->SetOnPointerClick([this](int as) { SelectCharacter(as, "melvinSelect", 5); });
 	charName.push_back("    Melvin");
+	*/
+
+	charName.push_back(" Coming Soon");
+	charName.push_back(" Coming Soon");
 
 	charName.push_back(" Coming Soon");
 	charName.push_back(" Coming Soon");

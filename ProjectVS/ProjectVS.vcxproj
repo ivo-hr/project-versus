@@ -200,14 +200,14 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)box2d\include\box2d;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)box2d\lib\Debug;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)bin\</OutDir>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)$(Configuration)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)box2d\include\box2d;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)box2d\lib\Release;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)bin\</OutDir>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
