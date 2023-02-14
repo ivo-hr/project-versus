@@ -565,7 +565,6 @@ void ConfigState::initcharact()
 	buttons[3]->SetOnPointerClick([this](int as) { SelectCharacter(as, "dinoSoulsSelect", 3); });
 	charName.push_back("     Togo");
 
-	/*
 	buttons[4] = new Button(&sdl->images().at("yunoSelect"), dist * 4 + offset, offsetY, buttonSize, playerPointers);
 	buttons[4]->SetOnPointerClick([this](int as) { SelectCharacter(as, "yunoSelect", 4); });
 	charName.push_back("     Yuno");
@@ -573,10 +572,6 @@ void ConfigState::initcharact()
 	buttons[5] = new Button(&sdl->images().at("melvinSelect"), offset, distY + offsetY, buttonSize, playerPointers);
 	buttons[5]->SetOnPointerClick([this](int as) { SelectCharacter(as, "melvinSelect", 5); });
 	charName.push_back("    Melvin");
-	*/
-
-	charName.push_back(" Coming Soon");
-	charName.push_back(" Coming Soon");
 
 	charName.push_back(" Coming Soon");
 	charName.push_back(" Coming Soon");

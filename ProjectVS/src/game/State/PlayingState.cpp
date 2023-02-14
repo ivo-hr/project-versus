@@ -82,24 +82,24 @@ Character* PlayingState::GetCharacter(char input, short character, ushort pNum)
 		return new Melvin(fmngr, b2Vec2((float)(20 + i * 10), 0.f), input, i);
 		break;
 	case -1://Aleatorio
-		int charac = sdl->rand().nextInt(0, 9);
+		int charac = sdl->rand().nextInt(0, 13);
 
 		switch (input)
 		{
 		case -1:
-			if (ih.isKeyDown(playerPrefs.Keyboard1Down()))charac = 8;
+			if (ih.isKeyDown(playerPrefs.Keyboard1Down()))charac = 12;
 			break;
 		case -2:
-			if (ih.isKeyDown(playerPrefs.Keyboard2Down()))charac = 8;
+			if (ih.isKeyDown(playerPrefs.Keyboard2Down()))charac = 12;
 			break;
 		default:
 			if (ih.xboxGetAxesState(input, 1) == 1 || ih.xboxGetDpadState(input, 2))
-				charac = 8;
+				charac = 12;
 			break;
 		}
 
 #ifdef _DEBUG
-		charac = 8;		//Si estamos en debug siempre sale Ciro
+		charac = 12;		//Si estamos en debug siempre sale Ciro
 #endif // _DEBUG
 
 		switch (charac)
@@ -120,16 +120,16 @@ Character* PlayingState::GetCharacter(char input, short character, ushort pNum)
 		case 7:
 			return new Makt(fmngr, b2Vec2((float)(20 + i * 10), 0.f), input, i);
 			break;
-		case 8: //Zero
-			return new CharacterZero(fmngr, b2Vec2((float)(20 + i * 10), 0.f), input, i);
-			break;
-		case 9: //Yuno
-		case 10:
+		case 8: //Yuno
+		case 9:
 			return new Yuno(fmngr, b2Vec2((float)(20 + i * 10), 0.f), input, i);
 			break;
-		case 11: //Yuno
-		case 12:
+		case 10: //Melvin
+		case 11:
 			return new Melvin(fmngr, b2Vec2((float)(20 + i * 10), 0.f), input, i);
+			break;
+		case 12: //Zero
+			return new CharacterZero(fmngr, b2Vec2((float)(20 + i * 10), 0.f), input, i);
 			break;
 		}
 		break;
