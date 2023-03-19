@@ -123,7 +123,7 @@ void ConfigState::InitAllButtons(int w, int h)
 	buttons[8] = new Button(&sdl->images().at("mB"), (int)(w * 14 / 15), (int)(h - w * 1.2f / 15), (int)(w / 15), playerPointers);
 	buttons[8]->SetOnClick([this]() { RemovePlayer(); });
 
-	buttons[9] = new Button(&sdl->images().at("ConfigBut"), w * 20 / 21, 0, w / 21, playerPointers);
+	buttons[9] = new Button(&sdl->images().at("ConfigBut"), (w * 20 / 21) + 1, -1, w / 21, playerPointers);
 	buttons[9]->SetOnClick([this]() { OpenConfig(); });
 
 	play = new PlayButton(&sdl->images().at("play"), 0, 0, w, h, playerPointers);
@@ -178,6 +178,8 @@ void ConfigState::update()
 			if (e)
 				e->update();
 		}
+		if (fmngr->getState() != this)
+			return;
 		teammode->update();
 		normalmode->update();
 		for (auto e : p)

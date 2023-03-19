@@ -30,5 +30,8 @@ public:
 	bool getActive() { return active; };
 	void setPosition(int newX, int newY);
 	void setInput(short in) { input = in; };
+	int getInput() {
+		return input;
+	}
 	SDL_Rect getRect();
 };

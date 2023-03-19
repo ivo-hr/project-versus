@@ -193,6 +193,7 @@ void Makt::SpecialNeutral(ushort frameNumber)
 	else if (frameNumber == attacks["specialN"].keyFrames[0])
 	{
 		manager->SetShake(Vector2D(-3 * dir, 3), 8);
+		input->rumbleController(0xaaaa, 100);
 		CreateHitBox(&attacks["specialN"].hitBoxes[0]);
 	}
 	else if (frameNumber >= attacks["specialN"].totalFrames)
@@ -363,6 +364,7 @@ void Makt::SpecialDownward(ushort frameNumber)
 	}
 	else if (frameNumber == attacks["specialD"].keyFrames[0])
 	{
+		input->rumbleController(0x7777, 100);
 		CreateHitBox(&attacks["specialD"].hitBoxes[0]);
 	}
 	else if (frameNumber >= attacks["specialD"].totalFrames)

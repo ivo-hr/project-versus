@@ -34,6 +34,8 @@ public:
 		ih.refresh();
 	};
 
+	void rumbleController(unsigned short strengh, unsigned short duration);
+
 	Character* OriginalOwner() { return owner; };
 	void SetOriginalOwner(Character* a) { owner = a; };
 

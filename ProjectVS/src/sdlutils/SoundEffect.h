@@ -49,6 +49,10 @@ public:
 		return Mix_VolumeChunk(chunk_, volume);
 	}
 
+	inline int getVolume() {
+		return Mix_VolumeChunk(chunk_, -1);
+	}
+
 	// static methods for sound effects
 	//
 	inline static void pauseChannel(int channel = -1) {
@@ -70,6 +74,11 @@ public:
 		_CHECK_CHANNEL_(channel);
 		assert(volume >= 0 && volume <= 128);
 		return Mix_Volume(channel, volume);
+	}
+
+	inline static int getChannelVolume(int channel = -1) {
+		_CHECK_CHANNEL_(channel);
+		return Mix_Volume(channel, -1);
 	}
 
 	inline static int setNumberofChannels(int n) {

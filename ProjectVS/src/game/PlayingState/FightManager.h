@@ -85,7 +85,7 @@ class FightManager : public StateMachine
 	SDL_Rect camera; 
 	SDL_Rect auxCam;
 
-	ushort cameraOffset = 75;
+	ushort cameraOffset = 50;
 	Vector2D camShake;
 	uint16 shakeDuration;
 

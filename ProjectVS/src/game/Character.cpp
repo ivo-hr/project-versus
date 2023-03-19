@@ -886,8 +886,11 @@ void Character::CheckHits()
 								oponent->AddHitLag(hitboxes[i]->GetHitlag());
 							}
 
+							input->rumbleController(0xffff, hitboxes[i]->hitdata.damage * 10);
+
 							if (!shakeApplied)
 							{
+
 								oponent->SetShake(Vector2D(hitboxes[i]->hitdata.direction.x, hitboxes[i]->hitdata.direction.y), hitboxes[i]->GetHitlag());
 
 								if (hitboxes[i]->GetHitlag() >= 15)
@@ -952,7 +955,9 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 		{
 			damageTaken += (ushort)(a.damage * 0.4f);
 			hud->UpdateDmg(this, damageTaken);
-			controlHitLag = false;
+			controlHitLag = false; 
+			
+			input->rumbleController(0x8888, 150);
 		}
 		//Shield broken
 		else
@@ -1000,6 +1005,8 @@ void Character::OnParry(Entity* attacker, bool& controlHitLag, HitData& a, bool&
 	manager->SetShake(Vector2D(a.direction.x * 2, a.direction.y * 3), 3);
 	controlCamShake = true;
 	controlShake = true;
+	
+	input->rumbleController(0xffff, 100);
 
 	float xEyeDiff = eyePos.getX() - (hurtbox.w / 2.f);
 
@@ -1046,6 +1053,8 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 	if (abs(aux.y) > 10.f)
 		body->GetFixtureList()->GetNext()->SetRestitution(stunnedBounciness);
 
+	input->rumbleController(0xffff, 70);
+
 	if (IsGoingToKill(aux))
 	{
 		ushort currHitlag;
@@ -1053,6 +1062,8 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 			currHitlag = 50;
 		else
 			currHitlag = 40;
+
+		input->rumbleController(0xffff, currHitlag * 9);
 
 		manager->KillingBlow();
 
@@ -1481,6 +1492,8 @@ void Character::OnDeath()
 	body->SetGravityScale(10.0f);
 	//Canal 1 , (antes a veces no se escucha)
 	sdl->soundEffects().at("death").play(0);
+
+	input->rumbleController(0xffff, 250);
 
 	waitingToRespawn = true;
 	lives--;

@@ -62,7 +62,7 @@ public:
 	b2Vec2 GetPlayerSpawns(int index) { return playerSpawns[index]; };
 	int GetPlayerDir(int index);
 
-	void Update(SDL_Rect* camera);
+	void DrawStage(SDL_Rect* camera);
 
 	double GetScreenRatio() { return (b2ToSDL * 50) / sdl->width(); }
 

@@ -15,9 +15,9 @@ ConfigurationState::ConfigurationState(FightManager* game , short pI) : State(ga
 
     pointers[0] = new PlayerPointer(&sdl->images().at("P1P"), w / 2, h / 2, w, h, pI);
 
-    exit = new Button(&sdl->images().at("backToMenu"), 0, h - w / 12, w / 16, w / 12, pointers);
+    exit = new Button(&sdl->images().at("backToMenu"), -1, (h - w / 12) + 1, w / 16, w / 12, pointers);
     exit->SetOnClick([this]() {ExitState(); });
-    back = new Button(&sdl->images().at("BackBut"), 0, 0, w / 12, w / 12, pointers);
+    back = new Button(&sdl->images().at("BackBut"), -1, -1, w / 12, w / 12, pointers);
     back->SetOnClick([this]() {GoBack(); });
 
     int butW = w / 50;
@@ -26,11 +26,13 @@ ConfigurationState::ConfigurationState(FightManager* game , short pI) : State(ga
     muscm->SetOnClick([this]() {DecreaseMusic(); });
     muscp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - butW / 2), butW, butW, pointers);
     muscp->SetOnClick([this]() {IncreaseMusic(); });
+    musicV = nearbyint((float)Music::getMusicVolume() * 10 / (float)128);
   
     sfxm = new Button(&sdl->images().at("minusB"), (int)(w * 29 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - butW / 2), butW, butW, pointers);
     sfxm->SetOnClick([this]() {DecreaseSFX(); });
     sfxp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - butW / 2), butW, butW, pointers);
     sfxp->SetOnClick([this]() {IncreaseSFX(); });
+    sfxV = nearbyint((float)SoundEffect::getChannelVolume() * 10 / (float)128);
 
     fullSCheck = new ToggleButton(&sdl->images().at("check"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)(h * 1.2f / 2 - butW), butW * 2, butW * 2, pointers);
     fullSCheck->SetEnabled(SDL_GetWindowFlags(sdl->window()) & SDL_WINDOW_FULLSCREEN);
@@ -141,7 +143,10 @@ void ConfigurationState::ExitState()
 }
 void ConfigurationState::ToggleFullScreen()
 {
-    SDL_MaximizeWindow(sdl->window());
+    // SDL_MaximizeWindow(sdl->window());
+
+    //TODO: recalcular el tamaño maximo de resolucion y aplicarlo
+
     sdl->toggleFullScreen();
 
     auto flags = SDL_GetWindowFlags(sdl->window());

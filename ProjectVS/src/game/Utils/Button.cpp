@@ -164,6 +164,7 @@ void Button::update()
 				SDL_Rect p = pointers[i]->getRect();
 				if (pointers[i]->Click() && SDL_HasIntersection(&r, &p))
 				{
+					ih.xboxSetRumble(pointers[i]->getInput(), USHRT_MAX, 100);
 					if (onMouseClick != nullptr)
 						onMouseClick();
 					if (hasBeenDeleted)

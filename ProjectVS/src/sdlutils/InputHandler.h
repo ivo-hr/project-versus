@@ -246,6 +246,13 @@ public:
 		else return false;
 	}
 
+	inline void xboxSetRumble(int joy, unsigned short strengh, unsigned short dur) {
+		if (SDL_NumJoysticks() > joy) {
+			SDL_GameController* gc = SDL_GameControllerOpen(SDL_NumJoysticks() - joy - 1);
+			SDL_GameControllerRumble(gc, strengh, strengh, dur);
+		}
+	}
+
 	// Para hacer pruebas con los mandos
 	inline void controllerAxesTest(int joy, int axesNumber) {
 		if (SDL_NumJoysticks() > joy) {

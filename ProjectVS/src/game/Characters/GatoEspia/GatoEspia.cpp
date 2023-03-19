@@ -497,6 +497,8 @@ void GatoEspia::TpAtack(ushort frameNumber)
 	else if (frameNumber == attacks["specialLHit"].keyFrames[0])
 	{
 		CreateHitBox(&attacks["specialLHit"].hitBoxes[0]);
+
+		input->rumbleController(0xaaaa, 100);
 	}
 	else if (frameNumber == attacks["specialLHit"].totalFrames)
 	{
@@ -536,6 +538,8 @@ bool GatoEspia::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 		float xEyeDiff = eyePos.getX() - (hurtbox.w / 2.f);
 		AddParticle("parryS", { hurtbox.x + (hurtbox.w / 2.f) - (xEyeDiff * dir), hurtbox.y + eyePos.getY() }, dir, true);
 		sdl->soundEffects().at("parry").play();
+
+		input->rumbleController(0x8888, 100);
 		return false;
 	}
 	counter = false;

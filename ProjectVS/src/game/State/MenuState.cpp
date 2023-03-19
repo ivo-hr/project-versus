@@ -14,7 +14,7 @@ MenuState::MenuState(FightManager* game) : State(game)
     int h = fmngr->GetActualHeight();
     background = &sdl->images().at("menu");
 
-    exit = new Button(&sdl->images().at("ExitBut"), 0, h * 11 / 12, w / 12, h / 12, aux);
+    exit = new Button(&sdl->images().at("ExitBut"), -1, (h * 11 / 12) + 1, w / 12, h / 12, aux);
     exit->SetOnClick([this]() {fmngr->userExit(); });
     config = new Button(&sdl->images().at("ConfigBut"), w * 15 / 16, h - w / 16, w / 16, w / 16, aux);
     config->SetOnClick([this]() {

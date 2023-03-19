@@ -92,3 +92,8 @@ bool InputConfig::taunt()
 		return ih.xboxGetButtonState(typeofInput, playerPrefs.ControllerTaunt());
 	}
 }
+
+void InputConfig::rumbleController(unsigned short strengh, unsigned short duration)
+{
+	ih.xboxSetRumble(typeofInput, strengh, duration);
+}

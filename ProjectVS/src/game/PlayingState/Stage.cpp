@@ -149,9 +149,8 @@ int Stage::GetPlayerDir(int index)
 	return playerSpawns[index].x < deathzoneSize.x / 2 ? 1: -1 ;
 }
 
-void Stage::Update(SDL_Rect* camera)
+void Stage::DrawStage(SDL_Rect* camera)
 {
-	sdl->clearRenderer();
 
 	SDL_Rect auxDeath = deathZone;
 

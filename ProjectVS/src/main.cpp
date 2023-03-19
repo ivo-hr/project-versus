@@ -19,6 +19,8 @@ int main(int ac, char **av) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // Check Memory Leaks
 #endif // _DEBUG
 
+	int maxRenderWidth = 1680;
+
 	// Initialise the SDLGame singleton
 	SDLUtils::init("Project Vs21", 512, 288,
 		"resources/config/resources.json");
@@ -28,44 +30,38 @@ int main(int ac, char **av) {
 	SDL_DisplayMode DM;
 	SDL_GetDesktopDisplayMode(0, &DM);
 
-	//Obtenemos el tama�o de la pantalla
+	Vector2D size;
 
-	/*
-	float scaleX = (float)DM.w / sdl.width();
-	float scaleY = (float)DM.h / sdl.height();
+	if (maxRenderWidth < DM.w)
+	{
+		double ratio = (double)DM.h / (double)DM.w;
+		size = Vector2D(maxRenderWidth, (int)(maxRenderWidth * ratio));
 
-	SDL_RenderSetScale(sdl.renderer(), scaleX, scaleY);
-	*/
+		SDL_SetWindowSize(sdl.window(), size.getX(), size.getY());
+	}
+	else
+	{
+		size = Vector2D(DM.w, DM.h);
+		SDL_MaximizeWindow(sdl.window());
+	}
 
-	//Escalamos toda la ventana para que se ajuste al tama�o de la pantalla
+	// SDL_SetWindowPosition(sdl.window(), 0, 40);
 
-	//Cambiamos el tama�o de la ventana
-
-	//SDL_SetWindowPosition(sdl.window(), 0, 5);
-	//Ponemos en pantalla completa
-
-	SDL_MaximizeWindow(sdl.window());
-	SDL_SetWindowSize(sdl.window(), DM.w, DM.h);
-	SDL_RenderSetLogicalSize(sdl.renderer(), DM.w, DM.h);
-	sdl.toggleFullScreen();
-
-#ifdef _DEBUG
-
-	sdl.toggleFullScreen();
-	//SDL_MaximizeWindow(sdl.window());
-	int w, h;
-	SDL_GetWindowSize(sdl.window(), &w, &h);
-	SDL_RenderSetLogicalSize(sdl.renderer(), w, h);
-
-	Music::setMusicVolume((int)(1));
-	SoundEffect::setChannelVolume((int)(1));
-
-#endif // _DEBUG
+	// SDL_MaximizeWindow(sdl.window());
 
 	SDL_SetWindowResizable(sdl.window(), SDL_TRUE);
 
-	//show the cursor
+	// SDL_MaximizeWindow(sdl->window());
+	// sdl->toggleFullScreen();
+#ifndef _DEBUG
+	// SDL_MaximizeWindow(sdl->window());
+	sdl.toggleFullScreen();
+#endif
+
 	sdl.showCursor();
+
+	Music::setMusicVolume((int)(1));
+	SoundEffect::setChannelVolume((int)(1));
 
 	// reference to the input handler (we could use a pointer, I just . rather than ->).
 	// you can also use the inline method ih() that is defined in InputHandler.h
@@ -88,6 +84,8 @@ int main(int ac, char **av) {
 			s = "And we don't know why";
 
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, title, s, sdl.window());
+
+		return -1;
 	}
 	delete fghtmngr;
 	SDL_Quit();

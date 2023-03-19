@@ -39,20 +39,24 @@ void FightManager::MoveCamera()
 		}
 	}
 
+	ushort curOffset = cameraOffset + (maxX - minX) * 0.1f;
+
 	float whr = (float)width / (float)height;
 	float hwr = (float)height / (float)width;
 
 	if (maxX - minX >= (maxY - minY) * whr)
 	{
-		cameraEnd.x = minX - cameraOffset;
-		cameraEnd.w = (maxX - minX) + cameraOffset * 2;
+		// curOffset = cameraOffset + (maxX - minX) * 0.2f;
+		cameraEnd.x = minX - curOffset;
+		cameraEnd.w = (maxX - minX) + curOffset * 2;
 		cameraEnd.h = (int)(cameraEnd.w * hwr);
 		cameraEnd.y = minY - (cameraEnd.h - (maxY - minY)) / 2;
 	}
 	else
 	{
-		cameraEnd.y = minY - (int)((float)cameraOffset * hwr);
-		cameraEnd.h = (maxY - minY) + (int)((int)cameraOffset * 2 * hwr);
+		// curOffset = cameraOffset + (maxY - minY) * whr * 0.2f;
+		cameraEnd.y = minY - (int)((float)curOffset * hwr);
+		cameraEnd.h = (maxY - minY) + (int)((int)curOffset * 2 * hwr);
 		cameraEnd.w = (int)(cameraEnd.h * whr);
 		cameraEnd.x = minX - (cameraEnd.w - (maxX - minX)) / 2;
 	}
@@ -126,6 +130,8 @@ FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
 	width = w;
 	height = h;
 
+	SDL_RenderSetLogicalSize(sdl->renderer(), w, h);
+
 	listener = new MyListener();
 	stage = new Stage(this, sdl, listener, step);
 
@@ -182,6 +188,9 @@ void FightManager::InitMainLoop()
 
 		double frameTime = sdl->currRealTime() - startTime;
 
+		if (ih.getMouseButtonState(ih.LEFT))
+			cout << ih.getMousePos().first << ", " << ih.getMousePos().second << endl;
+
 		if (frameTime < (step * 1000))
 		{
 			SDL_Delay((Uint32)((step * 1000) - frameTime));
@@ -212,11 +221,14 @@ void FightManager::InitMainLoop()
 void FightManager::Update()
 {
 
-	if (ih.isKeyDown(SDLK_1) && ih.keyDownEvent()) {
+	if (ih.isKeyDown(SDLK_1) && ih.keyDownEvent())
+	{
 		TakeScreenShot();
+		/*
 		SDL_SetRenderDrawColor(sdl->renderer(), 0, 0, 0, 0);
 		SDL_Rect a = { 0, 0, width, height };
 		SDL_RenderFillRect(sdl->renderer(), &a);
+		*/
 	}
 
 	if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
@@ -237,16 +249,9 @@ void FightManager::Update()
 
 	stage->GetWorld()->Step(step, 1, 1);
 
-	if (scount > -1) {
-
-		stage->Update(&camera);
-		startCount();
-	}
-	else
+	if (scount <= -1)
 	{
 		MoveCamera();
-
-		stage->Update(&camera);
 
 		while (!toAdd.empty())
 		{
@@ -266,20 +271,20 @@ void FightManager::Update()
 			if (ent->IsAlive())
 				ent->CheckHits();
 		}
-	}
 
-	auto it = entities.begin();
+		auto it = entities.begin();
 
-	//Elimina entidades a borrar;
-	while (it != entities.end())
-	{
-		if ((*it)->ToDelete())
+		//Elimina entidades a borrar;
+		while (it != entities.end())
 		{
-			auto a = RemoveEntity(it);
-			it = a;
+			if ((*it)->ToDelete())
+			{
+				auto a = RemoveEntity(it);
+				it = a;
+			}
+			if (it != entities.end())
+				++it;
 		}
-		if (it != entities.end())
-			++it;
 	}
 	
 	if (endGameTimer + 1000 < SDL_GetTicks() && endGame) {
@@ -291,6 +296,14 @@ void FightManager::Update()
 
 void FightManager::DrawFight()
 {
+	sdl->clearRenderer();
+
+	stage->DrawStage(&camera);
+
+	if (scount > -1)
+	{
+		startCount();
+	}
 
 	auto it = entities.end();
 
@@ -301,6 +314,8 @@ void FightManager::DrawFight()
 		if ((*it)->IsAlive())
 			(*it)->draw(&camera);
 	}
+
+	// stage draw foreground
 
 	for (Character* c : characters)
 	{
