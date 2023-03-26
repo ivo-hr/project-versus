@@ -25,6 +25,7 @@ public:
     void next() override;
     void OnEnable() override {};
     void OnDisable() override {};
+    void Reset() override {};
 
     string getStateName() const override {
         return "GameOver state";

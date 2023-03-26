@@ -35,6 +35,7 @@ public:
     void next() override;
     void OnEnable() override { SDL_ShowCursor(1); };
     void OnDisable() override {};
+    void Reset() override {};
 
     string getStateName() const override {
         return "Pause state";

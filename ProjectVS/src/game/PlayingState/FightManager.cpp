@@ -221,6 +221,15 @@ void FightManager::InitMainLoop()
 void FightManager::Update()
 {
 
+#ifdef _DEBUG
+	if (ih.isKeyDown(SDLK_RETURN) && ih.keyDownEvent())
+	{
+		onNewGame();
+		getState()->Reset();
+	}
+#endif // _DEBUG
+
+
 	if (ih.isKeyDown(SDLK_1) && ih.keyDownEvent())
 	{
 		TakeScreenShot();
@@ -403,7 +412,12 @@ ushort FightManager::StartFight(std::vector<Character*> ent)
 		characters[i]->OnFightBegin();
 	}
 	
+#ifdef _DEBUG
+	scount = 0;
+#else
 	scount = 4;
+#endif // _DEBUG
+
 	startticks = 0;
 	return 1;
 }

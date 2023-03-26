@@ -10,47 +10,25 @@
 
 
 
-PlayingState::PlayingState(FightManager* game, vector<char>playersInput, vector<short>characters , ushort map) : State(game) {
-	std::vector<Character*> entities;
-	// input del character (al menos de momento):
-	// 0 y 1: teclado
-	// 2 y 3: mando NES
-	// 4 y 5: mando PS4 o Xbox One
-	string s = "resources/config/Stages/stage" + to_string(map) + ".json";
-	fmngr->LoadStage(s);
+PlayingState::PlayingState(FightManager* game, const vector<char>& playersInput, const vector<short>& characters , ushort map) : State(game) {
 
-	for (auto i = 0u; i < playersInput.size(); i++)
-	{
-		entities.push_back(GetCharacter(playersInput[i], characters[i], i));
-	}
 	playersInput_ = playersInput;
+	characters_ = characters;
+	teams_ = vector<short>();
+	teams_.clear();
+	map_ = map;
 
-	SDL_ShowCursor(0);
-
-	fmngr->StartFight(entities);
-
+	Reset();
 }
 
-PlayingState::PlayingState(FightManager* game, vector<char> playersInput, vector<short> characters, vector<short> teams, ushort map) : State(game)
+PlayingState::PlayingState(FightManager* game, const vector<char>& playersInput, const vector<short>& characters, const vector<short>& teams, ushort map) : State(game)
 {
-	std::vector<Character*> team1;
-	std::vector<Character*> team2;
-	string s = "resources/config/Stages/stage" + to_string(map) + ".json";
-	fmngr->LoadStage(s);
-	//fmngr->LoadStage("resources/config/stage2.json");
-
-	for (auto i = 0u; i < playersInput.size(); i++)
-	{
-		if (teams[i] == 0)
-			team1.push_back(GetCharacter(playersInput[i], characters[i], i));
-		else
-			team2.push_back(GetCharacter(playersInput[i], characters[i], i));
-	}
 	playersInput_ = playersInput;
+	characters_ = characters;
+	teams_ = teams;
+	map_ = map;
 
-	SDL_ShowCursor(0);
-
-	fmngr->StartFight(team1, team2);
+	Reset();
 }
 
 PlayingState::~PlayingState()
@@ -151,4 +129,43 @@ void PlayingState::next() {
 	vector<vector<ushort>>gameStats = fmngr->getGameStats();
 	fmngr->setState(new GameOverState(fmngr, winnersTextures, gameStats, fmngr->getWinnerInput(), playersInput_));
 	delete this;
+}
+
+void PlayingState::Reset()
+{
+	if (teams_.empty())
+	{
+		std::vector<Character*> entities;
+
+		string s = "resources/config/Stages/stage" + to_string(map_) + ".json";
+		fmngr->LoadStage(s);
+
+		for (auto i = 0u; i < playersInput_.size(); i++)
+		{
+			entities.push_back(GetCharacter(playersInput_[i], characters_[i], i));
+		}
+
+		SDL_ShowCursor(0);
+
+		fmngr->StartFight(entities);
+	}
+	else
+	{
+		std::vector<Character*> team1;
+		std::vector<Character*> team2;
+		string s = "resources/config/Stages/stage" + to_string(map_) + ".json";
+		fmngr->LoadStage(s);
+
+		for (auto i = 0u; i < playersInput_.size(); i++)
+		{
+			if (teams_[i] == 0)
+				team1.push_back(GetCharacter(playersInput_[i], characters_[i], i));
+			else
+				team2.push_back(GetCharacter(playersInput_[i], characters_[i], i));
+		}
+
+		SDL_ShowCursor(0);
+
+		fmngr->StartFight(team1, team2);
+	}
 }

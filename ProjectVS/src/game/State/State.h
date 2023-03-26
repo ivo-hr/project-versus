@@ -34,6 +34,7 @@ public:
     virtual void next() = 0;
     virtual void OnEnable() = 0;
     virtual void OnDisable() = 0;
+    virtual void Reset() = 0;
     virtual void jump(State* state);
     virtual void jumpWithoutDelete(State* state);
     bool doQuit();
