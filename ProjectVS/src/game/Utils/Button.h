@@ -14,7 +14,7 @@ protected:
 
 	int x,y,w,h;
 
-	Texture* tex = nullptr;
+	const Texture* tex = nullptr;
 	bool hasHoverSprite = false;
 	bool hasPressedSprite = false;
 
@@ -51,8 +51,8 @@ protected:
 	bool active = true;
 
 public:
-	Button(Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
-	Button(Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
+	Button(const Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
+	Button(const Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
 
 	virtual ~Button()
 	{
@@ -85,8 +85,8 @@ class ToggleButton : public Button
 {
 	bool enabled = true;
 public:
-	ToggleButton(Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
-	ToggleButton(Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
+	ToggleButton(const Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
+	ToggleButton(const Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
 	virtual void render() override;
 	void SetEnabled(bool a);
 };
@@ -97,8 +97,8 @@ class PlayButton : public Button {
 	unsigned short cont = 0;
 	int frame = 0;
 public:
-	PlayButton(Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
-	PlayButton(Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
+	PlayButton(const Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
+	PlayButton(const Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver = false, bool hasPressed = false);
 	virtual ~PlayButton() {};
 	void render() override;
 	void reset() override { frame = 0; };

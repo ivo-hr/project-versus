@@ -5,49 +5,21 @@
 #include "../../utils/CheckML.h"
 #include "../Utils/PlayerConfigs.h"
 
-ConfigState::ConfigState(FightManager* game, short fInput) : State(game), numOfplayer(2)
+vector<char> ConfigState::AuxFunc(char inp)
 {
-	int w = fmngr->GetActualWidth();
-	int h = fmngr->GetActualHeight();
-
-
-	playerPointers.push_back(new PlayerPointer(&sdl->images().at("P1P"), w / 2, h / 2, w, h, fInput));
-	playerPointers.push_back(new PlayerPointer(&sdl->images().at("P2P"), w / 2, h / 2, w, h));
-	playerPointers.push_back(new PlayerPointer(&sdl->images().at("P3P"), w / 2, h / 2, w, h));
-	playerPointers.push_back(new PlayerPointer(&sdl->images().at("P4P"), w / 2, h / 2, w, h));
-	playerPointers[0]->setActive(true);
-
-	InitAllButtons(w, h);
-
-	playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P1")));
-	playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P2")));
-	playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P3")));
-	playerTexture.push_back(new PlayerSelectRect(&sdl->images().at("P4")));
-
-	usedKeyboard.resize(2);
-	playerInput.resize(1);
-	playerInput[0] = (char)fInput;
-	playerTexture[0]->setgotInput(true);
-	charactersSelect.resize(2);
-	nMandos = SDL_NumJoysticks();
-	usedPad.resize(4);
-	selected.resize(4);
-	if (fInput >= 0) { usedPad[fInput] = true; playerTexture[0]->setFront(&sdl->images().at("Mando")); }
-	else if (fInput == -1) {
-		usedKeyboard[0] = true; playerTexture[0]->setFront(&sdl->images().at("k1"));
-	}
-	else if (fInput == -2) {
-		usedKeyboard[1] = true; playerTexture[0]->setFront(&sdl->images().at("k2"));
-	}
-
-	sdl->musics().at("sawtines").play();
-	SDL_ShowCursor(1);
+	vector<char> inputsAux = vector<char>();
+	inputsAux.push_back(inp);
+	return inputsAux;
 }
 
-ConfigState::ConfigState(FightManager* game, const vector<char>& inputs) : State(game), numOfplayer((ushort)inputs.size())
+ConfigState::ConfigState(FightManager* game, const vector<char>& inputs) : State(game), numOfplayer(std::max(inputs.size(), (size_t)2))
 {
 	int w = fmngr->GetActualWidth();
 	int h = fmngr->GetActualHeight();
+
+	stageTextures[0] = &sdl->images().at("fondo");
+	stageTextures[1] = &sdl->images().at("mazmorra");
+	stageTextures[2] = &sdl->images().at("night");
 
 	int dist = (w * 12 / 13) / numOfplayer;
 	int offset = dist - w / 13;
@@ -97,16 +69,18 @@ ConfigState::ConfigState(FightManager* game, const vector<char>& inputs) : State
 	SDL_ShowCursor(1);
 }
 
+ConfigState::ConfigState(FightManager* game, short fInput) : ConfigState(game, AuxFunc(fInput)) { }
+
 ConfigState::~ConfigState()
 {
 	delete play;
 	delete teammode;
 	delete normalmode;
-	for (auto e : playerPointers)delete e;
-	for (auto e : playerTexture)delete e;
-	for (auto e : charactTexture)delete e;
+	for (auto e : playerPointers) delete e;
+	for (auto e : playerTexture) delete e;
+	for (auto e : charactTexture) delete e;
 	for (auto e : buttons) if (e) delete e;
-	for (auto e : p)
+	for (auto& e : p)
 	{
 		for (auto a : e)delete a;
 	}
@@ -472,6 +446,8 @@ void ConfigState::playerMenuRender()
 		play->render();
 	}
 
+	if (mapChosen >= 0)
+		stageTextures[mapChosen]->render(build_sdlrect(w * 19.f / 22.f, 5, w / 18.f, w / 24.f));
 
 	for (auto e : playerPointers)e->render();
 }
@@ -485,11 +461,11 @@ void ConfigState::initMapBut()
 	int totalW = (fmngr->GetActualWidth() * 3 / 5) + imgW;
 	int offsetX = (fmngr->GetActualWidth() - totalW) / 2;
 
-	int totalH = (fmngr->GetActualHeight() * 2 / 4) + imgH;
+	int totalH = (fmngr->GetActualHeight() / 2) + imgH;
 	int offsetY = (fmngr->GetActualHeight() - totalH) / 2;
 
 	int i = 0;
-	maps.push_back(new Button(&sdl->images().at("fondo"), offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH, playerPointers));
+	maps.push_back(new Button(stageTextures[0], offsetX + (fmngr->GetActualWidth() * (i % 4)) / 5, offsetY + fmngr->GetActualHeight() * (i / 4), imgW, imgH, playerPointers));
 	maps[i]->SetOnClick([this]()
 		{
 			mapChosen = 0;

@@ -19,7 +19,7 @@ bool Button::MouseExit()
 	return !mouseOver && mouseOverRemember;
 }
 
-Button::Button(Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :tex(t), x(x), y(y), pointers(p), hasHoverSprite(hasHoverOver), hasPressedSprite(hasPressed)
+Button::Button(const Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :tex(t), x(x), y(y), pointers(p), hasHoverSprite(hasHoverOver), hasPressedSprite(hasPressed)
 {
 	w = size;
 	h = size * tex->height() / tex->width();
@@ -47,7 +47,7 @@ Button::Button(Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& 
 	currentSprite = defTex;
 }
 
-Button::Button(Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :tex(t), x(x), y(y), w(w), h(h), pointers(p), hasHoverSprite(hasHoverOver), hasPressedSprite(hasPressed)
+Button::Button(const Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :tex(t), x(x), y(y), w(w), h(h), pointers(p), hasHoverSprite(hasHoverOver), hasPressedSprite(hasPressed)
 {
 	if (hasHoverSprite && hasPressedSprite)
 	{
@@ -203,7 +203,7 @@ SDL_Rect Button::getRect()
 	return r;
 }
 
-PlayButton::PlayButton(Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
+PlayButton::PlayButton(const Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
 	Button(t, x, y, size, p, hasHoverOver, hasPressed)
 {
 	for (auto i = 0u; i < 22; i++) {
@@ -214,7 +214,7 @@ PlayButton::PlayButton(Texture* t, int x, int y, int size, std::vector<PlayerPoi
 	}
 }
 
-PlayButton::PlayButton(Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
+PlayButton::PlayButton(const Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
 	Button(t, x, y, w, h, p, hasHoverOver, hasPressed)
 {
 	for (auto i = 0u; i < 22; i++) {
@@ -238,7 +238,7 @@ void PlayButton::render()
 
 }
 
-ToggleButton::ToggleButton(Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
+ToggleButton::ToggleButton(const Texture* t, int x, int y, int size, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
 	Button(t, x, y, size, p, hasHoverOver, hasPressed)
 {
 	defTex.w /= 2;
@@ -247,7 +247,7 @@ ToggleButton::ToggleButton(Texture* t, int x, int y, int size, std::vector<Playe
 	currentSprite = defTex;
 }
 
-ToggleButton::ToggleButton(Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
+ToggleButton::ToggleButton(const Texture* t, int x, int y, int w, int h, std::vector<PlayerPointer*>& p, bool hasHoverOver, bool hasPressed) :
 	Button(t, x, y, w, h, p, hasHoverOver, hasPressed)
 {
 	defTex.w /= 2;

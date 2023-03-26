@@ -70,7 +70,7 @@ public:
 	//
 	inline void render(const SDL_Rect &src, const SDL_Rect &dest, double angle,
 			const SDL_Point *p = nullptr,
-			SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE) {
+			SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE) const {
 		assert(texture_ != nullptr);
 		SDL_RenderCopyEx(renderer_, texture_, &src, &dest, angle, p, flip);
 	}
@@ -81,45 +81,45 @@ public:
 	// It can be implemented by calling the previous render method as well,
 	// but we use SDL_RenderCopy directly since it does less checks so it
 	// saves some checks ...
-	inline void render(const SDL_Rect &src, const SDL_Rect &dest) {
+	inline void render(const SDL_Rect &src, const SDL_Rect &dest) const {
 		assert(texture_ != nullptr);
 		SDL_RenderCopy(renderer_, texture_, &src, &dest);
 	}
 
 	// render the complete texture at position (x,y).
-	inline void render(int x, int y) {
+	inline void render(int x, int y) const {
 		SDL_Rect dest = { x, y, width_, height_ };
 		render(dest);
 	}
 
 	// renders the complete texture at a destination rectangle (dest)
-	inline void render(const SDL_Rect &dest) {
+	inline void render(const SDL_Rect &dest) const {
 		SDL_Rect src = { 0, 0, width_, height_ };
 		render(src, dest);
 	}
 
 	// renders the complete texture at a destination rectangle (dest),
 	// with rotation
-	inline void render(const SDL_Rect &dest, float rotation) {
+	inline void render(const SDL_Rect &dest, float rotation) const {
 		SDL_Rect src = { 0, 0, width_, height_ };
 		render(src, dest, rotation);
 	}
 
 	// renders the complete texture at a destination rectangle (dest),
 	// with rotation
-	inline SDL_Texture* GetSDLTex() {
+	inline SDL_Texture* GetSDLTex() const {
 		return texture_;
 	}
 
-	inline void GetTexMod(Uint8& r, Uint8& g, Uint8& b) {
+	inline void GetTexMod(Uint8& r, Uint8& g, Uint8& b) const {
 		SDL_GetTextureColorMod(texture_, &r, &g, &b);
 	}
 
-	inline void SetTexMod(Uint8 r, Uint8 g, Uint8 b) {
+	inline void SetTexMod(Uint8 r, Uint8 g, Uint8 b) const {
 		SDL_SetTextureColorMod(texture_, r, g, b);
 	}
 
-	inline void SetTexMod(Uint8 rgb) {
+	inline void SetTexMod(Uint8 rgb) const {
 		SDL_SetTextureColorMod(texture_, rgb, rgb, rgb);
 	}
 

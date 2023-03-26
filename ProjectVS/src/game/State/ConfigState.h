@@ -8,6 +8,8 @@ class ConfigState : public State {
     Texture* background , *charselbg;
     ushort numOfplayer;
 
+    const Texture* stageTextures[3];
+
     vector<Button*> buttons = vector<Button*>(10);
 
     Button *play;
@@ -54,6 +56,8 @@ class ConfigState : public State {
     void ChangeTeam(int pl, bool t1);
     void OpenConfig();
     int timerMapkeyRelease = 0;
+
+    vector<char> AuxFunc(char inp);
 public:
 
     ConfigState(FightManager* game , short fInput);
