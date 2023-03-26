@@ -408,6 +408,10 @@ void ConfigState::playerMenuRender()
 	int h = fmngr->GetActualHeight();
 	sdl->clearRenderer(SDL_Color(build_sdlcolor(0x0)));
 	background->render({ 0,0,fmngr->GetActualWidth(),fmngr->GetActualHeight() });
+
+	if (mapChosen >= 0)
+		stageTextures[mapChosen]->render(build_sdlrect(w * 19.f / 22.f, 5, w / 18.f, w / 24.f));
+
 	for (auto c = 0u; c < 10; c++) {
 		int dist = (w * 9 / 10) / 5;
 		int offset = dist - w / 10;
@@ -445,9 +449,6 @@ void ConfigState::playerMenuRender()
 	if (ready) {
 		play->render();
 	}
-
-	if (mapChosen >= 0)
-		stageTextures[mapChosen]->render(build_sdlrect(w * 19.f / 22.f, 5, w / 18.f, w / 24.f));
 
 	for (auto e : playerPointers)e->render();
 }
