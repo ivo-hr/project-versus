@@ -1,6 +1,9 @@
 #pragma once
-#include "../PlayingState/FightManager.h"
+#include "../../sdlutils/SDLUtils.h"
+#include "../../sdlutils/Texture.h"
+#include <vector>
 
+class FightManager;
 class Character;
 
 struct HudData
@@ -28,9 +31,9 @@ private:
 	int offset;
 
 	SDLUtils* sdl;
-	string fontstring;
+	std::string fontstring;
 	Font* font;
-	string fontstringp;
+	std::string fontstringp;
 	Font* fontp;
 
 	FightManager* man;
@@ -43,9 +46,9 @@ public:
 
 	void Boot(FightManager* man);
 
-	void UpdateLives(Character* var, const ushort& liv);
+	void UpdateLives(Character* var, const unsigned short& liv);
 
-	void UpdateDmg(Character* a, const ushort& dmg);
+	void UpdateDmg(Character* a, const unsigned short& dmg);
 
 	Texture& PNumber(Character* a);
 	Texture& Percent(Character* a);

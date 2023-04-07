@@ -17,7 +17,7 @@ public:
 
 	void OnDeath() override;
 
-	void draw(SDL_Rect* camera) override;
+	void draw(const SDL_Rect& camera) override;
 
 	SDL_Rect getCurrentSpriteSrc() override { return { 393, 395, 80, 9 }; }
 

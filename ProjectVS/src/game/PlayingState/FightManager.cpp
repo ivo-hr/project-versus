@@ -7,9 +7,13 @@
 #include "../../utils/CheckML.h"
 #include "../Utils/HUDManager.h"
 
+#include "../State/ConfigurationState.h"
+#include "../State/MenuState.h"
+#include "../../sdlutils/SDLUtils.h"
+
 void FightManager::MoveCamera()
 {
-	SDL_Rect cameraEnd;
+	SDL_Rect cameraEnd = SDL_Rect();
 	int maxX = INT32_MIN, minX = INT32_MAX;
 	int maxY = INT32_MIN, minY = INT32_MAX;
 
@@ -39,7 +43,7 @@ void FightManager::MoveCamera()
 		}
 	}
 
-	ushort curOffset = cameraOffset + (maxX - minX) * 0.1f;
+	ushort curOffset = (ushort)((float)cameraOffset + (float)(maxX - minX) * 0.1f);
 
 	float whr = (float)width / (float)height;
 	float hwr = (float)height / (float)width;
@@ -122,15 +126,59 @@ void FightManager::MoveCamera()
 	
 }
 
-FightManager::FightManager(SDLUtils * sdl) : sdl(sdl)
+FightManager::FightManager()
 {
-	int w = width, h = height;
+	int maxRenderWidth = 1680;
+
+	// Initialise the SDLGame singleton
+	SDLUtils::init("Project Vs21", 640, 480,
+		"resources/config/resources.json");
+
+	sdl = SDLUtils::instance();
+
+	SDL_DisplayMode DM;
+	SDL_GetDesktopDisplayMode(0, &DM);
+
+	Vector2D size;
+	double ratio = (double)DM.h / (double)DM.w;
+
+	if (maxRenderWidth < DM.w)
+	{
+		size = Vector2D(maxRenderWidth, (int)(maxRenderWidth * ratio));
+	}
+	else
+	{
+		size = Vector2D(DM.w, DM.h);
+	}
+
+	SDL_SetWindowMaximumSize(sdl->window(), maxRenderWidth, (int)(maxRenderWidth * ratio));
+	SDL_SetWindowSize(sdl->window(), (int)size.getX(), (int)size.getY());
+
+	sdl->toggleFullScreen();
+
+	int w, h;
 	SDL_GetWindowSize(sdl->window(), &w, &h);
 
 	width = w;
 	height = h;
 
-	SDL_RenderSetLogicalSize(sdl->renderer(), w, h);
+	std::cout << "----------------------------" << endl;
+	std::cout << SDL_GetError() << endl;
+	std::cout << "----------------------------" << endl;
+
+	// SDL_SetWindowResizable(sdl->window(), SDL_TRUE);
+
+	// SDL_MaximizeWindow(sdl->window());
+
+	sdl->showCursor();
+
+	Music::setMusicVolume((int)(1));
+	SoundEffect::setChannelVolume((int)(1));
+	ih = InputHandler::instance();
+	ih->initialiseJoysticks();
+
+	SDL_RenderSetLogicalSize(sdl->renderer(), width, height);
+	//------------------------------------------------------------------------------------------
 
 	listener = new MyListener();
 	stage = new Stage(this, sdl, listener, step);
@@ -170,10 +218,10 @@ void FightManager::InitMainLoop()
 		Uint32 startTime = sdl->currRealTime();
 
 		SDL_Event e;
-		ih.clearState();
+		ih->clearState();
 		while (SDL_PollEvent(&e))
 		{
-			ih.update(e);
+			ih->update(e);
 			if (e.type == SDL_QUIT)
 			{
 				userExit();
@@ -187,9 +235,6 @@ void FightManager::InitMainLoop()
 		}
 
 		double frameTime = sdl->currRealTime() - startTime;
-
-		if (ih.getMouseButtonState(ih.LEFT))
-			cout << ih.getMousePos().first << ", " << ih.getMousePos().second << endl;
 
 		if (frameTime < (step * 1000))
 		{
@@ -214,6 +259,17 @@ void FightManager::InitMainLoop()
 			cout << endl;
 		}
 
+		int w, h;
+		SDL_GetWindowSize(sdl->window(), &w, &h);
+
+		SDL_DisplayMode DM;
+		SDL_GetDesktopDisplayMode(0, &DM);
+
+		cout << width << ", " << height << ": " << (float)width / (float)height << endl;
+		cout << w << ", " << h << ": " << (float)w / (float)h << endl;
+		cout << DM.w << ", " << DM.h << ": " << (float)DM.w / (float)DM.h << endl;
+		cout << endl;
+
 #endif // _DEBUG
 	}
 }
@@ -222,7 +278,7 @@ void FightManager::Update()
 {
 
 #ifdef _DEBUG
-	if (ih.isKeyDown(SDLK_RETURN) && ih.keyDownEvent())
+	if (ih->isKeyDown(SDLK_RETURN) && ih->keyDownEvent())
 	{
 		onNewGame();
 		getState()->Reset();
@@ -230,7 +286,7 @@ void FightManager::Update()
 #endif // _DEBUG
 
 
-	if (ih.isKeyDown(SDLK_1) && ih.keyDownEvent())
+	if (ih->isKeyDown(SDLK_1) && ih->keyDownEvent())
 	{
 		TakeScreenShot();
 		/*
@@ -240,7 +296,7 @@ void FightManager::Update()
 		*/
 	}
 
-	if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
+	if (ih->isKeyDown(SDLK_ESCAPE) && ih->keyDownEvent()) {
 		if (getSavedState() == nullptr) {
 			//pause
 			saveState(getState());
@@ -321,7 +377,7 @@ void FightManager::DrawFight()
 	{
 		it--;
 		if ((*it)->IsAlive())
-			(*it)->draw(&camera);
+			(*it)->draw(camera);
 	}
 
 	// stage draw foreground
@@ -553,7 +609,7 @@ void FightManager::RemoveFromFollowCamera(Entity* ent)
 		{
 			for (int j = i + 1; j < camFollow.size(); j++)
 			{
-				camFollow[j - 1] = camFollow[j];
+				camFollow[(size_t)j - 1] = camFollow[j];
 			}
 			camFollow.pop_back();
 			break;
@@ -704,23 +760,23 @@ bool FightManager::DeleteCharacter(std::deque<Character*>::iterator character)
 		else
 		{
 			if (team1.size() == 0 && !endGame) { // Si team1 pierde
-				for (auto e : team1DeadStats)gameStats.push_back(e);
-				for (auto e : team1DeadTextures)deadTextures.push_back(e);
-				for (auto e : team2DeadStats)gameStats.push_back(e);
-				for (auto e : team2DeadTextures)deadTextures.push_back(e);
-				for (auto e : characters)addCharacterStats(e);
-				for (auto e : characters)deadTextures.push_back(e->getPortrait());
+				for (const auto& e : team1DeadStats)gameStats.push_back(e);
+				for (const auto& e : team1DeadTextures)deadTextures.push_back(e);
+				for (const auto& e : team2DeadStats)gameStats.push_back(e);
+				for (const auto& e : team2DeadTextures)deadTextures.push_back(e);
+				for (const auto& e : characters)addCharacterStats(e);
+				for (const auto& e : characters)deadTextures.push_back(e->getPortrait());
 				winnerInput = characters[0]->getInput();
 				endGameTimer = SDL_GetTicks();
 				endGame = true;
 			}
 			else if (team2.size() == 0 && !endGame) { // Si team2 pierde
-				for (auto e : team2DeadStats)gameStats.push_back(e);
-				for (auto e : team2DeadTextures)deadTextures.push_back(e);
-				for (auto e : team1DeadStats)gameStats.push_back(e);
-				for (auto e : team1DeadTextures)deadTextures.push_back(e);
-				for (auto e : characters)addCharacterStats(e);
-				for (auto e : characters)deadTextures.push_back(e->getPortrait());
+				for (const auto& e : team2DeadStats)gameStats.push_back(e);
+				for (const auto& e : team2DeadTextures)deadTextures.push_back(e);
+				for (const auto& e : team1DeadStats)gameStats.push_back(e);
+				for (const auto& e : team1DeadTextures)deadTextures.push_back(e);
+				for (const auto& e : characters)addCharacterStats(e);
+				for (const auto& e : characters)deadTextures.push_back(e->getPortrait());
 				winnerInput = characters[0]->getInput();
 				endGameTimer = SDL_GetTicks();
 				endGame = true;
@@ -758,8 +814,8 @@ void FightManager::RemoveEntityFromMatrix(Entity* ent)
 		{
 			for (int j = i + 1; j < entityMatrix[ent->GetLayer()].size(); j++)
 			{
-				entityMatrix[ent->GetLayer()][j - 1] = entityMatrix[ent->GetLayer()][j];
-				entityMatrix[ent->GetLayer()][j - 1]->SetPlaceInLayer(j - 1);
+				entityMatrix[ent->GetLayer()][(size_t)j - 1] = entityMatrix[ent->GetLayer()][j];
+				entityMatrix[ent->GetLayer()][(size_t)j - 1]->SetPlaceInLayer(j - 1);
 			}
 			entityMatrix[ent->GetLayer()].pop_back();
 			break;
@@ -860,7 +916,7 @@ void FightManager::onNewGame()
 		listener->RemoveCharacter(entities[i]);
 		delete entities[i];
 	}
-	for (auto a : entityMatrix)
+	for (auto& a : entityMatrix)
 	{
 		a.clear();
 	}
@@ -1026,12 +1082,10 @@ Entity*& FightManager::GetMatrixReferenceTo(Entity* toCheck)
 
 void FightManager::TakeScreenShot()
 {
-	SDL_Surface* sshot = SDL_CreateRGBSurface(0, width, height, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+	SDL_Surface* sshot = SDL_GetWindowSurface(sdl->window());
 	SDL_LockSurface(sshot);
-	SDL_Rect a = { 0, 0, width, height };
-	SDL_RenderReadPixels(sdl->renderer(), &a, sshot->format->format, sshot->pixels, sshot->pitch);
+	SDL_RenderReadPixels(sdl->renderer(), NULL, sshot->format->format, sshot->pixels, sshot->pitch);
 	string full = "ScreenShot_";
-	vector<char> aaaa = vector<char>();
 	const int size = 30;
 	char sshotName[size] = { "" };
 	_strdate_s(sshotName, size);
@@ -1079,14 +1133,7 @@ void FightManager::TakeScreenShot()
 	full += sshotName;
 	full += ".jpg";
 
-	char gay[30] = { "" };
-
-	for (int i = 0; i < 30; i++)
-	{
-		gay[i] = full[i];
-	}
-
-	SDL_SaveBMP(sshot, gay);
+	SDL_SaveBMP(sshot, full.c_str());
 	SDL_UnlockSurface(sshot);
 	SDL_FreeSurface(sshot);
 }

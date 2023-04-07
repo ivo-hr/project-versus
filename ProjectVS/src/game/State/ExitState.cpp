@@ -2,6 +2,14 @@
 #include "../PlayingState/FightManager.h"
 #include "../../utils/CheckML.h"
 #include "../Utils/PlayerConfigs.h"
+#include <iostream>
+#include <vector>
+#include "../../sdlutils/InputHandler.h"
+#include "../../sdlutils/SDLUtils.h"
+#include "../Utils/Button.h"
+#include "../Utils/PlayerConfigs.h"
+
+using namespace std;
 
 ExitState::ExitState(FightManager* game) : State(game) {
 
@@ -48,15 +56,15 @@ ExitState::~ExitState()
 void ExitState::update() {
     int w = fmngr->GetActualWidth();
     int h = fmngr->GetActualHeight();
-    if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
+    if (ih->isKeyDown(SDLK_ESCAPE) && ih->keyDownEvent()) {
         fmngr->loadSavedState();
         return;
     }
 
     int i1 = (w / 3);
     int i2 = (w * 2 / 3);
-    if (ih.getMousePos().first < i1 || ih.getMousePos().first > i2 || ih.getMousePos().second < (h / 3) || ih.getMousePos().second >(h * 2 / 3)) {
-        if (ih.getMouseButtonState(ih.LEFT)) {
+    if (ih->getMousePos().first < i1 || ih->getMousePos().first > i2 || ih->getMousePos().second < (h / 3) || ih->getMousePos().second >(h * 2 / 3)) {
+        if (ih->getMouseButtonState(ih->LEFT)) {
             fmngr->loadSavedState();
             return;
         }
@@ -74,7 +82,7 @@ void ExitState::draw()
     Texture* p = &sdl->images().at("Exitbg");
     p->render({(int)(w * 0.3f),(int)(h * 0.3f),(int)(w * 0.4f),(int)(h * 0.4f) });
 
-    showText("DO YOU WANNA EXIT THE GAME?", (ushort)(w * 0.0145f), (ushort)(w * 0.311f), (ushort)(h * 0.32f), build_sdlcolor(0x33FFFC00));
+    showText("DO YOU WANNA EXIT THE GAME?", (ushort)(w * 0.0145f), (ushort)(w * 0.311f), (ushort)(h * 0.32f), 0x33FFFC00);
 
     yes->render();
     no->render();

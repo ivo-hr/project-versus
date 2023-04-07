@@ -6,28 +6,28 @@ class Character;
 
 class PlayingState : public State {
     
-    vector<char> playersInput_;
-    vector<short> characters_;
-    vector<short> teams_;
+    std::vector<char> playersInput_;
+    std::vector<short> characters_;
+    std::vector<short> teams_;
     ushort map_;
 
     Character* GetCharacter(char index, short character, ushort pNum);
  
 public:
 
-    PlayingState(FightManager* fmngr, const vector<char>& playersInput, const vector<short>& characters, ushort map) ;
-    PlayingState(FightManager* fmngr, const vector<char>& playersInput, const vector<short>& characters, const vector<short>& teams , ushort map);
+    PlayingState(FightManager* fmngr, const std::vector<char>& playersInput, const std::vector<short>& characters, ushort map) ;
+    PlayingState(FightManager* fmngr, const std::vector<char>& playersInput, const std::vector<short>& characters, const std::vector<short>& teams , ushort map);
     virtual ~PlayingState();
 
     void update() override;
     void draw() override;
     void next() override;
-    void OnEnable() override { SDL_ShowCursor(0); };
+    void OnEnable() override;
     void OnDisable() override {};
 
     void Reset() override;
 
-    string getStateName() const override {
+    std::string getStateName() const override {
         return "Playing state";
     };
 };

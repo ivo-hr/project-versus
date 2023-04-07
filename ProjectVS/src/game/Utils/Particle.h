@@ -1,8 +1,6 @@
 #pragma once
 
 #include <unordered_map>
-#include <functional>
-#include "../PlayingState/FightManager.h"
 #include "../Entity.h"
 
 class Entity;
@@ -37,7 +35,7 @@ public:
 
 	virtual void update();
 	virtual void draw();
-	virtual void draw(SDL_Rect* camera);
+	virtual void draw(const SDL_Rect& camera);
 
 	bool IsActive() { return active; };
 

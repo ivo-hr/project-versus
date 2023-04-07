@@ -18,7 +18,7 @@ public:
 
 		if (one->GetType() == b2_staticBody) sensor = contact->GetFixtureB()->IsSensor();
 		else {
-			swap(one, two);
+			std::swap(one, two);
 			sensor = contact->GetFixtureA()->IsSensor();
 		}
 		// Mira si está en contacto con el suelo
@@ -41,7 +41,7 @@ public:
 
 		if (one->GetType() == b2_staticBody) sensor = contact->GetFixtureB()->IsSensor();
 		else {
-			swap(one, two);
+			std::swap(one, two);
 			sensor = contact->GetFixtureA()->IsSensor();
 		}
 
@@ -67,7 +67,7 @@ public:
 		if (!one->GetType() == b2_staticBody)
 		{
 			//Nos aseguramos que el one sea static, y si hay que cambiarlo significa que la normal tambien, ya que seria inversa
-			swap(one, two);
+			std::swap(one, two);
 			normalToCheckFor.y *= -1;
 		}
 

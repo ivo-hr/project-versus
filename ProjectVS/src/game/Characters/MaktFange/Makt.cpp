@@ -4,6 +4,7 @@
 #include "Ball.h"
 #include <fstream>
 #include "../../../utils/CheckML.h"
+#include "../../../sdlutils/SDLUtils.h"
 #include <iostream>
 
 Makt::Makt(FightManager* mngr, b2Vec2 pos, char input, ushort p) :

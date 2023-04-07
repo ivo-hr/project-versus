@@ -1,14 +1,18 @@
 #pragma once
 
 #include "State.h"
-#include "../Utils/PlayerPointer.h"
+//#include "../Utils/PlayerPointer.h"
+
+class PlayerPointer;
+class Button;
+class ToggleButton;
 
 class ConfigurationState : public State {
-    Texture* backgr, * sfx, * music, * c1, * c2,*instru;
+    Texture* backgr, * sfx, * music, *instru;
     Button* sfxp, * sfxm, * muscp, * muscm;
     ToggleButton *fullSCheck;
     Button* exit , *back;
-    vector<PlayerPointer*> pointers = vector<PlayerPointer*>(1);
+    std::vector<PlayerPointer*> pointers = std::vector<PlayerPointer*>(1);
     PlayerPointer*& p1;
 
     int musicV = 10;
@@ -33,11 +37,11 @@ public:
     void ToggleFullScreen();
     void draw() override;
     void next() override;
-    void OnEnable() override { SDL_ShowCursor(1); };
+    void OnEnable() override;
     void OnDisable() override {};
     void Reset() override {};
 
-    string getStateName() const override {
+    std::string getStateName() const override {
         return "Pause state";
     };
 };

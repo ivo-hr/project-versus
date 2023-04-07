@@ -109,15 +109,7 @@ protected:
 
 	virtual void BuildParticlePool() override;
 
-	void ChangeTexMod(Uint8 r, Uint8 g, Uint8 b)
-	{
-		Uint8 r_, g_, b_;
-		texture->GetTexMod(r_, g_, b_);
-		if (r != r_ || g != g_ || b != b_)
-		{
-			texture->SetTexMod(r, g, b);
-		}
-	}
+	void ChangeTexMod(Uint8 r, Uint8 g, Uint8 b);
 
 public:
 
@@ -138,7 +130,7 @@ public:
 	void StunBehaviour();
 	void DropPlatform();
 	void draw() override;
-	void draw(SDL_Rect* camera) override;
+	void draw(const SDL_Rect& camera);
 	virtual void drawHUD(ushort numOfPlayer) ;
 
 	AnimationManager* GetAnimationManager() { return anim; };

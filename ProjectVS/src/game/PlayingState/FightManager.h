@@ -1,9 +1,8 @@
 #pragma once
 
-//#include <SDL.h>
+#include <SDL.h>
 //#include <iostream>
 #include <box2d.h>
-#include <string>
 #include <vector>
 #include <deque>
 #include <queue>
@@ -11,13 +10,13 @@
 
 //#include "../../sdlutils/InputHandler.h"
 //#include "../../sdlutils/macros.h"
-#include "../../sdlutils/SDLUtils.h"
+//#include "../../sdlutils/SDLUtils.h"
 #include "../State/StateMachine.h"
-#include "../State/MenuState.h"
+#include "../../utils/Vector2D.h"
+//#include "../State/MenuState.h"
 //#include "../State/PlayingState.h"
 //#include "../State/GameOverState.h"
 //#include "../Utils/PlayerSelectRect.h"
-#include "../State/ConfigurationState.h"
 
 class Entity;
 class Character;
@@ -28,6 +27,7 @@ class MyListener;
 class Stage;
 
 class HudManager;
+class InputHandler;
 
 enum class Tags
 {
@@ -46,22 +46,22 @@ class FightManager : public StateMachine
 
 	std::queue<Entity*> toAdd = std::queue<Entity*>();
 
-	std::vector<vector<Entity*>> entityMatrix;
+	std::vector<std::vector<Entity*>> entityMatrix;
 	std::pair<ushort, short> ptrPlace = { 0, 0 };
 
 	// Team mode
 	std::deque<Character**> team1;
 	std::deque<Character**> team2;
-	vector<vector<ushort>>team1DeadStats;
-	vector<vector<ushort>>team2DeadStats;
-	vector<Texture*>team1DeadTextures;
-	vector<Texture*>team2DeadTextures;
+	std::vector<std::vector<ushort>>team1DeadStats;
+	std::vector<std::vector<ushort>>team2DeadStats;
+	std::vector<Texture*>team1DeadTextures;
+	std::vector<Texture*>team2DeadTextures;
 
 	SDLUtils* sdl;
 
 	HudManager* hud = nullptr;
 
-	InputHandler& ih = *InputHandler::instance();
+	InputHandler* ih;
 
 	Entity* winner;
 
@@ -85,16 +85,16 @@ class FightManager : public StateMachine
 	SDL_Rect camera; 
 	SDL_Rect auxCam;
 
-	ushort cameraOffset = 50;
+	ushort cameraOffset = 70;
 	Vector2D camShake;
-	uint16 shakeDuration;
+	ushort shakeDuration;
 
 	void MoveCamera();
 
-	vector<Texture*> deadTextures; // Textures of dead characters for gameover stats
+	std::vector<Texture*> deadTextures; // Textures of dead characters for gameover stats
 
 	short winnerInput;
-	vector<vector<ushort>> gameStats;
+	std::vector<std::vector<ushort>> gameStats;
 	bool endGame = false;
 	unsigned int endGameTimer = 0;
 	bool teammode = false;
@@ -111,7 +111,7 @@ class FightManager : public StateMachine
 
 public:
 
-	FightManager(SDLUtils* sdl);
+	FightManager();
 	virtual ~FightManager();
 
 	void InitMainLoop();
@@ -153,7 +153,7 @@ public:
 	double GetScreenRatio();
 	double GetScreeAdjust();
 
-	vector<Texture*> getWinnersTextures() { return deadTextures; }
+	std::vector<Texture*> getWinnersTextures() { return deadTextures; }
 
 	void GetAllReferencesTo(Entity* toCheck, Entity*& entQue, Character*& chr, Entity*& cam, Entity*& mat);
 
@@ -177,7 +177,7 @@ public:
 
 	short getWinnerInput() { return winnerInput; }
 	void addCharacterStats(Character* character);
-	vector<vector<ushort>>getGameStats() { return gameStats; }
+	std::vector<std::vector<ushort>>getGameStats() { return gameStats; }
 
 	ushort GetNumOfPlayers() { return numPlayers; };
 
@@ -187,7 +187,7 @@ public:
 
 	bool getTeammode() { return teammode; }
 
-	void SetShake(const Vector2D& dir, uint16 duration);
+	void SetShake(const Vector2D& dir, ushort duration);
 
 	void TakeScreenShot();
 

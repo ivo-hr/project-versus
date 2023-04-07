@@ -25,7 +25,7 @@ public:
 	void update() override;
 	void SetSpear(bool spear);
 	void SpecialLHit(ushort frameNumber);
-	void draw(SDL_Rect* camera)override;
+	void draw(const SDL_Rect& camera) override;
 
 	void OnParry(Entity* attacker, bool& controlHitLag, HitData& a, bool& controlCamShake, bool& controlShake) override;
 

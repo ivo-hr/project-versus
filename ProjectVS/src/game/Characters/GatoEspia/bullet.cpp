@@ -1,8 +1,9 @@
 #include "../../Utils/AnimationManager.h"
 #include "bullet.h"
 #include "../../../utils/CheckML.h"
+#include "../../../sdlutils/SDLUtils.h"
 
-Bullet::Bullet(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, float width, float height, int speed, string name) :
+Bullet::Bullet(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, float width, float height, int speed, std::string name) :
 	Projectile(manager, pos, dir, width, height, speed)
 {
 	texture = &sdl->images().at(name);

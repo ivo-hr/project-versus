@@ -5,6 +5,7 @@
 #include <fstream>
 #include "../../../utils/CheckML.h"
 #include "YunoBubble.h"
+#include "../../../sdlutils/SDLUtils.h"
 #include <iostream>
 using json = nlohmann::json;
 

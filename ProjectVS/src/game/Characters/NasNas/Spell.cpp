@@ -1,6 +1,8 @@
 #include "../../Utils/AnimationManager.h"
 #include "Spell.h"
+#include "../../../sdlutils/SDLUtils.h"
 #include "../../../utils/CheckML.h"
+#include "../../../sdlutils/Texture.h"
 
 Spell::Spell(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, state state) :
 	Projectile(manager, pos, dir, 2.f, 1.f, 20)
@@ -31,17 +33,17 @@ Spell::~Spell()
 
 }
 
-void Spell::draw(SDL_Rect* camera)
+void Spell::draw(const SDL_Rect& camera)
 {
 	SDL_Rect aux = hurtbox;
 
-	float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
-	float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+	float wDiff = (float)manager->GetActualWidth() / (float)camera.w;
+	float hDiff = (float)manager->GetActualHeight() / (float)camera.h;
 
-	aux.x -= camera->x;
+	aux.x -= camera.x;
 	aux.x = (int)((float)aux.x * wDiff);
 
-	aux.y -= camera->y;
+	aux.y -= camera.y;
 	aux.y = (int)((float)aux.y * hDiff);
 
 	aux.w = (int)((float)aux.w * wDiff);

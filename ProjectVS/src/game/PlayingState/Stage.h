@@ -4,7 +4,7 @@
 #include <iostream>
 #include <box2d.h>
 #include <string>
-#include <vector>
+#include <list>
 #include "../../sdlutils/SDLUtils.h"
 
 #include "FightManager.h"
@@ -17,23 +17,20 @@ struct TexWithRect
 	SDL_Rect rect = SDL_Rect();
 	float parallaxValue = 1;
 
-	TexWithRect(Texture* sprite, SDL_Rect place, float par) : image(sprite), rect(place), parallaxValue(par)
-	{
-
-	}
+	TexWithRect(Texture* sprite, SDL_Rect place, float par) : image(sprite), rect(place), parallaxValue(par) { }
 };
 
 class Stage
 {
 	FightManager* mngr;
 
-	std::vector<b2Body*> grounds;
-	std::vector<SDL_Rect> groundRects;
+	std::list<b2Body*> grounds;
+	std::list<SDL_Rect> groundRects;
 
-	std::vector<b2Body*> platforms;
-	std::vector<SDL_Rect> platformRects;
+	std::list<b2Body*> platforms;
+	std::list<SDL_Rect> platformRects;
 
-	std::vector<TexWithRect> elements;
+	std::list<TexWithRect> elements;
 
 	std::vector<b2Vec2> playerSpawns;
 

@@ -1,5 +1,6 @@
 #include "HUDManager.h"
 #include "../Character.h"
+#include "../../sdlutils/SDLUtils.h"
 
 HudManager::HudManager(FightManager* man): man(man) { Boot(man); }
 
@@ -40,7 +41,7 @@ void HudManager::Boot(FightManager* man)
 
 }
 
-void HudManager::UpdateLives(Character* var, const ushort& liv)
+void HudManager::UpdateLives(Character* var, const unsigned short& liv)
 {
 	string vidas = "Lives:" + to_string(liv);
 	SDL_Color c;
@@ -48,7 +49,7 @@ void HudManager::UpdateLives(Character* var, const ushort& liv)
 	data[var->GetPNumber()].lives = Texture(sdl->renderer(), vidas, *font, c);
 }
 
-void HudManager::UpdateDmg(Character* a, const ushort& dmg)
+void HudManager::UpdateDmg(Character* a, const unsigned short& dmg)
 {
 	auto var = a->GetPNumber();
 	string damage = to_string(dmg) + "%";

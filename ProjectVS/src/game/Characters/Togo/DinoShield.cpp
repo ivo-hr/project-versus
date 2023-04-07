@@ -3,6 +3,8 @@
 #include "../../PlayingState/FightManager.h"
 #include "../../../utils/CheckML.h"
 #include "../../Projectile.h"
+#include "../../../sdlutils/SDLUtils.h"
+#include "../../../sdlutils/Texture.h"
 
 DinoShield::DinoShield(FightManager* manager, b2Vec2 pos) :
 	Entity(manager, pos, 7.5f, 5.f)
@@ -29,17 +31,17 @@ void DinoShield::draw()
 	texture->render(hurtbox);
 }
 
-void DinoShield::draw(SDL_Rect* camera)
+void DinoShield::draw(const SDL_Rect& camera)
 {
 	SDL_Rect aux = hurtbox;
 
-	float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
-	float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+	float wDiff = (float)manager->GetActualWidth() / (float)camera.w;
+	float hDiff = (float)manager->GetActualHeight() / (float)camera.h;
 
-	aux.x -= camera->x;
+	aux.x -= camera.x;
 	aux.x = (int)((float)aux.x * wDiff);
 
-	aux.y -= camera->y;
+	aux.y -= camera.y;
 	aux.y = (int)((float)aux.y * hDiff);
 
 	aux.w = (int)((float)aux.w * wDiff);

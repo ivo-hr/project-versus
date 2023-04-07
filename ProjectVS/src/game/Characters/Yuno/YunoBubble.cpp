@@ -2,6 +2,8 @@
 #include "../../Utils/InputConfig.h"
 #include "../../../utils/CheckML.h"
 #include "../../Projectile.h"
+#include "../../../sdlutils/SDLUtils.h"
+#include "../../../sdlutils/Texture.h"
 
 
 YunoBubble::YunoBubble(FightManager* manager, b2Vec2 pos, Yuno* owner, int iniSpan, int moreSpan, Bubble bubbleType, InputConfig* input) : Entity(manager, pos, bubbleType == Bubble::UP ? 3.f : 2.f, bubbleType == Bubble::UP ? 3.f : 2.f), yuno(owner), hndlr(input)
@@ -116,7 +118,7 @@ void YunoBubble::update()
 	Entity::update();
 }
 
-void YunoBubble::draw(SDL_Rect* camera)
+void YunoBubble::draw(const SDL_Rect& camera)
 {
 	if (alive)
 	{
@@ -126,13 +128,13 @@ void YunoBubble::draw(SDL_Rect* camera)
 
 			SDL_Rect aux = texDest;
 
-			float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
-			float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+			float wDiff = (float)manager->GetActualWidth() / (float)camera.w;
+			float hDiff = (float)manager->GetActualHeight() / (float)camera.h;
 
-			aux.x -= camera->x;
+			aux.x -= camera.x;
 			aux.x = (int)((float)aux.x * wDiff);
 
-			aux.y -= camera->y;
+			aux.y -= camera.y;
 			aux.y = (int)((float)aux.y * hDiff);
 
 			aux.w = (int)((float)aux.w * wDiff);
@@ -147,13 +149,13 @@ void YunoBubble::draw(SDL_Rect* camera)
 
 		SDL_Rect aux = hurtbox;
 
-		float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
-		float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+		float wDiff = (float)manager->GetActualWidth() / (float)camera.w;
+		float hDiff = (float)manager->GetActualHeight() / (float)camera.h;
 
-		aux.x -= camera->x;
+		aux.x -= camera.x;
 		aux.x = (int)((float)aux.x * wDiff);
 
-		aux.y -= camera->y;
+		aux.y -= camera.y;
 		aux.y = (int)((float)aux.y * hDiff);
 
 		aux.w = (int)((float)aux.w * wDiff);
@@ -170,10 +172,10 @@ void YunoBubble::draw(SDL_Rect* camera)
 
 		SDL_Rect auxDeathBubble = bubbleDeathZone;
 
-		auxDeathBubble.x -= camera->x;
+		auxDeathBubble.x -= camera.x;
 		auxDeathBubble.x = (int)((float)auxDeathBubble.x * wDiff);
 
-		auxDeathBubble.y -= camera->y;
+		auxDeathBubble.y -= camera.y;
 		auxDeathBubble.y = (int)((float)auxDeathBubble.y * hDiff);
 
 		auxDeathBubble.w = (int)((float)auxDeathBubble.w * wDiff);
@@ -205,7 +207,7 @@ void YunoBubble::CheckHits()
 		{
 			if (oponent->GetName() != this->GetName() && oponent->GetName() != "Togo_Shield")
 			{
-				if (SDL_HasIntersection(&hurtbox, oponent->GetHurtbox()))
+				if (SDL_HasIntersection(&hurtbox, &oponent->GetHurtbox()))
 				{
 					GetInsideBubble(oponent);
 					body->SetLinearVelocity(b2Vec2(dir * 0.5f, 0));

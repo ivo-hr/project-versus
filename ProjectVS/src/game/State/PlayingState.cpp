@@ -65,13 +65,13 @@ Character* PlayingState::GetCharacter(char input, short character, ushort pNum)
 		switch (input)
 		{
 		case -1:
-			if (ih.isKeyDown(playerPrefs.Keyboard1Down()))charac = 12;
+			if (ih->isKeyDown(playerPrefs->Keyboard1Down()))charac = 12;
 			break;
 		case -2:
-			if (ih.isKeyDown(playerPrefs.Keyboard2Down()))charac = 12;
+			if (ih->isKeyDown(playerPrefs->Keyboard2Down()))charac = 12;
 			break;
 		default:
-			if (ih.xboxGetAxesState(input, 1) == 1 || ih.xboxGetDpadState(input, 2))
+			if (ih->xboxGetAxesState(input, 1) == 1 || ih->xboxGetDpadState(input, 2))
 				charac = 12;
 			break;
 		}
@@ -129,6 +129,10 @@ void PlayingState::next() {
 	vector<vector<ushort>>gameStats = fmngr->getGameStats();
 	fmngr->setState(new GameOverState(fmngr, winnersTextures, gameStats, fmngr->getWinnerInput(), playersInput_));
 	delete this;
+}
+
+void PlayingState::OnEnable() {
+	SDL_ShowCursor(0);
 }
 
 void PlayingState::Reset()

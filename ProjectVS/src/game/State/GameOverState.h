@@ -1,23 +1,26 @@
 #pragma once
 
 #include "State.h"
-#include "../Utils/PlayerPointer.h"
+
+class PlayerPointer;
+class Button;
+class Texture;
 
 class GameOverState : public State {
     Texture* background;
     //FightManager* fmngr;
-    vector<Texture*>winnersTextures_;
+    std::vector<Texture*>winnersTextures_;
     Button* playAgain;
-    vector<PlayerPointer*> pointers = vector<PlayerPointer*>(1);
+    std::vector<PlayerPointer*> pointers = std::vector<PlayerPointer*>(1);
     PlayerPointer*& pointer;
-    vector<char> allInputs = vector<char>();
+    std::vector<char> allInputs = std::vector<char>();
     short playersInput_;
-    vector<vector<ushort>>gameStats_;
+    std::vector<std::vector<ushort>>gameStats_;
 
     void drawGameStats();
 
 public:
-    GameOverState(FightManager* fmngr, vector<Texture*>winnersTextures, vector<vector<ushort>>gameStats, short playersInput, vector<char>playersInputV);
+    GameOverState(FightManager* fmngr, std::vector<Texture*>winnersTextures, std::vector<std::vector<ushort>>gameStats, short playersInput, std::vector<char>playersInputV);
     virtual ~GameOverState();
 
     void update() override;
@@ -27,7 +30,7 @@ public:
     void OnDisable() override {};
     void Reset() override {};
 
-    string getStateName() const override {
+    std::string getStateName() const override {
         return "GameOver state";
     };
 };

@@ -4,6 +4,7 @@
 #include "../../Utils/AnimationManager.h"
 #include "../../Utils/Particle.h"
 #include "../../../utils/CheckML.h"
+#include "../../../sdlutils/SDLUtils.h"
 using json = nlohmann::json;
 
 Togo::Togo(FightManager* mngr, b2Vec2 pos, char input, ushort p) : Character(mngr, pos, input,p, 1.5f, 3.5f)
@@ -354,20 +355,20 @@ void Togo::SpecialLHit(ushort frameNumber)
 	}
 }
 
-void Togo::draw(SDL_Rect* camera)
+void Togo::draw(const SDL_Rect& camera)
 {
 
 #ifdef _DEBUG
 
 	SDL_Rect aux = bite;
 
-	float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
-	float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+	float wDiff = (float)manager->GetActualWidth() / (float)camera.w;
+	float hDiff = (float)manager->GetActualHeight() / (float)camera.h;
 
-	aux.x -= camera->x;
+	aux.x -= camera.x;
 	aux.x = (int)((float)aux.x * wDiff);
 
-	aux.y -= camera->y;
+	aux.y -= camera.y;
 	aux.y = (int)((float)aux.y * hDiff);
 
 	aux.w = (int)((float)aux.w * wDiff);

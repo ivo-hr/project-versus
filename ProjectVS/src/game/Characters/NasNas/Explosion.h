@@ -11,11 +11,13 @@ public:
 	Explosion(FightManager* manager, b2Vec2 pos, int power, int type, bool lookRight);
 	~Explosion();
 
-	string GetName() override { return "Nas_Explosion"; };
+	std::string GetName() override {
+		return "Nas_Explosion";
+	};
 
 	void update() override;
 	void draw() override;
-	void draw(SDL_Rect* camera) override;
+	void draw(const SDL_Rect& camera) override;
 	void CheckHits() override;
 	SDL_Rect* GetHurtbox() { return &hurtbox; };
 private:

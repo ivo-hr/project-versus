@@ -2,7 +2,6 @@
 
 #include "../../Projectile.h"
 
-
 class Bullet : public Projectile
 {
 //protected:
@@ -17,8 +16,10 @@ class Bullet : public Projectile
 //	float ang;
 
 public:
-	Bullet(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, float width, float height, int speed, string name);
+	Bullet(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, float width, float height, int speed, std::string name);
 	~Bullet();
 
-	string GetName() override { return "Bullet"; };
+	std::string GetName() override {
+		return "Bullet";
+	};
 };

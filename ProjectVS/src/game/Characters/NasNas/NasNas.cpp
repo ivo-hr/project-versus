@@ -4,6 +4,7 @@
 #include "../../../json/json.hpp"
 #include "../../Utils/Particle.h"
 #include "../../../utils/CheckML.h"
+#include "../../../sdlutils/SDLUtils.h"
 #include <fstream>
 #include <iostream>
 using json = nlohmann::json;

@@ -1,6 +1,8 @@
 #include "Ball.h"
 #include "../../Utils/Particle.h"
 #include "../../../utils/CheckML.h"
+#include "../../../sdlutils/SDLUtils.h"
+#include "../../../sdlutils/Texture.h"
 
 MaktBall::MaktBall(FightManager* manager, b2Vec2 pos, const HitData& attack, b2Vec2 dir, b2Vec2 respawn, ushort pNumber, ushort layer) :
 	Projectile(manager, pos, dir, 1.5f, 1.5f, 20)
@@ -96,7 +98,7 @@ void MaktBall::CheckHits()
 		while (manager->GetNextEntity(oponent, layer) && !isHit[oponent])
 		{
 			SDL_Rect hitArea;
-			if (SDL_IntersectRect(&hurtbox, oponent->GetHurtbox(), &hitArea))
+			if (SDL_IntersectRect(&hurtbox, &oponent->GetHurtbox(), &hitArea))
 			{
 				bool controlHitLag = false;
 				bool controlShake = false;
@@ -165,19 +167,19 @@ void MaktBall::Respawn()
 	manager->ChangeEntityLayer(this, originalLayer);
 }
 
-void MaktBall::draw(SDL_Rect* camera)
+void MaktBall::draw(const SDL_Rect& camera)
 {
 	if (alive)
 	{
 		SDL_Rect aux = hurtbox;
 
-		float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
-		float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+		float wDiff = (float)manager->GetActualWidth() / (float)camera.w;
+		float hDiff = (float)manager->GetActualHeight() / (float)camera.h;
 
-		aux.x -= camera->x;
+		aux.x -= camera.x;
 		aux.x = (int)((float)aux.x * wDiff);
 
-		aux.y -= camera->y;
+		aux.y -= camera.y;
 		aux.y = (int)((float)aux.y * hDiff);
 
 		aux.w = (int)((float)aux.w * wDiff);

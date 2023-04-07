@@ -1,7 +1,10 @@
 #include "Entity.h"
 #include "Utils/Particle.h"
 #include "../utils/CheckML.h"
+#include "../sdlutils/Texture.h"
+#include "../sdlutils/SDLUtils.h"
 
+using namespace std;
 
 void Entity::BuildParticlePool()
 {
@@ -141,6 +144,10 @@ void Entity::SetGround(bool ground)
 	onGround = ground;
 }
 
+bool Entity::IsOutOfBounds() {
+	return !SDL_HasIntersection(&hurtbox, manager->GetDeathZone());
+}
+
 void Entity::resetHit()
 {
 	isHit.clear();
@@ -149,6 +156,11 @@ void Entity::resetHit()
 void Entity::setLastCharacer(Entity* chrcter)
 {
 	lastCharacter = chrcter;
+}
+
+SDL_Rect Entity::getCurrentSpriteSrc()
+{
+	return { 0, 0, texture->width(), texture->height() };
 }
 
 void Entity::SetShake(Vector2D dir, ushort value)
@@ -169,7 +181,7 @@ void Entity::draw()
 #endif // _DEBUG
 }
 
-void Entity::draw(SDL_Rect* camera)
+void Entity::draw(const SDL_Rect& camera)
 {
 
 #ifdef _DEBUG
@@ -178,13 +190,13 @@ void Entity::draw(SDL_Rect* camera)
 	{
 		SDL_Rect aux = hitboxes[i]->box;
 
-		float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
-		float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+		float wDiff = (float)manager->GetActualWidth() / (float)camera.w;
+		float hDiff = (float)manager->GetActualHeight() / (float)camera.h;
 
-		aux.x -= camera->x;
+		aux.x -= camera.x;
 		aux.x = (int)((float)aux.x * wDiff);
 
-		aux.y -= camera->y;
+		aux.y -= camera.y;
 		aux.y = (int)((float)aux.y * hDiff);
 
 		aux.w = (int)((float)aux.w * wDiff);
@@ -234,9 +246,9 @@ void Entity::RemoveParticle(Particle* par, ushort posInVec, bool front)
 	}
 }
 
-SDL_Rect* Entity::GetHurtbox()
+SDL_Rect& Entity::GetHurtbox()
 {
-	return &hurtbox;
+	return hurtbox;
 }
 
 void Entity::SetPosition(const b2Vec2& newPos)

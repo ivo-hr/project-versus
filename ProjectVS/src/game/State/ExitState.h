@@ -2,6 +2,8 @@
 
 #include "State.h"
 
+class Button;
+
 class ExitState : public State {
     Button *yes, * no;
 public:
@@ -16,7 +18,7 @@ public:
     void OnDisable() override {};
     void Reset() override {};
 
-    string getStateName() const override {
+    std::string getStateName() const override {
         return "Pause state";
     };
 };

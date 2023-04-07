@@ -2,7 +2,9 @@
 
 #include <unordered_map>
 #include <queue>
-//#include "Utils/Particle.h"
+#include <string>
+#include <SDL.h>
+#include "../utils/Vector2D.h"
 #include "PlayingState/FightManager.h"
 
 class AnimationManager;
@@ -108,7 +110,7 @@ class Entity abstract
 {
 private:
 
-	unordered_map<Tags, bool> tags = unordered_map<Tags, bool>({ {Tags::CameraFollow, false}, {Tags::IsCharacter, false}, {Tags::IsProjectile, false}, {Tags::Hitable, false} });
+	std::unordered_map<Tags, bool> tags = std::unordered_map<Tags, bool>({ {Tags::CameraFollow, false}, {Tags::IsCharacter, false}, {Tags::IsProjectile, false}, {Tags::Hitable, false} });
 
 protected:
 
@@ -131,7 +133,7 @@ protected:
 
 	short dir;
 
-	map<string, deque<Particle*>> particlePool;
+	std::unordered_map<std::string, std::deque<Particle*>> particlePool;
 	std::vector<Particle*> backParticles;
 	std::vector<Particle*> frontParticles;
 
@@ -161,7 +163,7 @@ public:
 	Entity(FightManager* mngr, b2Vec2 position, float w = 3.f, float h = 3.f);
 	virtual ~Entity();
 
-	virtual string GetName() = 0;
+	virtual std::string GetName() = 0;
 
 	bool IsAlive() { return alive; }
 	void SetAlive(bool is) { alive = is; }
@@ -178,9 +180,9 @@ public:
 	void updateParticles();
 	virtual void update();
 	virtual void draw();
-	virtual void draw(SDL_Rect* camera);
+	virtual void draw(const SDL_Rect& camera);
 
-	void AddParticle(const string& name, const Vector2D& pos, short dir = 1, bool front = false);
+	void AddParticle(const std::string& name, const Vector2D& pos, short dir = 1, bool front = false);
 	void RemoveParticle(Particle* par, ushort posInVec, bool front);
 
 	virtual void CheckHits() { };
@@ -193,7 +195,7 @@ public:
 	ushort GetLives() { return lives; };
 	float GetWidth() { return width; };
 	float GetHeight() { return height; };
-	SDL_Rect* GetHurtbox();
+	SDL_Rect& GetHurtbox();
 	b2Body* GetBody() { return body; };
 
 	void SetPosition(const b2Vec2& newPos);
@@ -205,7 +207,7 @@ public:
 	void SetGround(bool ground);
 	bool GetGround() { return onGround; };
 
-	virtual bool IsOutOfBounds() { return !SDL_HasIntersection(&hurtbox, manager->GetDeathZone()); }
+	virtual bool IsOutOfBounds();
 
 	void resetHit();
 	void increaseKills() { kills++; }
@@ -214,11 +216,11 @@ public:
 	void resetLastCharacter() { lastCharacter = nullptr; }
 
 	Texture* getTexture() { return texture; }
-	virtual SDL_Rect getCurrentSpriteSrc() { return { 0, 0, texture->width(), texture->height() }; }
+	virtual SDL_Rect getCurrentSpriteSrc();
 	//virtual void SendToHUD(Texture* tex);
 	bool ToDelete() { return toDelete; };
 
-	map<string, deque<Particle*>>& GetParticlePool() { return particlePool; };
+	std::unordered_map<std::string, std::deque<Particle*>>& GetParticlePool() { return particlePool; };
 
 	void SetShake(Vector2D dir, ushort value);
 };

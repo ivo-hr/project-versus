@@ -2,7 +2,16 @@
 #include "../../utils/CheckML.h"
 #include "../PlayingState/FightManager.h"
 #include "../Utils/PlayerConfigs.h"
+#include "../Utils/PlayerPointer.h"
+#include <iostream>
+#include "../../sdlutils/InputHandler.h"
+#include "../../sdlutils/SDLUtils.h"
+#include "../Utils/Button.h"
+#include "../Utils/PlayerConfigs.h"
 
+#include "MenuState.h"
+
+using namespace std;
 
 ConfigurationState::ConfigurationState(FightManager* game , short pI) : State(game), p1(pointers[0])
 {
@@ -26,13 +35,13 @@ ConfigurationState::ConfigurationState(FightManager* game , short pI) : State(ga
     muscm->SetOnClick([this]() {DecreaseMusic(); });
     muscp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - butW / 2), butW, butW, pointers);
     muscp->SetOnClick([this]() {IncreaseMusic(); });
-    musicV = nearbyint((float)Music::getMusicVolume() * 10 / (float)128);
+    musicV = (int)nearbyint((float)Music::getMusicVolume() * 10 / (float)128);
   
     sfxm = new Button(&sdl->images().at("minusB"), (int)(w * 29 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - butW / 2), butW, butW, pointers);
     sfxm->SetOnClick([this]() {DecreaseSFX(); });
     sfxp = new Button(&sdl->images().at("plusB"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - butW / 2), butW, butW, pointers);
     sfxp->SetOnClick([this]() {IncreaseSFX(); });
-    sfxV = nearbyint((float)SoundEffect::getChannelVolume() * 10 / (float)128);
+    sfxV = (int)nearbyint((float)SoundEffect::getChannelVolume() * 10 / (float)128);
 
     fullSCheck = new ToggleButton(&sdl->images().at("check"), (int)(w * 33 / 25 - (w * 5 / 6 + w / 16)), (int)(h * 1.2f / 2 - butW), butW * 2, butW * 2, pointers);
     fullSCheck->SetEnabled(SDL_GetWindowFlags(sdl->window()) & SDL_WINDOW_FULLSCREEN);
@@ -60,7 +69,7 @@ ConfigurationState::~ConfigurationState()
 void ConfigurationState::update()
 {
 
-    if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
+    if (ih->isKeyDown(SDLK_ESCAPE) && ih->keyDownEvent()) {
         GoBack();
     }
 
@@ -144,10 +153,25 @@ void ConfigurationState::ExitState()
 void ConfigurationState::ToggleFullScreen()
 {
     // SDL_MaximizeWindow(sdl->window());
+    SDL_DisplayMode DM;
+    SDL_GetDesktopDisplayMode(0, &DM);
 
-    //TODO: recalcular el tamaño maximo de resolucion y aplicarlo
+    Vector2D size;
 
     sdl->toggleFullScreen();
+
+    if (1680 < DM.w)
+    {
+        double ratio = (double)DM.h / (double)DM.w;
+        size = Vector2D(1680, (int)(1680 * ratio));
+
+        SDL_SetWindowSize(sdl->window(), (int)size.getX(), (int)size.getY());
+    }
+    else
+    {
+        size = Vector2D(DM.w, DM.h);
+        SDL_MaximizeWindow(sdl->window());
+    }
 
     auto flags = SDL_GetWindowFlags(sdl->window());
     if (!(flags & SDL_WINDOW_FULLSCREEN))
@@ -170,21 +194,21 @@ void ConfigurationState::draw() {
 
     int fontSiz = h / 32;
 
-    showText("BGM", fontSiz, (int)(w * 27 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+    showText("BGM", fontSiz, (int)(w * 27 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - fontSiz / 2), 0x33FFFC00);
 
     music->render({ (int)(w - (w * 5 / 6 + w / 16)), (int)h / 4, (int)w / 25, (int)w / 25 });
 
-    showText(to_string(musicV), fontSiz, (int)(w * 31 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+    showText(to_string(musicV), fontSiz, (int)(w * 31 / 25 - (w * 5 / 6 + w / 16)), (int)((h / 4) + w / 50 - fontSiz / 2), 0x33FFFC00);
 
 
-    showText("SFX", fontSiz, (int)(w * 27 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+    showText("SFX", fontSiz, (int)(w * 27 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50.f - fontSiz / 2.f), 0x33FFFC00);
 
     sfx->render({ (int)(w - (w * 5 / 6 + w / 16)), (int)(h * 1.3f / 4), (int)w / 25, (int)w / 25 });
 
-    showText(to_string(sfxV), fontSiz, (int)(w * 31 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+    showText(to_string(sfxV), fontSiz, (int)(w * 31 / 25 - (w * 5 / 6 + w / 16)), (int)((h * 1.3f / 4) + w / 50.f - fontSiz / 2.f), 0x33FFFC00);
 
 
-    showText("FULLSCREEN", fontSiz, (int)(w - (w * 5 / 6 + w / 16)), (int)(h * 1.2f / 2 - fontSiz / 2), build_sdlcolor(0x33FFFC00));
+    showText("FULLSCREEN", fontSiz, (int)(w - (w * 5 / 6 + w / 16)), (int)(h * 1.2f / 2 - fontSiz / 2.f), 0x33FFFC00);
 
     fullSCheck->render();
     instru->render(instruRect);
@@ -204,4 +228,8 @@ void ConfigurationState::draw() {
 
 void ConfigurationState::next() {
     delete this;
+}
+
+void ConfigurationState::OnEnable() {
+    SDL_ShowCursor(1);
 }

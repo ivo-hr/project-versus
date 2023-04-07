@@ -20,11 +20,11 @@ public:
 	Spell(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, state state);
 	~Spell();
 
-	string GetName() override { return "Nas_Spell"; };
+	std::string GetName() override { return "Nas_Spell"; };
 
 	SDL_Rect* GetHurtbox() { return &hurtbox;};
 
-	void draw(SDL_Rect* camera) override;
+	void draw(const SDL_Rect& camera) override;
 
 	SDL_Rect getCurrentSpriteSrc() override { return { 0, 1264, 35, 16 }; }
 

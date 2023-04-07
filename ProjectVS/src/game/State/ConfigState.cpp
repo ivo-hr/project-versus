@@ -4,6 +4,17 @@
 #include "../PlayingState/FightManager.h"
 #include "../../utils/CheckML.h"
 #include "../Utils/PlayerConfigs.h"
+#include "../Utils/PlayerPointer.h"
+#include "../Utils/PlayerSelectRect.h"
+#include <iostream>
+#include "../../sdlutils/InputHandler.h"
+#include "../../sdlutils/SDLUtils.h"
+#include "../Utils/Button.h"
+#include "../Utils/PlayerConfigs.h"
+
+#include "ConfigurationState.h"
+
+using namespace std;
 
 vector<char> ConfigState::AuxFunc(char inp)
 {
@@ -12,7 +23,7 @@ vector<char> ConfigState::AuxFunc(char inp)
 	return inputsAux;
 }
 
-ConfigState::ConfigState(FightManager* game, const vector<char>& inputs) : State(game), numOfplayer(std::max(inputs.size(), (size_t)2))
+ConfigState::ConfigState(FightManager* game, const vector<char>& inputs) : State(game), numOfplayer((ushort)std::max((ushort)inputs.size(), (ushort)2))
 {
 	int w = fmngr->GetActualWidth();
 	int h = fmngr->GetActualHeight();
@@ -69,7 +80,7 @@ ConfigState::ConfigState(FightManager* game, const vector<char>& inputs) : State
 	SDL_ShowCursor(1);
 }
 
-ConfigState::ConfigState(FightManager* game, short fInput) : ConfigState(game, AuxFunc(fInput)) { }
+ConfigState::ConfigState(FightManager* game, char fInput) : ConfigState(game, AuxFunc(fInput)) { }
 
 ConfigState::~ConfigState()
 {
@@ -132,7 +143,7 @@ void ConfigState::InitAllButtons(int w, int h)
 
 void ConfigState::update()
 {
-	if (ih.isKeyDown(SDLK_ESCAPE) && ih.keyDownEvent()) {
+	if (ih->isKeyDown(SDLK_ESCAPE) && ih->keyDownEvent()) {
 		if (fmngr->getSavedState() == nullptr) {
 			//pause
 			fmngr->saveState(fmngr->getState());
@@ -156,9 +167,9 @@ void ConfigState::update()
 			return;
 		teammode->update();
 		normalmode->update();
-		for (auto e : p)
+		for (auto& e : p)
 		{
-			for (auto t : e)
+			for (auto& t : e)
 			{
 				t->update();
 			}
@@ -275,7 +286,7 @@ void ConfigState::searchInput()
 		if (SDL_NumJoysticks() == nMandos)
 		{
 			for (auto i = 0; i < SDL_NumJoysticks(); i++) {
-				if (ih.xboxGetAxesState(i, 1) == -1 && !usedPad[i]) {
+				if (ih->xboxGetAxesState(i, 1) == -1 && !usedPad[i]) {
 					usedPad[i] = true;
 					playerInput.push_back(i);
 					setPointer(i);
@@ -289,7 +300,7 @@ void ConfigState::searchInput()
 		else if (SDL_NumJoysticks() > nMandos) { //se ha enchufado nuevo mando
 			vector<char> aux = playerInput;
 			for (auto i = 0; i < SDL_NumJoysticks(); i++) {
-				if (ih.xboxGetAxesState(i, 1) == -1) {
+				if (ih->xboxGetAxesState(i, 1) == -1) {
 					bool nes = false;
 					for (ushort j = 0u; j < aux.size(); j++)
 					{
@@ -320,14 +331,14 @@ void ConfigState::searchInput()
 				}
 			}
 		}
-		if (ih.isKeyDown(playerPrefs.Keyboard2Up()) && !usedKeyboard[1]) {
+		if (ih->isKeyDown(playerPrefs->Keyboard2Up()) && !usedKeyboard[1]) {
 			usedKeyboard[1] = true;
 			playerInput.push_back(-2);
 			setPointer(-2);
 			playerTexture[playerInput.size() - 1]->setgotInput(true);
 			playerTexture[playerInput.size() - 1]->setFront(&sdl->images().at("k2"));
 		}
-		if (ih.isKeyDown(playerPrefs.Keyboard1Up()) && !usedKeyboard[0]) {
+		if (ih->isKeyDown(playerPrefs->Keyboard1Up()) && !usedKeyboard[0]) {
 			usedKeyboard[0] = true;
 			playerInput.push_back(-1);
 			setPointer(-1);
@@ -354,13 +365,13 @@ void ConfigState::checkButtonPointerClick()
 		switch (playerInput[i])
 		{
 		case -1:
-			if (ih.isKeyDown(playerPrefs.Keyboard1Special())) selected[i] = false;
+			if (ih->isKeyDown(playerPrefs->Keyboard1Special())) selected[i] = false;
 			break;
 		case -2:
-			if (ih.isKeyDown(playerPrefs.Keyboard2Special())) selected[i] = false;
+			if (ih->isKeyDown(playerPrefs->Keyboard2Special())) selected[i] = false;
 			break;
 		default:
-			if (ih.xboxGetButtonState(playerInput[i], playerPrefs.ControllerSpecial())) selected[i] = false;
+			if (ih->xboxGetButtonState(playerInput[i], playerPrefs->ControllerSpecial())) selected[i] = false;
 			break;
 		}
 	}
@@ -418,14 +429,14 @@ void ConfigState::playerMenuRender()
 		int j = c / 5;
 
 		charselbg->render({ (int)(c % 5 * dist + offset), (int)(((w * 3 / 24) * j) + w / 12), (int)w / 12, (int)w / 12 });
-		showText(charName[c], w / 80, (int)(c % 5 * dist + offset) - w / 24, (int)((((w * 3 / 24) * j) + w * 1.02f / 6)), build_sdlcolor(0x33FFE900));
+		showText(charName[c], w / 80, (int)(c % 5 * dist + offset) - w / 24, (int)((((w * 3 / 24.f) * j) + w * 1.02f / 6)), 0x33FFE900);
 	}
 	int dist = (w * 9 / 10) / numOfplayer;
 	int offset = dist - (int)w / 5;
 	for (auto i = 0u; i < numOfplayer; i++) {
 		playerTexture[i]->render((int)(i * dist + offset), (int)h * 2 / 3 + h / 24, (int)w / 5, (int)h / 4);
 		if (selected[i])
-			showText("Selected", w / 70, (int)(i * dist + offset + w / 25), (int)h * 2 / 24 + h * 2 / 3, build_sdlcolor(0x00FF0000));
+			showText("Selected", w / 70, (int)(i * dist + offset + w / 25), (int)h * 2 / 24 + h * 2 / 3, 0x55FF5500);
 	}
 
 	if (TeamModebool) {
@@ -433,7 +444,7 @@ void ConfigState::playerMenuRender()
 
 			for (int j = 0; j < 2; j++)
 			{
-				p[i][j]->setX((int)(i * dist + offset + w / 17.5f + j * (w / 20)));
+				p[i][j]->setX((int)(i * dist + offset + w / 17.5f + j * (w / 20.f)));
 				p[i][j]->setY((int)(h * 18.f / 20.f));
 				p[i][j]->render();
 			}

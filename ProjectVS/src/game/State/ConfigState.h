@@ -1,8 +1,14 @@
 #pragma once
 
 #include "State.h"
-#include "../Utils/PlayerPointer.h"
-#include "../Utils/PlayerSelectRect.h"
+//#include "../Utils/PlayerPointer.h"
+//#include "../Utils/PlayerSelectRect.h"
+
+class ToggleButton;
+class Button;
+class PlayerPointer;
+class PlayerSelectRect;
+class Texture;
 
 class ConfigState : public State {
     Texture* background , *charselbg;
@@ -10,9 +16,9 @@ class ConfigState : public State {
 
     const Texture* stageTextures[3];
 
-    vector<Button*> buttons = vector<Button*>(10);
+    std::vector<Button*> buttons = std::vector<Button*>(10);
 
-    Button *play;
+    Button* play;
     ToggleButton* teammode, * normalmode;
     bool TeamModebool = false;
     bool charsel = false;
@@ -27,18 +33,18 @@ class ConfigState : public State {
     int lastPointerClick = -3;
     ushort nMandos;
 
-    vector<char> playerInput;
-    vector<short> charactersSelect;
-    vector<short> charactersTeam;
-    vector<bool> usedPad;
-    vector<bool> usedKeyboard;
-    vector<bool> selected;
-    vector<PlayerPointer*> playerPointers;
-    vector<PlayerSelectRect*> playerTexture;
-    vector<Texture*> charactTexture;
-    vector<vector<ToggleButton*>> p;
-    vector<Button*> maps;
-    vector<string> charName;
+    std::vector<char> playerInput;
+    std::vector<short> charactersSelect;
+    std::vector<short> charactersTeam;
+    std::vector<bool> usedPad;
+    std::vector<bool> usedKeyboard;
+    std::vector<bool> selected;
+    std::vector<PlayerPointer*> playerPointers;
+    std::vector<PlayerSelectRect*> playerTexture;
+    std::vector<Texture*> charactTexture;
+    std::vector<std::vector<ToggleButton*>> p;
+    std::vector<Button*> maps;
+    std::vector<std::string> charName;
     void configTeamChoose();
    
     void searchInput();
@@ -50,18 +56,18 @@ class ConfigState : public State {
     void mapMenuRender();
     void initcharact();
 
-    void SelectCharacter(int i, const string& name, char character);
+    void SelectCharacter(int i, const std::string& name, char character);
     void RemovePlayer();
     void AddPlayer();
     void ChangeTeam(int pl, bool t1);
     void OpenConfig();
     int timerMapkeyRelease = 0;
 
-    vector<char> AuxFunc(char inp);
+    std::vector<char> AuxFunc(char inp);
 public:
 
-    ConfigState(FightManager* game , short fInput);
-    ConfigState(FightManager* game , const vector<char>& inputs);
+    ConfigState(FightManager* game , char fInput);
+    ConfigState(FightManager* game , const std::vector<char>& inputs);
     ~ConfigState();
 
     void InitAllButtons(int w, int h);
@@ -72,7 +78,7 @@ public:
     void OnDisable() override {};
     void Reset() override {};
 
-    string getStateName() const override {
+    std::string getStateName() const override {
         return "Config state";
     };
 private:

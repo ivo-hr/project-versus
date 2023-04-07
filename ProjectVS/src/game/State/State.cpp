@@ -1,13 +1,21 @@
 #include "State.h"
 #include "../PlayingState/FightManager.h"
 #include "../../utils/CheckML.h"
+#include <iostream>
+#include "../../sdlutils/InputHandler.h"
+#include "../../sdlutils/SDLUtils.h"
+#include "../Utils/Button.h"
+#include "../Utils/PlayerConfigs.h"
+
+using namespace std;
 
 bool State::doQuit() {
     return false;
 }
 
-void State::showText(string s, ushort size, ushort x, ushort y, SDL_Color c)
+void State::showText(string s, ushort size, ushort x, ushort y, unsigned int hexColor)
 {
+    SDL_Color c = build_sdlcolor(hexColor);
     string fontstring = "nes" + to_string(size);
     auto& font = sdl->fonts().at(fontstring);
     string key = fontstring + s + to_string(c.r) + to_string(c.g) + to_string(c.b);
@@ -18,22 +26,10 @@ void State::showText(string s, ushort size, ushort x, ushort y, SDL_Color c)
     tex->render(x, y);
 }
 
-void State::showText(string s, ushort size, ushort x, ushort y, SDL_Color c, SDL_Color b)
-{
-    if (size <= 16) {
-        auto& font = sdl->fonts().at("nes16");
-        tex = new Texture(sdl->renderer(), s, font, c,b);
-    }
-    else if (size > 16 && size<=24) {
-        auto& font = sdl->fonts().at("nes24");
-        tex = new Texture(sdl->renderer(), s, font, c,b);
-    }
-    else if (size > 24) {
-        auto& font = sdl->fonts().at("nes48");
-        tex = new Texture(sdl->renderer(), s, font, c,b);
-    }
-
-    tex->render(x, y);
+State::State(FightManager* fmngr) : fmngr(fmngr), tex(nullptr) {
+    playerPrefs = PlayerConfigs::instance();
+    ih = InputHandler::instance();
+    sdl = SDLUtils::instance();
 }
 
 void State::jump(State* state) {
@@ -46,3 +42,7 @@ void State::jumpWithoutDelete(State* state)
     fmngr->setState(state);
 }
 
+void State::Reset()
+{
+
+}

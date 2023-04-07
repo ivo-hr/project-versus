@@ -1,6 +1,8 @@
 #include "Togo.h"
 #include "Spear.h"
 #include "../../../utils/CheckML.h"
+#include "../../../sdlutils/SDLUtils.h"
+#include "../../../sdlutils/Texture.h"
 
 Spear::Spear(FightManager* manager, b2Vec2 pos, HitData attack, b2Vec2 dir, Togo* togo) :
 	Projectile(manager, pos, dir, 5.25f, 0.7f, 20)
@@ -60,7 +62,7 @@ void Spear::CheckHits()
 		while (manager->GetNextEntity(oponent, layer))
 		{
 			SDL_Rect hitArea;
-			if (SDL_IntersectRect(&hurtbox, oponent->GetHurtbox(), &hitArea))
+			if (SDL_IntersectRect(&hurtbox, &oponent->GetHurtbox(), &hitArea))
 			{
 				bool controlHitLag = false;
 				bool controlShake = false;
@@ -90,17 +92,17 @@ void Spear::OnDeath() {
 	Projectile::OnDeath();
 }
 
-void Spear::draw(SDL_Rect* camera)
+void Spear::draw(const SDL_Rect& camera)
 {
 	SDL_Rect aux = hurtbox;
 
-	float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
-	float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+	float wDiff = (float)manager->GetActualWidth() / (float)camera.w;
+	float hDiff = (float)manager->GetActualHeight() / (float)camera.h;
 
-	aux.x -= camera->x;
+	aux.x -= camera.x;
 	aux.x = (int)((float)aux.x * wDiff);
 
-	aux.y -= camera->y;
+	aux.y -= camera.y;
 	aux.y = (int)((float)aux.y * hDiff);
 
 	aux.w = (int)((float)aux.w * wDiff);

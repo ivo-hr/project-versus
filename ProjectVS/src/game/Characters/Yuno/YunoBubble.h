@@ -15,7 +15,7 @@ public:
 
 	void update() override;
 	void draw() override { };
-	void draw(SDL_Rect* camera) override;
+	void draw(const SDL_Rect& camera) override;
 	void CheckHits() override;
 	bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
 	SDL_Rect* GetHurtbox() { return &hurtbox; };

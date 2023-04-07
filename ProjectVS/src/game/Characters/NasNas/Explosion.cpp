@@ -1,6 +1,8 @@
 ﻿#include "Explosion.h"
 #include "../../PlayingState/FightManager.h"
 #include "../../../utils/CheckML.h"
+#include "../../../sdlutils/SDLUtils.h"
+#include "../../../sdlutils/Texture.h"
 
 Explosion::Explosion(FightManager* manager, b2Vec2 pos, int power, int type, bool lookRight) :
 	Entity(manager, pos, 7.5f, 5.f)
@@ -72,7 +74,7 @@ void Explosion::CheckHits()
 		while (manager->GetNextEntity(oponent, 0))
 		{
 			SDL_Rect hitArea;
-			if (SDL_IntersectRect(&hurtbox, oponent->GetHurtbox(), &hitArea) && !isHit[oponent])
+			if (SDL_IntersectRect(&hurtbox, &oponent->GetHurtbox(), &hitArea) && !isHit[oponent])
 			{
 				manager->MoveToFront(this);
 				bool controlHitLag = false;
@@ -130,17 +132,17 @@ void Explosion::draw()
 	texture->render({ spriteX, spriteY, texture->width() / 2, texture->height() / 3 }, hurtbox);
 }
 
-void Explosion::draw(SDL_Rect* camera)
+void Explosion::draw(const SDL_Rect& camera)
 {
 	SDL_Rect aux = { hurtbox.x, hurtbox.y - hurtbox.w / 4, hurtbox.w, hurtbox.w };
 
-	float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
-	float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+	float wDiff = (float)manager->GetActualWidth() / (float)camera.w;
+	float hDiff = (float)manager->GetActualHeight() / (float)camera.h;
 
-	aux.x -= camera->x;
+	aux.x -= camera.x;
 	aux.x = (int)((float)aux.x * wDiff);
 
-	aux.y -= camera->y;
+	aux.y -= camera.y;
 	aux.y = (int)((float)aux.y * hDiff);
 
 	aux.w = (int)((float)aux.w * wDiff);

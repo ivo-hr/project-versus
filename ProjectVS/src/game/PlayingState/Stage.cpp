@@ -26,13 +26,13 @@ Stage::~Stage()
 
 void Stage::UnLoadStage()
 {
-	for (uint16 i = 0; i < grounds.size(); i++)
+	for (auto a : grounds)
 	{
-		world->DestroyBody(grounds[i]);
+		world->DestroyBody(a);
 	}
-	for (uint16 i = 0; i < platforms.size(); i++)
+	for (auto a : platforms)
 	{
-		world->DestroyBody(platforms[i]);
+		world->DestroyBody(a);
 	}
 	grounds.clear();
 	groundRects.clear();
@@ -88,9 +88,6 @@ void Stage::LoadJsonStage(std::string fileName, int width, int height)
 		groundDef.position.Set(groundData[i]["groundX"], groundData[i]["groundY"]);
 		groundDef.type = b2_staticBody;
 
-		//Anadimos al mundo
-		grounds.push_back(world->CreateBody(&groundDef));
-
 		//Le damos forma...
 		b2PolygonShape floor;
 		float floorW = groundData[i]["groundW"], floorH = groundData[i]["groundH"];
@@ -103,9 +100,13 @@ void Stage::LoadJsonStage(std::string fileName, int width, int height)
 		fixt.friction = 0.5f;
 		fixt.filter.categoryBits = 2; // 2 para el suelo principal
 
-		grounds[i]->CreateFixture(&fixt);
+		//Anadimos al mundo
+		auto bd = world->CreateBody(&groundDef);
+		bd->CreateFixture(&fixt);
 
-		groundRects.push_back(GetSDLCoors(grounds[i], floorW, floorH));
+		grounds.push_back(bd);
+
+		groundRects.push_back(GetSDLCoors(bd, floorW, floorH));
 	}
 
 	auto aData = jsonFile["platformData"];
@@ -127,10 +128,13 @@ void Stage::LoadJsonStage(std::string fileName, int width, int height)
 		fi.friction = 0.5f;
 		fi.filter.categoryBits = 4; // 4 para las plataformas que puedes atravesar desde abajo
 
-		platforms.push_back(world->CreateBody(&gDef));
-		platforms[i]->CreateFixture(&fi);
+		//Anadimos al mundo
+		auto bd = world->CreateBody(&gDef);
+		bd->CreateFixture(&fi);
 
-		platformRects.push_back(GetSDLCoors(platforms[i], platW, platH));
+		platforms.push_back(bd);
+
+		platformRects.push_back(GetSDLCoors(bd, platW, platH));
 	}
 
 	deathZone = { 0, 0, (int)(deathzoneSize.x * b2ToSDL), (int)(deathzoneSize.y * b2ToSDL) };
@@ -151,11 +155,12 @@ int Stage::GetPlayerDir(int index)
 
 void Stage::DrawStage(SDL_Rect* camera)
 {
-
 	SDL_Rect auxDeath = deathZone;
 
-	float cameraWDiff = (float)mngr->GetActualWidth() - (float)camera->w;
-	float cameraHDiff = (float)mngr->GetActualHeight() - (float)camera->h;
+	auto rat = (double)mngr->GetActualHeight() / (double)mngr->GetActualWidth();
+
+	float cameraWDiff = (float)deathZone.w - (float)camera->w;
+	float cameraHDiff = (float)deathZone.h - (float)camera->h;
 
 	float widthMat = (float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - backGroundParallax)));
 	float heightMat = (float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - backGroundParallax)));
@@ -163,17 +168,22 @@ void Stage::DrawStage(SDL_Rect* camera)
 	auxDeath.x = (int)(-camera->x * backGroundParallax);
 	auxDeath.x = (int)((float)auxDeath.x * widthMat);
 
-	auxDeath.y = (int)(-camera->y * backGroundParallax);
+	auxDeath.y = (int)(-camera->y * (backGroundParallax/* * rat*/));
 	auxDeath.y = (int)((float)auxDeath.y * heightMat);
 
 	auxDeath.w = (int)((float)auxDeath.w * widthMat);
+	// auxDeath.h = (int)((float)auxDeath.w * rat);
 	auxDeath.h = (int)((float)auxDeath.h * heightMat);
 
 	background->render(auxDeath);
 
-	for (TexWithRect aaa : elements)
+	for (const TexWithRect& aaa : elements)
 	{
 		SDL_Rect auxPlat = aaa.rect;
+
+		auto ratio = (double)auxPlat.h / (double)auxPlat.w;
+
+		ratio = ratio + ((rat - ratio) * (1.f - aaa.parallaxValue));
 
 		widthMat = (float)mngr->GetActualWidth() / ((float)camera->w + (cameraWDiff * (1.f - aaa.parallaxValue)));
 		heightMat = (float)mngr->GetActualHeight() / ((float)camera->h + (cameraHDiff * (1.f - aaa.parallaxValue)));
@@ -185,6 +195,7 @@ void Stage::DrawStage(SDL_Rect* camera)
 		auxPlat.y = (int)((float)auxPlat.y * heightMat);
 
 		auxPlat.w = (int)((float)auxPlat.w * widthMat);
+		// auxPlat.h = (int)((float)auxPlat.w * ratio);
 		auxPlat.h = (int)((float)auxPlat.h * heightMat);
 
 		aaa.image->render(auxPlat);

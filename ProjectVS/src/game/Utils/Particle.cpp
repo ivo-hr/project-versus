@@ -1,5 +1,7 @@
 #include "Particle.h"
 #include "../../utils/CheckML.h"
+#include "../../sdlutils/Texture.h"
+#include "../../sdlutils/SDLUtils.h"
 
 void Particle::CalcularResto()
 {
@@ -262,19 +264,19 @@ void Particle::draw()
 	}
 }
 
-void Particle::draw(SDL_Rect* camera)
+void Particle::draw(const SDL_Rect& camera)
 {
 	if (active)
 	{
 		SDL_Rect aux = data.dest;
 
-		float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
-		float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+		float wDiff = (float)manager->GetActualWidth() / (float)camera.w;
+		float hDiff = (float)manager->GetActualHeight() / (float)camera.h;
 
-		aux.x -= camera->x;
+		aux.x -= camera.x;
 		aux.x = (int)((float)aux.x * wDiff);
 
-		aux.y -= camera->y;
+		aux.y -= camera.y;
 		aux.y = (int)((float)aux.y * hDiff);
 
 		aux.w = (int)((float)aux.w * wDiff);

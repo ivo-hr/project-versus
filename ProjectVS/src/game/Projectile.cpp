@@ -1,6 +1,8 @@
 #include "Projectile.h"
 #include "Utils/Particle.h"
 #include "../utils/CheckML.h"
+#include "../sdlutils/SDLUtils.h"
+#include "../sdlutils/Texture.h"
 
 Projectile::Projectile(FightManager* manager, b2Vec2 pos, b2Vec2 dir, float width, float height, int speed) :
 	Entity(manager, pos, width, height)
@@ -56,17 +58,17 @@ void Projectile::draw()
 	texture->render(hurtbox, 1);
 }
 
-void Projectile::draw(SDL_Rect* camera)
+void Projectile::draw(const SDL_Rect& camera)
 {
 	SDL_Rect aux = hurtbox;
 
-	float wDiff = (float)manager->GetActualWidth() / (float)camera->w;
-	float hDiff = (float)manager->GetActualHeight() / (float)camera->h;
+	float wDiff = (float)manager->GetActualWidth() / (float)camera.w;
+	float hDiff = (float)manager->GetActualHeight() / (float)camera.h;
 
-	aux.x -= camera->x;
+	aux.x -= camera.x;
 	aux.x = (int)((float)aux.x * wDiff);
 
-	aux.y -= camera->y;
+	aux.y -= camera.y;
 	aux.y = (int)((float)aux.y * hDiff);
 
 	aux.w = (int)((float)aux.w * wDiff);
@@ -89,7 +91,7 @@ void Projectile::CheckHits()
 		while (manager->GetNextEntity(oponent, layer))
 		{
 			SDL_Rect hitArea;
-			if (SDL_IntersectRect(&hurtbox, oponent->GetHurtbox(), &hitArea))
+			if (SDL_IntersectRect(&hurtbox, &oponent->GetHurtbox(), &hitArea))
 			{
 				bool controlHitLag = false;
 				bool controlShake = false;

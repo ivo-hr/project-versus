@@ -7,6 +7,7 @@
 #include "../../../json/json.hpp"
 #include "../../Utils/Particle.h"
 #include "../../../utils/CheckML.h"
+#include "../../../sdlutils/SDLUtils.h"
 #include <fstream>
 #include <iostream>
 using json = nlohmann::json;
@@ -314,7 +315,7 @@ void Melvin::Posses()
 		if (possesedChar->GetParticlePool()["posses"].size() == 0)
 			possesedChar->GetParticlePool()["posses"].push_front(new Particle(
 				{ 0,0 }, ParticleData(&sdl->images().at("melvin_pos"), SDL_Rect({ 0, 0, 96, 96 }), 6, 2, 3, 30), this));
-		possesedChar->AddParticle("posses", Vector2D(possesedChar->GetHurtbox()->x + possesedChar->GetHurtbox()->w / 2, possesedChar->GetHurtbox()->y + possesedChar->GetHurtbox()->h / 2), dir, true);
+		possesedChar->AddParticle("posses", Vector2D(possesedChar->GetHurtbox().x + possesedChar->GetHurtbox().w / 2, possesedChar->GetHurtbox().y + possesedChar->GetHurtbox().h / 2), dir, true);
 	}
 
 	//body->SetEnabled(false);
@@ -377,7 +378,7 @@ void Melvin::TransformInto(Character* current, Character* to)
 
 	to->GetOgInput()->SetOriginalOwner(to);
 
-	to->AddParticle("posses", Vector2D(to->GetHurtbox()->x + to->GetHurtbox()->w / 2, to->GetHurtbox()->y + to->GetHurtbox()->h / 2), to->GetDir(), true);
+	to->AddParticle("posses", Vector2D(to->GetHurtbox().x + to->GetHurtbox().w / 2, to->GetHurtbox().y + to->GetHurtbox().h / 2), to->GetDir(), true);
 }
 
 void Melvin::BuildBoxes()

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Entity.h"
+#include <vector>
 
 class AnimationManager
 {
@@ -35,8 +36,8 @@ public:
 
 	void update();
 	void render();
-	void render(SDL_Rect* camera);
-	void render(SDL_Rect* camera, const Vector2D& offset);
+	void render(const SDL_Rect& camera);
+	void render(const SDL_Rect& camera, const Vector2D& offset);
 
 	void StartAnimation(std::string index);
 	std::string CurrentAnimation() { return currentAnimIndex; };

@@ -1,5 +1,10 @@
 #include "AnimationManager.h"
 #include "../../utils/CheckML.h"
+#include "../../sdlutils/Texture.h"
+#include "../Entity.h"
+#ifdef _DEBUG
+#include "../../sdlutils/SDLUtils.h"
+#endif
 
 
 void AnimationManager::UpdateIndex()
@@ -136,7 +141,7 @@ void AnimationManager::update()
 	UpdateIndex();
 
 	//Este rect representa donde se va a renderizar la textura una vez recortada
-	SDL_Rect aux = *ent->GetHurtbox();
+	SDL_Rect aux = ent->GetHurtbox();
 
 	//Depende de a donde esté mirando, el cuadro donde se renderiza se calcula de una manera u otra
 	if (ent->GetDir() > 0) {
@@ -173,17 +178,17 @@ void AnimationManager::render()
 
 }
 
-void AnimationManager::render(SDL_Rect* camera)
+void AnimationManager::render(const SDL_Rect& camera)
 {
 	SDL_Rect aux = dest;
 
-	float wDiff = (float)ent->GetManager()->GetActualWidth() / (float)camera->w;
-	float hDiff = (float)ent->GetManager()->GetActualHeight() / (float)camera->h;
+	float wDiff = (float)ent->GetManager()->GetActualWidth() / (float)camera.w;
+	float hDiff = (float)ent->GetManager()->GetActualHeight() / (float)camera.h;
 
-	aux.x -= camera->x;
+	aux.x -= camera.x;
 	aux.x = (int)((float)aux.x * wDiff);
 
-	aux.y -= camera->y;
+	aux.y -= camera.y;
 	aux.y = (int)((float)aux.y * hDiff);
 
 	aux.w = (int)((float)aux.w * wDiff);
@@ -197,17 +202,17 @@ void AnimationManager::render(SDL_Rect* camera)
 	}
 }
 
-void AnimationManager::render(SDL_Rect* camera, const Vector2D& offset)
+void AnimationManager::render(const SDL_Rect& camera, const Vector2D& offset)
 {
 	SDL_Rect aux = dest;
 
-	float wDiff = (float)ent->GetManager()->GetActualWidth() / (float)camera->w;
-	float hDiff = (float)ent->GetManager()->GetActualHeight() / (float)camera->h;
+	float wDiff = (float)ent->GetManager()->GetActualWidth() / (float)camera.w;
+	float hDiff = (float)ent->GetManager()->GetActualHeight() / (float)camera.h;
 
-	aux.x -= camera->x;
+	aux.x -= camera.x;
 	aux.x = (int)((float)aux.x * wDiff);
 
-	aux.y -= camera->y;
+	aux.y -= camera.y;
 	aux.y = (int)((float)aux.y * hDiff);
 
 	aux.w = (int)((float)aux.w * wDiff);

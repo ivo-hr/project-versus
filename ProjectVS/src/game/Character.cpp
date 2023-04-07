@@ -3,6 +3,8 @@
 #include "Utils/Particle.h"
 #include "Characters/NasNas/Explosion.h"
 #include "../utils/CheckML.h"
+#include "../sdlutils/SDLUtils.h"
+#include "../sdlutils/Texture.h"
 #include <iostream>
 
 /// @brief aaaaa
@@ -180,6 +182,16 @@ void Character::BuildParticlePool()
 	particlePool["parryB"].push_front(new Particle(
 		{ 0,0 }, ParticleData(&sdl->images().at("parryB"), SDL_Rect({ 0, 0, 128, 64 }), 5, 3, 2, 25), this)
 	);
+}
+
+void Character::ChangeTexMod(Uint8 r, Uint8 g, Uint8 b)
+{
+	Uint8 r_, g_, b_;
+	texture->GetTexMod(r_, g_, b_);
+	if (r != r_ || g != g_ || b != b_)
+	{
+		texture->SetTexMod(r, g, b);
+	}
 }
 
 Character::Character(FightManager* manager, b2Vec2 pos, char input, ushort playerPos, float w, float h) :
@@ -722,7 +734,7 @@ void Character::draw()
 
 }
 
-void Character::draw(SDL_Rect* camera)
+void Character::draw(const SDL_Rect& camera)
 {
 
 	if (!alive)
@@ -782,14 +794,14 @@ void Character::draw(SDL_Rect* camera)
 	{
 		SDL_Rect aux = hurtbox;
 
-		aux.x -= camera->x;
-		aux.x = int((float)aux.x * ((float)manager->GetActualWidth() / (float)camera->w));
+		aux.x -= camera.x;
+		aux.x = int((float)aux.x * ((float)manager->GetActualWidth() / (float)camera.w));
 
-		aux.y -= camera->y;
-		aux.y = int((float)aux.y * (float)manager->GetActualWidth() / (float)camera->w);
+		aux.y -= camera.y;
+		aux.y = int((float)aux.y * (float)manager->GetActualWidth() / (float)camera.w);
 
-		aux.w = int((float)aux.w * (float)manager->GetActualWidth() / (float)camera->w);
-		aux.h = int((float)aux.h * (float)manager->GetActualWidth() / (float)camera->w);
+		aux.w = int((float)aux.w * (float)manager->GetActualWidth() / (float)camera.w);
+		aux.h = int((float)aux.h * (float)manager->GetActualWidth() / (float)camera.w);
 		int xpos = aux.x + (aux.w / 2);
 		arrowSrc.y = arrowSrc.h * (layer - 1);
 		arrowsTex->render(arrowSrc, { xpos - 15, aux.y - 44, 30, 16 });
@@ -865,7 +877,7 @@ void Character::CheckHits()
 			while (manager->GetNextEntity(oponent, layer))
 			{
 				SDL_Rect hitArea;
-				if (SDL_IntersectRect(&hitboxes[i]->box, oponent->GetHurtbox(), &hitArea) && !isHit[oponent])
+				if (SDL_IntersectRect(&hitboxes[i]->box, &oponent->GetHurtbox(), &hitArea) && !isHit[oponent])
 				{
 					manager->MoveToFront(this);
 					bool hitLagApplied = false, shakeApplied = false, camShakeApplied = false;

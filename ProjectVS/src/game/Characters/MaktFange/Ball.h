@@ -20,7 +20,7 @@ public:
 	MaktBall(FightManager* manager, b2Vec2 pos, const HitData& attack, b2Vec2 dir, b2Vec2 respawn, ushort pNumber, ushort layer);
 	~MaktBall();
 
-	string GetName() override { return "Makt_Ball"; };
+	std::string GetName() override { return "Makt_Ball"; };
 
 	void update() override;
 	void CheckHits() override;
@@ -32,7 +32,7 @@ public:
 
 	bool PickUp();
 
-	void draw(SDL_Rect* camera) override;
+	void draw(const SDL_Rect& camera) override;
 
 	SDL_Rect getCurrentSpriteSrc() override { return { 1260, 1543, 17, 17 }; }
 

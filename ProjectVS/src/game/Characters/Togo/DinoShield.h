@@ -9,11 +9,11 @@ public:
 	DinoShield(FightManager* manager, b2Vec2 pos);
 	~DinoShield();
 
-	string GetName() override { return "Togo_Shield"; };
+	std::string GetName() override { return "Togo_Shield"; };
 
 	void update() override;
 	void draw() override;
-	void draw(SDL_Rect* camera) override;
+	void draw(const SDL_Rect& camera) override;
 	void CheckHits() override {};
 	bool GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& controlShake, bool& controlCamShake) override;
 	SDL_Rect* GetHurtbox() { return &hurtbox; };

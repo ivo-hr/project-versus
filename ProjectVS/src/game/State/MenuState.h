@@ -2,10 +2,13 @@
 
 #include "State.h"
 
+class Texture;
+class Button;
+
 class MenuState : public State {
     Texture* background;
-    short Finput = -3;
-    Uint32 textTimer = 0;
+    char Finput = -3;
+    unsigned int textTimer = 0;
     bool drawText = false;
     Button* exit ,*config;
 public:
@@ -20,7 +23,7 @@ public:
     void OnDisable() override {};
     void Reset() override {};
 
-    string getStateName() const override {
+    std::string getStateName() const override {
         return "Menu state";
     };
 };

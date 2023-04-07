@@ -20,7 +20,7 @@ public:
 
 	void update() override;
 	void draw() override;
-	void draw(SDL_Rect* camera) override;
+	void draw(const SDL_Rect& camera);
 	void CheckHits() override;
 	SDL_Rect* GetHurtbox() { return &hurtbox;};
 	bool changeDir();
