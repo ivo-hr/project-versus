@@ -226,13 +226,13 @@ void Makt::SpecialForward(ushort frameNumber)
 		moving = false;
 		anim->StartAnimation("especialLEntrada");
 		sdl->soundEffects().at("maktSpecS").play();
-		superArmor = true;
 	}
 	
 	else if (frameNumber >= attacks["specialL"].keyFrames[0])
 	{
 		if (frameNumber == attacks["specialL"].keyFrames[0]) {
 			anim->StartAnimation("especialLHold");
+			superArmor = true;
 		}
 		if(!input->special() || release) {
 			if (!release) {		
@@ -427,6 +427,8 @@ bool Makt::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& contro
 	if (superArmor) {
 		superArmor = false;
 		damageTaken += a.damage;
+		hud->UpdateDmg(this, damageTaken);
+		input->rumbleController(0x4444, 100);
 		return true;
 	}
 	return Character::GetHit(a, attacker, controlHitLag, controlShake, controlCamShake);

@@ -898,7 +898,7 @@ void Character::CheckHits()
 								oponent->AddHitLag(hitboxes[i]->GetHitlag());
 							}
 
-							input->rumbleController(0xffff, hitboxes[i]->hitdata.damage * 10);
+							input->rumbleController(0xaaaa, hitboxes[i]->hitdata.damage * 10);
 
 							if (!shakeApplied)
 							{
@@ -969,7 +969,7 @@ bool Character::GetHit(HitData a, Entity* attacker, bool& controlHitLag, bool& c
 			hud->UpdateDmg(this, damageTaken);
 			controlHitLag = false; 
 			
-			input->rumbleController(0x8888, 150);
+			input->rumbleController(0x2222, 100);
 		}
 		//Shield broken
 		else
@@ -1018,7 +1018,7 @@ void Character::OnParry(Entity* attacker, bool& controlHitLag, HitData& a, bool&
 	controlCamShake = true;
 	controlShake = true;
 	
-	input->rumbleController(0xffff, 100);
+	input->rumbleController(0x4444, 50);
 
 	float xEyeDiff = eyePos.getX() - (hurtbox.w / 2.f);
 
@@ -1065,7 +1065,7 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 	if (abs(aux.y) > 10.f)
 		body->GetFixtureList()->GetNext()->SetRestitution(stunnedBounciness);
 
-	input->rumbleController(0xffff, 70);
+	input->rumbleController(0x4444, 50);
 
 	if (IsGoingToKill(aux))
 	{
@@ -1075,7 +1075,7 @@ void Character::SuccessfulHit(bool shieldBreak, HitData& a, bool& controlHitLag,
 		else
 			currHitlag = 40;
 
-		input->rumbleController(0xffff, currHitlag * 9);
+		input->rumbleController(0x8888, currHitlag * 9);
 
 		manager->KillingBlow();
 
