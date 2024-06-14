@@ -6,7 +6,7 @@ Copyright © 2021-2022 LeftOvers Productions - Todos los derechos reservados :)
 
 ### **Nombre de la empresa: _LeftOvers Productions_**
 
-_Página del juego_: https://ivo-hr.github.io/super-proj-melee/
+_Página del juego_: https://ivo-hr.github.io/project-versus/
 
 _Twitter_: @LeftOverProds
 
